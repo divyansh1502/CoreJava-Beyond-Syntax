@@ -62,8 +62,8 @@ This section builds the foundation before entering OOP.
 ├── 07-Control-Statements.md
 ├── 08-Methods.md
 ├── 09-Arrays.md
-├── 10-Wrapper-Classes.md
-├── 11-Autoboxing-and-Unboxing.md
+├── 10-String, String Pool, StringBuilder & StringBuffer
+├── 11 Wrapper Classes, Autoboxing & Unboxing.md
 ├── 12-Command-Line-Arguments.md
 └── 13-Keywords-and-Identifiers.md
 ```
