@@ -9,41 +9,41 @@
 
 # 📚 Table of Contents
 
-1. [Introduction](#1-introduction) 🚀
-2. [Why List Interface?](#2-why-list-interface) 🤔
-3. [List Hierarchy](#3-list-hierarchy) 🌳
-4. [What is List?](#4-what-is-list) 🧠
-5. [Important Characteristics](#5-important-characteristics) 🔑
-6. [List vs Collection](#6-list-vs-collection) ⚡
-7. [List Implementations](#7-list-implementations) 🏗️
-8. [Creating a List](#8-creating-a-list) 💻
-9. [Adding Elements](#9-adding-elements) ➕
-10. [Accessing Elements](#10-accessing-elements) 👀
-11. [Updating Elements](#11-updating-elements) 🔄
-12. [Removing Elements](#12-removing-elements) ❌
-13. [Searching in List](#13-searching-in-list) 🔍
-14. [Index-Based Operations](#14-index-based-operations) 📍
-15. [List-Specific Methods](#15-list-specific-methods) 🛠️
-16. [SubList](#16-sublist) ✂️
-17. [List Iteration](#17-list-iteration) 🔄
-18. [ListIterator](#18-listiterator) 🔁
-19. [Sorting a List](#19-sorting-a-list) 📊
-20. [Reversing a List](#20-reversing-a-list) 🔃
-21. [Immutable Lists](#21-immutable-lists) 🔒
-22. [Unmodifiable Lists](#22-unmodifiable-lists) 🛡️
-23. [Null and Duplicate Elements](#23-null-and-duplicate-elements) ⚠️
-24. [Internal Working](#24-internal-working) ⚙️
-25. [Time Complexity](#25-time-complexity) ⏱️
-26. [List vs Set](#26-list-vs-set) ⚔️
-27. [ArrayList vs LinkedList](#27-arraylist-vs-linkedlist) 🆚
-28. [Common Mistakes](#28-common-mistakes) 🚨
-29. [Interview Traps](#29-interview-traps) 🎯
-30. [DSA Relevance](#30-dsa-relevance) 🧠
-31. [DSA Examples](#31-dsa-examples) 💡
-32. [Top Interview Questions](#32-top-interview-questions) 💼
-33. [30-Second Interview Answer](#33-30-second-interview-answer) ⏱️
-34. [Cheat Sheet](#34-cheat-sheet) 📌
-35. [Quick Revision](#35-quick-revision) ⚡
+1. [Introduction](#1-introduction) 
+2. [Why List Interface?](#2-why-list-interface) 
+3. [List Hierarchy](#3-list-hierarchy) 
+4. [What is List?](#4-what-is-list) 
+5. [Important Characteristics](#5-important-characteristics) 
+6. [List vs Collection](#6-list-vs-collection) 
+7. [List Implementations](#7-list-implementations) 
+8. [Creating a List](#8-creating-a-list) 
+9. [Adding Elements](#9-adding-elements) 
+10. [Accessing Elements](#10-accessing-elements) 
+11. [Updating Elements](#11-updating-elements) 
+12. [Removing Elements](#12-removing-elements) 
+13. [Searching in List](#13-searching-in-list) 
+14. [Index-Based Operations](#14-index-based-operations) 
+15. [List-Specific Methods](#15-list-specific-methods) 
+16. [SubList](#16-sublist) 
+17. [List Iteration](#17-list-iteration) 
+18. [ListIterator](#18-listiterator) 
+19. [Sorting a List](#19-sorting-a-list)
+20. [Reversing a List](#20-reversing-a-list) 
+21. [Immutable Lists](#21-immutable-lists)
+22. [Unmodifiable Lists](#22-unmodifiable-lists) 
+23. [Null and Duplicate Elements](#23-null-and-duplicate-elements) 
+24. [Internal Working](#24-internal-working) 
+25. [Time Complexity](#25-time-complexity) 
+26. [List vs Set](#26-list-vs-set) 
+27. [ArrayList vs LinkedList](#27-arraylist-vs-linkedlist) 
+28. [Common Mistakes](#28-common-mistakes) 
+29. [Interview Traps](#29-interview-traps) 
+30. [DSA Relevance](#30-dsa-relevance) 
+31. [DSA Examples](#31-dsa-examples) 
+32. [Top Interview Questions](#32-top-interview-questions) 
+33. [30-Second Interview Answer](#33-30-second-interview-answer) 
+34. [Cheat Sheet](#34-cheat-sheet) 
+35. [Quick Revision](#35-quick-revision) 
 
 ---
 
