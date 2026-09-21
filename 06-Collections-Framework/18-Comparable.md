@@ -1,5 +1,3 @@
-18-Comparable.md
-
 # 18 — Comparable Interface ⚖️
 
 > **Package:** `java.lang`  
