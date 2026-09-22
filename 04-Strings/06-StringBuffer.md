@@ -1,6 +1,6 @@
 # 🧵 StringBuffer in Java
 
-> **`StringBuffer` is a mutable sequence of characters. It is similar to `StringBuilder`, but its methods are synchronized, making it suitable for use when multiple threads may access and modify the same object.**
+> **`StringBuffer` is a mutable sequence of characters whose methods are synchronized, making it suitable when synchronized access to a shared mutable character sequence is required.**
 
 ---
 
@@ -9,7 +9,7 @@
 1. [What is StringBuffer?](#1--what-is-stringbuffer)
 2. [Why Do We Need StringBuffer?](#2--why-do-we-need-stringbuffer)
 3. [StringBuffer as a Class](#3--stringbuffer-as-a-class)
-4. [StringBuffer Package](#4--stringbuffer-package)
+4. [Package](#4--package)
 5. [Creating StringBuffer](#5--creating-stringbuffer)
 6. [Default Constructor](#6--default-constructor)
 7. [Constructor with String](#7--constructor-with-string)
@@ -34,88 +34,88 @@
 26. [trimToSize()](#26--trimtosize)
 27. [toString()](#27--tostring)
 28. [Method Chaining](#28--method-chaining)
-29. [StringBuffer and Synchronization](#29--stringbuffer-and-synchronization)
+29. [Synchronization](#29--synchronization)
 30. [Thread Safety](#30--thread-safety)
 31. [Capacity Growth](#31--capacity-growth)
-32. [StringBuffer vs String](#32--stringbuffer-vs-string)
-33. [StringBuffer vs StringBuilder](#33--stringbuffer-vs-stringbuilder)
-34. [Performance](#34--performance)
-35. [Advantages](#35--advantages)
-36. [Disadvantages](#36--disadvantages)
-37. [Common Mistakes](#37--common-mistakes)
-38. [Interview Traps](#38--interview-traps)
-39. [Top 20 Interview Questions](#39--top-20-interview-questions)
-40. [30-Second Interview Answer](#40--30-second-interview-answer)
-41. [Cheat Sheet](#41--cheat-sheet)
-42. [Memory Tricks](#42--memory-tricks)
-43. [Next Topic](#43--next-topic)
+32. [Time Complexity](#32--time-complexity)
+33. [StringBuffer vs String](#33--stringbuffer-vs-string)
+34. [StringBuffer vs StringBuilder](#34--stringbuffer-vs-stringbuilder)
+35. [Performance](#35--performance)
+36. [Advantages](#36--advantages)
+37. [Disadvantages](#37--disadvantages)
+38. [Common Mistakes](#38--common-mistakes)
+39. [Interview Traps](#39--interview-traps)
+40. [DSA & Problem-Solving](#40--dsa--problem-solving)
+41. [Top 20 Interview Questions](#41--top-20-interview-questions)
+42. [30-Second Interview Answer](#42--30-second-interview-answer)
+43. [Cheat Sheet](#43--cheat-sheet)
+44. [Memory Tricks](#44--memory-tricks)
+45. [Next Topic](#45--next-topic)
 
 ---
 
 # 1. 🧵 What is StringBuffer?
 
-`StringBuffer` is a:
+`StringBuffer` is a class in Java that represents a:
 
 > **Mutable sequence of characters.**
 
-The most important properties are:
+The two most important properties are:
 
-- Mutable
-- Synchronized
-- Thread-safe for individual method operations
-- Resizable
-- Part of `java.lang`
+- **Mutable**
+- **Synchronized**
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.append(" Programming");
+sb.append(" Programming");
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    Java Programming
+```text
+Java Programming
+```
 
-The existing StringBuffer object is modified.
+The existing `StringBuffer` object is modified.
 
 ---
 
 # 2. 🤔 Why Do We Need StringBuffer?
 
-We already have:
+Java provides three important choices for text:
 
-    String
-    StringBuilder
+```text
+String
+   ↓
+Immutable
 
-So why StringBuffer?
+StringBuilder
+   ↓
+Mutable + Unsynchronized
 
-The key reason is:
-
-> **Thread-safe mutable string manipulation.**
+StringBuffer
+   ↓
+Mutable + Synchronized
+```
 
 `String` is immutable.
 
-`StringBuilder` is mutable but not synchronized.
+`StringBuilder` is mutable but does not synchronize its methods.
 
-`StringBuffer` is mutable and synchronized.
+`StringBuffer` is mutable and its methods are synchronized.
 
-### Simple Comparison
+Therefore, `StringBuffer` can be useful when:
 
-    String
-       ↓
-    Immutable
+- Text needs frequent modification.
+- The mutable buffer is shared between threads.
+- Synchronized method-level access is appropriate.
 
-    StringBuilder
-       ↓
-    Mutable + Not synchronized
-
-    StringBuffer
-       ↓
-    Mutable + Synchronized
-
-Therefore, StringBuffer can be useful when multiple threads access the same mutable character sequence and synchronized operations are required.
+> **Important:** Synchronization of individual methods does not automatically make a multi-step sequence of operations atomic.
 
 ---
 
@@ -123,38 +123,51 @@ Therefore, StringBuffer can be useful when multiple threads access the same muta
 
 `StringBuffer` is a class.
 
-Conceptually:
+Its inheritance relationship is conceptually:
 
-    Object
-       │
-       └── AbstractStringBuilder
-                │
-                ├── StringBuilder
-                │
-                └── StringBuffer
+```text
+Object
+   ↓
+AbstractStringBuilder
+   ├── StringBuilder
+   └── StringBuffer
+```
 
-Both:
-
-    StringBuilder
-    StringBuffer
-
-provide mutable character sequences.
+Both `StringBuilder` and `StringBuffer` provide mutable character sequences.
 
 Their major difference is synchronization.
 
+```text
+StringBuilder
+    ↓
+Mutable
+    ↓
+Not synchronized
+
+StringBuffer
+    ↓
+Mutable
+    ↓
+Synchronized
+```
+
 ---
 
-# 4. 📦 StringBuffer Package
+# 4. 📦 Package
 
 `StringBuffer` belongs to:
 
-    java.lang
+```text
+java.lang
+```
 
 Therefore, no explicit import is required.
 
-You can directly write:
+Example:
 
-    StringBuffer sb = new StringBuffer();
+```java
+StringBuffer sb = new StringBuffer();
+```
 
 ---
 
@@ -162,19 +175,21 @@ You can directly write:
 
 Common constructors include:
 
-    new StringBuffer()
-
-    new StringBuffer(String str)
-
-    new StringBuffer(int capacity)
+```java
+new StringBuffer()
+new StringBuffer(String str)
+new StringBuffer(int capacity)
+```
 
 Example:
 
-    StringBuffer sb1 = new StringBuffer();
+```java
+StringBuffer sb1 = new StringBuffer();
 
-    StringBuffer sb2 = new StringBuffer("Java");
+StringBuffer sb2 = new StringBuffer("Java");
 
-    StringBuffer sb3 = new StringBuffer(100);
+StringBuffer sb3 = new StringBuffer(100);
+```
 
 ---
 
@@ -182,28 +197,30 @@ Example:
 
 Example:
 
-    StringBuffer sb = new StringBuffer();
+```java
+StringBuffer sb = new StringBuffer();
+```
 
 The default initial capacity is:
 
-    16
+```text
+16
+```
 
-So initially:
+Initially:
 
-    length   = 0
-    capacity = 16
+```text
+length   = 0
+capacity = 16
+```
 
-### Important
+Therefore:
 
-Capacity and length are different.
+> **Capacity and length are different concepts.**
 
-    length()
-        ↓
-    Number of characters currently stored
+`length()` tells us how many characters are currently stored.
 
-    capacity()
-        ↓
-    Internal capacity available before expansion
+`capacity()` tells us the current internal capacity.
 
 ---
 
@@ -211,46 +228,76 @@ Capacity and length are different.
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
+```
 
-The String contains:
+The string contains:
 
-    Java
+```text
+Java
+```
 
 Length:
 
-    4
+```text
+4
+```
 
-The initial capacity is:
+Initial capacity:
 
-    4 + 16
+```text
+4 + 16 = 20
+```
 
 Therefore:
 
-    capacity = 20
+```text
+length   = 4
+capacity = 20
+```
 
 ### Formula
 
-For a String constructor:
+```text
+Initial capacity = string.length() + 16
+```
 
-    initial capacity = string.length() + 16
+Example:
+
+```java
+StringBuffer sb = new StringBuffer("Hello");
+System.out.println(sb.length());
+System.out.println(sb.capacity());
+```
+
+Output:
+
+```text
+5
+21
+```
 
 ---
 
 # 8. 🔹 Constructor with Capacity
 
-You can specify the initial capacity.
+You can specify the initial capacity manually.
 
 Example:
 
-    StringBuffer sb = new StringBuffer(100);
+```java
+StringBuffer sb = new StringBuffer(100);
+```
 
 Initially:
 
-    length   = 0
-    capacity = 100
+```text
+length   = 0
+capacity = 100
+```
 
-This can be useful if you know approximately how much text you are going to build.
+This is useful when you already have an approximate idea of how much text will be stored.
 
 ---
 
@@ -260,91 +307,121 @@ StringBuffer is mutable.
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.append(" Programming");
+sb.append(" Programming");
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    Java Programming
+```text
+Java Programming
+```
 
-The same StringBuffer object can be modified.
+The existing object is modified.
 
 ### Contrast with String
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    s.concat(" Programming");
+s.concat(" Programming");
 
-The original String does not change.
+System.out.println(s);
+```
+
+Output:
+
+```text
+Java
+```
 
 Why?
 
 Because:
 
-    String → Immutable
-
-while:
-
-    StringBuffer → Mutable
+```text
+String       → Immutable
+StringBuffer → Mutable
+```
 
 ---
 
 # 10. ⚙️ Internal Working
 
-StringBuffer maintains a mutable character sequence internally.
+StringBuffer maintains an expandable mutable character sequence internally.
 
 Conceptually:
 
-    StringBuffer
-          │
-          ↓
-    Internal character storage
-          │
-          ├── J
-          ├── a
-          ├── v
-          └── a
+```text
+StringBuffer
+      ↓
+Mutable internal storage
+      ↓
+J a v a _ _ _ _ _ ...
+```
 
-When characters are appended or inserted, the internal storage is modified.
+When characters are appended:
 
-If there is not enough capacity, the internal storage grows.
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-### Important Interview Point
+sb.append(" Programming");
+```
 
-You do not need to know the exact internal representation for normal StringBuffer usage.
+The existing character sequence is modified.
 
-Remember:
+If the current capacity is insufficient, StringBuffer grows its internal storage.
 
-> StringBuffer maintains expandable mutable character storage and synchronizes its methods.
+### Important
+
+The exact internal representation can vary between JDK implementations and versions.
+
+For interview purposes:
+
+> **StringBuffer maintains mutable character storage and synchronizes its methods.**
 
 ---
 
 # 11. 📦 Capacity
 
-Capacity tells us how much internal storage is currently available before expansion becomes necessary.
+Capacity represents the current amount of internal storage available before additional growth is required.
 
 Example:
 
-    StringBuffer sb = new StringBuffer();
+```java
+StringBuffer sb = new StringBuffer();
 
-Initially:
+System.out.println(sb.length());
+System.out.println(sb.capacity());
+```
 
-    length   = 0
-    capacity = 16
+Output:
+
+```text
+0
+16
+```
 
 After:
 
-    sb.append("Java");
+```java
+sb.append("Java");
+```
 
-Now:
+The values are conceptually:
 
-    length   = 4
-    capacity = 16
+```text
+length   = 4
+capacity = 16
+```
 
-The capacity does not automatically become 4.
+Therefore:
+
+> **Capacity is not the same as length.**
 
 ---
 
@@ -354,127 +431,205 @@ The capacity does not automatically become 4.
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    System.out.println(sb.length());
+System.out.println(sb.length());
+```
 
 Output:
 
-    4
+```text
+4
+```
 
-### Remember
+Remember:
 
-    length()
-        ↓
-    Current characters
+```text
+length()
+    ↓
+Number of characters currently stored
 
-    capacity()
-        ↓
-    Current internal capacity
+capacity()
+    ↓
+Current internal storage capacity
+```
 
 ---
 
-# 13. ➕
-
-# append()
+# 13. ➕ append()
 
 `append()` adds data to the end of the StringBuffer.
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.append(" Programming");
+sb.append(" Programming");
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    Java Programming
+```text
+Java Programming
+```
 
 ### Append Integer
 
-    sb.append(100);
+```java
+StringBuffer sb = new StringBuffer("Age: ");
+
+sb.append(22);
+
+System.out.println(sb);
+```
+
+Output:
+
+```text
+Age: 22
+```
 
 ### Append Character
 
-    sb.append('A');
+```java
+StringBuffer sb = new StringBuffer();
+
+sb.append('A');
+
+System.out.println(sb);
+```
 
 ### Append Boolean
 
-    sb.append(true);
+```java
+StringBuffer sb = new StringBuffer();
 
-### Append Double
+sb.append(true);
 
-    sb.append(10.5);
+System.out.println(sb);
+```
 
-`append()` is overloaded for many types.
+### Append Multiple Values
+
+```java
+StringBuffer sb = new StringBuffer();
+
+sb.append("Name: ")
+  .append("Divyansh")
+  .append(", Age: ")
+  .append(22);
+
+System.out.println(sb);
+```
+
+`append()` is overloaded for many data types.
 
 ---
 
-# 14. ➕
-
-# insert()
+# 14. ➕ insert()
 
 `insert()` inserts data at a specified index.
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Jav");
+```java
+StringBuffer sb = new StringBuffer("Jav");
 
-    sb.insert(3, 'a');
+sb.insert(3, 'a');
 
-Result:
+System.out.println(sb);
+```
 
-    Java
+Output:
+
+```text
+Java
+```
 
 Another example:
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.insert(4, " Programming");
+sb.insert(4, " Programming");
 
-Result:
+System.out.println(sb);
+```
 
-    Java Programming
+Output:
+
+```text
+Java Programming
+```
 
 ### Index Visualization
 
-    J a v a
-    0 1 2 3
+```text
+J a v a
+0 1 2 3
 
-Insert at:
+Insert at index 4:
 
-    4
+J a v a | Programming
+```
 
-means:
-
-    Java| Programming
+The insertion shifts the existing characters at and after that position to the right.
 
 ---
 
 # 15. 🔄 replace()
 
-`replace()` replaces characters between two indexes.
+`replace()` replaces characters within a specified range.
 
 Syntax:
 
-    replace(start, end, str)
+```java
+replace(start, end, str)
+```
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java Programming");
+```java
+StringBuffer sb = new StringBuffer("Java Programming");
 
-    sb.replace(0, 4, "Python");
+sb.replace(0, 4, "Python");
 
-Result:
+System.out.println(sb);
+```
 
-    Python Programming
+Output:
+
+```text
+Python Programming
+```
 
 ### Range Rule
 
-    start → inclusive
-    end   → exclusive
+```text
+start → inclusive
+end   → exclusive
+```
+
+Therefore:
+
+```java
+sb.replace(0, 4, "Python");
+```
+
+replaces indexes:
+
+```text
+0
+1
+2
+3
+```
+
+but not index `4`.
 
 ---
 
@@ -484,81 +639,121 @@ Result:
 
 Syntax:
 
-    delete(start, end)
+```java
+delete(start, end)
+```
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java Programming");
+```java
+StringBuffer sb = new StringBuffer("Java Programming");
 
-    sb.delete(4, 5);
+sb.delete(4, 5);
 
-Result:
+System.out.println(sb);
+```
 
-    JavaProgramming
+Output:
 
-The character at index 4 is the space.
+```text
+JavaProgramming
+```
 
-### Range
+Index `4` contains the space.
 
-    start → inclusive
-    end   → exclusive
+The range is:
+
+```text
+start → inclusive
+end   → exclusive
+```
+
+Therefore:
+
+```java
+sb.delete(4, 5);
+```
+
+deletes only index `4`.
 
 ---
 
 # 17. 🗑️ deleteCharAt()
 
-Removes one character from a specific index.
+`deleteCharAt()` removes one character at a specified index.
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.deleteCharAt(1);
+sb.deleteCharAt(1);
 
-Result:
+System.out.println(sb);
+```
 
-    Jva
+Output:
+
+```text
+Jva
+```
 
 Indexes:
 
-    J a v a
-    0 1 2 3
+```text
+J a v a
+0 1 2 3
+```
 
-Index `1` is:
+Index `1` contains:
 
-    a
+```text
+a
+```
+
+So that character is removed.
 
 ---
 
 # 18. 🔄 reverse()
 
-`reverse()` reverses the entire character sequence.
+`reverse()` reverses the character sequence.
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.reverse();
+sb.reverse();
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    avaJ
+```text
+avaJ
+```
 
 Another example:
 
-    StringBuffer sb = new StringBuffer("12345");
+```java
+StringBuffer sb = new StringBuffer("12345");
 
-    sb.reverse();
+sb.reverse();
 
-Result:
+System.out.println(sb);
+```
 
-    54321
+Output:
+
+```text
+54321
+```
 
 ### Important
 
-`reverse()` modifies the StringBuffer itself.
+`reverse()` modifies the existing StringBuffer.
 
 ---
 
@@ -568,42 +763,76 @@ Result:
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    System.out.println(sb.charAt(2));
+System.out.println(sb.charAt(2));
+```
 
 Output:
 
-    v
+```text
+v
+```
 
 Indexes:
 
-    J a v a
-    0 1 2 3
+```text
+J a v a
+0 1 2 3
+```
+
+Therefore:
+
+```text
+charAt(2) → 'v'
+```
 
 ---
 
 # 20. ✏️ setCharAt()
 
-`setCharAt()` replaces a character at a specified index.
+`setCharAt()` replaces the character at a specified index.
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.setCharAt(0, 'K');
+sb.setCharAt(0, 'K');
 
-Result:
+System.out.println(sb);
+```
 
-    Kava
+Output:
+
+```text
+Kava
+```
 
 Before:
 
-    Java
+```text
+Java
+```
 
 After:
 
-    Kava
+```text
+Kava
+```
+
+### Important Difference
+
+```text
+charAt()
+    ↓
+Read a character
+
+setCharAt()
+    ↓
+Modify a character
+```
 
 ---
 
@@ -613,63 +842,118 @@ After:
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java Programming");
+```java
+StringBuffer sb = new StringBuffer("Java Programming");
 
-    String result = sb.substring(5);
+String result = sb.substring(5);
 
-Result:
+System.out.println(result);
+```
 
-    Programming
+Output:
+
+```text
+Programming
+```
 
 ### Very Important
 
 `substring()` returns:
 
-    String
+```text
+String
+```
 
 not:
 
-    StringBuffer
+```text
+StringBuffer
+```
 
 Example:
 
-    String result = sb.substring(0, 4);
+```java
+StringBuffer sb = new StringBuffer("Java Programming");
+
+String result = sb.substring(0, 4);
+
+System.out.println(result);
+```
+
+Output:
+
+```text
+Java
+```
 
 ---
 
 # 22. 🔎 indexOf()
 
-Returns the index of the first occurrence of a specified String.
+`indexOf()` returns the index of the first occurrence of a specified string.
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java Programming");
+```java
+StringBuffer sb = new StringBuffer("Java Programming");
 
-    System.out.println(sb.indexOf("Programming"));
+System.out.println(sb.indexOf("Programming"));
+```
 
 Output:
 
-    5
+```text
+5
+```
 
-If the string does not exist:
+If the string is not found:
 
-    -1
+```text
+-1
+```
+
+Example:
+
+```java
+StringBuffer sb = new StringBuffer("Java");
+
+System.out.println(sb.indexOf("Python"));
+```
+
+Output:
+
+```text
+-1
+```
 
 ---
 
 # 23. 🔍 lastIndexOf()
 
-Returns the index of the last occurrence.
+`lastIndexOf()` returns the index of the last occurrence.
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java Java");
+```java
+StringBuffer sb = new StringBuffer("Java Java");
 
-    System.out.println(sb.lastIndexOf("Java"));
+System.out.println(sb.lastIndexOf("Java"));
+```
 
 Output:
 
-    5
+```text
+5
+```
+
+The occurrences start at:
+
+```text
+0
+5
+```
+
+Therefore the last occurrence starts at index `5`.
 
 ---
 
@@ -679,244 +963,393 @@ Output:
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.setLength(2);
+sb.setLength(2);
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    Ja
+```text
+Ja
+```
 
 ### Increasing Length
 
-Example:
+You can also increase the logical length.
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.setLength(6);
+sb.setLength(6);
 
-The logical length becomes:
+System.out.println(sb.length());
+```
 
-    6
+Output:
+
+```text
+6
+```
 
 The additional positions contain the null character:
 
-    '\u0000'
+```text
+'\u0000'
+```
 
 ### Important
 
 `setLength()` changes the logical length.
 
-It does not mean the capacity becomes the same value.
+It does not necessarily make the capacity equal to the new length.
 
 ---
 
 # 25. 📦 ensureCapacity()
 
-`ensureCapacity()` ensures that the StringBuffer has at least the requested capacity.
+`ensureCapacity()` ensures that the capacity is at least the requested amount.
 
 Example:
 
-    StringBuffer sb = new StringBuffer();
+```java
+StringBuffer sb = new StringBuffer();
 
-    sb.ensureCapacity(100);
+sb.ensureCapacity(100);
 
-Now the buffer has sufficient capacity for at least:
+System.out.println(sb.capacity());
+```
 
-    100 characters
+The capacity will be sufficient for at least `100` characters.
 
-This can reduce the need for repeated resizing when the expected size is known.
+### Why Use It?
+
+If you know approximately how much data will be stored, preallocating capacity can reduce repeated resizing.
+
+Example:
+
+```java
+StringBuffer sb = new StringBuffer();
+
+sb.ensureCapacity(1000);
+
+for (int i = 0; i < 1000; i++) {
+    sb.append(i);
+}
+```
 
 ---
 
 # 26. ✂️ trimToSize()
 
-`trimToSize()` attempts to reduce the capacity so that it is closer to the current length.
+`trimToSize()` attempts to reduce the capacity so that unused internal storage is minimized.
 
 Example:
 
-    StringBuffer sb = new StringBuffer(100);
+```java
+StringBuffer sb = new StringBuffer(100);
 
-    sb.append("Java");
+sb.append("Java");
 
-Before:
+System.out.println(sb.capacity());
 
-    length   = 4
-    capacity = 100
+sb.trimToSize();
 
-After:
+System.out.println(sb.capacity());
+```
 
-    sb.trimToSize();
+After trimming, the capacity may be reduced to approximately the current length.
 
-The capacity may be reduced to approximately the current length.
+### Important
+
+`trimToSize()` affects capacity, not the logical content.
 
 ---
 
 # 27. 🔤 toString()
 
-`toString()` converts the StringBuffer into a String.
+`toString()` converts the StringBuffer content into a `String`.
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    String result = sb.toString();
+String result = sb.toString();
+
+System.out.println(result);
+```
 
 Now:
 
-    sb     → StringBuffer
-    result → String
+```text
+sb     → StringBuffer
+result → String
+```
 
-This is commonly done when string construction is complete.
+This is commonly used when string construction is complete.
+
+Typical pattern:
+
+```java
+StringBuffer sb = new StringBuffer();
+
+sb.append("Java")
+  .append(" ")
+  .append("Developer");
+
+String result = sb.toString();
+```
 
 ---
 
 # 28. 🔗 Method Chaining
 
-Many StringBuffer modification methods return the same StringBuffer instance.
+Many StringBuffer modification methods return the same StringBuffer object.
 
 Therefore, chaining is possible.
 
 Example:
 
-    StringBuffer sb = new StringBuffer();
+```java
+StringBuffer sb = new StringBuffer();
 
-    sb.append("Java")
-      .append(" ")
-      .append("Programming");
+sb.append("Java")
+  .append(" ")
+  .append("Programming");
 
-Result:
+System.out.println(sb);
+```
 
-    Java Programming
+Output:
+
+```text
+Java Programming
+```
 
 Another example:
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.append(" Programming")
-      .reverse();
+sb.append(" Programming")
+  .reverse();
 
-Result:
+System.out.println(sb);
+```
 
-    gnimmargorP avaJ
+Output:
 
----
+```text
+gnimmargorP avaJ
+```
 
-# 29. 🔒 StringBuffer and Synchronization
-
-This is the most important difference between StringBuffer and StringBuilder.
-
-StringBuffer methods are synchronized.
+### Why Does Chaining Work?
 
 Conceptually:
 
-    Thread 1
-       │
+```text
+sb.append(...)
        ↓
-    StringBuffer
-       │
-       🔒
-       │
+   same sb
        ↓
-    method execution
+   .append(...)
+       ↓
+   same sb
+```
 
-Another thread attempting to execute a synchronized method on the same object may have to wait for the lock.
+---
 
-### Why?
+# 29. 🔒 Synchronization
 
-To prevent multiple threads from simultaneously performing conflicting modifications through those synchronized operations.
+This is the major difference between StringBuffer and StringBuilder.
+
+StringBuffer's methods are synchronized.
+
+Conceptually:
+
+```text
+Thread 1
+   ↓
+StringBuffer
+   ↓
+acquire monitor
+   ↓
+execute synchronized method
+   ↓
+release monitor
+```
+
+Another thread attempting to enter a synchronized method on the same object may need to wait until the monitor is available.
+
+Example:
+
+```java
+StringBuffer sb = new StringBuffer();
+
+sb.append("Hello");
+```
+
+The synchronization is handled by the class's synchronized methods.
+
+### Important
+
+Synchronization provides protection for individual synchronized operations.
+
+It does **not** automatically make an entire group of operations atomic.
 
 ---
 
 # 30. 🧵 Thread Safety
 
-StringBuffer is commonly described as thread-safe because its public methods are synchronized.
-
-Example:
-
-    StringBuffer sb = new StringBuffer();
-
-    Thread 1 → append("Hello")
-    Thread 2 → append("World")
-
-The synchronization on methods provides mutual exclusion for those individual method calls on the same object.
-
-### Important Nuance
-
-Thread-safe does NOT automatically mean:
-
-> Every sequence of multiple operations is atomic.
+StringBuffer is commonly described as thread-safe because its methods are synchronized.
 
 For example:
 
-    if(sb.length() > 0) {
-        sb.deleteCharAt(0);
-    }
+```java
+StringBuffer sb = new StringBuffer();
 
-The entire sequence is not automatically one indivisible operation merely because the individual methods are synchronized.
+Thread t1 = new Thread(() -> {
+    sb.append("Hello");
+});
 
-If a larger compound operation must be atomic, external synchronization or another concurrency design may be required.
+Thread t2 = new Thread(() -> {
+    sb.append("World");
+});
+
+t1.start();
+t2.start();
+```
+
+Individual `append()` calls are synchronized.
+
+However, consider a compound operation:
+
+```java
+if (sb.length() > 0) {
+    sb.deleteCharAt(0);
+}
+```
+
+Even though `length()` and `deleteCharAt()` are individually synchronized, the entire sequence is not automatically atomic.
+
+Another thread can potentially modify the buffer between the two calls.
+
+### Key Interview Point
+
+> **Thread-safe individual methods ≠ automatically atomic multi-method operation.**
+
+For compound operations that must be atomic, additional synchronization or another concurrency design may be required.
 
 ---
 
 # 31. 📈 Capacity Growth
 
-When StringBuffer does not have enough capacity, it expands its internal storage.
+When the current capacity is insufficient, StringBuffer automatically expands its internal storage.
 
-The commonly documented growth rule is approximately:
+The commonly documented growth calculation is approximately:
 
-    newCapacity = oldCapacity * 2 + 2
+```text
+newCapacity = oldCapacity × 2 + 2
+```
 
-Example:
+For example:
 
-    old capacity = 16
+```text
+old capacity = 16
 
-Potential new capacity:
+new capacity
+= 16 × 2 + 2
+= 34
+```
 
-    16 × 2 + 2
-    = 34
+If the requested minimum capacity is larger than that calculated value, the implementation ensures enough capacity for the required content.
 
-If the required minimum capacity is larger, the implementation ensures enough capacity for the requested content.
+### Important
 
-### Interview Tip
+Do not treat the exact growth strategy as a permanent implementation guarantee for every future JDK.
 
-Do not treat the exact growth strategy as an immutable language guarantee for all future implementations.
+For interviews, remember:
 
-Remember:
-
-> StringBuffer automatically expands when its capacity is insufficient.
+> **StringBuffer automatically grows its capacity when required.**
 
 ---
 
-# 32. 🆚 StringBuffer vs String
+# 32. ⏱️ Time Complexity
+
+The complexity depends on the operation and whether internal resizing or character shifting is required.
+
+| Operation | Typical Complexity |
+|---|---:|
+| `charAt()` | O(1) |
+| `setCharAt()` | O(1) |
+| `append()` | Amortized O(1) |
+| `insert()` | O(n) |
+| `delete()` | O(n) |
+| `deleteCharAt()` | O(n) |
+| `replace()` | O(n) |
+| `reverse()` | O(n) |
+| `substring()` | O(k), where k is result length |
+| `indexOf()` | O(n) |
+| `lastIndexOf()` | O(n) |
+| `toString()` | O(n) |
+
+### Why is append() Amortized O(1)?
+
+Most append operations do not require resizing.
+
+Occasionally, capacity becomes insufficient:
+
+```text
+append
+  ↓
+capacity insufficient
+  ↓
+grow storage
+  ↓
+copy/move existing characters
+  ↓
+append new data
+```
+
+That particular operation can cost O(n).
+
+But over many append operations, the average cost is amortized O(1).
+
+---
+
+# 33. 🆚 StringBuffer vs String
 
 | Feature | String | StringBuffer |
 |---|---|---|
 | Mutable | ❌ | ✅ |
 | Immutable | ✅ | ❌ |
-| Modification | Creates new String result | Modifies mutable buffer |
-| Thread-safe sharing | Immutable | Synchronized methods |
+| Modification | New String result | Modifies mutable buffer |
 | `append()` | ❌ | ✅ |
 | `reverse()` | ❌ | ✅ |
 | `setCharAt()` | ❌ | ✅ |
-| Repeated modifications | Less suitable | Suitable |
-| Main purpose | Immutable text | Synchronized mutable text |
+| Repeated modification | Less suitable | Suitable |
+| Synchronization | Not needed due to immutability | Methods synchronized |
+| Main purpose | Immutable text | Mutable synchronized text |
 
 ### Simple Rule
 
-    String
-       ↓
-    Fixed / immutable text
+```text
+String
+   ↓
+Immutable text
 
-    StringBuffer
-       ↓
-    Mutable + synchronized text
+StringBuffer
+   ↓
+Mutable + Synchronized
+```
 
 ---
 
-# 33. 🆚 StringBuffer vs StringBuilder
+# 34. 🆚 StringBuffer vs StringBuilder
 
 This is one of the most frequently asked Java interview questions.
 
@@ -924,42 +1357,52 @@ This is one of the most frequently asked Java interview questions.
 |---|---|---|
 | Mutable | ✅ | ✅ |
 | Synchronized | ❌ | ✅ |
-| Thread-safe for individual methods | ❌ | ✅ |
-| Performance | Generally faster | Generally slower |
+| Individual methods synchronized | ❌ | ✅ |
+| General single-threaded performance | Generally faster | Generally slower |
 | Introduced | Java 5 | Java 1.0 |
 | Use case | General mutable string building | Synchronized mutable operations |
 
 ### Easy Memory Trick
 
-    Builder
-       ↓
-    Build fast
-       ↓
-    No synchronization
+```text
+StringBuilder
+      ↓
+Build
+      ↓
+Mutable
+      ↓
+No synchronization
 
-    Buffer
-       ↓
-    Shared mutable buffer
-       ↓
-    Synchronization
+StringBuffer
+      ↓
+Buffer
+      ↓
+Mutable
+      ↓
+Synchronization
+```
 
 ---
 
-# 34. ⚡ Performance
+# 35. ⚡ Performance
 
-StringBuffer generally has more synchronization overhead than StringBuilder.
+StringBuffer generally has additional synchronization overhead compared with StringBuilder.
 
-Therefore, when thread safety is not required:
+Therefore:
 
-    StringBuilder
+```text
+No synchronization requirement
+        ↓
+StringBuilder
+```
 
-is generally preferred.
+When synchronized mutable operations on the same buffer are specifically required:
 
-When synchronized mutable string operations are required:
-
-    StringBuffer
-
-may be appropriate.
+```text
+Synchronization required
+        ↓
+StringBuffer
+```
 
 ### Important
 
@@ -967,73 +1410,86 @@ Do not say:
 
 > StringBuffer is always slow.
 
-Better:
+A better statement is:
 
-> StringBuffer generally has additional synchronization overhead compared with StringBuilder.
+> **StringBuffer generally has more synchronization overhead than StringBuilder.**
 
----
-
-# 35. ✅ Advantages
-
-### 1. Mutable
-
-Text can be modified without creating a new immutable String for every operation.
-
-### 2. Synchronized
-
-Its methods provide synchronization for individual operations.
-
-### 3. Useful for Shared Mutable Data
-
-It can be useful when multiple threads access the same StringBuffer and synchronized method operations are appropriate.
-
-### 4. Rich API
-
-It supports:
-
-    append()
-    insert()
-    delete()
-    replace()
-    reverse()
-    charAt()
-    setCharAt()
-    substring()
-    etc.
-
-### 5. Resizable
-
-Its internal capacity can automatically grow.
+Actual performance depends on workload, JVM, contention, and implementation details.
 
 ---
 
-# 36. ❌ Disadvantages
+# 36. ✅ Advantages
 
-### 1. Synchronization Overhead
+## 1. Mutable
+
+The character sequence can be modified without creating a new immutable String result for every modification.
+
+## 2. Synchronized
+
+Its methods are synchronized.
+
+## 3. Useful for Shared Mutable Data
+
+It can be useful when synchronized access to a shared mutable character sequence is required.
+
+## 4. Rich API
+
+It supports operations such as:
+
+```text
+append()
+insert()
+delete()
+replace()
+reverse()
+charAt()
+setCharAt()
+substring()
+indexOf()
+lastIndexOf()
+```
+
+## 5. Resizable
+
+Its capacity automatically grows when required.
+
+---
+
+# 37. ❌ Disadvantages
+
+## 1. Synchronization Overhead
 
 Synchronization can add overhead compared with StringBuilder.
 
-### 2. Usually Unnecessary for Single-Threaded Code
+## 2. Usually Unnecessary for Single-Threaded Code
 
-If only one thread is modifying the buffer, StringBuilder is usually the more appropriate choice.
+If synchronization is not required, StringBuilder is generally the more appropriate mutable builder.
 
-### 3. Mutable Shared State Requires Care
+## 3. Compound Operations Need Care
 
-Even with synchronized individual methods, multi-operation logic may require additional synchronization.
+Synchronized individual methods do not automatically make a multi-step operation atomic.
+
+## 4. Shared Mutable State
+
+When multiple threads share the same mutable object, the overall concurrency design still matters.
 
 ---
 
-# 37. ⚠️ Common Mistakes
+# 38. ⚠️ Common Mistakes
 
 ## ❌ Mistake 1 — Thinking StringBuffer is immutable
 
 Wrong:
 
-    StringBuffer is immutable.
+```text
+StringBuffer is immutable.
+```
 
 Correct:
 
-    StringBuffer is mutable.
+```text
+StringBuffer is mutable.
+```
 
 ---
 
@@ -1041,11 +1497,15 @@ Correct:
 
 Wrong:
 
-    StringBuilder is thread-safe.
+```text
+StringBuilder is thread-safe because it is mutable.
+```
 
 Correct:
 
-    StringBuilder is not synchronized.
+```text
+StringBuilder is not synchronized.
+```
 
 ---
 
@@ -1053,11 +1513,15 @@ Correct:
 
 Wrong:
 
-    StringBuffer is faster because it is optimized for threads.
+```text
+StringBuffer is faster because it supports threads.
+```
 
 Correct:
 
-    Synchronization adds overhead, so StringBuilder is generally faster when synchronization is unnecessary.
+```text
+StringBuffer generally has synchronization overhead.
+```
 
 ---
 
@@ -1065,13 +1529,15 @@ Correct:
 
 Remember:
 
-    length()
-        ↓
-    Current content size
+```text
+length()
+    ↓
+Current number of characters
 
-    capacity()
-        ↓
-    Internal capacity
+capacity()
+    ↓
+Current internal capacity
+```
 
 ---
 
@@ -1079,118 +1545,162 @@ Remember:
 
 It returns:
 
-    String
+```text
+String
+```
 
 ---
 
-## ❌ Mistake 6 — Thinking every sequence of synchronized methods is atomic
+## ❌ Mistake 6 — Thinking every sequence of methods is atomic
 
 Individual methods are synchronized, but a sequence of multiple method calls is not automatically one atomic operation.
 
 ---
 
-# 38. 🚨 Interview Traps
+# 39. 🚨 Interview Traps
 
 ## Trap 1
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.append(" Programming");
+sb.append(" Programming");
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    Java Programming
+```text
+Java Programming
+```
 
 ---
 
 ## Trap 2
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.reverse();
+sb.reverse();
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    avaJ
+```text
+avaJ
+```
 
 ---
 
 ## Trap 3
 
-    StringBuffer sb = new StringBuffer();
+```java
+StringBuffer sb = new StringBuffer();
 
-    System.out.println(sb.length());
-    System.out.println(sb.capacity());
+System.out.println(sb.length());
+System.out.println(sb.capacity());
+```
 
 Output:
 
-    0
-    16
+```text
+0
+16
+```
 
 ---
 
 ## Trap 4
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.setCharAt(0, 'K');
+sb.setCharAt(0, 'K');
+
+System.out.println(sb);
+```
 
 Output:
 
-    Kava
+```text
+Kava
+```
 
 ---
 
 ## Trap 5
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    String s = sb.substring(1, 3);
+String s = sb.substring(1, 3);
+
+System.out.println(s);
+```
+
+Output:
+
+```text
+av
+```
 
 Type of `s`:
 
-    String
+```text
+String
+```
 
 ---
 
 ## Trap 6
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.delete(1, 3);
+sb.delete(1, 3);
 
-Result:
+System.out.println(sb);
+```
 
-    Ja
+Output:
+
+```text
+Ja
+```
 
 Why?
 
-Indexes:
+```text
+J a v a
+0 1 2 3
+```
 
-    J a v a
-    0 1 2 3
+Indexes `1` and `2` are removed.
 
-Indexes 1 and 2 are removed.
-
-Index 3 is exclusive.
+Index `3` is exclusive.
 
 ---
 
 ## Trap 7
 
-    StringBuffer sb = new StringBuffer();
+```java
+StringBuffer sb = new StringBuffer();
 
-    sb.append("Java")
-      .append(" ")
-      .append("Developer");
+sb.append("Java")
+  .append(" ")
+  .append("Developer");
 
-Result:
+System.out.println(sb);
+```
 
-    Java Developer
+Output:
+
+```text
+Java Developer
+```
 
 ---
 
@@ -1198,21 +1708,381 @@ Result:
 
 Which is generally preferred when synchronization is unnecessary?
 
-    StringBuilder
+```text
+StringBuilder
+```
 
 Not:
 
-    StringBuffer
+```text
+StringBuffer
+```
 
 ---
 
-# 39. 🔥 Top 20 Interview Questions
+# 40. 🧠 DSA & Problem-Solving
+
+StringBuffer is useful in several string-manipulation problems, although in modern Java DSA solutions `StringBuilder` is usually preferred unless synchronization is specifically needed.
+
+## 🔥 DSA Pattern 1 — Reverse a String
+
+### Problem
+
+Reverse a string.
+
+Example:
+
+```text
+Input:  "hello"
+Output: "olleh"
+```
+
+### StringBuffer Solution
+
+```java
+StringBuffer sb = new StringBuffer("hello");
+
+sb.reverse();
+
+System.out.println(sb);
+```
+
+Output:
+
+```text
+olleh
+```
+
+### Complexity
+
+```text
+Time  → O(n)
+Space → O(n)
+```
+
+---
+
+## 🔥 DSA Pattern 2 — Build a String Efficiently
+
+### Problem
+
+Create a string containing numbers from `1` to `n`.
+
+```java
+int n = 5;
+
+StringBuffer sb = new StringBuffer();
+
+for (int i = 1; i <= n; i++) {
+    sb.append(i);
+}
+
+System.out.println(sb);
+```
+
+Output:
+
+```text
+12345
+```
+
+### Pattern
+
+```text
+Repeated string modification
+        ↓
+Mutable builder
+        ↓
+append()
+```
+
+### Complexity
+
+```text
+Time  → Amortized O(n)
+Space → O(n)
+```
+
+---
+
+## 🔥 DSA Pattern 3 — Remove Characters
+
+Suppose we want to remove all occurrences of a particular character.
+
+```java
+StringBuffer sb = new StringBuffer("banana");
+
+for (int i = sb.length() - 1; i >= 0; i--) {
+    if (sb.charAt(i) == 'a') {
+        sb.deleteCharAt(i);
+    }
+}
+
+System.out.println(sb);
+```
+
+Output:
+
+```text
+bnn
+```
+
+### Why Traverse Backward?
+
+When deleting from a mutable sequence, deleting from right to left avoids invalidating the indexes of characters that still need to be processed on the left.
+
+### Problem-Solving Pattern
+
+```text
+Mutation while traversing
+        ↓
+Delete from right to left
+```
+
+---
+
+## 🔥 DSA Pattern 4 — Palindrome Check
+
+A palindrome reads the same forward and backward.
+
+Example:
+
+```text
+madam
+```
+
+### Using StringBuffer
+
+```java
+String str = "madam";
+
+StringBuffer sb = new StringBuffer(str);
+
+String reversed = sb.reverse().toString();
+
+if (str.equals(reversed)) {
+    System.out.println("Palindrome");
+} else {
+    System.out.println("Not Palindrome");
+}
+```
+
+Output:
+
+```text
+Palindrome
+```
+
+### Complexity
+
+```text
+Time  → O(n)
+Space → O(n)
+```
+
+### Interview Note
+
+For a memory-efficient palindrome check, a two-pointer approach can avoid creating a reversed copy:
+
+```java
+String str = "madam";
+
+int left = 0;
+int right = str.length() - 1;
+
+boolean palindrome = true;
+
+while (left < right) {
+    if (str.charAt(left) != str.charAt(right)) {
+        palindrome = false;
+        break;
+    }
+
+    left++;
+    right--;
+}
+
+System.out.println(palindrome);
+```
+
+This demonstrates an important DSA lesson:
+
+> **Do not automatically use a mutable string builder when a two-pointer solution can solve the problem with O(1) auxiliary space.**
+
+---
+
+## 🔥 DSA Pattern 5 — Remove Adjacent Duplicates
+
+Example:
+
+```text
+Input:  "abbaca"
+Output: "ca"
+```
+
+A mutable builder can act like a stack.
+
+```java
+String str = "abbaca";
+
+StringBuilder sb = new StringBuilder();
+
+for (char ch : str.toCharArray()) {
+
+    int n = sb.length();
+
+    if (n > 0 && sb.charAt(n - 1) == ch) {
+        sb.deleteCharAt(n - 1);
+    } else {
+        sb.append(ch);
+    }
+}
+
+System.out.println(sb);
+```
+
+Output:
+
+```text
+ca
+```
+
+### DSA Insight
+
+The builder represents the current stack:
+
+```text
+append()
+   ↓
+push
+
+deleteCharAt(last index)
+   ↓
+pop
+```
+
+This is a very useful string + stack pattern.
+
+---
+
+## 🔥 DSA Pattern 6 — Reverse Words
+
+Example:
+
+```text
+Input:
+"Java is powerful"
+
+Output:
+"powerful is Java"
+```
+
+A simple approach is:
+
+```java
+String str = "Java is powerful";
+
+String[] words = str.split(" ");
+
+StringBuilder sb = new StringBuilder();
+
+for (int i = words.length - 1; i >= 0; i--) {
+
+    sb.append(words[i]);
+
+    if (i != 0) {
+        sb.append(" ");
+    }
+}
+
+System.out.println(sb);
+```
+
+Output:
+
+```text
+powerful is Java
+```
+
+### DSA Pattern
+
+```text
+Input string
+     ↓
+Split into words
+     ↓
+Traverse backward
+     ↓
+Build answer using StringBuilder
+```
+
+---
+
+## 🎯 DSA Problem-Solving Checklist
+
+When solving a string problem, ask:
+
+```text
+1. Do I need to modify characters?
+        ↓
+       Yes
+        ↓
+   Mutable builder may help
+
+2. Am I repeatedly appending?
+        ↓
+       Yes
+        ↓
+   Use StringBuilder
+
+3. Am I deleting while traversing?
+        ↓
+       Yes
+        ↓
+   Consider traversing backward
+
+4. Can two pointers solve it?
+        ↓
+       Yes
+        ↓
+   Check whether O(1) extra space is possible
+
+5. Do I need a stack-like structure?
+        ↓
+       Yes
+        ↓
+   StringBuilder can sometimes model a stack
+
+6. Do I actually need thread synchronization?
+        ↓
+       Yes
+        ↓
+   StringBuffer may be relevant
+```
+
+### Important DSA Note
+
+For competitive programming and typical interview DSA in Java:
+
+```text
+StringBuilder
+      ↓
+Usually preferred
+```
+
+StringBuffer is generally not chosen merely because it is mutable.
+
+Use StringBuffer when its synchronization characteristics are actually relevant.
+
+---
+
+# 41. 🔥 Top 20 Interview Questions
 
 ## Q1. What is StringBuffer?
 
 **Answer:**
 
-StringBuffer is a mutable sequence of characters whose methods are synchronized.
+`StringBuffer` is a mutable sequence of characters whose methods are synchronized.
 
 ---
 
@@ -1230,9 +2100,13 @@ Its character sequence can be modified after creation.
 
 **Answer:**
 
-It is part of:
+It belongs to:
 
-    java.lang
+```text
+java.lang
+```
+
+No explicit import is required.
 
 ---
 
@@ -1240,7 +2114,7 @@ It is part of:
 
 **Answer:**
 
-Its methods are synchronized, providing thread-safe individual method operations on a StringBuffer instance.
+Its methods are synchronized, providing thread-safe individual method operations on the same StringBuffer instance.
 
 ---
 
@@ -1248,7 +2122,7 @@ Its methods are synchronized, providing thread-safe individual method operations
 
 **Answer:**
 
-Synchronization is used to coordinate access when multiple threads operate on the same mutable buffer.
+Synchronization coordinates access when multiple threads operate on the same mutable buffer.
 
 ---
 
@@ -1258,15 +2132,19 @@ Synchronization is used to coordinate access when multiple threads operate on th
 
 The default initial capacity is:
 
-    16
+```text
+16
+```
 
 ---
 
-## Q7. What is the initial capacity of new StringBuffer("Java")?
+## Q7. What is the initial capacity of `new StringBuffer("Java")`?
 
 **Answer:**
 
-    4 + 16 = 20
+```text
+4 + 16 = 20
+```
 
 ---
 
@@ -1286,7 +2164,7 @@ The default initial capacity is:
 
 Yes.
 
-Methods such as `append()`, `insert()`, `delete()`, and `reverse()` modify its content.
+Methods such as `append()`, `insert()`, `delete()`, and `reverse()` modify its character sequence.
 
 ---
 
@@ -1294,7 +2172,7 @@ Methods such as `append()`, `insert()`, `delete()`, and `reverse()` modify its c
 
 **Answer:**
 
-It adds data at the end of the StringBuffer.
+It adds data to the end of the StringBuffer.
 
 ---
 
@@ -1318,7 +2196,7 @@ It replaces the character at a specified index.
 
 **Answer:**
 
-It converts the StringBuffer into a String.
+It converts the StringBuffer content into a String.
 
 ---
 
@@ -1326,11 +2204,9 @@ It converts the StringBuffer into a String.
 
 **Answer:**
 
-Both are mutable.
+Both are mutable character sequences.
 
-StringBuffer provides synchronization.
-
-StringBuilder does not.
+StringBuffer synchronizes its methods, while StringBuilder does not.
 
 ---
 
@@ -1338,7 +2214,7 @@ StringBuilder does not.
 
 **Answer:**
 
-StringBuilder is generally faster when synchronization is not required because StringBuffer has synchronization overhead.
+StringBuilder is generally faster when synchronization is unnecessary because StringBuffer has synchronization overhead.
 
 ---
 
@@ -1366,7 +2242,9 @@ It automatically expands its internal storage when required.
 
 **Answer:**
 
-Length represents the number of characters currently stored, while capacity represents the internal storage available.
+Length represents the number of characters currently stored.
+
+Capacity represents the current internal storage capacity.
 
 ---
 
@@ -1376,7 +2254,7 @@ Length represents the number of characters currently stored, while capacity repr
 
 No.
 
-Individual synchronized methods are protected, but a sequence of multiple method calls may require additional synchronization.
+Individual methods are synchronized, but a sequence of multiple method calls is not automatically one atomic operation.
 
 ---
 
@@ -1384,17 +2262,17 @@ Individual synchronized methods are protected, but a sequence of multiple method
 
 **Answer:**
 
-Use it when you need mutable string manipulation and synchronized access to the same buffer is required.
+Use StringBuffer when you need mutable string manipulation and synchronized access to the same buffer is specifically required.
 
 ---
 
-# 40. 🎤 30-Second Interview Answer
+# 42. 🎤 30-Second Interview Answer
 
-> **StringBuffer is a mutable sequence of characters provided by the `java.lang` package. It is similar to StringBuilder, but its methods are synchronized, which provides thread-safe individual operations on the buffer. Because of this synchronization, it generally has more overhead than StringBuilder. StringBuffer is useful when mutable string data is shared between threads and synchronized operations are required.**
+> **StringBuffer is a mutable sequence of characters provided by the `java.lang` package. Unlike String, which is immutable, StringBuffer allows operations such as append, insert, delete, replace, and reverse to modify the same mutable object. Its methods are synchronized, providing thread-safe individual operations on the buffer. Because synchronization adds overhead, StringBuilder is generally preferred when synchronization is not required.**
 
 ---
 
-# 41. 🧾 Cheat Sheet
+# 43. 🧾 Cheat Sheet
 
 | Method | Purpose | Return Type |
 |---|---|---|
@@ -1418,23 +2296,25 @@ Use it when you need mutable string manipulation and synchronized access to the 
 
 ---
 
-# 42. 🧠 Memory Tricks
+# 44. 🧠 Memory Tricks
 
-## 🔥 The Three Strings
+## 🔥 The Three String Classes
 
 Remember:
 
-    String
-       ↓
-    Immutable
+```text
+String
+   ↓
+Immutable
 
-    StringBuilder
-       ↓
-    Mutable + Not synchronized
+StringBuilder
+   ↓
+Mutable + Unsynchronized
 
-    StringBuffer
-       ↓
-    Mutable + Synchronized
+StringBuffer
+   ↓
+Mutable + Synchronized
+```
 
 ---
 
@@ -1442,17 +2322,21 @@ Remember:
 
 Think:
 
-    Builder
-       ↓
-    Build
-       ↓
-    Fast mutable building
+```text
+Builder
+   ↓
+Build
+   ↓
+Mutable building
+   ↓
+No synchronization
 
-    Buffer
-       ↓
-    Shared buffer
-       ↓
-    Synchronization
+Buffer
+   ↓
+Shared mutable buffer
+   ↓
+Synchronization
+```
 
 ---
 
@@ -1460,25 +2344,29 @@ Think:
 
 Remember:
 
-    A I R D R
+```text
+A I R D R
 
-    A → append()
-    I → insert()
-    R → replace()
-    D → delete()
-    R → reverse()
+A → append()
+I → insert()
+R → replace()
+D → delete()
+R → reverse()
+```
 
 ---
 
 ## 🔥 Character Methods
 
-    charAt()
-        ↓
-    Read
+```text
+charAt()
+    ↓
+Read
 
-    setCharAt()
-        ↓
-    Modify
+setCharAt()
+    ↓
+Modify
+```
 
 ---
 
@@ -1486,75 +2374,118 @@ Remember:
 
 Remember:
 
-    Length ≠ Capacity
+```text
+Length ≠ Capacity
 
-    length()
-        ↓
-    Actual content
+length()
+    ↓
+Actual content
 
-    capacity()
-        ↓
-    Internal available storage
+capacity()
+    ↓
+Internal storage capacity
+```
+
+---
+
+## 🔥 Conversion
+
+Remember:
+
+```text
+StringBuffer
+      ↓
+toString()
+      ↓
+String
+```
 
 ---
 
 # ⭐ Most Important Interview Points
 
-Before moving ahead, make sure you understand these:
+Before moving ahead, make sure you understand:
 
-    1. StringBuffer is mutable.
-    2. StringBuffer belongs to java.lang.
-    3. StringBuffer is synchronized.
-    4. StringBuffer supports mutable character sequences.
-    5. Default capacity is 16.
-    6. String constructor capacity = length + 16.
-    7. length() and capacity() are different.
-    8. append() adds data at the end.
-    9. insert() adds data at an index.
-    10. delete() removes a range.
-    11. reverse() reverses the buffer.
-    12. setCharAt() changes one character.
-    13. substring() returns String.
-    14. toString() converts to String.
-    15. StringBuffer generally has more overhead than StringBuilder.
-    16. Individual methods are synchronized.
-    17. Multiple operations are not automatically one atomic transaction.
-    18. StringBuilder is generally preferred when synchronization is unnecessary.
+```text
+1. StringBuffer is mutable.
+
+2. StringBuffer belongs to java.lang.
+
+3. StringBuffer methods are synchronized.
+
+4. StringBuffer represents a mutable character sequence.
+
+5. Default capacity is 16.
+
+6. String constructor capacity = length + 16.
+
+7. length() and capacity() are different.
+
+8. append() adds data at the end.
+
+9. insert() adds data at an index.
+
+10. delete() removes a range.
+
+11. deleteCharAt() removes one character.
+
+12. replace() replaces a range.
+
+13. reverse() reverses the buffer.
+
+14. charAt() reads a character.
+
+15. setCharAt() changes a character.
+
+16. substring() returns String.
+
+17. toString() converts to String.
+
+18. StringBuffer generally has more synchronization overhead than StringBuilder.
+
+19. Individual synchronized methods do not make compound operations automatically atomic.
+
+20. StringBuilder is generally preferred when synchronization is unnecessary.
+```
 
 ---
 
-# 43. 🔗 Next Topic
+# 45. 🔗 Next Topic
 
 Our String playlist:
 
-    04-Strings/
-    │
-    ├── 01-String-Introduction.md
-    ├── 02-String-Pool.md
-    ├── 03-String-Immutability.md
-    ├── 04-String-Methods.md
-    ├── 05-StringBuilder.md
-    ├── 06-StringBuffer.md        ← YOU ARE HERE
-    ├── 07-String-vs-StringBuilder-vs-StringBuffer.md
-    └── 08-String-Interview-Questions.md
+```text
+04-Strings/
+│
+├── 01-String-Introduction.md
+├── 02-String-Pool.md
+├── 03-String-Immutability.md
+├── 04-String-Methods.md
+├── 05-StringBuilder.md
+├── 06-StringBuffer.md              ← YOU ARE HERE
+├── 07-String-vs-StringBuilder-vs-StringBuffer.md
+└── 08-String-Interview-Questions.md
+```
 
 ### Learning Flow
 
-    String
-      ↓
-    String Pool
-      ↓
-    String Immutability
-      ↓
-    String Methods
-      ↓
-    StringBuilder
-      ↓
-    StringBuffer
-      ↓
-    String vs StringBuilder vs StringBuffer
-      ↓
-    String Interview Questions
+```text
+String
+   ↓
+String Pool
+   ↓
+String Immutability
+   ↓
+String Methods
+   ↓
+StringBuilder
+   ↓
+StringBuffer
+   ↓
+String vs StringBuilder vs StringBuffer
+   ↓
+String Interview Questions
+```
 
 ---
 
@@ -1562,27 +2493,52 @@ Our String playlist:
 
 Before moving to the comparison topic, you should be able to answer:
 
-    ❓ What is StringBuffer?
-    ❓ Why is StringBuffer mutable?
-    ❓ Why is StringBuffer synchronized?
-    ❓ What is its default capacity?
-    ❓ What is the difference between length and capacity?
-    ❓ How does append() work?
-    ❓ How does insert() work?
-    ❓ How does delete() work?
-    ❓ How does reverse() work?
-    ❓ What does setCharAt() do?
-    ❓ What does substring() return?
-    ❓ What does toString() return?
-    ❓ Is StringBuffer thread-safe?
-    ❓ Is every sequence of StringBuffer operations atomic?
-    ❓ StringBuffer vs StringBuilder?
-    ❓ StringBuffer vs String?
-    ❓ Why can StringBuilder be faster?
+```text
+❓ What is StringBuffer?
 
-> ⭐ **Core Idea:**  
+❓ Why is StringBuffer mutable?
+
+❓ Why are StringBuffer methods synchronized?
+
+❓ What is its default capacity?
+
+❓ What is the difference between length and capacity?
+
+❓ How does append() work?
+
+❓ How does insert() work?
+
+❓ How does delete() work?
+
+❓ How does replace() work?
+
+❓ How does reverse() work?
+
+❓ What does setCharAt() do?
+
+❓ What does substring() return?
+
+❓ What does toString() return?
+
+❓ Is StringBuffer thread-safe for individual method operations?
+
+❓ Is every sequence of StringBuffer operations atomic?
+
+❓ StringBuffer vs StringBuilder?
+
+❓ StringBuffer vs String?
+
+❓ Why can StringBuilder be faster?
+
+❓ Which DSA problems can use a mutable string builder?
+
+❓ When can a two-pointer approach use less space than reversing a string?
+```
+
+> ⭐ **Core Idea:**
+
 > **StringBuffer = Mutable + Synchronized.**
->
-> If you remember only one line for the interview, remember this:
->
-> **String is immutable, StringBuilder is mutable and unsynchronized, while StringBuffer is mutable and synchronized.**
+
+> If you remember only one line for the interview:
+
+> **String is immutable, StringBuilder is mutable and unsynchronized, while StringBuffer is mutable and its methods are synchronized.**

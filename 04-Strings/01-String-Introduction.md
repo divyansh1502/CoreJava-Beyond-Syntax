@@ -27,10 +27,15 @@
 19. [Common Mistakes](#19--common-mistakes)
 20. [Interview Traps](#20--interview-traps)
 21. [Top 15 Interview Questions](#21--top-15-interview-questions)
-22. [30-Second Interview Answer](#22--30-second-interview-answer)
-23. [Cheat Sheet](#23--cheat-sheet)
-24. [Memory Tricks](#24--memory-tricks)
-25. [Next Topics](#25--next-topics)
+22. [DSA with Strings](#22--dsa-with-strings)
+23. [How to Identify String DSA Patterns](#23--how-to-identify-string-dsa-patterns)
+24. [Important String DSA Patterns](#24--important-string-dsa-patterns)
+25. [Important String DSA Questions](#25--important-string-dsa-questions)
+26. [String DSA Snippets](#26--string-dsa-snippets)
+27. [30-Second Interview Answer](#27--30-second-interview-answer)
+28. [Cheat Sheet](#28--cheat-sheet)
+29. [Memory Tricks](#29--memory-tricks)
+30. [Next Topics](#30--next-topics)
 
 ---
 
@@ -52,7 +57,7 @@ D i v y a n s h
 
 represents textual data.
 
-In Java, String is represented by the:
+In Java, String is represented by:
 
 ```java
 java.lang.String
@@ -161,8 +166,6 @@ Reference Variable
 String Object
 ```
 
----
-
 ## 🔍 Package of String
 
 String belongs to:
@@ -210,11 +213,7 @@ String name = "Java";
 
 `String` is a **reference type**.
 
----
-
 ## 🆚 `char` vs `String`
-
-This is a very common beginner confusion.
 
 ```java
 char c = 'A';
@@ -223,7 +222,7 @@ char c = 'A';
 `char`:
 
 - Primitive
-- Represents one character
+- Represents one UTF-16 code unit
 - Uses single quotes
 
 Whereas:
@@ -235,17 +234,17 @@ String s = "A";
 `String`:
 
 - Reference type
-- Represents a sequence of characters
+- Represents a sequence of characters/code units
 - Uses double quotes
 - Is an object
 
 | Feature | `char` | `String` |
 |---|---|---|
 | Type | Primitive | Reference |
-| Represents | One character | Sequence of characters |
+| Represents | One UTF-16 code unit | Sequence of UTF-16 code units |
 | Syntax | `'A'` | `"A"` |
 | Class | ❌ | `java.lang.String` |
-| Immutable object | Not applicable | ✅ |
+| Mutable | N/A | ❌ |
 
 ---
 
@@ -261,8 +260,6 @@ String s1 = "Java";
 
 This is the most common way.
 
----
-
 ## 5.2 Using `new`
 
 ```java
@@ -270,8 +267,6 @@ String s2 = new String("Java");
 ```
 
 This explicitly creates a new String object.
-
----
 
 ## 🆚 Comparison
 
@@ -319,6 +314,7 @@ Conceptually:
 
 ```text
              String Pool
+
           ┌──────────────┐
           │    "Java"    │
           └───────┬──────┘
@@ -350,12 +346,6 @@ This does **not** mean `==` compares String content.
 
 It is `true` here because both references point to the same object.
 
-The String Pool is covered deeply in:
-
-```text
-02-String-Pool.md
-```
-
 ---
 
 # 7. 🆕 Creating String Using `new`
@@ -379,6 +369,7 @@ Conceptually:
 
 ```text
 String Pool
+
 ┌──────────────┐
 │    "Java"    │
 └──────┬───────┘
@@ -388,11 +379,12 @@ String Pool
 
 
 Heap
+
 ┌──────────────┐
 │    "Java"    │
 └──────┬───────┘
        ↑
-      s2
+       s2
 ```
 
 Therefore:
@@ -422,8 +414,8 @@ true
 Because:
 
 ```text
-==       → compares references
-equals() → compares content
+==        → compares references
+equals()  → compares content
 ```
 
 ---
@@ -439,11 +431,10 @@ equals() → compares content
 | Final? | ✅ Yes |
 | String Pool | ✅ Yes |
 | Represents | Sequence of characters |
-| Can be concatenated | ✅ Yes |
 | Supports `equals()` | ✅ Yes |
-| Supports `==` | ✅ Yes, but reference comparison |
+| Supports `==` | ✅ Reference comparison |
 | Can be subclassed | ❌ No |
-| Thread-safe due to immutability | String contents cannot be mutated |
+| Common HashMap key | ✅ Yes |
 
 ---
 
@@ -495,9 +486,9 @@ Original:
 
 After concat():
 
-"Java"              "Java Programming"
-  ↑                         ↑
-  s                    new String
+"Java"                  "Java Programming"
+  ↑                            ↑
+  s                       new String
 ```
 
 To store the new String:
@@ -512,8 +503,6 @@ Now:
 Java Programming
 ```
 
-### 🧠 Important
-
 Methods such as:
 
 ```java
@@ -523,17 +512,12 @@ toLowerCase()
 replace()
 substring()
 trim()
+strip()
 ```
 
 do not modify the existing String object.
 
 They return a String result.
-
-Immutability is covered deeply in:
-
-```text
-03-String-Immutability.md
-```
 
 ---
 
@@ -560,8 +544,6 @@ Output:
 Divyansh Singh
 ```
 
----
-
 ## 🔢 String + Number
 
 Java can also concatenate Strings with primitive values.
@@ -579,10 +561,6 @@ Output:
 ```text
 Age: 22
 ```
-
-The integer is converted into a String representation as part of the concatenation.
-
----
 
 ## ⚠️ Important: Left-to-Right Evaluation
 
@@ -602,11 +580,11 @@ Why?
 
 ```text
 10 + 20
- ↓
+  ↓
 30
 
 30 + "Java"
- ↓
+  ↓
 "30Java"
 ```
 
@@ -634,25 +612,11 @@ Because once String concatenation starts:
 "Java1020"
 ```
 
-### 🧠 Interview Trap
-
-```java
-10 + 20 + "Java"
-```
-
-→ `30Java`
-
-```java
-"Java" + 10 + 20
-```
-
-→ `Java1020`
-
 ---
 
 # 11. 📏 String Length
 
-To find the number of characters in a String:
+To find the number of UTF-16 code units in a String:
 
 ```java
 String s = "Java";
@@ -678,8 +642,6 @@ not:
 str.length
 ```
 
----
-
 ## 🆚 Array vs String vs Collection
 
 | Data Structure | Size |
@@ -702,8 +664,6 @@ Collection  → size()
 
 A String represents a sequence of characters.
 
-Example:
-
 ```java
 String s = "Java";
 ```
@@ -714,8 +674,6 @@ Conceptually:
 J → a → v → a
 ```
 
-We can convert a String into a character array.
-
 ## String → `char[]`
 
 ```java
@@ -723,7 +681,7 @@ String s = "Java";
 
 char[] chars = s.toCharArray();
 
-for(char c : chars) {
+for (char c : chars) {
     System.out.println(c);
 }
 ```
@@ -736,8 +694,6 @@ a
 v
 a
 ```
-
----
 
 ## `char[]` → String
 
@@ -755,8 +711,6 @@ Output:
 Java
 ```
 
----
-
 ## 🆚 String vs `char[]`
 
 | Feature | String | `char[]` |
@@ -765,7 +719,7 @@ Java
 | Mutable | ❌ No | ✅ Yes |
 | Represents | Character sequence | Characters |
 | Has methods | ✅ Many | ❌ Array has no String methods |
-| Can change individual character | ❌ No | ✅ Yes |
+| Change individual character | ❌ No | ✅ Yes |
 
 Example:
 
@@ -803,7 +757,7 @@ This is one of the most frequently asked Java interview questions.
 
 ## `==`
 
-For objects, `==` compares **reference identity**.
+For references, `==` compares **reference identity**.
 
 It asks:
 
@@ -826,8 +780,6 @@ false
 
 They are different objects.
 
----
-
 ## `equals()`
 
 For String, `equals()` compares the **content**.
@@ -848,14 +800,12 @@ Because both contain:
 Java
 ```
 
----
-
 ## 🔥 Comparison Table
 
-| Operator / Method | Compares | Example |
-|---|---|---|
-| `==` | Reference identity | `s1 == s2` |
-| `equals()` | String content | `s1.equals(s2)` |
+| Operator / Method | Compares |
+|---|---|
+| `==` | Reference identity |
+| `equals()` | String content |
 
 ### 🧠 Golden Rule
 
@@ -874,14 +824,17 @@ String s = "Java";
 A simplified conceptual model:
 
 ```text
-        Stack
+        Stack Frame
+
 ┌─────────────────┐
 │ s               │
 │ reference       │
 └────────┬────────┘
          │
          ▼
-   String Pool / Heap
+
+    String Pool / Heap
+
 ┌─────────────────┐
 │     "Java"      │
 └─────────────────┘
@@ -895,8 +848,6 @@ Reference variable
 String object
 ```
 
----
-
 ## Another Example
 
 ```java
@@ -908,6 +859,7 @@ Conceptually:
 
 ```text
           String Pool
+
        ┌───────────────┐
        │    "Java"     │
        └───────┬───────┘
@@ -933,19 +885,11 @@ because both references can point to the same pooled object.
 
 ### ⚠️ Important
 
-Do not oversimplify this as:
+Do not say:
 
 > "String is stored in stack."
 
-Wrong.
-
-The local reference can be associated with a stack frame, while the String object is stored in the heap in modern HotSpot JVM implementations.
-
-The String Pool is discussed deeply in:
-
-```text
-02-String-Pool.md
-```
+A local reference may exist in a stack frame, while the String object itself is on the heap in modern HotSpot implementations.
 
 ---
 
@@ -977,9 +921,7 @@ Almost every Java application works with Strings.
 
 ### 5. HashMap-Friendly
 
-String is commonly used as a key because it is immutable and has content-based `hashCode()` behavior.
-
-Example:
+String is commonly used as a key because it is immutable and provides content-based `equals()` and `hashCode()` behavior.
 
 ```java
 Map<String, Integer> map = new HashMap<>();
@@ -987,30 +929,22 @@ Map<String, Integer> map = new HashMap<>();
 map.put("Java", 100);
 ```
 
-### 6. Security
+### 6. Security Benefits
 
 Strings are commonly used for values involved in class loading, file paths, URLs, configuration, and other security-sensitive operations.
 
-Immutability helps prevent the value from changing unexpectedly after it has been created or shared.
+Immutability helps prevent a String value from being changed unexpectedly after it has been created or shared.
 
 ---
 
 # 16. 🛠️ Important String Methods — Preview
 
-String has many useful methods.
-
-A detailed method-by-method discussion will be covered in:
-
-```text
-04-String-Methods.md
-```
-
-Here is a preview:
+A detailed method-by-method discussion should be covered separately.
 
 | Method | Purpose |
 |---|---|
-| `length()` | Returns length |
-| `charAt()` | Returns character at index |
+| `length()` | Returns UTF-16 code-unit count |
+| `charAt()` | Returns character/code unit at index |
 | `substring()` | Extracts part of String |
 | `equals()` | Compares content |
 | `equalsIgnoreCase()` | Case-insensitive comparison |
@@ -1021,13 +955,13 @@ Here is a preview:
 | `lastIndexOf()` | Finds last occurrence |
 | `toUpperCase()` | Converts to uppercase |
 | `toLowerCase()` | Converts to lowercase |
-| `trim()` | Removes leading/trailing old-style whitespace |
-| `strip()` | Removes leading/trailing Unicode-aware whitespace |
-| `replace()` | Replaces characters/sequences |
+| `trim()` | Removes leading/trailing characters ≤ U+0020 |
+| `strip()` | Removes Unicode-aware leading/trailing whitespace |
+| `replace()` | Replaces literal characters/sequences |
 | `replaceAll()` | Regex-based replacement |
 | `split()` | Splits String |
 | `concat()` | Concatenates String |
-| `isEmpty()` | Checks length == 0 |
+| `isEmpty()` | Checks `length() == 0` |
 | `isBlank()` | Checks empty or whitespace-only String |
 | `toCharArray()` | Converts to `char[]` |
 
@@ -1063,8 +997,6 @@ String japanese = "こんにちは";
 String emoji = "🚀";
 ```
 
----
-
 ## ⚠️ Important Interview Point
 
 Do not always assume:
@@ -1085,7 +1017,7 @@ For many ordinary characters:
 1 character ≈ 1 code unit
 ```
 
-But some Unicode characters, including many supplementary characters and certain emoji sequences, can require more than one UTF-16 code unit.
+But some Unicode characters require more than one UTF-16 code unit.
 
 Example:
 
@@ -1113,15 +1045,13 @@ can be used.
 
 ### 🧠 Interview-Level Point
 
-> `String.length()` returns the number of UTF-16 code units, not necessarily the number of user-perceived characters.
+> `String.length()` returns UTF-16 code-unit count, not necessarily the number of user-perceived characters.
 
 ---
 
 # 18. 🕳️ String and `null`
 
 A String reference can contain `null`.
-
-Example:
 
 ```java
 String s = null;
@@ -1137,8 +1067,6 @@ null
 
 There is no String object being referenced.
 
----
-
 ## ⚠️ Calling Method on `null`
 
 ```java
@@ -1153,22 +1081,24 @@ This causes:
 NullPointerException
 ```
 
-because you are trying to call a method through a `null` reference.
-
----
+because you are trying to call a method through a null reference.
 
 ## Safer Comparison
 
 Instead of:
 
 ```java
-if(s.equals("Java"))
+if (s.equals("Java")) {
+    // ...
+}
 ```
 
-when `s` might be `null`, you can use:
+when `s` might be null, use:
 
 ```java
-if("Java".equals(s))
+if ("Java".equals(s)) {
+    // ...
+}
 ```
 
 Because the literal `"Java"` is not null.
@@ -1191,14 +1121,14 @@ Correct:
 String → class / reference type
 ```
 
----
-
 ## ❌ Mistake 2: Using `==` for content comparison
 
 Wrong:
 
 ```java
-if(s1 == s2)
+if (s1 == s2) {
+    // ...
+}
 ```
 
 when you want to compare text content.
@@ -1206,10 +1136,10 @@ when you want to compare text content.
 Correct:
 
 ```java
-if(s1.equals(s2))
+if (s1.equals(s2)) {
+    // ...
+}
 ```
-
----
 
 ## ❌ Mistake 3: Thinking String can be modified
 
@@ -1235,8 +1165,6 @@ Correct understanding:
 String is immutable.
 ```
 
----
-
 ## ❌ Mistake 4: Confusing `length` and `length()`
 
 Array:
@@ -1256,8 +1184,6 @@ Collection:
 ```java
 collection.size()
 ```
-
----
 
 ## ❌ Mistake 5: Confusing `char` and String
 
@@ -1279,8 +1205,6 @@ And:
 char c = 'A';
 ```
 
----
-
 ## ❌ Mistake 6: Thinking `new String()` is better
 
 Usually:
@@ -1297,7 +1221,7 @@ Using:
 new String("Java");
 ```
 
-explicitly creates another String object and is generally unnecessary for ordinary use.
+is generally unnecessary for ordinary use.
 
 ---
 
@@ -1322,8 +1246,6 @@ Reason:
 
 Both literals can refer to the same pooled object.
 
----
-
 ## Trap 2
 
 ```java
@@ -1342,8 +1264,6 @@ false
 Reason:
 
 Each `new` creates a separate String object.
-
----
 
 ## Trap 3
 
@@ -1364,8 +1284,6 @@ Reason:
 
 Their contents are equal.
 
----
-
 ## Trap 4
 
 ```java
@@ -1378,8 +1296,6 @@ Output:
 30Java
 ```
 
----
-
 ## Trap 5
 
 ```java
@@ -1391,8 +1307,6 @@ Output:
 ```text
 Java1020
 ```
-
----
 
 ## Trap 6
 
@@ -1413,8 +1327,6 @@ Java
 Reason:
 
 String is immutable and the returned String was ignored.
-
----
 
 ## Trap 7
 
@@ -1438,7 +1350,7 @@ NullPointerException
 
 **Answer:**
 
-String is a `final` class from `java.lang` that represents a sequence of characters.
+String is a `final` class from the `java.lang` package that represents a sequence of characters.
 
 ---
 
@@ -1466,7 +1378,7 @@ Operations that appear to modify a String return a new String instead.
 
 **Answer:**
 
-`String` is declared as a final class:
+`String` is declared as:
 
 ```java
 public final class String
@@ -1474,7 +1386,7 @@ public final class String
 
 Therefore it cannot be subclassed.
 
-This helps preserve the designed behavior of String and works together with its immutability and safe sharing.
+This helps preserve String's designed behavior and works together with immutability and safe sharing.
 
 ---
 
@@ -1483,8 +1395,8 @@ This helps preserve the designed behavior of String and works together with its 
 **Answer:**
 
 ```text
-==       → compares reference identity
-equals() → compares String content
+==        → compares reference identity
+equals()  → compares String content
 ```
 
 Example:
@@ -1493,8 +1405,15 @@ Example:
 String a = new String("Java");
 String b = new String("Java");
 
-System.out.println(a == b);       // false
-System.out.println(a.equals(b));  // true
+System.out.println(a == b);
+System.out.println(a.equals(b));
+```
+
+Output:
+
+```text
+false
+true
 ```
 
 ---
@@ -1523,9 +1442,9 @@ explicitly creates a new String object.
 
 **Answer:**
 
-Because Strings are frequently used and immutable.
+Strings are frequently used and immutable.
 
-The pool allows eligible equal Strings to be shared, reducing unnecessary duplicate objects.
+The pool allows eligible equal String literals to be shared, reducing unnecessary duplicate objects.
 
 ---
 
@@ -1547,13 +1466,15 @@ However, this does not mean every operation involving String references or mutab
 
 ```text
 char
+
 → primitive
 → one UTF-16 code unit
 → 'A'
 
 String
+
 → reference type
-→ sequence of characters/code units
+→ sequence of UTF-16 code units
 → "A"
 ```
 
@@ -1565,7 +1486,7 @@ String
 
 It returns the number of UTF-16 code units in the String.
 
-For ordinary English characters this usually matches the visible character count, but not always for Unicode supplementary characters or emoji.
+For ordinary English characters this usually matches the visible character count, but not always for supplementary Unicode characters or emoji.
 
 ---
 
@@ -1625,7 +1546,7 @@ s[0] = 'K'; // ❌
 
 Strings are immutable.
 
-If character-level mutation is required, use a mutable structure such as `char[]` or `StringBuilder`, depending on the use case.
+If character-level mutation is required, use `char[]`, `StringBuilder`, or another appropriate mutable structure.
 
 ---
 
@@ -1655,67 +1576,1927 @@ A String object is stored on the heap in modern HotSpot JVM implementations.
 
 A local reference may exist in a stack frame.
 
-String literals can use the JVM's String Pool, which is associated with the heap in modern HotSpot implementations.
+String literals use the JVM's String Pool, which is associated with heap memory in modern HotSpot implementations.
 
 ---
 
-# 22. 🎤 30-Second Interview Answer
+# 22. 🧠 DSA with Strings
 
-> **String in Java is a final class from the `java.lang` package that represents a sequence of characters. It is a reference type, not a primitive, and String objects are immutable. Java provides String literals and a String Pool that allows eligible equal Strings to be shared. We normally use `equals()` to compare String content because `==` compares object references. For repeated String modifications, mutable classes such as `StringBuilder` are generally preferred.**
+String is one of the most important topics for DSA interviews.
 
----
+Most String problems are not about memorizing methods.
 
-# 23. 🧾 Cheat Sheet
+The real skill is:
+
+> **Recognizing the underlying pattern from the problem statement.**
+
+A String problem can often be converted into:
 
 ```text
-╔══════════════════════════════════════════════╗
-║              STRING CHEAT SHEET              ║
-╠══════════════════════════════════════════════╣
-║ Class        → java.lang.String              ║
-║ Type         → Reference type                ║
-║ Primitive?   → ❌ No                         ║
-║ Immutable?   → ✅ Yes                        ║
-║ Final?       → ✅ Yes                        ║
-║ String Pool  → ✅ Yes                        ║
-║ Represents   → Sequence of characters       ║
-║ length       → length()                      ║
-║ Array size   → length                        ║
-║ Collection   → size()                        ║
-║ ==           → Reference identity            ║
-║ equals()     → Content equality              ║
-║ char         → One UTF-16 code unit          ║
-║ String       → Sequence of UTF-16 units     ║
-╚══════════════════════════════════════════════╝
+String
+  ↓
+Characters / indices
+  ↓
+Array-like processing
+  ↓
+Pattern recognition
+  ↓
+DSA solution
+```
+
+Important String DSA topics:
+
+```text
+1. Traversal
+2. Frequency Counting
+3. Hashing
+4. Two Pointers
+5. Sliding Window
+6. Prefix / Suffix
+7. String Matching
+8. Stack
+9. Sorting
+10. Binary Search
+11. Greedy
+12. Dynamic Programming
+13. Trie
+14. Anagram Pattern
+15. Palindrome Pattern
+16. Substring Problems
+17. Subsequence Problems
+18. Character Mapping
+19. Parsing
+20. String Construction
 ```
 
 ---
 
-# 24. 🧠 Memory Tricks
+# 23. 🔍 How to Identify String DSA Patterns
 
-## 🔥 Remember String with "S-I-F-P"
+This is extremely important for interviews.
+
+## Pattern 1 — "Count characters"
+
+Look for:
 
 ```text
-S → Sequence of characters
+frequency
+count
+occurrence
+how many times
+duplicate characters
+most frequent
+```
+
+Think:
+
+```text
+HashMap / int[]
+```
+
+Example:
+
+> Count frequency of every character.
+
+Pattern:
+
+```text
+Frequency Counting
+```
+
+---
+
+## Pattern 2 — "Two ends"
+
+Look for:
+
+```text
+reverse
+palindrome
+compare from both sides
+remove from beginning/end
+```
+
+Think:
+
+```text
+Two Pointers
+```
+
+Example:
+
+> Check whether a String is a palindrome.
+
+Pattern:
+
+```text
+Two Pointers
+```
+
+---
+
+## Pattern 3 — "Longest / shortest substring"
+
+Look for:
+
+```text
+longest substring
+smallest substring
+minimum window
+maximum window
+at most K
+at least K
+without repeating
+```
+
+Think:
+
+```text
+Sliding Window
+```
+
+---
+
+## Pattern 4 — "Anagram"
+
+Look for:
+
+```text
+anagram
+same characters
+rearrangement
+permutation of characters
+```
+
+Think:
+
+```text
+Frequency Array / HashMap
+```
+
+---
+
+## Pattern 5 — "Find substring"
+
+Look for:
+
+```text
+pattern
+text
+find occurrence
+search pattern
+matching
+```
+
+Think:
+
+```text
+String Matching
+```
+
+Basic:
+
+```text
+Brute Force
+```
+
+Advanced:
+
+```text
+KMP
+Rabin-Karp
+Z Algorithm
+```
+
+---
+
+## Pattern 6 — "Next greater/smaller character"
+
+Look for:
+
+```text
+next greater
+previous greater
+remove characters
+monotonic behavior
+```
+
+Think:
+
+```text
+Stack
+```
+
+---
+
+## Pattern 7 — "Dictionary / prefixes"
+
+Look for:
+
+```text
+prefix
+word search
+dictionary
+autocomplete
+starts with
+multiple words
+```
+
+Think:
+
+```text
+Trie
+```
+
+---
+
+## Pattern 8 — "Subsequence"
+
+Look for:
+
+```text
+subsequence
+delete some characters
+preserve order
+can form
+```
+
+Think:
+
+```text
+Two Pointers
+```
+
+or:
+
+```text
+Dynamic Programming
+```
+
+depending on the problem.
+
+---
+
+## Pattern 9 — "Minimum/maximum transformation"
+
+Look for:
+
+```text
+minimum operations
+maximum length
+minimum deletions
+maximum subsequence
+```
+
+Think:
+
+```text
+Dynamic Programming / Greedy
+```
+
+---
+
+## Pattern 10 — "Repeated substring"
+
+Look for:
+
+```text
+repeated pattern
+periodic string
+repeated prefix
+```
+
+Think:
+
+```text
+Prefix Function / KMP
+```
+
+---
+
+# 24. 🧩 Important String DSA Patterns
+
+## 24.1 Frequency Array
+
+For lowercase English letters:
+
+```java
+String s = "banana";
+
+int[] freq = new int[26];
+
+for (char c : s.toCharArray()) {
+    freq[c - 'a']++;
+}
+```
+
+### Why `c - 'a'`?
+
+Characters have numeric Unicode values.
+
+```text
+'a' - 'a' = 0
+'b' - 'a' = 1
+'c' - 'a' = 2
+...
+'z' - 'a' = 25
+```
+
+So:
+
+```text
+character
+   ↓
+index
+   ↓
+frequency
+```
+
+### Complexity
+
+```text
+Time  → O(n)
+Space → O(26) = O(1)
+```
+
+---
+
+# 24.2 HashMap Frequency
+
+Use this when the character set is not limited to lowercase English letters.
+
+```java
+Map<Character, Integer> freq = new HashMap<>();
+
+for (char c : s.toCharArray()) {
+    freq.put(c, freq.getOrDefault(c, 0) + 1);
+}
+```
+
+### Think
+
+```text
+Unknown / large character set
+        ↓
+HashMap
+```
+
+---
+
+# 24.3 Two Pointers
+
+Classic palindrome pattern:
+
+```java
+int left = 0;
+int right = s.length() - 1;
+
+while (left < right) {
+
+    if (s.charAt(left) != s.charAt(right)) {
+        return false;
+    }
+
+    left++;
+    right--;
+}
+
+return true;
+```
+
+### Complexity
+
+```text
+Time  → O(n)
+Space → O(1)
+```
+
+### Trigger Words
+
+```text
+palindrome
+reverse
+both ends
+left/right
+```
+
+---
+
+# 24.4 Sliding Window
+
+Classic:
+
+> Longest substring without repeating characters.
+
+```java
+Set<Character> set = new HashSet<>();
+
+int left = 0;
+int maxLength = 0;
+
+for (int right = 0; right < s.length(); right++) {
+
+    while (set.contains(s.charAt(right))) {
+        set.remove(s.charAt(left));
+        left++;
+    }
+
+    set.add(s.charAt(right));
+
+    maxLength = Math.max(
+        maxLength,
+        right - left + 1
+    );
+}
+```
+
+### Complexity
+
+```text
+Time  → O(n)
+Space → O(k)
+```
+
+where `k` is the number of distinct characters in the window.
+
+### Trigger Words
+
+```text
+longest substring
+without repeating
+unique characters
+window
+at most K
+```
+
+---
+
+# 24.5 Character Mapping
+
+Used when two Strings must follow the same character pattern.
+
+Example idea:
+
+```text
+egg
+add
+```
+
+Mapping:
+
+```text
+e → a
+g → d
+```
+
+But mapping must be consistent.
+
+Basic approach:
+
+```java
+Map<Character, Character> map = new HashMap<>();
+Map<Character, Character> reverse = new HashMap<>();
+
+for (int i = 0; i < s.length(); i++) {
+
+    char a = s.charAt(i);
+    char b = t.charAt(i);
+
+    if (map.containsKey(a) && map.get(a) != b) {
+        return false;
+    }
+
+    if (reverse.containsKey(b) && reverse.get(b) != a) {
+        return false;
+    }
+
+    map.put(a, b);
+    reverse.put(b, a);
+}
+
+return true;
+```
+
+Typical problem:
+
+```text
+Isomorphic Strings
+```
+
+---
+
+# 24.6 Anagram
+
+Two Strings are anagrams when they contain the same character frequencies.
+
+Example:
+
+```text
+listen
+silent
+```
+
+Frequency approach:
+
+```java
+int[] freq = new int[26];
+
+for (char c : s.toCharArray()) {
+    freq[c - 'a']++;
+}
+
+for (char c : t.toCharArray()) {
+    freq[c - 'a']--;
+}
+
+for (int count : freq) {
+    if (count != 0) {
+        return false;
+    }
+}
+
+return true;
+```
+
+### Complexity
+
+```text
+Time  → O(n)
+Space → O(1)
+```
+
+### Trigger Words
+
+```text
+anagram
+rearrangement
+same characters
+same frequency
+```
+
+---
+
+# 24.7 Prefix / Suffix
+
+A prefix is the beginning of a String.
+
+```text
+String = "flower"
+
+Prefixes:
+
+f
+fl
+flo
+flow
+flowe
+flower
+```
+
+A suffix is the ending portion.
+
+```text
+flower
+
+r
+er
+wer
+ower
+lower
+flower
+```
+
+Common problems:
+
+```text
+Longest Common Prefix
+Prefix Matching
+Prefix Function
+KMP
+```
+
+---
+
+# 24.8 Stack + String
+
+Use a Stack when characters must be removed based on previous characters.
+
+Typical trigger words:
+
+```text
+remove adjacent duplicates
+valid parentheses
+backspace
+undo
+nested structure
+```
+
+Example:
+
+```java
+StringBuilder stack = new StringBuilder();
+
+for (char c : s.toCharArray()) {
+
+    int n = stack.length();
+
+    if (n > 0 && stack.charAt(n - 1) == c) {
+        stack.deleteCharAt(n - 1);
+    } else {
+        stack.append(c);
+    }
+}
+
+return stack.toString();
+```
+
+---
+
+# 24.9 String Matching
+
+Suppose:
+
+```text
+Text    = "ababcabc"
+Pattern = "abc"
+```
+
+We need to determine where the pattern occurs.
+
+Basic approaches:
+
+```text
+1. Brute Force
+2. KMP
+3. Rabin-Karp
+4. Z Algorithm
+```
+
+For basic DSA:
+
+```text
+Brute Force
+```
+
+For advanced interviews:
+
+```text
+KMP
+Rabin-Karp
+Z Algorithm
+```
+
+---
+
+# 24.10 Trie
+
+Trie is useful when dealing with many Strings and prefixes.
+
+Typical problems:
+
+```text
+Word Dictionary
+Autocomplete
+Prefix Search
+Word Search
+Starts With
+```
+
+Basic structure:
+
+```text
+        root
+       /    \
+      a      b
+      |
+      p
+      |
+      p
+```
+
+Important operations:
+
+```text
+insert()
+search()
+startsWith()
+```
+
+Typical complexity:
+
+```text
+Insert    → O(L)
+Search    → O(L)
+Prefix    → O(L)
+```
+
+where `L` is the length of the word/prefix.
+
+---
+
+# 24.11 Subsequence
+
+A subsequence does not require contiguous characters.
+
+Example:
+
+```text
+String = "abcde"
+
+"ace" → subsequence
+"acd" → subsequence
+"ae"  → subsequence
+```
+
+But:
+
+```text
+"aec"
+```
+
+is not a subsequence because order is changed.
+
+Basic two-pointer approach:
+
+```java
+int i = 0;
+int j = 0;
+
+while (i < s.length() && j < t.length()) {
+
+    if (s.charAt(i) == t.charAt(j)) {
+        i++;
+    }
+
+    j++;
+}
+
+return i == s.length();
+```
+
+### Complexity
+
+```text
+Time  → O(n)
+Space → O(1)
+```
+
+---
+
+# 24.12 Substring
+
+A substring must be contiguous.
+
+For:
+
+```text
+"abcde"
+```
+
+Examples:
+
+```text
+"abc"
+"bcd"
+"cde"
+"bc"
+```
+
+But:
+
+```text
+"ace"
+```
+
+is not a substring.
+
+### Important Difference
+
+```text
+Substring
+→ contiguous
+
+Subsequence
+→ not necessarily contiguous
+→ order maintained
+```
+
+This distinction is extremely important in DSA.
+
+---
+
+# 24.13 Binary Search on Strings
+
+Binary search can be used when Strings are sorted.
+
+Example:
+
+```java
+String[] words = {
+    "apple",
+    "banana",
+    "cat",
+    "dog"
+};
+
+int left = 0;
+int right = words.length - 1;
+
+while (left <= right) {
+
+    int mid = left + (right - left) / 2;
+
+    int cmp = words[mid].compareTo("cat");
+
+    if (cmp == 0) {
+        return mid;
+    } else if (cmp < 0) {
+        left = mid + 1;
+    } else {
+        right = mid - 1;
+    }
+}
+
+return -1;
+```
+
+Trigger:
+
+```text
+sorted strings
+search efficiently
+```
+
+---
+
+# 24.14 Sorting Characters
+
+Sometimes the simplest way to compare Strings is sorting.
+
+```java
+char[] chars = s.toCharArray();
+
+Arrays.sort(chars);
+
+String sorted = new String(chars);
+```
+
+Useful for:
+
+```text
+Anagram
+Grouping Anagrams
+Canonical representation
+```
+
+Complexity:
+
+```text
+Time  → O(n log n)
+Space → depends on implementation / copied array
+```
+
+For fixed lowercase alphabets, frequency counting can often achieve:
+
+```text
+O(n)
+```
+
+---
+
+# 24.15 Prefix Sum / Running Count
+
+Some String problems can be transformed into an array problem.
+
+Example:
+
+```text
+binary String
+"101101"
+```
+
+We can maintain counts.
+
+```java
+int ones = 0;
+
+for (char c : s.toCharArray()) {
+
+    if (c == '1') {
+        ones++;
+    }
+}
+```
+
+For range-based queries, prefix arrays can be useful.
+
+---
+
+# 24.16 Dynamic Programming with Strings
+
+DP is important for problems involving:
+
+```text
+minimum operations
+maximum length
+matching
+edit distance
+palindromic subsequence
+common subsequence
+```
+
+Major problems:
+
+```text
+Longest Common Subsequence
+Longest Palindromic Subsequence
+Edit Distance
+Distinct Subsequences
+Word Break
+Interleaving String
+```
+
+Basic LCS state:
+
+```text
+dp[i][j]
+
+→ answer using first i characters of s
+  and first j characters of t
+```
+
+---
+
+# 25. 🔥 Important String DSA Questions
+
+These are the questions you should know from basic → advanced.
+
+## 🟢 Level 1 — Basic
+
+### 1. Reverse a String
+
+Pattern:
+
+```text
+Two Pointers
+```
+
+```java
+char[] arr = s.toCharArray();
+
+int left = 0;
+int right = arr.length - 1;
+
+while (left < right) {
+
+    char temp = arr[left];
+    arr[left] = arr[right];
+    arr[right] = temp;
+
+    left++;
+    right--;
+}
+
+return new String(arr);
+```
+
+---
+
+### 2. Check Palindrome
+
+Pattern:
+
+```text
+Two Pointers
+```
+
+```java
+int left = 0;
+int right = s.length() - 1;
+
+while (left < right) {
+
+    if (s.charAt(left) != s.charAt(right)) {
+        return false;
+    }
+
+    left++;
+    right--;
+}
+
+return true;
+```
+
+---
+
+### 3. Count Character Frequency
+
+Pattern:
+
+```text
+Frequency Array
+```
+
+```java
+int[] freq = new int[26];
+
+for (char c : s.toCharArray()) {
+    freq[c - 'a']++;
+}
+```
+
+---
+
+### 4. Find First Non-Repeating Character
+
+Pattern:
+
+```text
+Frequency + Traversal
+```
+
+```java
+int[] freq = new int[26];
+
+for (char c : s.toCharArray()) {
+    freq[c - 'a']++;
+}
+
+for (char c : s.toCharArray()) {
+
+    if (freq[c - 'a'] == 1) {
+        return c;
+    }
+}
+
+return '\0';
+```
+
+---
+
+### 5. Check Anagram
+
+Pattern:
+
+```text
+Frequency Counting
+```
+
+```java
+int[] freq = new int[26];
+
+for (char c : s.toCharArray()) {
+    freq[c - 'a']++;
+}
+
+for (char c : t.toCharArray()) {
+    freq[c - 'a']--;
+}
+
+for (int count : freq) {
+    if (count != 0) {
+        return false;
+    }
+}
+
+return true;
+```
+
+---
+
+## 🟡 Level 2 — Medium
+
+### 6. Longest Substring Without Repeating Characters
+
+Pattern:
+
+```text
+Sliding Window + Set
+```
+
+```java
+Set<Character> set = new HashSet<>();
+
+int left = 0;
+int maxLength = 0;
+
+for (int right = 0; right < s.length(); right++) {
+
+    while (set.contains(s.charAt(right))) {
+        set.remove(s.charAt(left));
+        left++;
+    }
+
+    set.add(s.charAt(right));
+
+    maxLength = Math.max(
+        maxLength,
+        right - left + 1
+    );
+}
+
+return maxLength;
+```
+
+---
+
+### 7. Valid Palindrome
+
+Pattern:
+
+```text
+Two Pointers
+```
+
+When spaces and punctuation should be ignored:
+
+```java
+int left = 0;
+int right = s.length() - 1;
+
+while (left < right) {
+
+    while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
+        left++;
+    }
+
+    while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
+        right--;
+    }
+
+    if (Character.toLowerCase(s.charAt(left))
+            != Character.toLowerCase(s.charAt(right))) {
+        return false;
+    }
+
+    left++;
+    right--;
+}
+
+return true;
+```
+
+---
+
+### 8. Longest Common Prefix
+
+Pattern:
+
+```text
+Prefix Matching
+```
+
+```java
+String prefix = strs[0];
+
+for (int i = 1; i < strs.length; i++) {
+
+    while (!strs[i].startsWith(prefix)) {
+
+        prefix = prefix.substring(0, prefix.length() - 1);
+
+        if (prefix.isEmpty()) {
+            return "";
+        }
+    }
+}
+
+return prefix;
+```
+
+---
+
+### 9. Isomorphic Strings
+
+Pattern:
+
+```text
+Two-way Character Mapping
+```
+
+```java
+Map<Character, Character> map = new HashMap<>();
+Map<Character, Character> reverse = new HashMap<>();
+
+for (int i = 0; i < s.length(); i++) {
+
+    char a = s.charAt(i);
+    char b = t.charAt(i);
+
+    if (map.containsKey(a) && map.get(a) != b) {
+        return false;
+    }
+
+    if (reverse.containsKey(b) && reverse.get(b) != a) {
+        return false;
+    }
+
+    map.put(a, b);
+    reverse.put(b, a);
+}
+
+return true;
+```
+
+---
+
+### 10. Group Anagrams
+
+Pattern:
+
+```text
+Canonical Form + HashMap
+```
+
+Basic idea:
+
+```java
+Map<String, List<String>> map = new HashMap<>();
+
+for (String word : strs) {
+
+    char[] chars = word.toCharArray();
+
+    Arrays.sort(chars);
+
+    String key = new String(chars);
+
+    map.computeIfAbsent(key, k -> new ArrayList<>())
+       .add(word);
+}
+
+return new ArrayList<>(map.values());
+```
+
+---
+
+### 11. Longest Palindromic Substring
+
+Important patterns:
+
+```text
+Expand Around Center
+Dynamic Programming
+```
+
+Expand-around-center idea:
+
+```java
+int start = 0;
+int end = 0;
+
+for (int i = 0; i < s.length(); i++) {
+
+    int len1 = expand(s, i, i);
+    int len2 = expand(s, i, i + 1);
+
+    int len = Math.max(len1, len2);
+
+    if (len > end - start + 1) {
+
+        start = i - (len - 1) / 2;
+        end = i + len / 2;
+    }
+}
+```
+
+Helper:
+
+```java
+private int expand(String s, int left, int right) {
+
+    while (left >= 0 &&
+           right < s.length() &&
+           s.charAt(left) == s.charAt(right)) {
+
+        left--;
+        right++;
+    }
+
+    return right - left - 1;
+}
+```
+
+Complexity:
+
+```text
+Time  → O(n²)
+Space → O(1)
+```
+
+---
+
+## 🔴 Level 3 — Advanced
+
+### 12. Longest Common Subsequence
+
+Pattern:
+
+```text
+Dynamic Programming
+```
+
+Core recurrence:
+
+```text
+if characters match:
+
+dp[i][j] = 1 + dp[i-1][j-1]
+
+otherwise:
+
+dp[i][j] = max(
+    dp[i-1][j],
+    dp[i][j-1]
+)
+```
+
+---
+
+### 13. Edit Distance
+
+Pattern:
+
+```text
+Dynamic Programming
+```
+
+Operations:
+
+```text
+Insert
+Delete
+Replace
+```
+
+Core recurrence when characters differ:
+
+```text
+dp[i][j] =
+1 + min(
+    dp[i-1][j],     // delete
+    dp[i][j-1],     // insert
+    dp[i-1][j-1]    // replace
+)
+```
+
+---
+
+### 14. Minimum Window Substring
+
+Pattern:
+
+```text
+Sliding Window + Frequency Map
+```
+
+Trigger:
+
+```text
+minimum substring
+contains all required characters
+```
+
+Core technique:
+
+```text
+Expand right
+    ↓
+Satisfy requirement
+    ↓
+Shrink left
+    ↓
+Record minimum
+```
+
+---
+
+### 15. Word Break
+
+Pattern:
+
+```text
+Dynamic Programming
+```
+
+Think:
+
+```text
+Can prefix [0...i] be formed?
+
+dp[i] = true / false
+```
+
+---
+
+### 16. Implement `strStr()` / Find Pattern
+
+Pattern:
+
+```text
+String Matching
+```
+
+Approaches:
+
+```text
+Brute Force
+KMP
+Rabin-Karp
+Z Algorithm
+```
+
+---
+
+### 17. KMP Pattern Matching
+
+Know these concepts:
+
+```text
+Pattern
+Prefix
+Suffix
+LPS Array
+Failure Function
+```
+
+Important:
+
+```text
+LPS[i]
+=
+length of longest proper prefix
+which is also a suffix
+for pattern[0...i]
+```
+
+Complexity:
+
+```text
+Time  → O(n + m)
+Space → O(m)
+```
+
+---
+
+### 18. Rabin-Karp
+
+Pattern:
+
+```text
+Rolling Hash
+```
+
+Useful when:
+
+```text
+Searching a pattern
+Multiple pattern comparisons
+Hash-based matching
+```
+
+Core idea:
+
+```text
+Current window hash
+        ↓
+Remove outgoing character
+        ↓
+Add incoming character
+        ↓
+Compare hash
+```
+
+Average performance is useful, but hash collisions must be handled correctly.
+
+---
+
+### 19. Trie Problems
+
+Important questions:
+
+```text
+Implement Trie
+Search Word
+Starts With Prefix
+Word Dictionary
+Autocomplete
+Maximum XOR
+Word Search
+```
+
+---
+
+# 26. 🧰 String DSA Snippets
+
+## 26.1 Reverse String
+
+```java
+StringBuilder sb = new StringBuilder(s);
+
+return sb.reverse().toString();
+```
+
+---
+
+## 26.2 Reverse Using Two Pointers
+
+```java
+char[] arr = s.toCharArray();
+
+int left = 0;
+int right = arr.length - 1;
+
+while (left < right) {
+
+    char temp = arr[left];
+    arr[left] = arr[right];
+    arr[right] = temp;
+
+    left++;
+    right--;
+}
+
+return new String(arr);
+```
+
+---
+
+## 26.3 Count Vowels
+
+```java
+int count = 0;
+
+for (char c : s.toLowerCase().toCharArray()) {
+
+    if (c == 'a' ||
+        c == 'e' ||
+        c == 'i' ||
+        c == 'o' ||
+        c == 'u') {
+
+        count++;
+    }
+}
+
+return count;
+```
+
+---
+
+## 26.4 Count Digits
+
+```java
+int count = 0;
+
+for (char c : s.toCharArray()) {
+
+    if (Character.isDigit(c)) {
+        count++;
+    }
+}
+
+return count;
+```
+
+---
+
+## 26.5 Remove Spaces
+
+```java
+String result = s.replace(" ", "");
+```
+
+For all whitespace:
+
+```java
+String result = s.replaceAll("\\s+", "");
+```
+
+---
+
+## 26.6 Check Only Digits
+
+```java
+for (char c : s.toCharArray()) {
+
+    if (!Character.isDigit(c)) {
+        return false;
+    }
+}
+
+return true;
+```
+
+---
+
+## 26.7 Count Words
+
+Simple whitespace-based approach:
+
+```java
+String trimmed = s.trim();
+
+if (trimmed.isEmpty()) {
+    return 0;
+}
+
+return trimmed.split("\\s+").length;
+```
+
+For interview problems, clarify how punctuation and whitespace should be treated.
+
+---
+
+## 26.8 Character Frequency
+
+```java
+int[] freq = new int[26];
+
+for (char c : s.toCharArray()) {
+    freq[c - 'a']++;
+}
+```
+
+---
+
+## 26.9 Maximum Frequency Character
+
+```java
+int[] freq = new int[26];
+
+for (char c : s.toCharArray()) {
+    freq[c - 'a']++;
+}
+
+int maxIndex = 0;
+
+for (int i = 1; i < 26; i++) {
+
+    if (freq[i] > freq[maxIndex]) {
+        maxIndex = i;
+    }
+}
+
+char answer = (char) ('a' + maxIndex);
+```
+
+---
+
+## 26.10 First Non-Repeating Character
+
+```java
+int[] freq = new int[26];
+
+for (char c : s.toCharArray()) {
+    freq[c - 'a']++;
+}
+
+for (char c : s.toCharArray()) {
+
+    if (freq[c - 'a'] == 1) {
+        return c;
+    }
+}
+
+return '\0';
+```
+
+---
+
+## 26.11 Remove Duplicate Characters
+
+Preserve first occurrence order:
+
+```java
+Set<Character> seen = new LinkedHashSet<>();
+
+for (char c : s.toCharArray()) {
+    seen.add(c);
+}
+
+StringBuilder result = new StringBuilder();
+
+for (char c : seen) {
+    result.append(c);
+}
+
+return result.toString();
+```
+
+---
+
+## 26.12 Check Anagram
+
+```java
+if (s.length() != t.length()) {
+    return false;
+}
+
+int[] freq = new int[26];
+
+for (int i = 0; i < s.length(); i++) {
+    freq[s.charAt(i) - 'a']++;
+    freq[t.charAt(i) - 'a']--;
+}
+
+for (int count : freq) {
+
+    if (count != 0) {
+        return false;
+    }
+}
+
+return true;
+```
+
+---
+
+## 26.13 Longest Substring Without Repeating Characters
+
+```java
+Set<Character> set = new HashSet<>();
+
+int left = 0;
+int maxLength = 0;
+
+for (int right = 0; right < s.length(); right++) {
+
+    while (set.contains(s.charAt(right))) {
+        set.remove(s.charAt(left));
+        left++;
+    }
+
+    set.add(s.charAt(right));
+
+    maxLength = Math.max(
+        maxLength,
+        right - left + 1
+    );
+}
+
+return maxLength;
+```
+
+---
+
+## 26.14 Check Subsequence
+
+```java
+int i = 0;
+
+for (int j = 0; j < t.length() && i < s.length(); j++) {
+
+    if (s.charAt(i) == t.charAt(j)) {
+        i++;
+    }
+}
+
+return i == s.length();
+```
+
+---
+
+## 26.15 Character Mapping
+
+```java
+Map<Character, Character> map = new HashMap<>();
+
+for (int i = 0; i < s.length(); i++) {
+
+    char source = s.charAt(i);
+    char target = t.charAt(i);
+
+    if (map.containsKey(source)) {
+
+        if (map.get(source) != target) {
+            return false;
+        }
+
+    } else {
+        map.put(source, target);
+    }
+}
+```
+
+For true isomorphism, also ensure two different source characters cannot map to the same target character.
+
+---
+
+## 26.16 Expand Around Center
+
+```java
+private int expand(String s, int left, int right) {
+
+    while (left >= 0 &&
+           right < s.length() &&
+           s.charAt(left) == s.charAt(right)) {
+
+        left--;
+        right++;
+    }
+
+    return right - left - 1;
+}
+```
+
+---
+
+## 26.17 Sort Characters
+
+```java
+char[] chars = s.toCharArray();
+
+Arrays.sort(chars);
+
+String sorted = new String(chars);
+```
+
+---
+
+## 26.18 StringBuilder for Repeated Modification
+
+```java
+StringBuilder sb = new StringBuilder();
+
+for (char c : s.toCharArray()) {
+
+    if (Character.isLetter(c)) {
+        sb.append(c);
+    }
+}
+
+return sb.toString();
+```
+
+---
+
+# 27. 🎤 30-Second Interview Answer
+
+> **String in Java is a final class from the `java.lang` package that represents a sequence of characters. It is a reference type, not a primitive, and String objects are immutable. Java provides String literals and a String Pool that allows eligible equal Strings to be shared. We normally use `equals()` to compare String content because `==` compares object references. In DSA, common String patterns include frequency counting, hashing, two pointers, sliding window, character mapping, stack, prefix/suffix processing, string matching, Trie, and dynamic programming.**
+
+---
+
+# 28. 🧾 Cheat Sheet
+
+```text
+╔══════════════════════════════════════════════════╗
+║                 STRING CHEAT SHEET               ║
+╠══════════════════════════════════════════════════╣
+║ Class        → java.lang.String                  ║
+║ Type         → Reference type                    ║
+║ Primitive?   → ❌ No                             ║
+║ Immutable?   → ✅ Yes                            ║
+║ Final?       → ✅ Yes                            ║
+║ String Pool  → ✅ Yes                            ║
+║ Represents   → Sequence of UTF-16 code units     ║
+║ length       → length()                          ║
+║ Array size   → length                            ║
+║ Collection   → size()                            ║
+║ ==           → Reference identity               ║
+║ equals()     → Content equality                  ║
+║ char         → One UTF-16 code unit              ║
+╠══════════════════════════════════════════════════╣
+║ DSA PATTERNS                                      ║
+╠══════════════════════════════════════════════════╣
+║ Frequency    → Count / occurrence                ║
+║ HashMap      → Unknown character set             ║
+║ Two Pointer  → Palindrome / two ends             ║
+║ Window       → Longest / shortest substring      ║
+║ Stack        → Adjacent removal / nesting        ║
+║ Mapping      → Isomorphic strings                ║
+║ Prefix       → Common prefix / KMP               ║
+║ Trie         → Prefix / dictionary               ║
+║ DP           → LCS / Edit Distance / Word Break ║
+║ Sorting      → Anagram / canonical form          ║
+║ KMP          → Fast pattern matching             ║
+╚══════════════════════════════════════════════════╝
+```
+
+---
+
+# 29. 🧠 Memory Tricks
+
+## 🔥 String Properties — "SIFP"
+
+```text
+S → Sequence
 I → Immutable
 F → Final
 P → Pool
 ```
 
-So whenever someone asks:
-
-> "Tell me important properties of String."
-
 Think:
 
 ```text
 String
- ↓
+  ↓
 Sequence
- ↓
+  ↓
 Immutable
- ↓
+  ↓
 Final
- ↓
+  ↓
 Pool
 ```
 
@@ -1723,19 +3504,19 @@ Pool
 
 ## 🧠 `==` vs `equals()`
 
-Remember:
-
 ```text
-== 
+==
+
 ↓
 Identity
 
 equals()
+
 ↓
 Content
 ```
 
-### Easy Rule
+Easy rule:
 
 > **Same object? → `==`**
 
@@ -1753,12 +3534,73 @@ Collection  → size()
 
 ---
 
-# 25. 🔗 Next Topics
+## 🧠 DSA Pattern Recognition
 
-The String playlist continues:
+```text
+"count" / "frequency"
+        ↓
+Frequency Array / HashMap
+
+
+"palindrome" / "both ends"
+        ↓
+Two Pointers
+
+
+"longest substring"
+        ↓
+Sliding Window
+
+
+"anagram"
+        ↓
+Frequency / Sorting
+
+
+"mapping pattern"
+        ↓
+HashMap
+
+
+"remove adjacent"
+        ↓
+Stack
+
+
+"prefix / dictionary"
+        ↓
+Trie
+
+
+"subsequence"
+        ↓
+Two Pointers / DP
+
+
+"minimum operations"
+        ↓
+DP / Greedy
+
+
+"find pattern"
+        ↓
+String Matching
+
+
+"common subsequence"
+        ↓
+DP
+```
+
+---
+
+# 30. 🔗 Next Topics
+
+The String playlist:
 
 ```text
 04-Strings/
+
 │
 ├── 01-String-Introduction.md
 │
@@ -1808,19 +3650,175 @@ Interview Questions
 
 # 🚀 Final Revision
 
-Before moving to the next topic, remember these **10 points**:
+Before moving to the next topic, remember these **20 points**:
 
 ```text
-1. String is a class.
-2. String belongs to java.lang.
-3. String is a reference type.
-4. String is not a primitive.
-5. String objects are immutable.
-6. String is final.
-7. String literals can use the String Pool.
-8. == compares references.
-9. equals() compares String content.
-10. length() returns the number of UTF-16 code units.
+1.  String is a class.
+
+2.  String belongs to java.lang.
+
+3.  String is a reference type.
+
+4.  String is not a primitive.
+
+5.  String objects are immutable.
+
+6.  String is final.
+
+7.  String literals can use the String Pool.
+
+8.  == compares reference identity.
+
+9.  equals() compares String content.
+
+10. length() returns UTF-16 code-unit count.
+
+11. char represents one UTF-16 code unit.
+
+12. String represents a sequence of UTF-16 code units.
+
+13. String is commonly used as a HashMap key.
+
+14. Frequency problems → int[] / HashMap.
+
+15. Palindrome problems → Two Pointers.
+
+16. Longest substring problems → Sliding Window.
+
+17. Anagram problems → Frequency / Sorting.
+
+18. Pattern searching → Brute Force / KMP / Rabin-Karp.
+
+19. Prefix problems → Trie / Prefix algorithms.
+
+20. Complex String optimization → DP / Greedy / Advanced matching.
 ```
 
-> ⭐ **Core Idea:** String is not just "text". For Java interviews, you must understand it as a `final`, immutable object with special JVM support through the String Pool.
+---
+
+# 🎯 DSA Interview Thinking Framework
+
+Whenever you receive a String DSA problem, ask these questions **in this exact order**:
+
+```text
+STEP 1
+What exactly is being asked?
+
+        ↓
+
+STEP 2
+Is it about:
+
+count?
+frequency?
+substring?
+subsequence?
+palindrome?
+prefix?
+pattern?
+minimum/maximum?
+
+        ↓
+
+STEP 3
+Look for trigger words.
+
+        ↓
+
+STEP 4
+Choose the pattern.
+
+        ↓
+
+STEP 5
+Ask whether the alphabet is fixed.
+
+        ↓
+
+Fixed lowercase English?
+        ↓
+int[26]
+
+Unknown / large character set?
+        ↓
+HashMap
+
+        ↓
+
+STEP 6
+Can I use Two Pointers?
+
+        ↓
+
+STEP 7
+Can I use Sliding Window?
+
+        ↓
+
+STEP 8
+Does the problem depend on previous characters?
+
+        ↓
+Stack / DP / Hashing
+
+        ↓
+
+STEP 9
+Does it involve prefixes?
+
+        ↓
+Trie / Prefix Algorithm
+
+        ↓
+
+STEP 10
+Analyze:
+
+Time Complexity
+Space Complexity
+Edge Cases
+```
+
+---
+
+# ⭐ Core Idea
+
+> **String DSA is less about memorizing String methods and more about recognizing patterns.**
+
+The most important recognition map is:
+
+```text
+STRING
+  │
+  ├── Count / Frequency
+  │       └── int[] / HashMap
+  │
+  ├── Palindrome / Two Ends
+  │       └── Two Pointers
+  │
+  ├── Longest / Shortest Substring
+  │       └── Sliding Window
+  │
+  ├── Anagram
+  │       └── Frequency / Sorting
+  │
+  ├── Character Relationship
+  │       └── HashMap / Mapping
+  │
+  ├── Adjacent Characters / Nesting
+  │       └── Stack
+  │
+  ├── Prefix / Dictionary
+  │       └── Trie
+  │
+  ├── Pattern Search
+  │       └── KMP / Rabin-Karp / Z
+  │
+  ├── Subsequence
+  │       └── Two Pointers / DP
+  │
+  └── Optimization / Transformation
+          └── DP / Greedy
+```
+
+> **For String DSA, first identify the pattern, then choose the data structure, then write the code.**

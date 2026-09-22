@@ -1,6 +1,6 @@
 # 🛠️ String Methods in Java
 
-> **The `String` class provides many built-in methods for searching, comparing, extracting, modifying, checking, and converting String data. Since String is immutable, methods that appear to modify a String return a new String instead of changing the original object.**
+> **The `String` class provides built-in methods for searching, comparing, extracting, transforming, validating, and converting String data. Since String is immutable, methods that produce changed text return a new String instead of modifying the original object.**
 
 ---
 
@@ -47,13 +47,17 @@
 39. [Methods That Return int](#39--methods-that-return-int)
 40. [Methods That Return char](#40--methods-that-return-char)
 41. [Methods That Return Arrays](#41--methods-that-return-arrays)
-42. [Common Mistakes](#42--common-mistakes)
-43. [Interview Traps](#43--interview-traps)
-44. [Top 20 Interview Questions](#44--top-20-interview-questions)
-45. [30-Second Interview Answer](#45--30-second-interview-answer)
-46. [Cheat Sheet](#46--cheat-sheet)
-47. [Memory Tricks](#47--memory-tricks)
-48. [Next Topic](#48--next-topic)
+42. [DSA Connection](#42--dsa-connection)
+43. [Important String DSA Patterns](#43--important-string-dsa-patterns)
+44. [Common String DSA Questions](#44--common-string-dsa-questions)
+45. [DSA Problem-Solving Approach](#45--dsa-problem-solving-approach)
+46. [Common Mistakes](#46--common-mistakes)
+47. [Interview Traps](#47--interview-traps)
+48. [Top 20 Interview Questions](#48--top-20-interview-questions)
+49. [30-Second Interview Answer](#49--30-second-interview-answer)
+50. [Cheat Sheet](#50--cheat-sheet)
+51. [Memory Tricks](#51--memory-tricks)
+52. [Next Topic](#52--next-topic)
 
 ---
 
@@ -72,29 +76,21 @@ Strings are used everywhere in Java:
 - Logs
 - Text processing
 
-Java provides methods so we don't have to manually implement common operations.
+Java provides built-in methods so we do not have to manually implement common String operations.
 
-For example:
+Example:
 
-    String name = "Divyansh";
+```java
+String name = "Divyansh";
 
-Instead of manually counting characters:
-
-    name.length();
-
-Instead of manually searching for a character:
-
-    name.indexOf('y');
-
-Instead of manually converting to uppercase:
-
-    name.toUpperCase();
+System.out.println(name.length());
+System.out.println(name.indexOf('y'));
+System.out.println(name.toUpperCase());
+```
 
 ---
 
 # 2. 🧩 String Method Categories
-
-String methods can be grouped conceptually.
 
 | Category | Important Methods |
 |---|---|
@@ -119,102 +115,146 @@ String methods can be grouped conceptually.
 
 # 3. 📏 length()
 
-### Definition
+## Definition
 
-`length()` returns the number of characters in a String.
+`length()` returns the number of UTF-16 code units in a String.
 
-### Syntax
+## Syntax
 
-    string.length();
+```java
+string.length();
+```
 
-### Example
+## Example
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    System.out.println(s.length());
-
-Output:
-
-    4
-
-### Another Example
-
-    String s = "Java Programming";
-
-    System.out.println(s.length());
+System.out.println(s.length());
+```
 
 Output:
 
-    16
-
-Remember:
-
-    "Java Programming"
-     1234567890123456
+```text
+4
+```
 
 ### Important
 
-`length()` is a method for String.
+For String:
 
-    String → length()
+```java
+String s = "Java";
 
-For arrays:
+int length = s.length();
+```
 
-    array.length
+For an array:
 
-Notice:
+```java
+int[] arr = {10, 20, 30};
 
-    String → length()
-    Array  → length
+int length = arr.length;
+```
+
+Remember:
+
+```text
+String → length()
+Array  → length
+```
+
+### DSA Importance
+
+`length()` is one of the most frequently used String operations in DSA.
+
+Typical usage:
+
+```java
+for (int i = 0; i < s.length(); i++) {
+    System.out.println(s.charAt(i));
+}
+```
+
+Time complexity:
+
+```text
+O(1)
+```
 
 ---
 
 # 4. 🔤 charAt()
 
-### Definition
+`charAt(index)` returns the UTF-16 `char` at the specified index.
 
-`charAt(index)` returns the character present at the specified index.
+## Example
 
-### Syntax
+```java
+String s = "Java";
 
-    string.charAt(index);
-
-Indexes start from:
-
-    0
-
-Example:
-
-    String s = "Java";
-
-    System.out.println(s.charAt(0));
-    System.out.println(s.charAt(1));
-    System.out.println(s.charAt(2));
-    System.out.println(s.charAt(3));
+System.out.println(s.charAt(0));
+System.out.println(s.charAt(1));
+System.out.println(s.charAt(2));
+System.out.println(s.charAt(3));
+```
 
 Output:
 
-    J
-    a
-    v
-    a
+```text
+J
+a
+v
+a
+```
 
-### Index Visualization
+Index visualization:
 
-    String:  J  a  v  a
-    Index:   0  1  2  3
+```text
+String:  J  a  v  a
+Index:   0  1  2  3
+```
 
-### Invalid Index
+Invalid index:
 
-    s.charAt(4);
+```java
+String s = "Java";
 
-throws:
+System.out.println(s.charAt(4));
+```
 
-    StringIndexOutOfBoundsException
+This throws:
 
-because valid indexes are:
+```text
+StringIndexOutOfBoundsException
+```
 
-    0 to length - 1
+### DSA Importance
+
+`charAt()` is essential for:
+
+- Frequency counting
+- Palindrome checking
+- Two-pointer problems
+- Character comparisons
+- Sliding-window problems
+
+Example:
+
+```java
+String s = "hello";
+
+for (int i = 0; i < s.length(); i++) {
+    char ch = s.charAt(i);
+    System.out.println(ch);
+}
+```
+
+Time complexity:
+
+```text
+O(1) per charAt()
+```
 
 ---
 
@@ -224,133 +264,139 @@ because valid indexes are:
 
 There are two commonly used forms:
 
-    substring(beginIndex)
+```java
+substring(beginIndex)
+```
 
 and:
 
-    substring(beginIndex, endIndex)
-
----
+```java
+substring(beginIndex, endIndex)
+```
 
 ## substring(beginIndex)
 
-The substring starts from `beginIndex` and continues until the end.
+```java
+String s = "Java Programming";
 
-Example:
-
-    String s = "Java Programming";
-
-    System.out.println(s.substring(5));
+System.out.println(s.substring(5));
+```
 
 Output:
 
-    Programming
-
-Index:
-
-    J a v a _ P r o g r a m m i n g
-    0 1 2 3 4 5 6 7 8 9 ...
-
-Starting from index `5`:
-
-    Programming
-
----
+```text
+Programming
+```
 
 ## substring(beginIndex, endIndex)
 
-The `beginIndex` is inclusive.
+The start index is inclusive.
 
-The `endIndex` is exclusive.
+The end index is exclusive.
 
-Example:
+```java
+String s = "Java";
 
-    String s = "Java";
-
-    System.out.println(s.substring(1, 3));
+System.out.println(s.substring(1, 3));
+```
 
 Output:
 
-    av
-
-Indexes:
-
-    J   a   v   a
-    0   1   2   3
-
-Range:
-
-    1 → included
-    3 → excluded
-
-Therefore:
-
-    index 1 = a
-    index 2 = v
-
-Result:
-
-    av
-
-### ⭐ Interview Rule
-
-    substring(start, end)
-
-means:
-
-    start → inclusive
-    end   → exclusive
+```text
+av
+```
 
 Remember:
 
-    [start, end)
+```text
+[start, end)
+```
+
+### DSA Importance
+
+`substring()` appears in:
+
+- String partitioning
+- Prefix/suffix problems
+- Substring enumeration
+- Sliding-window problems
+- Brute-force String problems
+
+Example:
+
+```java
+String s = "abc";
+
+for (int i = 0; i < s.length(); i++) {
+    for (int j = i + 1; j <= s.length(); j++) {
+        System.out.println(s.substring(i, j));
+    }
+}
+```
+
+### Complexity Note
+
+Creating a substring generally requires time proportional to the length of the resulting String.
+
+If a substring of length `k` is created:
+
+```text
+Time → O(k)
+Space → O(k)
+```
 
 ---
 
 # 6. ➕ concat()
 
-`concat()` joins another String to the current String.
+`concat()` joins another String.
 
-### Syntax
+```java
+String s1 = "Java";
+String s2 = "Programming";
 
-    string.concat(anotherString);
+String result = s1.concat(s2);
 
-Example:
-
-    String s1 = "Java";
-    String s2 = "Programming";
-
-    String result = s1.concat(s2);
-
-    System.out.println(result);
+System.out.println(result);
+```
 
 Output:
 
-    JavaProgramming
+```text
+JavaProgramming
+```
 
-With a space:
+Because String is immutable:
 
-    String result = s1.concat(" " + s2);
+```java
+String s = "Java";
+
+s.concat(" World");
+
+System.out.println(s);
+```
 
 Output:
 
-    Java Programming
-
-### Important
-
-String is immutable.
-
-Therefore:
-
-    String s = "Java";
-
-    s.concat(" World");
-
-does NOT change `s`.
+```text
+Java
+```
 
 Correct:
 
-    s = s.concat(" World");
+```java
+String s = "Java";
+
+s = s.concat(" World");
+
+System.out.println(s);
+```
+
+Output:
+
+```text
+Java World
+```
 
 ---
 
@@ -358,133 +404,117 @@ Correct:
 
 `equals()` compares String contents.
 
-### Example
+```java
+String a = "Java";
+String b = "Java";
 
-    String a = "Java";
-    String b = "Java";
-
-    System.out.println(a.equals(b));
-
-Output:
-
-    true
-
-### Different Content
-
-    String a = "Java";
-    String b = "Python";
-
-    System.out.println(a.equals(b));
+System.out.println(a.equals(b));
+```
 
 Output:
 
-    false
+```text
+true
+```
 
-### ⭐ Important
+Different contents:
 
-For String content comparison:
+```java
+String a = "Java";
+String b = "Python";
 
-    equals()
+System.out.println(a.equals(b));
+```
 
-is normally preferred over:
+Output:
 
-    ==
+```text
+false
+```
+
+### DSA Importance
+
+`equals()` is frequently used when:
+
+- Comparing words
+- Checking patterns
+- Comparing generated substrings
+- Checking dictionary/map keys
+- Validating String states
 
 ---
 
 # 8. 🔤 equalsIgnoreCase()
 
-Compares String contents while ignoring letter case.
+Compares String contents while ignoring case.
 
-Example:
+```java
+String a = "Java";
+String b = "JAVA";
 
-    String a = "Java";
-    String b = "JAVA";
-
-    System.out.println(a.equalsIgnoreCase(b));
+System.out.println(a.equalsIgnoreCase(b));
+```
 
 Output:
 
-    true
-
-Without ignoring case:
-
-    a.equals(b)
-
-returns:
-
-    false
-
-### Use Case
-
-Useful when case should not matter.
-
-Example:
-
-    "yes"
-    "YES"
-    "Yes"
-
-All can be treated as equal using:
-
-    equalsIgnoreCase()
+```text
+true
+```
 
 ---
 
 # 9. 📊 compareTo()
 
-`compareTo()` compares two Strings lexicographically.
-
-### Syntax
-
-    string1.compareTo(string2);
+`compareTo()` performs lexicographical comparison.
 
 It returns:
 
-    0
-    negative value
-    positive value
+```text
+negative → first String comes before second
+zero     → Strings are equal
+positive → first String comes after second
+```
 
-### If Strings are Equal
+Example:
 
-    String a = "Java";
-    String b = "Java";
+```java
+String a = "Apple";
+String b = "Banana";
 
-    System.out.println(a.compareTo(b));
+System.out.println(a.compareTo(b));
+```
 
-Output:
+The result is negative.
 
-    0
-
-### If First String Comes Before Second
-
-    "Apple".compareTo("Banana")
-
-returns a negative value.
-
-### If First String Comes After Second
-
-    "Banana".compareTo("Apple")
-
-returns a positive value.
-
-### Concept
-
-Think:
-
-    Negative → first String comes before second
-    Zero     → both are equal
-    Positive → first String comes after second
-
-### ⚠️ Important
-
-Do NOT depend on the exact positive or negative number.
+Do not depend on the exact positive or negative number.
 
 Focus on:
 
-    < 0
-    == 0
-    > 0
+```text
+< 0
+== 0
+> 0
+```
+
+### DSA Importance
+
+`compareTo()` is useful in:
+
+- Sorting Strings
+- Custom ordering
+- Tree-based collections
+- Lexicographical problems
+
+Example:
+
+```java
+String a = "Apple";
+String b = "Banana";
+
+if (a.compareTo(b) < 0) {
+    System.out.println(a + " comes first");
+}
+```
 
 ---
 
@@ -492,18 +522,18 @@ Focus on:
 
 Works like `compareTo()` but ignores case.
 
-Example:
+```java
+String a = "java";
+String b = "JAVA";
 
-    String a = "java";
-    String b = "JAVA";
-
-    System.out.println(a.compareToIgnoreCase(b));
+System.out.println(a.compareToIgnoreCase(b));
+```
 
 Output:
 
-    0
-
-Because they are equal ignoring case.
+```text
+0
+```
 
 ---
 
@@ -511,42 +541,33 @@ Because they are equal ignoring case.
 
 Checks whether a String contains a specified sequence.
 
-### Syntax
+```java
+String s = "Java Programming";
 
-    string.contains(sequence);
-
-Returns:
-
-    true
-    false
-
-Example:
-
-    String s = "Java Programming";
-
-    System.out.println(s.contains("Java"));
+System.out.println(s.contains("Java"));
+System.out.println(s.contains("Python"));
+```
 
 Output:
 
-    true
+```text
+true
+false
+```
 
-Another:
+It is case-sensitive:
 
-    System.out.println(s.contains("Python"));
+```java
+String s = "Java";
+
+System.out.println(s.contains("java"));
+```
 
 Output:
 
-    false
-
-### Important
-
-`contains()` is case-sensitive.
-
-    "Java".contains("java")
-
-returns:
-
-    false
+```text
+false
+```
 
 ---
 
@@ -554,41 +575,33 @@ returns:
 
 Checks whether a String starts with a specified prefix.
 
-Example:
+```java
+String s = "Java Programming";
 
-    String s = "Java Programming";
-
-    System.out.println(s.startsWith("Java"));
-
-Output:
-
-    true
-
-Example:
-
-    System.out.println(s.startsWith("Python"));
+System.out.println(s.startsWith("Java"));
+System.out.println(s.startsWith("Python"));
+```
 
 Output:
 
-    false
+```text
+true
+false
+```
 
-### Overloaded Version
+Overloaded version:
 
-You can also specify where checking should start.
+```java
+String s = "HelloJava";
 
-Conceptually:
-
-    startsWith(prefix, offset)
-
-Example:
-
-    String s = "HelloJava";
-
-    System.out.println(s.startsWith("Java", 5));
+System.out.println(s.startsWith("Java", 5));
+```
 
 Output:
 
-    true
+```text
+true
+```
 
 ---
 
@@ -596,153 +609,147 @@ Output:
 
 Checks whether a String ends with a specified suffix.
 
-Example:
+```java
+String s = "Hello.java";
 
-    String s = "Hello.java";
-
-    System.out.println(s.endsWith(".java"));
-
-Output:
-
-    true
-
-Example:
-
-    System.out.println(s.endsWith(".txt"));
+System.out.println(s.endsWith(".java"));
+```
 
 Output:
 
-    false
+```text
+true
+```
 
-### Common Use
+Common DSA/application use:
 
-Checking file extensions:
+```java
+String filename = "Main.java";
 
-    filename.endsWith(".java")
+if (filename.endsWith(".java")) {
+    System.out.println("Java file");
+}
+```
 
 ---
 
 # 14. 🔍 indexOf()
 
-`indexOf()` returns the index of the first occurrence of a character or substring.
+`indexOf()` returns the index of the first occurrence.
 
-Example:
+```java
+String s = "Java Programming";
 
-    String s = "Java Programming";
-
-    System.out.println(s.indexOf('a'));
-
-Output:
-
-    1
-
-Because:
-
-    J a v a
-    0 1 2 3
-
-The first `a` occurs at index `1`.
-
-### Searching for String
-
-    String s = "Java Programming";
-
-    System.out.println(s.indexOf("Programming"));
+System.out.println(s.indexOf('a'));
+```
 
 Output:
 
-    5
+```text
+1
+```
 
-### Not Found
+Searching for a String:
 
-    s.indexOf("Python")
+```java
+String s = "Java Programming";
 
-returns:
+System.out.println(s.indexOf("Programming"));
+```
 
-    -1
+Output:
 
-### ⭐ Important
+```text
+5
+```
 
-    indexOf()
+Not found:
 
-returns the first occurrence.
+```java
+String s = "Java";
+
+System.out.println(s.indexOf("Python"));
+```
+
+Output:
+
+```text
+-1
+```
+
+### DSA Importance
+
+`indexOf()` is useful for:
+
+- Searching
+- Finding delimiters
+- Parsing
+- Prefix/suffix logic
+- Brute-force String problems
 
 ---
 
 # 15. 🔎 lastIndexOf()
 
-`lastIndexOf()` returns the index of the last occurrence.
+Returns the last occurrence.
 
-Example:
+```java
+String s = "Java";
 
-    String s = "Java";
-
-    System.out.println(s.lastIndexOf('a'));
+System.out.println(s.lastIndexOf('a'));
+```
 
 Output:
 
-    3
+```text
+3
+```
 
-Indexes:
+Not found:
 
-    J a v a
-    0 1 2 3
+```java
+String s = "Java";
 
-First `a`:
+System.out.println(s.lastIndexOf('z'));
+```
 
-    1
+Output:
 
-Last `a`:
-
-    3
-
-### Not Found
-
-Returns:
-
-    -1
+```text
+-1
+```
 
 ---
 
 # 16. 🈳 isEmpty()
 
-Checks whether the String has length `0`.
+Checks whether String length is zero.
 
-Example:
+```java
+String s = "";
 
-    String s = "";
-
-    System.out.println(s.isEmpty());
-
-Output:
-
-    true
-
-Example:
-
-    String s = "Java";
-
-    System.out.println(s.isEmpty());
+System.out.println(s.isEmpty());
+```
 
 Output:
 
-    false
+```text
+true
+```
 
-### Important
+Whitespace is not empty:
 
-A String containing spaces is NOT empty.
+```java
+String s = "   ";
 
-    String s = "   ";
-
-    System.out.println(s.isEmpty());
+System.out.println(s.isEmpty());
+```
 
 Output:
 
-    false
-
-Because:
-
-    length > 0
+```text
+false
+```
 
 ---
 
@@ -750,41 +757,21 @@ Because:
 
 `isBlank()` checks whether a String is empty or contains only whitespace.
 
-Available since:
+Available since Java 11.
 
-    Java 11
+```java
+String s = "   ";
 
-Example:
-
-    String s = "   ";
-
-    System.out.println(s.isBlank());
+System.out.println(s.isBlank());
+```
 
 Output:
 
-    true
+```text
+true
+```
 
-Example:
-
-    String s = "Java";
-
-    System.out.println(s.isBlank());
-
-Output:
-
-    false
-
-### Difference
-
-    isEmpty()
-        ↓
-    Checks length == 0
-
-    isBlank()
-        ↓
-    Empty OR whitespace-only
-
-### Comparison
+Comparison:
 
 | String | `isEmpty()` | `isBlank()` |
 |---|---:|---:|
@@ -798,35 +785,35 @@ Output:
 
 Converts characters to uppercase.
 
-Example:
+```java
+String s = "java";
 
-    String s = "java";
+String result = s.toUpperCase();
 
-    String result = s.toUpperCase();
-
-    System.out.println(result);
-
-Output:
-
-    JAVA
-
-### Important
-
-Original String remains unchanged.
-
-    String s = "java";
-
-    s.toUpperCase();
-
-    System.out.println(s);
+System.out.println(result);
+```
 
 Output:
 
-    java
+```text
+JAVA
+```
 
-Correct:
+Original remains unchanged:
 
-    s = s.toUpperCase();
+```java
+String s = "java";
+
+s.toUpperCase();
+
+System.out.println(s);
+```
+
+Output:
+
+```text
+java
+```
 
 ---
 
@@ -834,22 +821,19 @@ Correct:
 
 Converts characters to lowercase.
 
-Example:
+```java
+String s = "JAVA";
 
-    String s = "JAVA";
+String result = s.toLowerCase();
 
-    String result = s.toLowerCase();
-
-    System.out.println(result);
+System.out.println(result);
+```
 
 Output:
 
-    java
-
-Again:
-
-    Original String → unchanged
-    Returned String → lowercase result
+```text
+java
+```
 
 ---
 
@@ -857,161 +841,148 @@ Again:
 
 `trim()` removes leading and trailing characters whose code points are less than or equal to U+0020.
 
-In simple terms, it removes many traditional ASCII-style leading/trailing whitespace characters.
+```java
+String s = "   Java   ";
 
-Example:
-
-    String s = "   Java   ";
-
-    System.out.println(s.trim());
+System.out.println(s.trim());
+```
 
 Output:
 
-    Java
+```text
+Java
+```
 
-### Important
-
-It removes whitespace from:
-
-    Beginning
-    End
-
-It does NOT remove spaces in the middle.
-
-Example:
-
-    "Java   Programming"
-
-remains:
-
-    "Java   Programming"
+It does not remove whitespace in the middle.
 
 ---
 
 # 21. 🧹 strip()
 
-`strip()` also removes leading and trailing whitespace.
+`strip()` removes leading and trailing Unicode whitespace.
 
-Unlike `trim()`, it is Unicode-aware.
+Available since Java 11.
 
-Available since:
+```java
+String s = "   Java   ";
 
-    Java 11
-
-Example:
-
-    String s = "   Java   ";
-
-    System.out.println(s.strip());
+System.out.println(s.strip());
+```
 
 Output:
 
-    Java
+```text
+Java
+```
 
-### Comparison
+Comparison:
 
-| Method | Since | Whitespace Handling |
+| Method | Introduced | Behavior |
 |---|---:|---|
-| `trim()` | Java 1.0 | Traditional/ASCII-oriented |
-| `strip()` | Java 11 | Unicode-aware |
-
-### Interview Point
-
-Prefer `strip()` when Unicode-aware whitespace handling is required.
+| `trim()` | Java 1.0 | Traditional whitespace rules |
+| `strip()` | Java 11 | Unicode-aware whitespace |
 
 ---
 
 # 22. ⬅️ stripLeading()
 
-Removes whitespace from the beginning only.
+Removes leading whitespace.
 
-Example:
+```java
+String s = "   Java   ";
 
-    String s = "   Java   ";
+System.out.println(s.stripLeading());
+```
 
-    System.out.println(s.stripLeading());
+Conceptual result:
 
-Result conceptually:
-
-    "Java   "
-
-The trailing spaces remain.
+```text
+Java   
+```
 
 ---
 
 # 23. ➡️ stripTrailing()
 
-Removes whitespace from the end only.
+Removes trailing whitespace.
 
-Example:
+```java
+String s = "   Java   ";
 
-    String s = "   Java   ";
+System.out.println(s.stripTrailing());
+```
 
-    System.out.println(s.stripTrailing());
+Conceptual result:
 
-Result conceptually:
-
-    "   Java"
-
-The leading spaces remain.
+```text
+   Java
+```
 
 ---
 
 # 24. 🔄 replace()
 
-`replace()` replaces characters or literal character sequences.
+`replace()` performs literal replacement.
 
-### Character Replacement
+Character replacement:
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    String result = s.replace('a', 'o');
+String result = s.replace('a', 'o');
 
-    System.out.println(result);
-
-Output:
-
-    Jovo
-
-### String Replacement
-
-    String s = "Java Java";
-
-    String result = s.replace("Java", "Python");
+System.out.println(result);
+```
 
 Output:
 
-    Python Python
+```text
+Jovo
+```
 
-### Important
+String replacement:
 
-`replace()` treats the target as a literal value.
+```java
+String s = "Java Java";
 
-It does NOT interpret the target as a regular expression.
+String result = s.replace("Java", "Python");
+
+System.out.println(result);
+```
+
+Output:
+
+```text
+Python Python
+```
+
+Important:
+
+```text
+replace() → literal replacement
+```
+
+It does not interpret the target as a regular expression.
 
 ---
 
 # 25. 1️⃣ replaceFirst()
 
-`replaceFirst()` replaces the first substring that matches a regular expression.
+`replaceFirst()` replaces the first substring matching a regular expression.
 
-Example:
+```java
+String s = "Java Java";
 
-    String s = "Java Java";
+String result = s.replaceFirst("Java", "Python");
 
-    String result = s.replaceFirst("Java", "Python");
+System.out.println(result);
+```
 
-Result:
+Output:
 
-    Python Java
-
-### Important
-
-It works with:
-
-    Regular Expression
-
-and replaces only the first matching occurrence.
+```text
+Python Java
+```
 
 ---
 
@@ -1019,155 +990,158 @@ and replaces only the first matching occurrence.
 
 `replaceAll()` replaces every substring matching a regular expression.
 
-Example:
+```java
+String s = "Java123";
 
-    String s = "Java123";
+String result = s.replaceAll("[0-9]", "");
 
-    String result = s.replaceAll("[0-9]", "");
-
-    System.out.println(result);
+System.out.println(result);
+```
 
 Output:
 
-    Java
+```text
+Java
+```
 
-Here:
+Whitespace normalization example:
 
-    [0-9]
+```java
+String s = "Java    Programming";
 
-means digits from 0 to 9.
+String result = s.replaceAll("\\s+", " ");
 
-### Another Example
+System.out.println(result);
+```
 
-    String s = "Java   Programming";
+Output:
 
-    String result = s.replaceAll("\\s+", " ");
+```text
+Java Programming
+```
 
-Result:
+Remember:
 
-    Java Programming
-
-### ⭐ Important Difference
-
-    replace()
-        ↓
-    Literal replacement
-
-    replaceFirst()
-        ↓
-    Regex + first match
-
-    replaceAll()
-        ↓
-    Regex + all matches
+```text
+replace()      → literal
+replaceFirst() → regex + first match
+replaceAll()   → regex + all matches
+```
 
 ---
 
 # 27. ✂️ split()
 
-`split()` divides a String into an array based on a regular expression.
+`split()` divides a String into a `String[]` using a regular expression.
 
-Example:
+```java
+String s = "Java,Python,C++";
 
-    String s = "Java,Python,C++";
+String[] languages = s.split(",");
 
-    String[] languages = s.split(",");
+for (String language : languages) {
+    System.out.println(language);
+}
+```
 
-Result:
+Output:
 
-    languages[0] → "Java"
-    languages[1] → "Python"
-    languages[2] → "C++"
-
-### Another Example
-
-    String s = "Java Python C++";
-
-    String[] arr = s.split(" ");
-
-Result:
-
-    Java
-    Python
-    C++
+```text
+Java
+Python
+C++
+```
 
 ### Important
 
-The argument is a regular expression.
+The argument is a regex.
 
-Therefore, some characters need escaping.
+For a literal dot:
 
-For example:
+```java
+String s = "a.b.c";
 
-    String s = "a.b.c";
+String[] parts = s.split("\\.");
+```
 
-To split on a literal dot:
+### DSA Importance
 
-    s.split("\\.");
+`split()` is useful for:
 
-because `.` has special meaning in regex.
+- Tokenization
+- Parsing input
+- Word-based problems
+- Sentence processing
+- Delimiter-based problems
+
+But remember that repeated `split()` can create many objects, so manual scanning may be preferable when performance matters.
 
 ---
 
 # 28. 🔗 join()
 
-`join()` combines multiple Strings using a delimiter.
+`join()` combines Strings using a delimiter.
 
-Example:
+```java
+String result = String.join("-", "2026", "09", "21");
 
-    String result = String.join("-", "2026", "09", "21");
-
-Output:
-
-    2026-09-21
-
-### Another Example
-
-    String result = String.join(", ", "Java", "Python", "C++");
+System.out.println(result);
+```
 
 Output:
 
-    Java, Python, C++
+```text
+2026-09-21
+```
 
-### Important
+Another example:
 
-`join()` is a static method of String.
+```java
+String result = String.join(", ", "Java", "Python", "C++");
 
-We call it using:
+System.out.println(result);
+```
 
-    String.join(...)
+Output:
 
-not:
+```text
+Java, Python, C++
+```
 
-    object.join(...)
+It is a static method:
+
+```java
+String.join(...)
+```
 
 ---
 
 # 29. 🔄 valueOf()
 
-`String.valueOf()` converts different data types into a String representation.
+`String.valueOf()` converts values into their String representation.
 
-Example:
+```java
+int num = 100;
 
-    int num = 100;
+String s = String.valueOf(num);
 
-    String s = String.valueOf(num);
+System.out.println(s);
+```
 
-Now:
+Output:
 
-    num → 100
-    s   → "100"
+```text
+100
+```
 
-### Examples
+Examples:
 
-    String.valueOf(100);
-    String.valueOf(10.5);
-    String.valueOf(true);
-    String.valueOf('A');
-
-### Why Useful?
-
-It provides a convenient way to convert primitive values into Strings.
+```java
+String a = String.valueOf(100);
+String b = String.valueOf(10.5);
+String c = String.valueOf(true);
+String d = String.valueOf('A');
+```
 
 ---
 
@@ -1175,72 +1149,68 @@ It provides a convenient way to convert primitive values into Strings.
 
 Converts a String into a character array.
 
+```java
+String s = "Java";
+
+char[] arr = s.toCharArray();
+
+for (char ch : arr) {
+    System.out.println(ch);
+}
+```
+
+Conceptually:
+
+```text
+"Java"
+   ↓
+['J', 'a', 'v', 'a']
+```
+
+### ⭐ DSA Importance
+
+This is extremely useful when:
+
+- Sorting characters
+- Modifying characters
+- Frequency counting
+- Using array-based algorithms
+
 Example:
 
-    String s = "Java";
+```java
+String s = "hello";
 
-    char[] arr = s.toCharArray();
+char[] chars = s.toCharArray();
 
-Result:
+chars[0] = 'H';
 
-    arr[0] → J
-    arr[1] → a
-    arr[2] → v
-    arr[3] → a
+System.out.println(new String(chars));
+```
 
-Visualization:
+Output:
 
-    "Java"
-
-       ↓
-
-    ['J', 'a', 'v', 'a']
-
-### Use Case
-
-Useful when you need to process individual characters.
-
-Example:
-
-    String s = "Java";
-
-    char[] arr = s.toCharArray();
-
-    for(char ch : arr) {
-        System.out.println(ch);
-    }
+```text
+Hello
+```
 
 ---
 
 # 31. 🧱 getBytes()
 
-Converts a String into a byte array using a character encoding.
+Converts a String into bytes using a charset.
 
-Example:
+Prefer an explicit charset:
 
-    String s = "Java";
+```java
+import java.nio.charset.StandardCharsets;
 
-    byte[] arr = s.getBytes();
+String s = "Java";
 
-For normal ASCII characters, the bytes correspond to their encoding values under the chosen/default encoding.
+byte[] bytes = s.getBytes(StandardCharsets.UTF_8);
+```
 
-### Better Practice
-
-When encoding matters, specify it explicitly.
-
-For example:
-
-    byte[] arr = s.getBytes(StandardCharsets.UTF_8);
-
-This makes the encoding clear and predictable.
-
-### Important
-
-For production code, prefer an explicit charset such as:
-
-    StandardCharsets.UTF_8
-
-instead of relying on the platform default charset.
+For text processing involving encoding, always be conscious of the charset being used.
 
 ---
 
@@ -1248,37 +1218,37 @@ instead of relying on the platform default charset.
 
 `matches()` checks whether the entire String matches a regular expression.
 
-Example:
+```java
+String s = "12345";
 
-    String s = "12345";
-
-    System.out.println(s.matches("\\d+"));
-
-Output:
-
-    true
-
-Here:
-
-    \\d+
-
-means:
-
-    One or more digits
-
-### Another Example
-
-    String s = "Java";
-
-    System.out.println(s.matches("[A-Za-z]+"));
+System.out.println(s.matches("\\d+"));
+```
 
 Output:
 
-    true
+```text
+true
+```
 
-### ⭐ Important
+Another example:
 
-`matches()` checks the entire String against the regex.
+```java
+String s = "Java";
+
+System.out.println(s.matches("[A-Za-z]+"));
+```
+
+Output:
+
+```text
+true
+```
+
+Important:
+
+```text
+matches() → entire String must match
+```
 
 ---
 
@@ -1286,22 +1256,26 @@ Output:
 
 `String.format()` creates a formatted String.
 
-Example:
+```java
+String name = "Divyansh";
+int age = 22;
 
-    String name = "Divyansh";
-    int age = 22;
+String result = String.format(
+    "Name: %s, Age: %d",
+    name,
+    age
+);
 
-    String result = String.format(
-        "Name: %s, Age: %d",
-        name,
-        age
-    );
+System.out.println(result);
+```
 
-Result:
+Output:
 
-    Name: Divyansh, Age: 22
+```text
+Name: Divyansh, Age: 22
+```
 
-### Common Format Specifiers
+Common format specifiers:
 
 | Specifier | Meaning |
 |---|---|
@@ -1316,33 +1290,35 @@ Result:
 
 # 34. 🔁 repeat()
 
-`repeat()` creates a String by repeating the current String a specified number of times.
+`repeat()` repeats a String.
 
-Available since:
+Available since Java 11.
 
-    Java 11
+```java
+String s = "Hi";
 
-Example:
-
-    String s = "Hi";
-
-    System.out.println(s.repeat(3));
+System.out.println(s.repeat(3));
+```
 
 Output:
 
-    HiHiHi
+```text
+HiHiHi
+```
 
 Another example:
 
-    System.out.println("*".repeat(5));
+```java
+System.out.println("*".repeat(5));
+```
 
 Output:
 
-    *****
+```text
+*****
+```
 
-### Important
-
-The count must not be negative.
+The count cannot be negative.
 
 ---
 
@@ -1350,139 +1326,128 @@ The count must not be negative.
 
 `intern()` returns the canonical representation of a String.
 
-It is closely related to the String Pool.
+```java
+String s1 = new String("Java");
 
-Example:
+String s2 = s1.intern();
 
-    String s1 = new String("Java");
+System.out.println(s2 == "Java");
+```
 
-    String s2 = s1.intern();
+Output:
 
-Now `s2` refers to the pooled representation of `"Java"`.
+```text
+true
+```
 
-Conceptually:
-
-    String Pool
-         |
-         ↓
-      "Java"
-         ↑
-         |
-        s2
-
-### Important
-
-`intern()` is an advanced String Pool concept.
-
-Don't use it casually for normal String processing.
+`intern()` is related to the String Pool and should not be used casually.
 
 ---
 
 # 36. 🆚 String Comparison
 
-There are several ways to compare Strings.
-
 ## `==`
 
 Compares references.
 
-Example:
+```java
+String a = new String("Java");
+String b = new String("Java");
 
-    String a = new String("Java");
-    String b = new String("Java");
-
-    System.out.println(a == b);
+System.out.println(a == b);
+```
 
 Output:
 
-    false
-
-Because they are different objects.
-
----
+```text
+false
+```
 
 ## `equals()`
 
 Compares contents.
 
-    System.out.println(a.equals(b));
+```java
+System.out.println(a.equals(b));
+```
 
 Output:
 
-    true
-
-### ⭐ Rule
-
-    ==      → reference comparison
-
-    equals  → content comparison
-
----
+```text
+true
+```
 
 ## `compareTo()`
 
-Used for lexicographical comparison.
+Performs lexicographical comparison.
 
-Returns:
+```java
+String a = "Apple";
+String b = "Banana";
 
-    Negative → first comes before second
-    Zero     → equal
-    Positive → first comes after second
+System.out.println(a.compareTo(b) < 0);
+```
+
+Output:
+
+```text
+true
+```
+
+### Golden Rule
+
+```text
+==       → reference comparison
+equals() → content comparison
+compareTo() → ordering comparison
+```
 
 ---
 
 # 37. 🧾 Methods That Return String
 
-Important String methods that return another String include:
-
-| Method | Return |
+| Method | Return Type |
 |---|---|
-| `concat()` | String |
-| `substring()` | String |
-| `toUpperCase()` | String |
-| `toLowerCase()` | String |
-| `trim()` | String |
-| `strip()` | String |
-| `stripLeading()` | String |
-| `stripTrailing()` | String |
-| `replace()` | String |
-| `replaceFirst()` | String |
-| `replaceAll()` | String |
-| `repeat()` | String |
-| `format()` | String |
+| `concat()` | `String` |
+| `substring()` | `String` |
+| `toUpperCase()` | `String` |
+| `toLowerCase()` | `String` |
+| `trim()` | `String` |
+| `strip()` | `String` |
+| `stripLeading()` | `String` |
+| `stripTrailing()` | `String` |
+| `replace()` | `String` |
+| `replaceFirst()` | `String` |
+| `replaceAll()` | `String` |
+| `repeat()` | `String` |
+| `format()` | `String` |
 
-### Important
-
-Because String is immutable, these operations do not modify the original String.
+Because String is immutable, these operations return a String rather than modifying the existing object.
 
 ---
 
 # 38. ✅ Methods That Return boolean
 
-Important methods:
-
 | Method | Purpose |
 |---|---|
 | `equals()` | Content comparison |
 | `equalsIgnoreCase()` | Case-insensitive comparison |
-| `contains()` | Contains sequence? |
-| `startsWith()` | Starts with prefix? |
-| `endsWith()` | Ends with suffix? |
-| `isEmpty()` | Length zero? |
-| `isBlank()` | Empty/whitespace only? |
-| `matches()` | Matches regex? |
+| `contains()` | Contains sequence |
+| `startsWith()` | Prefix check |
+| `endsWith()` | Suffix check |
+| `isEmpty()` | Zero length |
+| `isBlank()` | Empty/whitespace-only |
+| `matches()` | Regex matching |
 
 ---
 
 # 39. 🔢 Methods That Return int
 
-Important methods:
-
 | Method | Purpose |
 |---|---|
-| `length()` | Number of characters |
-| `indexOf()` | First matching index |
-| `lastIndexOf()` | Last matching index |
+| `length()` | Number of UTF-16 code units |
+| `indexOf()` | First occurrence |
+| `lastIndexOf()` | Last occurrence |
 | `compareTo()` | Lexicographical comparison |
 | `compareToIgnoreCase()` | Case-insensitive comparison |
 
@@ -1492,17 +1457,25 @@ Important methods:
 
 Main method:
 
-    charAt()
+```java
+String s = "Java";
 
-Example:
+char ch = s.charAt(2);
 
-    String s = "Java";
+System.out.println(ch);
+```
 
-    char ch = s.charAt(2);
+Output:
 
-Result:
+```text
+v
+```
 
-    v
+Return type:
+
+```text
+char
+```
 
 ---
 
@@ -1512,60 +1485,534 @@ Result:
 
 Returns:
 
-    char[]
+```text
+char[]
+```
 
 Example:
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    char[] arr = s.toCharArray();
-
----
+char[] arr = s.toCharArray();
+```
 
 ## split()
 
 Returns:
 
-    String[]
+```text
+String[]
+```
 
 Example:
 
-    String s = "Java Python C++";
+```java
+String s = "Java Python C++";
 
-    String[] arr = s.split(" ");
-
----
+String[] arr = s.split(" ");
+```
 
 ## getBytes()
 
 Returns:
 
-    byte[]
+```text
+byte[]
+```
 
 Example:
 
-    byte[] arr = "Java".getBytes();
+```java
+byte[] arr = "Java".getBytes();
+```
 
 ---
 
-# 42. ⚠️ Common Mistakes
+# 42. 🧠 DSA Connection
 
-## ❌ Mistake 1 — Using `==` for content comparison
+String methods are directly connected to many DSA problems.
+
+A String can be treated conceptually as a sequence of characters:
+
+```text
+String
+  ↓
+Characters
+  ↓
+Index-based processing
+  ↓
+DSA algorithms
+```
+
+Important String methods for DSA:
+
+| Method | DSA Use |
+|---|---|
+| `length()` | Traversal bounds |
+| `charAt()` | Character access |
+| `substring()` | Substring problems |
+| `indexOf()` | Searching |
+| `lastIndexOf()` | Reverse searching |
+| `equals()` | Comparing sequences |
+| `toCharArray()` | Array-based processing |
+| `split()` | Tokenization |
+| `contains()` | Basic searching |
+| `startsWith()` | Prefix problems |
+| `endsWith()` | Suffix problems |
+| `compareTo()` | Lexicographical ordering |
+
+### ⭐ Most Important DSA Idea
+
+Do not memorize String methods separately from algorithms.
+
+Learn to combine them.
+
+For example:
+
+```text
+String
+  +
+charAt()
+  +
+HashMap
+  +
+frequency counting
+```
+
+This combination solves many problems.
+
+---
+
+# 43. 🔥 Important String DSA Patterns
+
+## Pattern 1 — Character Frequency
+
+Question:
+
+> Count the frequency of each character.
+
+Using an array:
+
+```java
+String s = "banana";
+
+int[] freq = new int[26];
+
+for (int i = 0; i < s.length(); i++) {
+    char ch = s.charAt(i);
+
+    freq[ch - 'a']++;
+}
+```
+
+For lowercase English letters:
+
+```text
+Time  → O(n)
+Space → O(1)
+```
+
+The space is O(1) because the array always has 26 positions.
+
+---
+
+## Pattern 2 — Frequency Map
+
+Useful when characters are not limited to lowercase English letters.
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+String s = "banana";
+
+Map<Character, Integer> freq = new HashMap<>();
+
+for (char ch : s.toCharArray()) {
+    freq.put(ch, freq.getOrDefault(ch, 0) + 1);
+}
+```
+
+Complexity:
+
+```text
+Average Time → O(n)
+Space        → O(k)
+```
+
+Where `k` is the number of distinct characters.
+
+---
+
+# 44. 🧩 Common String DSA Questions
+
+## 1. Reverse a String
+
+### Approach
+
+Use two pointers or a character array.
+
+```java
+String s = "hello";
+
+char[] arr = s.toCharArray();
+
+int left = 0;
+int right = arr.length - 1;
+
+while (left < right) {
+    char temp = arr[left];
+    arr[left] = arr[right];
+    arr[right] = temp;
+
+    left++;
+    right--;
+}
+
+String reversed = new String(arr);
+
+System.out.println(reversed);
+```
+
+Output:
+
+```text
+olleh
+```
+
+Complexity:
+
+```text
+Time  → O(n)
+Space → O(n)
+```
+
+---
+
+## 2. Check Palindrome
+
+A palindrome reads the same forward and backward.
+
+Example:
+
+```text
+madam → palindrome
+hello → not palindrome
+```
+
+Solution:
+
+```java
+String s = "madam";
+
+int left = 0;
+int right = s.length() - 1;
+
+boolean palindrome = true;
+
+while (left < right) {
+    if (s.charAt(left) != s.charAt(right)) {
+        palindrome = false;
+        break;
+    }
+
+    left++;
+    right--;
+}
+
+System.out.println(palindrome);
+```
+
+Complexity:
+
+```text
+Time  → O(n)
+Space → O(1)
+```
+
+### Pattern
+
+```text
+Two Pointers
+     ↓
+left →      ← right
+```
+
+---
+
+## 3. Count Vowels
+
+```java
+String s = "education";
+
+int count = 0;
+
+for (int i = 0; i < s.length(); i++) {
+    char ch = s.charAt(i);
+
+    if (ch == 'a' ||
+        ch == 'e' ||
+        ch == 'i' ||
+        ch == 'o' ||
+        ch == 'u') {
+
+        count++;
+    }
+}
+
+System.out.println(count);
+```
+
+Complexity:
+
+```text
+Time  → O(n)
+Space → O(1)
+```
+
+---
+
+## 4. First Non-Repeating Character
+
+Pattern:
+
+```text
+Frequency Count
+       ↓
+Second Traversal
+       ↓
+First frequency == 1
+```
+
+Example:
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+String s = "swiss";
+
+Map<Character, Integer> freq = new HashMap<>();
+
+for (char ch : s.toCharArray()) {
+    freq.put(ch, freq.getOrDefault(ch, 0) + 1);
+}
+
+for (char ch : s.toCharArray()) {
+    if (freq.get(ch) == 1) {
+        System.out.println(ch);
+        break;
+    }
+}
+```
+
+Output:
+
+```text
+w
+```
+
+Complexity:
+
+```text
+Average Time → O(n)
+Space        → O(k)
+```
+
+---
+
+## 5. Check Anagram
+
+Two Strings are anagrams if they contain the same characters with the same frequencies.
+
+Example:
+
+```text
+listen
+silent
+```
+
+Frequency-array approach:
+
+```java
+String s1 = "listen";
+String s2 = "silent";
+
+if (s1.length() != s2.length()) {
+    System.out.println(false);
+    return;
+}
+
+int[] freq = new int[26];
+
+for (int i = 0; i < s1.length(); i++) {
+    freq[s1.charAt(i) - 'a']++;
+    freq[s2.charAt(i) - 'a']--;
+}
+
+boolean anagram = true;
+
+for (int value : freq) {
+    if (value != 0) {
+        anagram = false;
+        break;
+    }
+}
+
+System.out.println(anagram);
+```
+
+Complexity:
+
+```text
+Time  → O(n)
+Space → O(1)
+```
+
+---
+
+## 6. Remove Duplicate Characters
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+String s = "programming";
+
+Set<Character> seen = new HashSet<>();
+
+StringBuilder result = new StringBuilder();
+
+for (char ch : s.toCharArray()) {
+    if (seen.add(ch)) {
+        result.append(ch);
+    }
+}
+
+System.out.println(result);
+```
+
+Output:
+
+```text
+progamin
+```
+
+Pattern:
+
+```text
+String
+  ↓
+HashSet
+  ↓
+Track seen characters
+```
+
+---
+
+# 45. 🧠 DSA Problem-Solving Approach
+
+When you see a String problem, ask these questions in order.
+
+## Step 1 — What is the input?
+
+```text
+String?
+String[]?
+Character array?
+```
+
+## Step 2 — What is required?
+
+```text
+Search?
+Count?
+Compare?
+Reverse?
+Remove?
+Find substring?
+```
+
+## Step 3 — Can I solve it with simple traversal?
+
+Think:
+
+```java
+for (int i = 0; i < s.length(); i++) {
+    char ch = s.charAt(i);
+}
+```
+
+## Step 4 — Do I need extra data?
+
+Possible tools:
+
+```text
+int[26]
+HashMap
+HashSet
+char[]
+StringBuilder
+Deque
+```
+
+## Step 5 — Can two pointers work?
+
+Typical problems:
+
+```text
+Palindrome
+Reverse
+Compare from both ends
+Remove characters
+```
+
+## Step 6 — Is it a sliding-window problem?
+
+Look for phrases like:
+
+```text
+longest substring
+shortest substring
+at most K characters
+without repeating characters
+minimum window
+```
+
+## Step 7 — Analyze complexity
+
+Always identify:
+
+```text
+Time Complexity
+Space Complexity
+```
+
+---
+
+# 46. ⚠️ Common Mistakes
+
+## ❌ Mistake 1 — Using `==`
 
 Wrong:
 
-    String a = "Java";
-    String b = new String("Java");
+```java
+String a = "Java";
+String b = new String("Java");
 
-    if(a == b) {
-        // content is equal
-    }
+if (a == b) {
+    System.out.println("Equal");
+}
+```
 
 Correct:
 
-    if(a.equals(b)) {
-        // content is equal
-    }
+```java
+if (a.equals(b)) {
+    System.out.println("Equal");
+}
+```
 
 ---
 
@@ -1573,231 +2020,277 @@ Correct:
 
 Wrong assumption:
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    s.toUpperCase();
+s.toUpperCase();
 
-    System.out.println(s);
-
-Expected by beginner:
-
-    JAVA
-
-Actual:
-
-    Java
-
-Correct:
-
-    s = s.toUpperCase();
-
----
-
-## ❌ Mistake 3 — Confusing isEmpty() and isBlank()
-
-    "   ".isEmpty()
-
-returns:
-
-    false
-
-while:
-
-    "   ".isBlank()
-
-returns:
-
-    true
-
----
-
-## ❌ Mistake 4 — Forgetting substring end index is exclusive
-
-    "Java".substring(1, 3)
-
-returns:
-
-    "av"
-
-NOT:
-
-    "ava"
-
-Remember:
-
-    [start, end)
-
----
-
-## ❌ Mistake 5 — Forgetting indexOf() returns -1
-
-If the value is not found:
-
-    indexOf()
-
-returns:
-
-    -1
-
----
-
-## ❌ Mistake 6 — Confusing replace() with replaceAll()
-
-    replace()
-        ↓
-    Literal replacement
-
-    replaceAll()
-        ↓
-    Regular expression replacement
-
----
-
-## ❌ Mistake 7 — Forgetting split() uses regex
-
-For:
-
-    "a.b.c"
-
-Use:
-
-    split("\\.")
-
-not:
-
-    split(".")
-
-because `.` has special meaning in regex.
-
----
-
-# 43. 🚨 Interview Traps
-
-## Trap 1
-
-    String s = "Java";
-
-    s.toUpperCase();
-
-    System.out.println(s);
+System.out.println(s);
+```
 
 Output:
 
-    Java
+```text
+Java
+```
+
+Correct:
+
+```java
+s = s.toUpperCase();
+```
+
+---
+
+## ❌ Mistake 3 — Confusing `isEmpty()` and `isBlank()`
+
+```java
+System.out.println("   ".isEmpty());
+System.out.println("   ".isBlank());
+```
+
+Output:
+
+```text
+false
+true
+```
+
+---
+
+## ❌ Mistake 4 — Forgetting substring end is exclusive
+
+```java
+String s = "Java";
+
+System.out.println(s.substring(1, 3));
+```
+
+Output:
+
+```text
+av
+```
+
+Remember:
+
+```text
+[start, end)
+```
+
+---
+
+## ❌ Mistake 5 — Forgetting `indexOf()` returns `-1`
+
+```java
+String s = "Java";
+
+System.out.println(s.indexOf('z'));
+```
+
+Output:
+
+```text
+-1
+```
+
+---
+
+## ❌ Mistake 6 — Confusing `replace()` and `replaceAll()`
+
+```text
+replace()      → literal
+replaceFirst() → regex + first
+replaceAll()   → regex + all
+```
+
+---
+
+## ❌ Mistake 7 — Forgetting `split()` uses regex
+
+To split:
+
+```text
+a.b.c
+```
+
+Use:
+
+```java
+String s = "a.b.c";
+
+String[] parts = s.split("\\.");
+```
+
+---
+
+# 47. 🚨 Interview Traps
+
+## Trap 1
+
+```java
+String s = "Java";
+
+s.toUpperCase();
+
+System.out.println(s);
+```
+
+Output:
+
+```text
+Java
+```
 
 ---
 
 ## Trap 2
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    s = s.toUpperCase();
+s = s.toUpperCase();
 
-    System.out.println(s);
+System.out.println(s);
+```
 
 Output:
 
-    JAVA
+```text
+JAVA
+```
 
 ---
 
 ## Trap 3
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    System.out.println(s.substring(1, 3));
+System.out.println(s.substring(1, 3));
+```
 
 Output:
 
-    av
+```text
+av
+```
 
 ---
 
 ## Trap 4
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    System.out.println(s.indexOf('a'));
+System.out.println(s.indexOf('a'));
+```
 
 Output:
 
-    1
+```text
+1
+```
 
 ---
 
 ## Trap 5
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    System.out.println(s.lastIndexOf('a'));
+System.out.println(s.lastIndexOf('a'));
+```
 
 Output:
 
-    3
+```text
+3
+```
 
 ---
 
 ## Trap 6
 
-    String s = "   ";
+```java
+String s = "   ";
 
-    System.out.println(s.isEmpty());
+System.out.println(s.isEmpty());
+```
 
 Output:
 
-    false
+```text
+false
+```
 
 ---
 
 ## Trap 7
 
-    String s = "   ";
+```java
+String s = "   ";
 
-    System.out.println(s.isBlank());
+System.out.println(s.isBlank());
+```
 
 Output:
 
-    true
+```text
+true
+```
 
 ---
 
 ## Trap 8
 
-    String s = "Java Java";
+```java
+String s = "Java Java";
 
-    System.out.println(
-        s.replaceFirst("Java", "Python")
-    );
+System.out.println(
+    s.replaceFirst("Java", "Python")
+);
+```
 
 Output:
 
-    Python Java
+```text
+Python Java
+```
 
 ---
 
 ## Trap 9
 
-    String s = "Java Java";
+```java
+String s = "Java Java";
 
-    System.out.println(
-        s.replaceAll("Java", "Python")
-    );
+System.out.println(
+    s.replaceAll("Java", "Python")
+);
+```
 
 Output:
 
-    Python Python
+```text
+Python Python
+```
 
 ---
 
 ## Trap 10
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    System.out.println(s.contains("java"));
+System.out.println(s.contains("java"));
+```
 
 Output:
 
-    false
+```text
+false
+```
 
 Reason:
 
@@ -1805,7 +2298,7 @@ Reason:
 
 ---
 
-# 44. 🔥 Top 20 Interview Questions
+# 48. 🔥 Top 20 Interview Questions
 
 ## Q1. What is the difference between `length` and `length()`?
 
@@ -1813,13 +2306,15 @@ Reason:
 
 For arrays:
 
-    array.length
+```java
+int length = arr.length;
+```
 
 For String:
 
-    string.length()
-
-`length` is an array property, while `length()` is a String method.
+```java
+int length = s.length();
+```
 
 ---
 
@@ -1827,19 +2322,15 @@ For String:
 
 **Answer:**
 
-It returns the character at the specified index.
-
-Return type:
-
-    char
+It returns a `char` at the specified index.
 
 ---
 
-## Q3. What happens if an invalid index is passed to `charAt()`?
+## Q3. What happens with an invalid `charAt()` index?
 
 **Answer:**
 
-A `StringIndexOutOfBoundsException` is thrown.
+`StringIndexOutOfBoundsException` is thrown.
 
 ---
 
@@ -1847,188 +2338,179 @@ A `StringIndexOutOfBoundsException` is thrown.
 
 **Answer:**
 
-`substring(2)` starts at index 2 and goes to the end.
+`substring(2)` goes from index 2 to the end.
 
-`substring(2, 5)` starts at index 2 and stops before index 5.
+`substring(2, 5)` goes from index 2 up to, but not including, index 5.
 
 ---
 
-## Q5. Is the end index of substring() inclusive?
+## Q5. Is the end index of `substring()` inclusive?
 
 **Answer:**
 
 No.
 
-The start index is inclusive and the end index is exclusive.
-
-    [start, end)
-
----
-
-## Q6. What does indexOf() return if an element is not found?
-
-**Answer:**
-
-It returns:
-
-    -1
+```text
+start → inclusive
+end   → exclusive
+```
 
 ---
 
-## Q7. What is the difference between indexOf() and lastIndexOf()?
+## Q6. What does `indexOf()` return if the element is not found?
 
 **Answer:**
 
-`indexOf()` returns the first occurrence.
-
-`lastIndexOf()` returns the last occurrence.
+```text
+-1
+```
 
 ---
 
-## Q8. What is the difference between equals() and equalsIgnoreCase()?
+## Q7. Difference between `indexOf()` and `lastIndexOf()`?
 
 **Answer:**
 
-`equals()` compares content with case sensitivity.
-
-`equalsIgnoreCase()` compares content while ignoring case differences.
+```text
+indexOf()     → first occurrence
+lastIndexOf() → last occurrence
+```
 
 ---
 
-## Q9. What does compareTo() return?
+## Q8. Difference between `equals()` and `equalsIgnoreCase()`?
 
 **Answer:**
 
-It returns:
+`equals()` is case-sensitive.
 
-    Negative → first String comes before second
-    Zero     → Strings are equal
-    Positive → first String comes after second
+`equalsIgnoreCase()` ignores case differences.
 
 ---
 
-## Q10. What is the difference between isEmpty() and isBlank()?
+## Q9. What does `compareTo()` return?
 
 **Answer:**
 
-`isEmpty()` checks whether length is zero.
-
-`isBlank()` checks whether the String is empty or contains only whitespace.
+```text
+negative → first comes before second
+zero     → equal
+positive → first comes after second
+```
 
 ---
 
-## Q11. What is the difference between trim() and strip()?
+## Q10. Difference between `isEmpty()` and `isBlank()`?
 
 **Answer:**
 
-`trim()` uses traditional whitespace rules based around characters up to U+0020.
+```text
+isEmpty() → length == 0
+
+isBlank() → empty or whitespace-only
+```
+
+---
+
+## Q11. Difference between `trim()` and `strip()`?
+
+**Answer:**
+
+`trim()` follows traditional U+0020-based trimming rules.
 
 `strip()` is Unicode-aware and was introduced in Java 11.
 
 ---
 
-## Q12. What does replace() do?
+## Q12. What does `replace()` do?
 
 **Answer:**
 
-It replaces literal characters or character sequences and returns a new String.
+It performs literal replacement and returns a new String.
 
 ---
 
-## Q13. What is the difference between replace(), replaceFirst(), and replaceAll()?
+## Q13. Difference between `replace()`, `replaceFirst()`, and `replaceAll()`?
 
 **Answer:**
 
-    replace()
-        → Literal replacement
-
-    replaceFirst()
-        → Regex replacement of first match
-
-    replaceAll()
-        → Regex replacement of all matches
+```text
+replace()      → literal replacement
+replaceFirst() → first regex match
+replaceAll()   → all regex matches
+```
 
 ---
 
-## Q14. Does replace() modify the original String?
+## Q14. Does `replace()` modify the original String?
 
 **Answer:**
 
 No.
 
-String is immutable, so a new String is returned.
+String is immutable.
 
 ---
 
-## Q15. What does split() return?
+## Q15. What does `split()` return?
 
 **Answer:**
 
-It returns a:
-
-    String[]
-
-It splits the String according to a regular expression.
+```text
+String[]
+```
 
 ---
 
-## Q16. What does String.join() do?
+## Q16. What does `String.join()` do?
 
 **Answer:**
 
-It joins multiple Strings using a specified delimiter.
-
-Example:
-
-    String.join("-", "A", "B", "C")
-
-Result:
-
-    A-B-C
+It joins multiple Strings using a delimiter.
 
 ---
 
-## Q17. What does toCharArray() return?
+## Q17. What does `toCharArray()` return?
 
 **Answer:**
 
-It converts a String into:
-
-    char[]
+```text
+char[]
+```
 
 ---
 
-## Q18. What does String.valueOf() do?
+## Q18. What does `String.valueOf()` do?
 
 **Answer:**
 
-It converts values of different types into their String representation.
+It converts values into their String representation.
 
 ---
 
-## Q19. What does matches() do?
+## Q19. What does `matches()` do?
 
 **Answer:**
 
-It checks whether the entire String matches a specified regular expression.
+It checks whether the entire String matches a regular expression.
 
 ---
 
-## Q20. Why do most String transformation methods return a new String?
+## Q20. Why are String methods that transform text returning a new String?
 
 **Answer:**
 
-Because String is immutable. The existing String cannot be modified, so a different String is returned when a changed value is required.
+Because String is immutable. The existing String cannot be changed.
 
 ---
 
-# 45. 🎤 30-Second Interview Answer
+# 49. 🎤 30-Second Interview Answer
 
-> **The String class provides many built-in methods for operations such as comparison, searching, extraction, conversion, replacement, and validation. Important methods include `length()`, `charAt()`, `substring()`, `equals()`, `compareTo()`, `contains()`, `indexOf()`, `replace()`, `split()`, and `toUpperCase()`. Since String is immutable, methods that produce modified text return a new String rather than changing the original String.**
+> **The String class provides built-in methods for comparison, searching, extraction, conversion, replacement, and validation. Important methods include `length()`, `charAt()`, `substring()`, `equals()`, `compareTo()`, `contains()`, `indexOf()`, `replace()`, `split()`, and `toUpperCase()`. Since String is immutable, methods that produce changed text return a new String rather than modifying the original String. These methods are also heavily used in DSA problems such as palindrome checking, frequency counting, anagrams, substring problems, and sliding-window problems.**
 
 ---
 
-# 46. 🧾 Cheat Sheet
+# 50. 🧾 Cheat Sheet
 
 | Method | Return Type | Purpose |
 |---|---|---|
@@ -2039,20 +2521,23 @@ Because String is immutable. The existing String cannot be modified, so a differ
 | `equals()` | `boolean` | Content comparison |
 | `equalsIgnoreCase()` | `boolean` | Case-insensitive comparison |
 | `compareTo()` | `int` | Lexicographical comparison |
+| `compareToIgnoreCase()` | `int` | Case-insensitive ordering |
 | `contains()` | `boolean` | Search sequence |
-| `startsWith()` | `boolean` | Check prefix |
-| `endsWith()` | `boolean` | Check suffix |
+| `startsWith()` | `boolean` | Prefix check |
+| `endsWith()` | `boolean` | Suffix check |
 | `indexOf()` | `int` | First occurrence |
 | `lastIndexOf()` | `int` | Last occurrence |
-| `isEmpty()` | `boolean` | Check zero length |
-| `isBlank()` | `boolean` | Check blank String |
+| `isEmpty()` | `boolean` | Zero length |
+| `isBlank()` | `boolean` | Empty/whitespace-only |
 | `toUpperCase()` | `String` | Uppercase |
 | `toLowerCase()` | `String` | Lowercase |
-| `trim()` | `String` | Remove traditional leading/trailing whitespace |
-| `strip()` | `String` | Remove Unicode-aware leading/trailing whitespace |
+| `trim()` | `String` | Traditional trimming |
+| `strip()` | `String` | Unicode-aware trimming |
+| `stripLeading()` | `String` | Remove leading whitespace |
+| `stripTrailing()` | `String` | Remove trailing whitespace |
 | `replace()` | `String` | Literal replacement |
-| `replaceFirst()` | `String` | Replace first regex match |
-| `replaceAll()` | `String` | Replace all regex matches |
+| `replaceFirst()` | `String` | First regex replacement |
+| `replaceAll()` | `String` | All regex replacements |
 | `split()` | `String[]` | Split String |
 | `join()` | `String` | Join Strings |
 | `valueOf()` | `String` | Convert value to String |
@@ -2065,155 +2550,188 @@ Because String is immutable. The existing String cannot be modified, so a differ
 
 ---
 
-# 47. 🧠 Memory Tricks
+# 51. 🧠 Memory Tricks
 
 ## 🔥 Information
 
 Remember:
 
-    L C S
+```text
+L C S
 
-    L → length()
-    C → charAt()
-    S → substring()
-
----
+L → length()
+C → charAt()
+S → substring()
+```
 
 ## 🔥 Searching
 
-Remember:
+```text
+C I L
 
-    C I L
-
-    C → contains()
-    I → indexOf()
-    L → lastIndexOf()
-
----
+C → contains()
+I → indexOf()
+L → lastIndexOf()
+```
 
 ## 🔥 Comparing
 
-Remember:
+```text
+E E C
 
-    E E C
-
-    E → equals()
-    E → equalsIgnoreCase()
-    C → compareTo()
-
----
+E → equals()
+E → equalsIgnoreCase()
+C → compareTo()
+```
 
 ## 🔥 Checking
 
-Remember:
+```text
+S E B
 
-    S E B
-
-    S → startsWith()
-    E → endsWith()
-    B → isBlank()
-
----
+S → startsWith()
+E → endsWith()
+B → isBlank()
+```
 
 ## 🔥 Cleaning
 
-Remember:
+```text
+T S L T
 
-    T S L T
-
-    T → trim()
-    S → strip()
-    L → stripLeading()
-    T → stripTrailing()
-
----
+T → trim()
+S → strip()
+L → stripLeading()
+T → stripTrailing()
+```
 
 ## 🔥 Replacement
 
+```text
+replace()
+    ↓
+Literal
+
+replaceFirst()
+    ↓
+Regex + First
+
+replaceAll()
+    ↓
+Regex + All
+```
+
+## 🔥 DSA Memory
+
 Remember:
 
-    R → Replace
-
-    replace()
-    replaceFirst()
-    replaceAll()
-
-Think:
-
-    replace()
-       ↓
-    Literal
-
-    replaceFirst()
-       ↓
-    Regex + First
-
-    replaceAll()
-       ↓
-    Regex + All
-
----
-
-# ⭐ Most Important Methods for Interviews
-
-If the interviewer asks you to quickly name important String methods, remember:
-
-    length()
-    charAt()
-    substring()
-    equals()
-    equalsIgnoreCase()
-    compareTo()
-    contains()
-    startsWith()
-    endsWith()
-    indexOf()
-    lastIndexOf()
-    isEmpty()
-    isBlank()
-    replace()
-    replaceFirst()
-    replaceAll()
-    split()
-    trim()
-    strip()
-    toCharArray()
-    valueOf()
+```text
+String Problem
+      ↓
+Can I Traverse?
+      ↓
+charAt()
+      ↓
+Need Frequency?
+      ↓
+int[26] / HashMap
+      ↓
+Need Uniqueness?
+      ↓
+HashSet
+      ↓
+Need Both Ends?
+      ↓
+Two Pointers
+      ↓
+Need Contiguous Range?
+      ↓
+Sliding Window
+```
 
 ---
 
-# 48. 🔗 Next Topic
+# ⭐ Most Important String Methods for Interviews
+
+```text
+length()
+charAt()
+substring()
+equals()
+equalsIgnoreCase()
+compareTo()
+contains()
+startsWith()
+endsWith()
+indexOf()
+lastIndexOf()
+isEmpty()
+isBlank()
+replace()
+replaceFirst()
+replaceAll()
+split()
+trim()
+strip()
+toCharArray()
+valueOf()
+```
+
+---
+
+# 🧠 Most Important String DSA Patterns
+
+| Pattern | Typical Problems | Main Tool |
+|---|---|---|
+| Traversal | Character processing | `charAt()` |
+| Frequency Counting | Anagram, duplicates | `int[]` / `HashMap` |
+| Two Pointers | Palindrome, reverse | `left`, `right` |
+| Hashing | First unique character | `HashMap` |
+| Set | Remove duplicates | `HashSet` |
+| Sliding Window | Longest substring | `HashMap` / `HashSet` |
+| Sorting | Anagram / ordering | `char[]` |
+| Prefix/Suffix | Prefix matching | `startsWith()` / `endsWith()` |
+| Parsing | Token extraction | `split()` |
+| String Building | Constructing result | `StringBuilder` |
+
+---
+
+# 52. 🔗 Next Topic
 
 Our String playlist:
 
-    04-Strings/
-    │
-    ├── 01-String-Introduction.md
-    ├── 02-String-Pool.md
-    ├── 03-String-Immutability.md
-    ├── 04-String-Methods.md        ← YOU ARE HERE
-    ├── 05-StringBuilder.md
-    ├── 06-StringBuffer.md
-    ├── 07-String-vs-StringBuilder-vs-StringBuffer.md
-    └── 08-String-Interview-Questions.md
+```text
+04-Strings/
+│
+├── 01-String-Introduction.md
+├── 02-String-Pool.md
+├── 03-String-Immutability.md
+├── 04-String-Methods.md          ← YOU ARE HERE
+├── 05-StringBuilder.md
+├── 06-StringBuffer.md
+├── 07-String-vs-StringBuilder-vs-StringBuffer.md
+└── 08-String-Interview-Questions.md
+```
 
 ### Learning Flow
 
-    String Introduction
-            ↓
-       String Pool
-            ↓
-    String Immutability
-            ↓
-      String Methods
-            ↓
-      StringBuilder
-            ↓
-      StringBuffer
-            ↓
-    String vs Builder vs Buffer
-            ↓
-    String Interview Questions
+```text
+String Introduction
+        ↓
+String Pool
+        ↓
+String Immutability
+        ↓
+String Methods
+        ↓
+StringBuilder
+        ↓
+StringBuffer
+        ↓
+String vs Builder vs Buffer
+        ↓
+String Interview Questions
+```
 
 ---
 
@@ -2221,26 +2739,32 @@ Our String playlist:
 
 Before moving to `StringBuilder`, make sure you understand:
 
-    1. length() → number of characters
-    2. charAt() → character at index
-    3. substring() → extracts part of String
-    4. equals() → content comparison
-    5. compareTo() → lexicographical comparison
-    6. contains() → checks sequence
-    7. indexOf() → first occurrence
-    8. lastIndexOf() → last occurrence
-    9. isEmpty() → length == 0
-    10. isBlank() → empty or whitespace-only
-    11. replace() → literal replacement
-    12. replaceAll() → regex replacement
-    13. split() → String to String[]
-    14. join() → combines Strings
-    15. toCharArray() → String to char[]
-    16. valueOf() → value to String
-    17. trim() → traditional leading/trailing whitespace
-    18. strip() → Unicode-aware leading/trailing whitespace
-    19. matches() → regex validation
-    20. intern() → String Pool canonical representation
+1. `length()` → number of UTF-16 code units
+2. `charAt()` → character at index
+3. `substring()` → extracts part of String
+4. `equals()` → content comparison
+5. `compareTo()` → lexicographical comparison
+6. `contains()` → checks sequence
+7. `indexOf()` → first occurrence
+8. `lastIndexOf()` → last occurrence
+9. `isEmpty()` → length == 0
+10. `isBlank()` → empty or whitespace-only
+11. `replace()` → literal replacement
+12. `replaceAll()` → regex replacement
+13. `split()` → String to `String[]`
+14. `join()` → combines Strings
+15. `toCharArray()` → String to `char[]`
+16. `valueOf()` → value to String
+17. `trim()` → traditional whitespace trimming
+18. `strip()` → Unicode-aware whitespace trimming
+19. `matches()` → regex validation
+20. `intern()` → String Pool canonical representation
+21. String methods are heavily used in DSA
+22. Frequency problems often use `int[]` or `HashMap`
+23. Palindrome/reverse problems commonly use two pointers
+24. Substring/window problems commonly use sliding window
+25. `StringBuilder` is useful when repeatedly constructing Strings
 
-> ⭐ **Core Idea:**  
-> **String methods make String processing easy, but remember the golden rule: String is immutable, so methods that produce changed text return a new String instead of modifying the original.**
+> ⭐ **Core Idea:**
+>
+> **String methods make String processing easy, but for DSA the real skill is combining these methods with patterns such as frequency counting, hashing, two pointers, sliding window, and character-array processing.**

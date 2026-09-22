@@ -1,3 +1,4 @@
+````md
 # 🎯 String — Interview Questions
 
 > **A complete interview-focused revision of Java Strings, covering fundamentals, String Pool, immutability, methods, StringBuilder, StringBuffer, comparisons, internal behavior, traps, and practical interview questions.**
@@ -11,7 +12,7 @@
 3. [String Creation](#3--string-creation)
 4. [String Pool](#4--string-pool)
 5. [String Immutability](#5--string-immutability)
-6. [`==` vs `equals()`](#6---vs-equals)
+6. [`==` vs `equals()`](#6----vs-equals)
 7. [String Methods](#7--string-methods)
 8. [StringBuilder](#8--stringbuilder)
 9. [StringBuffer](#9--stringbuffer)
@@ -46,23 +47,25 @@
 
 Example:
 
-    String name = "Java";
-
----
+```java
+String name = "Java";
+```
 
 ## Most Important String Properties
 
-    String
-       ↓
-    Class
-       ↓
-    java.lang
-       ↓
-    final
-       ↓
-    Immutable
-       ↓
-    Supports String Pool
+```text
+String
+   ↓
+Class
+   ↓
+java.lang
+   ↓
+final
+   ↓
+Immutable
+   ↓
+Supports String Pool
+```
 
 ---
 
@@ -70,7 +73,7 @@ Example:
 
 ## Q1. Is String a primitive data type?
 
-### Answer:
+### Answer
 
 No.
 
@@ -78,32 +81,40 @@ No.
 
 Example:
 
-    String name = "Divyansh";
+```java
+String name = "Divyansh";
+```
 
 Here:
 
-    String → class
-    name   → reference variable
-    "Divyansh" → String object/value
+```text
+String       → class/type
+name         → reference variable
+"Divyansh"   → String object/value
+```
 
 ---
 
 ## Q2. Why can we use String without importing it?
 
-Because String belongs to:
+Because `String` belongs to:
 
-    java.lang
+```text
+java.lang
+```
 
 Classes from `java.lang` are automatically available.
 
 Examples:
 
-    String
-    Object
-    System
-    Math
-    Integer
-    Thread
+```text
+String
+Object
+System
+Math
+Integer
+Thread
+```
 
 ---
 
@@ -113,16 +124,18 @@ Yes.
 
 Conceptually:
 
-    public final class String
+```java
+public final class String
+```
 
-Because String is final, it cannot be subclassed.
+Because `String` is final, it cannot be subclassed.
 
 You cannot do:
 
-    class MyString extends String {
-    }
-
-This is not allowed.
+```java
+class MyString extends String {
+}
+```
 
 ---
 
@@ -146,15 +159,23 @@ Immutable means:
 
 Example:
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    s.concat(" Developer");
+s.concat(" Developer");
 
-The original String remains:
+System.out.println(s);
+```
 
-    "Java"
+Output:
 
-The result of `concat()` is a different String.
+```text
+Java
+```
+
+The original String remains unchanged.
+
+The `concat()` method returns another String.
 
 ---
 
@@ -164,61 +185,75 @@ There are two major ways to create Strings.
 
 ## Method 1 — String Literal
 
-    String s1 = "Java";
+```java
+String s1 = "Java";
+```
 
 ## Method 2 — Using `new`
 
-    String s2 = new String("Java");
+```java
+String s2 = new String("Java");
+```
 
 These two forms can have different memory/reference behavior.
 
 ---
 
-## Q6. Difference between String literal and new String()?
+## Q6. Difference between String literal and `new String()`?
 
 ### Literal
 
-    String s = "Java";
+```java
+String s = "Java";
+```
 
 The JVM can use the String Pool.
 
 ### `new`
 
-    String s = new String("Java");
+```java
+String s = new String("Java");
+```
 
 A new String object is explicitly created.
 
-The `"Java"` literal itself can still be present in the String Pool.
+The `"Java"` literal can still be present in the String Pool.
 
 ---
 
 # 4. 🏊 String Pool
 
-The String Pool is a special area associated with String literals.
+The String Pool is a JVM-managed pool used to share canonical String objects, particularly String literals.
 
 Example:
 
-    String s1 = "Java";
-    String s2 = "Java";
-
-The two references can point to the same pooled String object.
+```java
+String s1 = "Java";
+String s2 = "Java";
+```
 
 Conceptually:
 
-    s1 ─────┐
-            ↓
-          "Java"
-       String Pool
-            ↑
-    s2 ─────┘
+```text
+s1 ─────┐
+        ↓
+      "Java"
+   String Pool
+        ↑
+s2 ─────┘
+```
 
 Therefore:
 
-    s1 == s2
+```java
+System.out.println(s1 == s2);
+```
 
-can be:
+Output:
 
-    true
+```text
+true
+```
 
 ---
 
@@ -232,52 +267,59 @@ can be:
 
 Example:
 
-    String s1 = "Java";
-    String s2 = new String("Java");
+```java
+String s1 = "Java";
+String s2 = new String("Java");
+
+System.out.println(s1 == s2);
+System.out.println(s1.equals(s2));
+```
+
+Output:
+
+```text
+false
+true
+```
 
 Conceptually:
 
-    String Pool:
+```text
+String Pool:
 
-        "Java"
+    "Java"
+       ↑
+      s1
+
+Heap:
+
+    new String("Java")
            ↑
-          s1
+          s2
+```
 
-    Heap object:
-
-        new String("Java")
-              ↑
-             s2
-
-Therefore:
-
-    s1 == s2
-
-is:
-
-    false
-
-But:
-
-    s1.equals(s2)
-
-is:
-
-    true
+The references are different, but their contents are equal.
 
 ---
 
-## Q9. What does intern() do?
+## Q9. What does `intern()` do?
 
 `intern()` returns the canonical representation of a String from the String Pool.
 
 Example:
 
-    String s1 = new String("Java");
+```java
+String s1 = new String("Java");
+String s2 = s1.intern();
 
-    String s2 = s1.intern();
+System.out.println(s2 == "Java");
+```
 
-Now `s2` refers to the pooled `"Java"` representation.
+Output:
+
+```text
+true
+```
 
 ---
 
@@ -291,12 +333,12 @@ Important benefits include:
 
 Strings are commonly used for:
 
-    File paths
-    URLs
-    Class names
-    Database URLs
-    Configuration
-    Credentials
+- File paths
+- URLs
+- Class names
+- Database URLs
+- Configuration
+- Credentials
 
 If Strings could be changed unexpectedly, security and correctness could be affected.
 
@@ -314,33 +356,49 @@ A String's content and hash code remain stable.
 
 This makes String useful as a key in:
 
-    HashMap
-    HashSet
-    Hashtable
+```text
+HashMap
+HashSet
+Hashtable
+```
 
 ---
 
-## Q11. Does concat() modify the original String?
+## Q11. Does `concat()` modify the original String?
 
 No.
 
 Example:
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    s.concat(" Developer");
+s.concat(" Developer");
 
-    System.out.println(s);
+System.out.println(s);
+```
 
 Output:
 
-    Java
-
-Because the returned String was ignored.
+```text
+Java
+```
 
 Correct:
 
-    s = s.concat(" Developer");
+```java
+String s = "Java";
+
+s = s.concat(" Developer");
+
+System.out.println(s);
+```
+
+Output:
+
+```text
+Java Developer
+```
 
 ---
 
@@ -354,22 +412,26 @@ For references, `==` checks whether two references refer to the same object.
 
 ## `equals()`
 
-`equals()` checks logical/content equality for String.
+String's `equals()` checks logical/content equality.
 
 ---
 
 ## Example
 
-    String s1 = "Java";
-    String s2 = "Java";
+```java
+String s1 = "Java";
+String s2 = "Java";
 
-    System.out.println(s1 == s2);
-    System.out.println(s1.equals(s2));
+System.out.println(s1 == s2);
+System.out.println(s1.equals(s2));
+```
 
 Output:
 
-    true
-    true
+```text
+true
+true
+```
 
 Because both literals can refer to the same pooled object.
 
@@ -377,24 +439,27 @@ Because both literals can refer to the same pooled object.
 
 ## Another Example
 
-    String s1 = new String("Java");
-    String s2 = new String("Java");
+```java
+String s1 = new String("Java");
+String s2 = new String("Java");
 
-    System.out.println(s1 == s2);
-    System.out.println(s1.equals(s2));
+System.out.println(s1 == s2);
+System.out.println(s1.equals(s2));
+```
 
 Output:
 
-    false
-    true
+```text
+false
+true
+```
 
 Different objects:
 
-    == → false
-
-Same content:
-
-    equals() → true
+```text
+==       → reference identity
+equals() → content equality
+```
 
 ---
 
@@ -402,220 +467,272 @@ Same content:
 
 Remember:
 
-    == 
-       → Same reference?
+```text
+==
 
-    equals()
-       → Same content?
+   ↓
+
+Same object?
+```
+
+```text
+equals()
+
+   ↓
+
+Same content?
+```
 
 ---
 
 # 7. 🛠️ String Methods
 
-Important String methods:
+Important String methods include:
 
-    length()
-    charAt()
-    substring()
-    indexOf()
-    lastIndexOf()
-    equals()
-    equalsIgnoreCase()
-    contains()
-    startsWith()
-    endsWith()
-    concat()
-    replace()
-    replaceAll()
-    split()
-    trim()
-    strip()
-    toLowerCase()
-    toUpperCase()
-
----
-
-## Q12. What does length() return?
-
-Number of characters represented by the String.
-
-Example:
-
-    String s = "Java";
-
-    System.out.println(s.length());
-
-Output:
-
-    4
+```text
+length()
+charAt()
+substring()
+indexOf()
+lastIndexOf()
+equals()
+equalsIgnoreCase()
+contains()
+startsWith()
+endsWith()
+concat()
+replace()
+replaceAll()
+split()
+trim()
+strip()
+toLowerCase()
+toUpperCase()
+```
 
 ---
 
-## Q13. What does charAt() return?
+## Q12. What does `length()` return?
 
-A character at a specified index.
+Number of UTF-16 code units in the String.
+
+For basic ASCII text, this corresponds to the number of characters.
 
 Example:
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    System.out.println(s.charAt(2));
+System.out.println(s.length());
+```
 
 Output:
 
-    v
+```text
+4
+```
+
+---
+
+## Q13. What does `charAt()` return?
+
+A `char` at a specified index.
+
+Example:
+
+```java
+String s = "Java";
+
+System.out.println(s.charAt(2));
+```
+
+Output:
+
+```text
+v
+```
 
 Indexes:
 
-    J a v a
-    0 1 2 3
+```text
+J a v a
+0 1 2 3
+```
 
 ---
 
-## Q14. What does substring() do?
+## Q14. What does `substring()` do?
 
 Returns a portion of a String.
 
 Example:
 
-    String s = "Java Programming";
+```java
+String s = "Java Programming";
 
-    System.out.println(s.substring(5));
+System.out.println(s.substring(5));
+```
 
 Output:
 
-    Programming
+```text
+Programming
+```
 
 ---
 
-## Q15. Is substring() inclusive or exclusive?
+## Q15. Is `substring()` inclusive or exclusive?
 
 For:
 
-    substring(beginIndex, endIndex)
+```java
+substring(beginIndex, endIndex)
+```
 
 the:
 
-    beginIndex → inclusive
-    endIndex   → exclusive
+```text
+beginIndex → inclusive
+endIndex   → exclusive
+```
 
 Example:
 
-    "Java"
+```java
+String s = "Java";
 
-    substring(1, 3)
+System.out.println(s.substring(1, 3));
+```
 
-returns:
+Output:
 
-    "av"
+```text
+av
+```
 
 ---
 
-## Q16. What does indexOf() return?
+## Q16. What does `indexOf()` return?
 
 The index of the first occurrence.
 
 Example:
 
-    String s = "Java Java";
+```java
+String s = "Java Java";
 
-    System.out.println(s.indexOf("Java"));
+System.out.println(s.indexOf("Java"));
+```
 
 Output:
 
-    0
+```text
+0
+```
 
 If not found:
 
-    -1
+```text
+-1
+```
 
 ---
 
-## Q17. What does lastIndexOf() do?
+## Q17. What does `lastIndexOf()` do?
 
 Returns the index of the last occurrence.
 
 Example:
 
-    String s = "Java Java";
+```java
+String s = "Java Java";
 
-    System.out.println(s.lastIndexOf("Java"));
+System.out.println(s.lastIndexOf("Java"));
+```
 
 Output:
 
-    5
+```text
+5
+```
 
 ---
 
-## Q18. Difference between equals() and equalsIgnoreCase()?
+## Q18. Difference between `equals()` and `equalsIgnoreCase()`?
 
-    equals()
+`equals()` is case-sensitive.
 
-is case-sensitive.
-
-    equalsIgnoreCase()
-
-ignores case differences.
+`equalsIgnoreCase()` ignores case differences.
 
 Example:
 
-    "Java".equals("java")
+```java
+System.out.println("Java".equals("java"));
+System.out.println("Java".equalsIgnoreCase("java"));
+```
 
 Output:
 
-    false
-
-But:
-
-    "Java".equalsIgnoreCase("java")
-
-Output:
-
-    true
+```text
+false
+true
+```
 
 ---
 
-## Q19. What does contains() do?
+## Q19. What does `contains()` do?
 
 Checks whether a sequence exists.
 
 Example:
 
-    String s = "Java Developer";
+```java
+String s = "Java Developer";
 
-    s.contains("Dev");
+System.out.println(s.contains("Dev"));
+```
 
-Result:
+Output:
 
-    true
+```text
+true
+```
 
 ---
 
-## Q20. What does startsWith() do?
+## Q20. What does `startsWith()` do?
 
 Checks whether a String starts with a specified prefix.
 
 Example:
 
-    "Java Developer".startsWith("Java")
+```java
+System.out.println("Java Developer".startsWith("Java"));
+```
 
-Result:
+Output:
 
-    true
+```text
+true
+```
 
 ---
 
-## Q21. What does endsWith() do?
+## Q21. What does `endsWith()` do?
 
 Checks whether a String ends with a specified suffix.
 
 Example:
 
-    "Java Developer".endsWith("Developer")
+```java
+System.out.println("Java Developer".endsWith("Developer"));
+```
 
-Result:
+Output:
 
-    true
+```text
+true
+```
 
 ---
 
@@ -623,21 +740,27 @@ Result:
 
 StringBuilder is:
 
-    Mutable
-    Not synchronized
-    Generally faster than StringBuffer
+```text
+Mutable
+Not synchronized
+Generally faster than StringBuffer
+```
 
 Example:
 
-    StringBuilder sb = new StringBuilder("Java");
+```java
+StringBuilder sb = new StringBuilder("Java");
 
-    sb.append(" Developer");
+sb.append(" Developer");
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    Java Developer
+```text
+Java Developer
+```
 
 ---
 
@@ -647,28 +770,40 @@ Use it for frequent String modifications.
 
 Example:
 
-    StringBuilder sb = new StringBuilder();
+```java
+StringBuilder sb = new StringBuilder();
 
-    for (int i = 0; i < 5; i++) {
-        sb.append(i);
-    }
+for (int i = 0; i < 5; i++) {
+    sb.append(i);
+}
+
+System.out.println(sb);
+```
+
+Output:
+
+```text
+01234
+```
 
 ---
 
 ## Important StringBuilder Methods
 
-    append()
-    insert()
-    delete()
-    deleteCharAt()
-    replace()
-    reverse()
-    charAt()
-    setCharAt()
-    substring()
-    length()
-    capacity()
-    toString()
+```text
+append()
+insert()
+delete()
+deleteCharAt()
+replace()
+reverse()
+charAt()
+setCharAt()
+substring()
+length()
+capacity()
+toString()
+```
 
 ---
 
@@ -676,14 +811,26 @@ Example:
 
 StringBuffer is:
 
-    Mutable
-    Synchronized
+```text
+Mutable
+Synchronized
+```
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.append(" Developer");
+sb.append(" Developer");
+
+System.out.println(sb);
+```
+
+Output:
+
+```text
+Java Developer
+```
 
 ---
 
@@ -695,7 +842,7 @@ Example:
 | Synchronized | No | Yes |
 | Generally faster | Yes | No |
 | Thread-safe individual methods | No | Yes |
-| Package | java.lang | java.lang |
+| Package | `java.lang` | `java.lang` |
 | Introduced | Java 5 | Java 1.0 |
 
 ---
@@ -704,7 +851,9 @@ Example:
 
 Generally:
 
-    StringBuilder
+```text
+StringBuilder
+```
 
 ---
 
@@ -729,62 +878,66 @@ Generally:
 
 ## Example 1
 
-    String s1 = "Java";
-    String s2 = "Java";
+```java
+String s1 = "Java";
+String s2 = "Java";
+
+System.out.println(s1 == s2);
+```
+
+Output:
+
+```text
+true
+```
 
 Conceptually:
 
-    String Pool
+```text
+String Pool
 
-        "Java"
-         ↑ ↑
-         │ │
-        s1 s2
-
-Therefore:
-
-    s1 == s2
-
-can be:
-
-    true
+    "Java"
+     ↑  ↑
+     │  │
+    s1 s2
+```
 
 ---
 
 ## Example 2
 
-    String s1 = new String("Java");
-    String s2 = new String("Java");
+```java
+String s1 = new String("Java");
+String s2 = new String("Java");
+
+System.out.println(s1 == s2);
+System.out.println(s1.equals(s2));
+```
+
+Output:
+
+```text
+false
+true
+```
 
 Conceptually:
 
-    Pool:
-        "Java"
+```text
+Pool:
 
-    Heap:
-        String object
-             ↑
-            s1
+    "Java"
 
-        String object
-             ↑
-            s2
+Heap:
 
-Therefore:
+    String object
+         ↑
+        s1
 
-    s1 == s2
-
-is:
-
-    false
-
-But:
-
-    s1.equals(s2)
-
-is:
-
-    true
+    String object
+         ↑
+        s2
+```
 
 ---
 
@@ -794,17 +947,21 @@ is:
 
 ### Using StringBuilder
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    String reversed = new StringBuilder(s)
-                            .reverse()
-                            .toString();
+String reversed = new StringBuilder(s)
+        .reverse()
+        .toString();
 
-    System.out.println(reversed);
+System.out.println(reversed);
+```
 
 Output:
 
-    avaJ
+```text
+avaJ
+```
 
 ---
 
@@ -812,16 +969,24 @@ Output:
 
 Use a loop:
 
-    String s = "Java";
-    String reversed = "";
+```java
+String s = "Java";
+StringBuilder reversed = new StringBuilder();
 
-    for (int i = s.length() - 1; i >= 0; i--) {
-        reversed += s.charAt(i);
-    }
+for (int i = s.length() - 1; i >= 0; i--) {
+    reversed.append(s.charAt(i));
+}
 
-    System.out.println(reversed);
+System.out.println(reversed);
+```
 
-For learning purposes this demonstrates the logic, but for repeated concatenation in production code, StringBuilder is generally preferable.
+Output:
+
+```text
+avaJ
+```
+
+For learning the algorithm, a loop is useful. For repeated string construction, using a StringBuilder avoids unnecessary intermediate String objects.
 
 ---
 
@@ -829,70 +994,85 @@ For learning purposes this demonstrates the logic, but for repeated concatenatio
 
 Example:
 
-    String s = "madam";
+```java
+String s = "madam";
 
-    String reversed = new StringBuilder(s)
-                            .reverse()
-                            .toString();
+String reversed = new StringBuilder(s)
+        .reverse()
+        .toString();
 
-    if (s.equals(reversed)) {
-        System.out.println("Palindrome");
-    } else {
-        System.out.println("Not Palindrome");
-    }
+if (s.equals(reversed)) {
+    System.out.println("Palindrome");
+} else {
+    System.out.println("Not Palindrome");
+}
+```
 
 Output:
 
-    Palindrome
+```text
+Palindrome
+```
 
 ---
 
 ## Q28. Count Characters
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    int count = s.length();
+int count = s.length();
 
-    System.out.println(count);
+System.out.println(count);
+```
 
 Output:
 
-    4
+```text
+4
+```
 
 ---
 
 ## Q29. Count a Specific Character
 
-    String s = "banana";
+```java
+String s = "banana";
 
-    int count = 0;
+int count = 0;
 
-    for (int i = 0; i < s.length(); i++) {
-
-        if (s.charAt(i) == 'a') {
-            count++;
-        }
+for (int i = 0; i < s.length(); i++) {
+    if (s.charAt(i) == 'a') {
+        count++;
     }
+}
 
-    System.out.println(count);
+System.out.println(count);
+```
 
 Output:
 
-    3
+```text
+3
+```
 
 ---
 
 ## Q30. Remove Spaces
 
-    String s = "Java Developer";
+```java
+String s = "Java Developer";
 
-    String result = s.replace(" ", "");
+String result = s.replace(" ", "");
 
-    System.out.println(result);
+System.out.println(result);
+```
 
 Output:
 
-    JavaDeveloper
+```text
+JavaDeveloper
+```
 
 ---
 
@@ -900,61 +1080,79 @@ Output:
 
 ## Trap 1
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    s.concat(" Developer");
+s.concat(" Developer");
 
-    System.out.println(s);
+System.out.println(s);
+```
 
 Output:
 
-    Java
+```text
+Java
+```
 
 Reason:
 
-    String → Immutable
+```text
+String → Immutable
+```
 
 ---
 
 ## Trap 2
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    s = s.concat(" Developer");
+s = s.concat(" Developer");
 
-Now:
+System.out.println(s);
+```
 
-    Java Developer
+Output:
 
-Because the new String was assigned back to `s`.
+```text
+Java Developer
+```
 
 ---
 
 ## Trap 3
 
-    String a = "Java";
-    String b = "Java";
+```java
+String a = "Java";
+String b = "Java";
 
-    System.out.println(a == b);
+System.out.println(a == b);
+```
 
 Output:
 
-    true
+```text
+true
+```
 
-Because identical literals can refer to the same pooled object.
+Identical literals can refer to the same pooled object.
 
 ---
 
 ## Trap 4
 
-    String a = new String("Java");
-    String b = new String("Java");
+```java
+String a = new String("Java");
+String b = new String("Java");
 
-    System.out.println(a == b);
+System.out.println(a == b);
+```
 
 Output:
 
-    false
+```text
+false
+```
 
 Different objects.
 
@@ -962,14 +1160,18 @@ Different objects.
 
 ## Trap 5
 
-    String a = new String("Java");
-    String b = new String("Java");
+```java
+String a = new String("Java");
+String b = new String("Java");
 
-    System.out.println(a.equals(b));
+System.out.println(a.equals(b));
+```
 
 Output:
 
-    true
+```text
+true
+```
 
 Same content.
 
@@ -977,15 +1179,19 @@ Same content.
 
 ## Trap 6
 
-    StringBuilder sb = new StringBuilder("Java");
+```java
+StringBuilder sb = new StringBuilder("Java");
 
-    sb.append(" Developer");
+sb.append(" Developer");
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    Java Developer
+```text
+Java Developer
+```
 
 Because StringBuilder is mutable.
 
@@ -993,27 +1199,35 @@ Because StringBuilder is mutable.
 
 ## Trap 7
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.reverse();
+sb.reverse();
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    avaJ
+```text
+avaJ
+```
 
 ---
 
 ## Trap 8
 
-    String s = null;
+```java
+String s = null;
 
-    System.out.println(s.length());
+System.out.println(s.length());
+```
 
 This throws:
 
-    NullPointerException
+```text
+NullPointerException
+```
 
 Because `s` does not reference a String object.
 
@@ -1023,7 +1237,7 @@ Because `s` does not reference a String object.
 
 ## Q1. What is String?
 
-**Answer:**
+### Answer
 
 String is a class representing a sequence of characters.
 
@@ -1031,7 +1245,7 @@ String is a class representing a sequence of characters.
 
 ## Q2. Is String primitive?
 
-**Answer:**
+### Answer
 
 No. String is a class.
 
@@ -1039,7 +1253,7 @@ No. String is a class.
 
 ## Q3. Is String immutable?
 
-**Answer:**
+### Answer
 
 Yes.
 
@@ -1047,7 +1261,7 @@ Yes.
 
 ## Q4. Why is String immutable?
 
-**Answer:**
+### Answer
 
 Immutability supports safe sharing, String Pooling, security, stable hashing, and predictable behavior.
 
@@ -1055,7 +1269,7 @@ Immutability supports safe sharing, String Pooling, security, stable hashing, an
 
 ## Q5. Is String final?
 
-**Answer:**
+### Answer
 
 Yes.
 
@@ -1063,15 +1277,17 @@ Yes.
 
 ## Q6. Which package contains String?
 
-**Answer:**
+### Answer
 
-    java.lang
+```text
+java.lang
+```
 
 ---
 
 ## Q7. What is String Pool?
 
-**Answer:**
+### Answer
 
 A JVM-managed pool used to share canonical String objects, particularly String literals.
 
@@ -1079,7 +1295,7 @@ A JVM-managed pool used to share canonical String objects, particularly String l
 
 ## Q8. What is the difference between `==` and `equals()`?
 
-**Answer:**
+### Answer
 
 For references, `==` checks reference identity, while String's `equals()` checks content equality.
 
@@ -1087,15 +1303,15 @@ For references, `==` checks reference identity, while String's `equals()` checks
 
 ## Q9. What happens with `new String("Java")`?
 
-**Answer:**
+### Answer
 
-It explicitly creates a new String object, while the literal `"Java"` may also exist in the String Pool.
+It explicitly creates a new String object, while the literal `"Java"` can also exist in the String Pool.
 
 ---
 
-## Q10. What does intern() do?
+## Q10. What does `intern()` do?
 
-**Answer:**
+### Answer
 
 It returns the canonical pooled representation of the String.
 
@@ -1103,15 +1319,15 @@ It returns the canonical pooled representation of the String.
 
 ## Q11. Can String be modified?
 
-**Answer:**
+### Answer
 
 No. String is immutable.
 
 ---
 
-## Q12. What does concat() return?
+## Q12. What does `concat()` return?
 
-**Answer:**
+### Answer
 
 A String containing the concatenated result.
 
@@ -1119,7 +1335,7 @@ A String containing the concatenated result.
 
 ## Q13. What is StringBuilder?
 
-**Answer:**
+### Answer
 
 A mutable sequence of characters designed for efficient string construction and modification.
 
@@ -1127,7 +1343,7 @@ A mutable sequence of characters designed for efficient string construction and 
 
 ## Q14. Is StringBuilder synchronized?
 
-**Answer:**
+### Answer
 
 No.
 
@@ -1135,7 +1351,7 @@ No.
 
 ## Q15. What is StringBuffer?
 
-**Answer:**
+### Answer
 
 A mutable sequence of characters whose methods are synchronized.
 
@@ -1143,7 +1359,7 @@ A mutable sequence of characters whose methods are synchronized.
 
 ## Q16. Is StringBuffer synchronized?
 
-**Answer:**
+### Answer
 
 Its methods are synchronized.
 
@@ -1151,7 +1367,7 @@ Its methods are synchronized.
 
 ## Q17. Which is generally faster, StringBuilder or StringBuffer?
 
-**Answer:**
+### Answer
 
 StringBuilder is generally faster when synchronization is not required.
 
@@ -1159,7 +1375,7 @@ StringBuilder is generally faster when synchronization is not required.
 
 ## Q18. Why is StringBuilder faster?
 
-**Answer:**
+### Answer
 
 It does not incur method synchronization overhead.
 
@@ -1167,7 +1383,7 @@ It does not incur method synchronization overhead.
 
 ## Q19. What is the difference between mutable and immutable?
 
-**Answer:**
+### Answer
 
 Mutable objects can change their state after creation. Immutable objects cannot.
 
@@ -1175,27 +1391,35 @@ Mutable objects can change their state after creation. Immutable objects cannot.
 
 ## Q20. Can StringBuilder be converted to String?
 
-**Answer:**
+### Answer
 
 Yes:
 
-    sb.toString();
+```java
+StringBuilder sb = new StringBuilder("Java");
+
+String s = sb.toString();
+```
 
 ---
 
 ## Q21. Can StringBuffer be converted to String?
 
-**Answer:**
+### Answer
 
 Yes:
 
-    sb.toString();
+```java
+StringBuffer sb = new StringBuffer("Java");
+
+String s = sb.toString();
+```
 
 ---
 
 ## Q22. What does charAt() return?
 
-**Answer:**
+### Answer
 
 A `char` at the specified index.
 
@@ -1203,15 +1427,15 @@ A `char` at the specified index.
 
 ## Q23. What does length() return?
 
-**Answer:**
+### Answer
 
-The number of characters represented by the String.
+The number of UTF-16 code units in the String.
 
 ---
 
 ## Q24. What does substring() return?
 
-**Answer:**
+### Answer
 
 A new String representing the requested range.
 
@@ -1219,15 +1443,17 @@ A new String representing the requested range.
 
 ## Q25. What does indexOf() return if the value is not found?
 
-**Answer:**
+### Answer
 
-    -1
+```text
+-1
+```
 
 ---
 
 ## Q26. Difference between equals() and equalsIgnoreCase()?
 
-**Answer:**
+### Answer
 
 `equals()` is case-sensitive, while `equalsIgnoreCase()` ignores case.
 
@@ -1235,7 +1461,7 @@ A new String representing the requested range.
 
 ## Q27. Why can String be used as a HashMap key?
 
-**Answer:**
+### Answer
 
 Because String is immutable, its equality-relevant content and hash code remain stable after insertion.
 
@@ -1243,7 +1469,7 @@ Because String is immutable, its equality-relevant content and hash code remain 
 
 ## Q28. What happens if you modify a String?
 
-**Answer:**
+### Answer
 
 You cannot modify the existing String object. Operations that appear to modify it return a new String.
 
@@ -1251,7 +1477,7 @@ You cannot modify the existing String object. Operations that appear to modify i
 
 ## Q29. What should you use for repeated concatenation inside a loop?
 
-**Answer:**
+### Answer
 
 Generally `StringBuilder` when synchronization is not required.
 
@@ -1259,16 +1485,21 @@ Generally `StringBuilder` when synchronization is not required.
 
 ## Q30. Give the difference in one line.
 
-**Answer:**
+### Answer
 
-    String
-        → Immutable
+```text
+String
 
-    StringBuilder
-        → Mutable + Not synchronized
+    → Immutable
 
-    StringBuffer
-        → Mutable + Synchronized
+StringBuilder
+
+    → Mutable + Not synchronized
+
+StringBuffer
+
+    → Mutable + Synchronized
+```
 
 ---
 
@@ -1303,14 +1534,18 @@ Generally `StringBuilder` when synchronization is not required.
 
 ## Question 1
 
-    String s1 = "Java";
-    String s2 = "Java";
+```java
+String s1 = "Java";
+String s2 = "Java";
 
-    System.out.println(s1 == s2);
+System.out.println(s1 == s2);
+```
 
 ### Answer
 
-    true
+```text
+true
+```
 
 ### Reason
 
@@ -1320,14 +1555,18 @@ Both literals can refer to the same pooled String object.
 
 ## Question 2
 
-    String s1 = new String("Java");
-    String s2 = new String("Java");
+```java
+String s1 = new String("Java");
+String s2 = new String("Java");
 
-    System.out.println(s1 == s2);
+System.out.println(s1 == s2);
+```
 
 ### Answer
 
-    false
+```text
+false
+```
 
 ### Reason
 
@@ -1337,14 +1576,18 @@ Two separate String objects are explicitly created.
 
 ## Question 3
 
-    String s1 = new String("Java");
-    String s2 = new String("Java");
+```java
+String s1 = new String("Java");
+String s2 = new String("Java");
 
-    System.out.println(s1.equals(s2));
+System.out.println(s1.equals(s2));
+```
 
 ### Answer
 
-    true
+```text
+true
+```
 
 ### Reason
 
@@ -1354,15 +1597,19 @@ Their contents are equal.
 
 ## Question 4
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    s.concat(" Developer");
+s.concat(" Developer");
 
-    System.out.println(s);
+System.out.println(s);
+```
 
 ### Answer
 
-    Java
+```text
+Java
+```
 
 ### Reason
 
@@ -1372,85 +1619,109 @@ The returned String was not assigned back.
 
 ## Question 5
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    s = s.concat(" Developer");
+s = s.concat(" Developer");
 
-    System.out.println(s);
+System.out.println(s);
+```
 
 ### Answer
 
-    Java Developer
+```text
+Java Developer
+```
 
 ---
 
 ## Question 6
 
-    StringBuilder sb = new StringBuilder("Java");
+```java
+StringBuilder sb = new StringBuilder("Java");
 
-    sb.append(" Developer");
+sb.append(" Developer");
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 ### Answer
 
-    Java Developer
+```text
+Java Developer
+```
 
 ---
 
 ## Question 7
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.reverse();
+sb.reverse();
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 ### Answer
 
-    avaJ
+```text
+avaJ
+```
 
 ---
 
 ## Question 8
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    System.out.println(s.charAt(1));
+System.out.println(s.charAt(1));
+```
 
 ### Answer
 
-    a
+```text
+a
+```
 
 ---
 
 ## Question 9
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    System.out.println(s.substring(1, 3));
+System.out.println(s.substring(1, 3));
+```
 
 ### Answer
 
-    av
+```text
+av
+```
 
 ---
 
 ## Question 10
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    System.out.println(s.indexOf("v"));
+System.out.println(s.indexOf("v"));
+```
 
 ### Answer
 
-    2
+```text
+2
+```
 
 ---
 
 # 17. 🎤 30-Second Interview Answer
 
-> **String is a final, immutable class in Java's `java.lang` package that represents a sequence of characters. Java also provides StringBuilder and StringBuffer for mutable character sequences. StringBuilder is not synchronized and is generally preferred for repeated string manipulation when synchronization is unnecessary. StringBuffer is synchronized and can be used when synchronized operations on a shared mutable buffer are required. String also has special support through the String Pool, which allows identical String literals to be shared.**
+> **String is a final, immutable class in Java's `java.lang` package that represents a sequence of characters. Java also provides StringBuilder and StringBuffer for mutable character sequences. StringBuilder is not synchronized and is generally preferred for repeated string manipulation when synchronization is unnecessary. StringBuffer is synchronized and can be useful when synchronized operations on a shared mutable buffer are required. String also has special support through the String Pool, which allows identical String literals to be shared.**
 
 ---
 
@@ -1464,60 +1735,62 @@ The returned String was not assigned back.
 
 ## String
 
-    Immutable
-    Final
-    java.lang
-    String Pool
-    Content comparison → equals()
-    Reference comparison → ==
-
----
+```text
+Immutable
+Final
+java.lang
+String Pool
+Content comparison → equals()
+Reference comparison → ==
+```
 
 ## StringBuilder
 
-    Mutable
-    Not synchronized
-    Generally faster
-    Repeated modifications
-    append()
-    insert()
-    delete()
-    reverse()
-
----
+```text
+Mutable
+Not synchronized
+Generally faster
+Repeated modifications
+append()
+insert()
+delete()
+reverse()
+```
 
 ## StringBuffer
 
-    Mutable
-    Synchronized methods
-    More synchronization overhead
-    Shared mutable operations
-    append()
-    insert()
-    delete()
-    reverse()
-
----
+```text
+Mutable
+Synchronized methods
+More synchronization overhead
+Shared mutable operations
+append()
+insert()
+delete()
+reverse()
+```
 
 ## Important String Methods
 
-    length()
-    charAt()
-    substring()
-    indexOf()
-    lastIndexOf()
-    equals()
-    equalsIgnoreCase()
-    contains()
-    startsWith()
-    endsWith()
-    concat()
-    replace()
-    split()
-    trim()
-    strip()
-    toLowerCase()
-    toUpperCase()
+```text
+length()
+charAt()
+substring()
+indexOf()
+lastIndexOf()
+equals()
+equalsIgnoreCase()
+contains()
+startsWith()
+endsWith()
+concat()
+replace()
+split()
+trim()
+strip()
+toLowerCase()
+toUpperCase()
+```
 
 ---
 
@@ -1527,35 +1800,41 @@ The returned String was not assigned back.
 
 Remember:
 
-    S
-    ↓
-    String
-    ↓
-    Still / Stable
-    ↓
-    Immutable
+```text
+S
+↓
+String
+↓
+Still / Stable
+↓
+Immutable
+```
 
 ---
 
 ## 🔥 Trick 2
 
-    Builder
-       ↓
-    Build
-       ↓
-    Mutable
-       ↓
-    No synchronization
+```text
+Builder
+   ↓
+Build
+   ↓
+Mutable
+   ↓
+No synchronization
+```
 
 ---
 
 ## 🔥 Trick 3
 
-    Buffer
-       ↓
-    Shared buffer
-       ↓
-    Synchronization
+```text
+Buffer
+   ↓
+Shared buffer
+   ↓
+Synchronization
+```
 
 ---
 
@@ -1563,154 +1842,176 @@ Remember:
 
 For comparison:
 
-    String
-        = Immutable
+```text
+String
+    = Immutable
 
-    StringBuilder
-        = Mutable + No Sync
+StringBuilder
+    = Mutable + No Sync
 
-    StringBuffer
-        = Mutable + Sync
+StringBuffer
+    = Mutable + Sync
+```
 
 ---
 
-## 🔥 Trick 5 — `==` vs equals()
+## 🔥 Trick 5 — `==` vs `equals()`
 
-    ==
-       ↓
-    Same object?
+```text
+==
+   ↓
+Same object?
 
-    equals()
-       ↓
-    Same content?
+equals()
+   ↓
+Same content?
+```
 
 ---
 
 # 21. ✅ Final Revision Checklist
 
-Before considering the String chapter complete, make sure you can explain all of these without looking at the notes:
+Before considering the String chapter complete, make sure you can explain all of these without looking at the notes.
 
-### Fundamentals
+## Fundamentals
 
-    [ ] What is String?
-    [ ] Is String primitive?
-    [ ] Why is String a class?
-    [ ] Which package contains String?
-    [ ] Why is String final?
-    [ ] What does immutable mean?
+```text
+[ ] What is String?
+[ ] Is String primitive?
+[ ] Why is String a class?
+[ ] Which package contains String?
+[ ] Why is String final?
+[ ] What does immutable mean?
+```
 
-### Creation
+## Creation
 
-    [ ] String literal
-    [ ] new String()
-    [ ] Difference between them
-    [ ] String Pool
-    [ ] intern()
+```text
+[ ] String literal
+[ ] new String()
+[ ] Difference between them
+[ ] String Pool
+[ ] intern()
+```
 
-### Immutability
+## Immutability
 
-    [ ] Why is String immutable?
-    [ ] What happens during concatenation?
-    [ ] Why is immutability useful?
-    [ ] Why is String useful as a HashMap key?
+```text
+[ ] Why is String immutable?
+[ ] What happens during concatenation?
+[ ] Why is immutability useful?
+[ ] Why is String useful as a HashMap key?
+```
 
-### Comparison
+## Comparison
 
-    [ ] == vs equals()
-    [ ] equalsIgnoreCase()
-    [ ] String vs StringBuilder
-    [ ] StringBuilder vs StringBuffer
-    [ ] String vs StringBuffer
+```text
+[ ] == vs equals()
+[ ] equalsIgnoreCase()
+[ ] String vs StringBuilder
+[ ] StringBuilder vs StringBuffer
+[ ] String vs StringBuffer
+```
 
-### Methods
+## Methods
 
-    [ ] length()
-    [ ] charAt()
-    [ ] substring()
-    [ ] indexOf()
-    [ ] lastIndexOf()
-    [ ] contains()
-    [ ] startsWith()
-    [ ] endsWith()
-    [ ] concat()
-    [ ] replace()
-    [ ] split()
-    [ ] trim()
-    [ ] strip()
+```text
+[ ] length()
+[ ] charAt()
+[ ] substring()
+[ ] indexOf()
+[ ] lastIndexOf()
+[ ] contains()
+[ ] startsWith()
+[ ] endsWith()
+[ ] concat()
+[ ] replace()
+[ ] split()
+[ ] trim()
+[ ] strip()
+```
 
-### Mutable Strings
+## Mutable Strings
 
-    [ ] StringBuilder
-    [ ] StringBuffer
-    [ ] append()
-    [ ] insert()
-    [ ] delete()
-    [ ] reverse()
-    [ ] setCharAt()
-    [ ] capacity()
-    [ ] toString()
+```text
+[ ] StringBuilder
+[ ] StringBuffer
+[ ] append()
+[ ] insert()
+[ ] delete()
+[ ] reverse()
+[ ] setCharAt()
+[ ] capacity()
+[ ] toString()
+```
 
-### Interview Concepts
+## Interview Concepts
 
-    [ ] String Pool
-    [ ] Immutability
-    [ ] Final class
-    [ ] Reference equality
-    [ ] Content equality
-    [ ] Thread safety
-    [ ] Synchronization
-    [ ] Performance
-    [ ] Memory behavior
+```text
+[ ] String Pool
+[ ] Immutability
+[ ] Final class
+[ ] Reference equality
+[ ] Content equality
+[ ] Thread safety
+[ ] Synchronization
+[ ] Performance
+[ ] Memory behavior
+```
 
 ---
 
 # 🏆 MASTER MEMORY CARD
 
-    ┌────────────────────────────────────────────┐
-    │                  STRING                    │
-    ├────────────────────────────────────────────┤
-    │ Immutable                                  │
-    │ final class                                │
-    │ java.lang                                  │
-    │ String Pool                                │
-    │ == → reference identity                    │
-    │ equals() → content equality                │
-    └────────────────────────────────────────────┘
+```text
+┌────────────────────────────────────────────┐
+│                  STRING                    │
+├────────────────────────────────────────────┤
+│ Immutable                                  │
+│ final class                                │
+│ java.lang                                  │
+│ String Pool                                │
+│ == → reference identity                    │
+│ equals() → content equality                │
+└────────────────────────────────────────────┘
 
                       VS
 
-    ┌────────────────────────────────────────────┐
-    │              STRINGBUILDER                 │
-    ├────────────────────────────────────────────┤
-    │ Mutable                                    │
-    │ Not synchronized                           │
-    │ Generally faster                           │
-    │ Repeated string construction               │
-    └────────────────────────────────────────────┘
+┌────────────────────────────────────────────┐
+│              STRINGBUILDER                 │
+├────────────────────────────────────────────┤
+│ Mutable                                    │
+│ Not synchronized                           │
+│ Generally faster                           │
+│ Repeated string construction               │
+└────────────────────────────────────────────┘
 
                       VS
 
-    ┌────────────────────────────────────────────┐
-    │               STRINGBUFFER                 │
-    ├────────────────────────────────────────────┤
-    │ Mutable                                    │
-    │ Synchronized methods                       │
-    │ More synchronization overhead              │
-    │ Shared mutable operations                  │
-    └────────────────────────────────────────────┘
+┌────────────────────────────────────────────┐
+│               STRINGBUFFER                 │
+├────────────────────────────────────────────┤
+│ Mutable                                    │
+│ Synchronized methods                       │
+│ More synchronization overhead              │
+│ Shared mutable operations                  │
+└────────────────────────────────────────────┘
+```
 
 ---
 
 # ⭐ THE 3-LINE INTERVIEW REVISION
 
-    String
-        → Immutable
+```text
+String
+    → Immutable
 
-    StringBuilder
-        → Mutable + Not Synchronized
+StringBuilder
+    → Mutable + Not Synchronized
 
-    StringBuffer
-        → Mutable + Synchronized
+StringBuffer
+    → Mutable + Synchronized
+```
 
 > 💡 If you remember only these three lines, you already have the core distinction between the three classes.
 
@@ -1718,16 +2019,18 @@ Before considering the String chapter complete, make sure you can explain all of
 
 # 🚀 STRING CHAPTER COMPLETE
 
-    04-Strings/
-    │
-    ├── 01-String-Introduction.md
-    ├── 02-String-Pool.md
-    ├── 03-String-Immutability.md
-    ├── 04-String-Methods.md
-    ├── 05-StringBuilder.md
-    ├── 06-StringBuffer.md
-    ├── 07-String-vs-StringBuilder-vs-StringBuffer.md
-    └── 08-String-Interview-Questions.md  ← YOU ARE HERE
+```text
+04-Strings/
+│
+├── 01-String-Introduction.md
+├── 02-String-Pool.md
+├── 03-String-Immutability.md
+├── 04-String-Methods.md
+├── 05-StringBuilder.md
+├── 06-StringBuffer.md
+├── 07-String-vs-StringBuilder-vs-StringBuffer.md
+└── 08-String-Interview-Questions.md  ← YOU ARE HERE
+```
 
 ---
 
@@ -1736,3 +2039,4 @@ Before considering the String chapter complete, make sure you can explain all of
 > **String is immutable and ideal for fixed textual values. StringBuilder is mutable and generally preferred for efficient string construction when synchronization is unnecessary. StringBuffer is also mutable but provides synchronized methods for situations where synchronized access to a shared buffer is required.**
 
 # 🔥 STRING MASTERED
+````
