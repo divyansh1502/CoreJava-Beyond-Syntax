@@ -1,4 +1,3 @@
-````markdown
 # 🔢 One-Dimensional Array in Java
 
 > **A one-dimensional array is a fixed-size linear collection of elements of the same declared component type, accessed using a single zero-based index.**
@@ -17,9 +16,9 @@
 8. [Accessing Elements](#8--accessing-elements)
 9. [Updating Elements](#9--updating-elements)
 10. [Traversing an Array](#10--traversing-an-array)
-11. [Traditional for Loop](#11--traditional-for-loop)
-12. [Enhanced for Loop](#12--enhanced-for-loop)
-13. [for vs Enhanced for](#13--for-vs-enhanced-for)
+11. [Traditional `for` Loop](#11--traditional-for-loop)
+12. [Enhanced `for` Loop](#12--enhanced-for-loop)
+13. [`for` vs Enhanced `for`](#13--for-vs-enhanced-for)
 14. [Taking Array Input](#14--taking-array-input)
 15. [Printing an Array](#15--printing-an-array)
 16. [Finding Sum](#16--finding-sum)
@@ -107,9 +106,9 @@ A one-dimensional array can be visualized as:
 │ 10 │ 20 │ 30 │ 40 │ 50 │
 └────┴────┴────┴────┴────┘
   0    1    2    3    4
-  ↑                    ↑
-first                last
-index                index
+  ↑                   ↑
+first               last
+index               index
 ```
 
 For an array of length `n`:
@@ -395,6 +394,7 @@ Use the array variable followed by an index.
 int[] nums = {10, 20, 30};
 
 System.out.println(nums[0]);
+
 System.out.println(nums[2]);
 ```
 
@@ -1219,6 +1219,7 @@ true
 
 ```text
 ==                  → same array object?
+
 Arrays.equals()     → same one-dimensional contents?
 ```
 
@@ -1238,7 +1239,9 @@ Conceptually:
 
 ```text
 numbers
+
    ↓
+
 ┌────┬────┬────┐
 │ 10 │ 20 │ 30 │
 └────┴────┴────┘
@@ -1278,7 +1281,9 @@ Then:
 
 ```java
 names[0] = "Java";
+
 names[1] = "Python";
+
 names[2] = "C++";
 ```
 
@@ -1431,10 +1436,13 @@ conceptually:
 
 ```text
 Stack/reference context
+
         │
         │ arr
         ↓
+
 Heap
+
 ┌──────────────────────┐
 │ Array Object         │
 │ length = 5           │
@@ -1462,7 +1470,9 @@ For interview fundamentals, remember:
 
 ```text
 Array = object
+
 Array reference = points to array object
+
 Array length = fixed after creation
 ```
 
@@ -1542,7 +1552,9 @@ Remember:
 
 ```text
 Array      → length
+
 String     → length()
+
 Collection → size()
 ```
 
@@ -2149,15 +2161,18 @@ Output:
 int[] arr = {10, 20, 30, 40, 50};
 
 int left = 0;
+
 int right = arr.length - 1;
 
 while (left < right) {
     int temp = arr[left];
 
     arr[left] = arr[right];
+
     arr[right] = temp;
 
     left++;
+
     right--;
 }
 ```
@@ -2173,7 +2188,7 @@ Final array:
 This uses the **two-pointer technique**.
 
 ```text
-left  → 
+left  →
         [ ... ]
               ← right
 ```
@@ -2290,6 +2305,7 @@ Typical structure:
 
 ```java
 int left = 0;
+
 int right = arr.length - 1;
 
 while (left < right) {
@@ -2487,7 +2503,9 @@ Remember:
 
 ```text
 Length = n
+
 First index = 0
+
 Last index = n - 1
 ```
 
@@ -2497,7 +2515,9 @@ Last index = n - 1
 
 ```text
 Array      → length
+
 String     → length()
+
 Collection → size()
 ```
 
@@ -2581,37 +2601,69 @@ Before moving forward, make sure you can explain:
 
 ```text
 [ ] What is a one-dimensional array?
+
 [ ] How to declare an array?
+
 [ ] How to create an array?
+
 [ ] How to initialize an array?
+
 [ ] What is zero-based indexing?
+
 [ ] What is the first index?
+
 [ ] What is the last index?
+
 [ ] How to access an element?
+
 [ ] How to update an element?
+
 [ ] What is arr.length?
+
 [ ] Difference between length and length()
+
 [ ] Traditional for loop
+
 [ ] Enhanced for loop
+
 [ ] Difference between both
+
 [ ] How to take array input
+
 [ ] How to print an array
+
 [ ] How to calculate sum
+
 [ ] How to find maximum
+
 [ ] How to find minimum
+
 [ ] What is linear search?
+
 [ ] Reference copy vs actual copy
+
 [ ] What is array aliasing?
+
 [ ] How arrays are passed to methods
+
 [ ] How arrays are returned from methods
+
 [ ] Array of primitives
+
 [ ] Array of references
+
 [ ] Empty array vs null
+
 [ ] ArrayIndexOutOfBoundsException
+
 [ ] NullPointerException
+
 [ ] ArrayStoreException
+
 [ ] Array access complexity
+
 [ ] Two-pointer pattern
+
 [ ] Prefix-sum pattern
 ```
 
@@ -2682,4 +2734,3 @@ We will cover:
 - Interview traps
 - DSA patterns
 - Coding problems
-````
