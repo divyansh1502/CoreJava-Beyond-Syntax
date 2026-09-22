@@ -1,9 +1,8 @@
-````md
 # ⚙️ 03 — HashMap Internal Working
 
 > **Java Collections Deep Dive → Map Framework**
 >
-> This note goes beneath the HashMap API and explains what actually happens inside HashMap when you call `put()`, `get()`, `remove()`, and other operations.
+> This note goes beneath the `HashMap` API and explains what actually happens inside `HashMap` when you call `put()`, `get()`, `remove()`, and other operations.
 >
 > **Prerequisite:** `02-HashMap.md`
 >
@@ -18,11 +17,11 @@
 - [📦 3. Internal Data Structure](#-3-internal-data-structure)
 - [🔢 4. What is a Bucket?](#-4-what-is-a-bucket)
 - [🧮 5. Hashing](#-5-hashing)
-- [⚙️ 6. HashMap hash() Method](#-6-hashmap-hash-method)
+- [⚙️ 6. HashMap `hash()` Method](#-6-hashmap-hash-method)
 - [📍 7. Calculating Bucket Index](#-7-calculating-bucket-index)
-- [➕ 8. Internal Working of put()](#-8-internal-working-of-put)
-- [🔍 9. Internal Working of get()](#-9-internal-working-of-get)
-- [🗑️ 10. Internal Working of remove()](#-10-internal-working-of-remove)
+- [➕ 8. Internal Working of `put()`](#-8-internal-working-of-put)
+- [🔍 9. Internal Working of `get()`](#-9-internal-working-of-get)
+- [🗑️ 10. Internal Working of `remove()`](#-10-internal-working-of-remove)
 - [💥 11. Collision](#-11-collision)
 - [🔗 12. Collision Handling with Linked Nodes](#-12-collision-handling-with-linked-nodes)
 - [🌳 13. Treeification](#-13-treeification)
@@ -35,12 +34,12 @@
 - [🚦 20. Threshold](#-20-threshold)
 - [🔄 21. Resize Example](#-21-resize-example)
 - [🧠 22. Why Power of Two Capacity?](#-22-why-power-of-two-capacity)
-- [🎯 23. Why (n - 1) & hash?](#-23-why-n---1--hash)
-- [🧩 24. hashCode() vs HashMap hash()](#-24-hashcode-vs-hashmap-hash)
-- [🔐 25. Role of equals()](#-25-role-of-equals)
-- [🧬 26. Complete put() Flow](#-26-complete-put-flow)
-- [🔎 27. Complete get() Flow](#-27-complete-get-flow)
-- [🧹 28. Complete remove() Flow](#-28-complete-remove-flow)
+- [🎯 23. Why `(n - 1) & hash`?](#-23-why-n---1--hash)
+- [🧩 24. `hashCode()` vs HashMap `hash()`](#-24-hashcode-vs-hashmap-hash)
+- [🔐 25. Role of `equals()`](#-25-role-of-equals)
+- [🧬 26. Complete `put()` Flow](#-26-complete-put-flow)
+- [🔎 27. Complete `get()` Flow](#-27-complete-get-flow)
+- [🧹 28. Complete `remove()` Flow](#-28-complete-remove-flow)
 - [🧠 29. Why HashMap is O(1) Expected](#-29-why-hashmap-is-o1-expected)
 - [⚠️ 30. Worst-Case Complexity](#-30-worst-case-complexity)
 - [🧵 31. HashMap and Threads](#-31-hashmap-and-threads)
@@ -67,7 +66,7 @@ is easy.
 
 An interviewer may ask:
 
-> "What happens internally when you call `put()`?"
+> **"What happens internally when you call `put()`?"**
 
 Now you need to understand:
 
@@ -137,11 +136,25 @@ or, after treeification:
 TreeNode structure
 ```
 
+### High-Level Mental Model
+
+```text
+HashMap
+   ↓
+Internal table
+   ↓
+Bucket
+   ↓
+Node(s)
+   ↓
+Key + Value
+```
+
 ---
 
 # 📦 3. Internal Data Structure
 
-In modern Java implementations, HashMap internally maintains a table of nodes.
+In modern Java implementations, `HashMap` internally maintains a table of nodes.
 
 Conceptually:
 
@@ -162,13 +175,22 @@ static class Node<K,V>
 }
 ```
 
+### Important Fields
+
+| Field | Purpose |
+|---|---|
+| `hash` | Stores the processed hash value |
+| `key` | Stores the key |
+| `value` | Stores the associated value |
+| `next` | Points to the next node in the same bucket |
+
 The exact implementation can vary by JDK version, so focus on the behavior rather than memorizing source-code details.
 
 ---
 
 # 🔢 4. What is a Bucket?
 
-A bucket is a position in HashMap's internal table.
+A **bucket** is a position in HashMap's internal table.
 
 Suppose:
 
@@ -182,6 +204,8 @@ Then there are conceptually:
 0
 1
 2
+3
+4
 ...
 15
 ```
@@ -195,12 +219,18 @@ Example:
 ```text
 "Java"
    ↓
- hash
+hash
    ↓
 bucket 7
 ```
 
 So the mapping goes into bucket 7.
+
+### Important
+
+A bucket is **not a separate collection object**.
+
+It is simply an index in the internal table that can reference an entry or a structure containing multiple entries.
 
 ---
 
@@ -211,24 +241,42 @@ Hashing converts information about a key into a hash value.
 For an object:
 
 ```java
-key.hashCode();
-```
-
-returns an integer.
-
-Example:
-
-```java
 String key = "Java";
 
 int h = key.hashCode();
 ```
 
+The `hashCode()` method returns an `int`.
+
 The hash code is then processed by HashMap before the bucket index is calculated.
+
+### General Flow
+
+```text
+Key
+ ↓
+hashCode()
+ ↓
+HashMap hash spreading
+ ↓
+Bucket index
+```
+
+### Important Distinction
+
+```text
+hashCode()
+    ≠
+bucket index
+```
+
+The hash code is an integer.
+
+The bucket index is a valid position inside the current table.
 
 ---
 
-# ⚙️ 6. HashMap hash() Method
+# ⚙️ 6. HashMap `hash()` Method
 
 Conceptually, modern Java HashMap uses a hash-spreading operation similar to:
 
@@ -238,8 +286,7 @@ static final int hash(Object key) {
 
     return (key == null)
             ? 0
-            : (h = key.hashCode())
-                ^ (h >>> 16);
+            : (h = key.hashCode()) ^ (h >>> 16);
 }
 ```
 
@@ -252,27 +299,37 @@ h ^ (h >>> 16)
 where:
 
 ```text
-^  = bitwise XOR
+^   = bitwise XOR
 >>> = unsigned right shift
 ```
 
----
-
-# 🧠 Why Spread the Hash?
-
-The goal is to improve how hash-code bits influence bucket selection.
+### Why Does HashMap Spread the Hash?
 
 The original hash code contains 32 bits.
 
-When the table index is calculated using a power-of-two table length, the lower bits have strong influence on the bucket.
+When a power-of-two table size is used, the bucket calculation depends heavily on lower bits.
 
-HashMap mixes higher bits into lower bits using:
+HashMap therefore mixes higher bits into lower bits using:
 
 ```text
 h ^ (h >>> 16)
 ```
 
-This can help distribute keys more effectively.
+This helps improve the distribution of keys across buckets.
+
+### Example
+
+Conceptually:
+
+```text
+Original hash
+      ↓
+  h ^ (h >>> 16)
+      ↓
+Spread hash
+      ↓
+Bucket index
+```
 
 ---
 
@@ -299,16 +356,10 @@ n - 1 = 15
 Binary:
 
 ```text
-15 = 1111
+15 = 1111₂
 ```
 
-Suppose:
-
-```text
-hash = 101101101010
-```
-
-Only the relevant lower bits influence the final index:
+Therefore:
 
 ```text
 1111
@@ -318,51 +369,27 @@ hash
 bucket index
 ```
 
-Therefore the result is between:
+The result is always between:
 
 ```text
-0 and 15
+0 and n - 1
+```
+
+For `n = 16`:
+
+```text
+0 to 15
 ```
 
 ---
 
-# 🎯 Why This Works
-
-If:
-
-```text
-n = 16
-```
-
-then:
-
-```text
-n - 1 = 15
-```
-
-and:
-
-```text
-15 = 1111₂
-```
-
-Therefore:
-
-```text
-hash & 1111₂
-```
-
-extracts the lower four bits.
-
-This is efficient and is one reason HashMap uses power-of-two table capacities.
-
----
-
-# ➕ 8. Internal Working of put()
+# 🎯 8. Internal Working of `put()`
 
 Suppose:
 
 ```java
+Map<String, Integer> map = new HashMap<>();
+
 map.put("Java", 90);
 ```
 
@@ -370,10 +397,10 @@ Let's follow the process.
 
 ---
 
-## Step 1 — Receive Key
+## Step 1 — Receive Key and Value
 
 ```text
-key = "Java"
+key   = "Java"
 value = 90
 ```
 
@@ -383,8 +410,8 @@ value = 90
 
 HashMap obtains:
 
-```text
-key.hashCode()
+```java
+key.hashCode();
 ```
 
 Then applies its internal hash-spreading logic.
@@ -431,7 +458,7 @@ HashMap checks:
 table[index]
 ```
 
-There are two main possibilities.
+There are two major possibilities.
 
 ### Case A — Bucket is Empty
 
@@ -439,23 +466,23 @@ There are two main possibilities.
 table[index] == null
 ```
 
-Then a new node can be inserted.
+A new node can be inserted.
+
+Conceptually:
 
 ```text
 bucket
   ↓
 Node
-  ├── hash
-  ├── key = "Java"
-  ├── value = 90
-  └── next = null
+ ├── hash
+ ├── key = "Java"
+ ├── value = 90
+ └── next = null
 ```
-
----
 
 ### Case B — Bucket Already Contains Something
 
-Then HashMap checks whether the existing entry corresponds to the same key.
+HashMap checks whether an existing entry represents the same key.
 
 It considers:
 
@@ -493,15 +520,21 @@ new value      = 100
 
 The value is replaced.
 
-Final:
+Final mapping:
 
 ```text
 Java → 100
 ```
 
+### Important
+
+The key is not duplicated.
+
+The existing mapping's value is updated.
+
 ---
 
-# 💥 Collision Case
+# 💥 9. Collision
 
 Suppose:
 
@@ -516,7 +549,7 @@ but:
 A.equals(B) == false
 ```
 
-Then we have a collision.
+Then we have a **collision**.
 
 Both mappings must coexist.
 
@@ -532,13 +565,23 @@ Node B
 Node C
 ```
 
-This is where collision handling becomes important.
+A collision occurs when **different keys map to the same bucket index**.
+
+### Important
+
+A collision does **not** necessarily mean:
+
+```text
+hashCode(A) == hashCode(B)
+```
+
+Different hash codes can also end up selecting the same bucket because the bucket index is derived from the processed hash and current table capacity.
 
 ---
 
-# 🔗 12. Collision Handling with Linked Nodes
+# 🔗 10. Collision Handling with Linked Nodes
 
-Initially, collisions can be represented as a linked chain.
+Initially, collisions can be represented through linked nodes.
 
 Conceptually:
 
@@ -558,20 +601,22 @@ Each node contains a reference to the next node.
 
 When searching:
 
-```text
-get(key)
+```java
+map.get(key);
 ```
 
-HashMap traverses candidate nodes and compares keys.
+HashMap examines the entries in the relevant bucket.
+
+It compares candidate entries using their hash and key equality.
 
 ---
 
 # 🧠 Important Point
 
-HashMap does NOT say:
+HashMap does **not** say:
 
 ```text
-"Same bucket = same key"
+Same bucket = same key
 ```
 
 Instead:
@@ -591,6 +636,14 @@ Correct key?
 Therefore:
 
 ```text
+Same bucket
+    ≠
+Same key
+```
+
+And:
+
+```text
 Same hash
     ≠
 Same object/key
@@ -598,11 +651,11 @@ Same object/key
 
 ---
 
-# 🌳 13. Treeification
+# 🌳 11. Treeification
 
-If too many entries accumulate in a bucket, traversing a long linked chain can become inefficient.
+If too many entries accumulate in one bucket, traversing a long linked structure can become inefficient.
 
-Modern Java HashMap can convert a heavily collided bucket into a tree structure under specific conditions.
+Modern Java HashMap can convert a heavily collided bucket into a tree structure under suitable conditions.
 
 Conceptually:
 
@@ -610,49 +663,79 @@ Conceptually:
 
 ```text
 Bucket
-  ↓
-  A
-  ↓
-  B
-  ↓
-  C
-  ↓
-  D
-  ↓
-  E
+   ↓
+A
+   ↓
+B
+   ↓
+C
+   ↓
+D
+   ↓
+E
 ```
 
 ### After Treeification
 
 ```text
         C
-      /   \
-     A     D
-      \     \
-       B     E
+       / \
+      A   D
+       \   \
+        B   E
 ```
 
-The actual structure is a red-black tree.
+The actual tree-bin structure is based on a red-black tree.
 
 ---
 
-# 🌲 14. Red-Black Tree Concept
+# 🌲 12. Red-Black Tree Concept
 
-A red-black tree is a self-balancing binary search tree.
+A **red-black tree** is a self-balancing binary search tree.
 
-Its purpose is to maintain approximately:
+Its purpose is to keep the tree approximately balanced.
+
+Therefore, tree operations can have approximately:
 
 ```text
 O(log n)
 ```
 
-search behavior.
+behavior.
 
-Therefore, under suitable tree-bin conditions, heavily collided HashMap buckets can avoid a long linear linked-list search.
+This helps HashMap avoid very long linear searches inside heavily collided bins.
+
+### Simplified Comparison
+
+```text
+Linked structure:
+
+A → B → C → D → E
+
+Search:
+O(n)
+```
+
+versus:
+
+```text
+Tree structure:
+
+       C
+      / \
+     A   D
+      \   \
+       B   E
+
+Search:
+O(log n)
+```
+
+The exact tree-bin behavior has implementation details beyond this simplified model.
 
 ---
 
-# 📊 15. Treeification Threshold
+# 📊 13. Treeification Threshold
 
 A commonly discussed implementation constant is:
 
@@ -660,7 +743,7 @@ A commonly discussed implementation constant is:
 TREEIFY_THRESHOLD = 8
 ```
 
-Meaning a bucket may be considered for treeification when its bin becomes sufficiently large.
+This means a bucket may be considered for treeification when its bin becomes sufficiently large.
 
 But there is an important condition.
 
@@ -676,25 +759,27 @@ Therefore:
 
 ```text
 bucket becomes large
-       ↓
+        ↓
 Is table sufficiently large?
-    ↙             ↘
-  No               Yes
-  ↓                 ↓
-Resize        Treeify may occur
+     ↙       ↘
+   No         Yes
+   ↓           ↓
+Resize    Treeify may occur
 ```
 
-Do not memorize this as:
+### Important Interview Point
 
-```text
-"8 entries always means treeification."
-```
+Do **not** memorize:
+
+> "8 entries always means treeification."
 
 That statement is incomplete.
 
+The table capacity and other implementation conditions also matter.
+
 ---
 
-# ↩️ 16. Untreeification
+# ↩️ 14. Untreeification
 
 If a treeified bucket becomes sufficiently small after removals, it can be converted back to a simpler node representation.
 
@@ -718,11 +803,23 @@ A commonly referenced implementation threshold is:
 UNTREEIFY_THRESHOLD = 6
 ```
 
-The exact behavior depends on the JDK implementation.
+The exact behavior depends on the implementation.
+
+### Important
+
+Do not interpret:
+
+```text
+6 entries = always untreeify
+```
+
+as an absolute rule.
+
+The threshold is part of the implementation's tree-bin management logic.
 
 ---
 
-# 📈 17. Resizing
+# 📈 15. Resizing
 
 HashMap does not keep the same table size forever.
 
@@ -734,21 +831,29 @@ Conceptually:
 
 ```text
 capacity = 16
-    ↓
+      ↓
 threshold reached
-    ↓
+      ↓
 capacity = 32
-    ↓
+      ↓
 threshold recalculated
-    ↓
+      ↓
 entries redistributed
 ```
 
+### Why Resize?
+
+A table that becomes too crowded can increase collisions.
+
+More collisions can increase the amount of work needed to find an entry.
+
+Resizing increases the number of buckets and can improve distribution.
+
 ---
 
-# 🎚️ 18. Capacity
+# 🎚️ 16. Capacity
 
-Capacity represents the number of buckets in the internal table.
+**Capacity** represents the number of buckets in the internal table.
 
 Common capacities are powers of two:
 
@@ -757,19 +862,32 @@ Common capacities are powers of two:
 32
 64
 128
+256
 ...
 ```
 
-The initial capacity configured by the constructor is not necessarily the same as an immediately allocated internal table size before the table is first initialized.
+The initial capacity configured by a constructor is not necessarily the same as an immediately allocated internal table size.
+
+Modern HashMap uses lazy table initialization.
+
+For example:
+
+```java
+Map<String, Integer> map = new HashMap<>();
+```
+
+does not mean that a fully allocated 16-bucket table must already exist immediately after this constructor call.
+
+The internal table is initialized when needed.
 
 ---
 
-# ⚖️ 19. Load Factor
+# ⚖️ 17. Load Factor
 
-Default load factor:
+The default load factor of HashMap is:
 
 ```text
-0.75f
+0.75
 ```
 
 Conceptually:
@@ -781,21 +899,46 @@ threshold = capacity × loadFactor
 For:
 
 ```text
-capacity = 16
+capacity   = 16
 loadFactor = 0.75
 ```
 
 we get:
 
 ```text
-threshold = 12
+threshold = 16 × 0.75
+          = 12
 ```
 
-When the relevant threshold is reached, HashMap can resize.
+### What Does Load Factor Mean?
+
+Load factor controls how full the table can become before HashMap grows.
+
+A lower load factor generally means:
+
+```text
+More buckets
+↓
+Fewer collisions
+↓
+More memory
+```
+
+A higher load factor generally means:
+
+```text
+Fewer buckets
+↓
+Potentially more collisions
+↓
+Less table memory
+```
+
+Therefore load factor represents a **space-versus-collision trade-off**.
 
 ---
 
-# 🚦 20. Threshold
+# 🚦 18. Threshold
 
 Threshold determines approximately when resizing should occur.
 
@@ -808,21 +951,37 @@ threshold = capacity × loadFactor
 Example:
 
 ```text
-capacity = 16
+capacity   = 16
 loadFactor = 0.75
-threshold = 12
+threshold  = 12
 ```
 
-Then the table grows when the number of mappings reaches the relevant resize condition.
+So once the relevant resize condition is reached, HashMap grows the table.
+
+### Important Distinction
+
+```text
+Capacity
+   ↓
+Number of table positions
+
+Load Factor
+   ↓
+Controls how full the table should become
+
+Threshold
+   ↓
+Resize trigger derived from capacity and load factor
+```
 
 ---
 
-# 🔄 21. Resize Example
+# 🔄 19. Resize Example
 
 Start:
 
 ```text
-capacity = 16
+capacity   = 16
 load factor = 0.75
 ```
 
@@ -842,11 +1001,7 @@ Suppose entries increase:
 12
 ```
 
-At the resize threshold:
-
-```text
-HashMap expands
-```
+When the relevant resize condition is reached, HashMap expands.
 
 Conceptually:
 
@@ -856,11 +1011,31 @@ Conceptually:
 32 buckets
 ```
 
-Then entries are redistributed according to the new table structure.
+The resize process also redistributes entries according to the new table structure.
+
+### Important Optimization
+
+Because HashMap capacities are powers of two, resizing can efficiently determine whether an entry remains at its old position or moves by the old capacity.
+
+Conceptually:
+
+```text
+old index
+   ↓
+new index
+
+either:
+old index
+
+or:
+old index + old capacity
+```
+
+This is one of the useful consequences of power-of-two capacities.
 
 ---
 
-# 🧠 22. Why Power of Two Capacity?
+# 🧠 20. Why Power-of-Two Capacity?
 
 HashMap uses power-of-two capacities because it allows efficient bucket-index calculation.
 
@@ -882,7 +1057,9 @@ For example:
 
 ```text
 n = 16
+
 n - 1 = 15
+
 15 = 1111₂
 ```
 
@@ -894,9 +1071,34 @@ hash & 1111₂
 
 efficiently selects the relevant lower bits.
 
+### Additional Benefit During Resize
+
+Power-of-two capacity also makes redistribution efficient.
+
+When capacity doubles:
+
+```text
+old capacity = 16
+new capacity = 32
+```
+
+an entry's new position can be determined based on one additional bit of the hash.
+
+Conceptually:
+
+```text
+old index
+   ↓
+new position
+
+old index
+   OR
+old index + old capacity
+```
+
 ---
 
-# 🎯 23. Why (n - 1) & hash?
+# 🎯 21. Why `(n - 1) & hash`?
 
 Suppose:
 
@@ -919,8 +1121,7 @@ Binary:
 Suppose:
 
 ```text
-hash =
-1011 0110
+hash = 1011 0110
 ```
 
 Then:
@@ -944,13 +1145,31 @@ So the key goes to:
 bucket 6
 ```
 
+### Why Not `%`?
+
+Mathematically, for a power-of-two `n`:
+
+```text
+hash % n
+```
+
+and:
+
+```text
+hash & (n - 1)
+```
+
+produce the same range of indices for the relevant non-negative index calculation.
+
+The bitwise operation is particularly efficient and fits the internal HashMap design.
+
 ---
 
-# 🧩 24. hashCode() vs HashMap hash()
+# 🧩 22. `hashCode()` vs HashMap `hash()`
 
-These are NOT the same thing.
+These are **not the same thing**.
 
-## hashCode()
+## `hashCode()`
 
 Defined by:
 
@@ -963,14 +1182,16 @@ and potentially overridden by your class.
 Example:
 
 ```java
-key.hashCode();
+String key = "Java";
+
+int hashCode = key.hashCode();
 ```
 
-returns an integer.
+This returns an integer hash code.
 
 ---
 
-## HashMap hash()
+## HashMap `hash()`
 
 HashMap internally processes the hash code.
 
@@ -986,23 +1207,27 @@ HashMap hash value
 bucket index
 ```
 
-So:
+Therefore:
 
 ```text
 hashCode()
     ≠
-final bucket index
+HashMap hash()
+    ≠
+bucket index
 ```
+
+These are different stages.
 
 ---
 
-# 🔐 25. Role of equals()
+# 🔐 23. Role of `equals()`
 
 Suppose two keys land in the same bucket.
 
 HashMap needs to determine:
 
-> "Is this actually the same key?"
+> **"Is this actually the same key?"**
 
 It uses equality comparison.
 
@@ -1010,18 +1235,22 @@ Conceptually:
 
 ```text
 hash matches?
-    ↓
+     ↓
 equals()?
-    ↓
-same key?
+     ↓
+same logical key?
 ```
 
 For example:
 
 ```java
+Map<String, Integer> map = new HashMap<>();
+
 map.put("Java", 90);
 
-map.get(new String("Java"));
+System.out.println(
+    map.get(new String("Java"))
+);
 ```
 
 The two String objects can be different objects, but:
@@ -1030,13 +1259,29 @@ The two String objects can be different objects, but:
 "Java".equals(new String("Java"))
 ```
 
-is true.
+returns:
 
-Therefore HashMap can find the existing mapping.
+```text
+true
+```
+
+Therefore HashMap can locate the existing mapping.
+
+### Key Principle
+
+HashMap generally uses:
+
+```text
+hash
+  +
+equals()
+```
+
+to identify a key.
 
 ---
 
-# 🧬 26. Complete put() Flow
+# 🧬 24. Complete `put()` Flow
 
 Let's visualize:
 
@@ -1044,30 +1289,31 @@ Let's visualize:
 map.put(key, value)
         │
         ▼
-  Is table initialized?
+Is table initialized?
         │
         ▼
-  Calculate hash
+Calculate hash
         │
         ▼
-  Calculate index
+Calculate index
         │
         ▼
-    table[index]
+table[index]
         │
    ┌────┴─────┐
    │          │
  null      non-null
    │          │
    ▼          ▼
-Create Node  Compare entries
+Create      Compare
+ Node       entries
               │
         ┌─────┴──────┐
         │            │
     Same key     Different key
         │            │
         ▼            ▼
- Replace value   Collision
+Replace value    Collision
                      │
                      ▼
                Add/traverse node
@@ -1076,15 +1322,36 @@ Create Node  Compare entries
                Treeify if required
                      │
                      ▼
-                   size++
+                  size++
                      │
                      ▼
-              Check resize threshold
+             Check resize threshold
+```
+
+### Simplified Algorithm
+
+```java
+map.put(key, value);
+```
+
+Conceptually:
+
+```text
+1. Calculate hash.
+2. Calculate bucket index.
+3. Check table[index].
+4. If empty → create node.
+5. If occupied → compare candidate key.
+6. If same key → replace value.
+7. If different key → handle collision.
+8. Treeify if required.
+9. Increase size when a new mapping is added.
+10. Resize if threshold is reached.
 ```
 
 ---
 
-# 🔎 27. Complete get() Flow
+# 🔎 25. Complete `get()` Flow
 
 Suppose:
 
@@ -1122,9 +1389,17 @@ Compare hash + equals()
    └── Not found → null
 ```
 
+### Important
+
+`get()` does not search the entire HashMap.
+
+It first uses the key's hash to locate the relevant bucket.
+
+Then it searches only the candidate entries inside that bucket.
+
 ---
 
-# 🧹 28. Complete remove() Flow
+# 🧹 26. Complete `remove()` Flow
 
 Suppose:
 
@@ -1161,11 +1436,17 @@ Remove node
 Return previous value
 ```
 
-If the bucket is treeified, the tree-specific removal logic is used.
+If the bucket is treeified, tree-specific removal logic is used.
+
+### Important
+
+Removing an entry decreases the map's size.
+
+If a tree bin becomes sufficiently small, the implementation may convert it back to a simpler representation.
 
 ---
 
-# 🧠 29. Why HashMap is O(1) Expected
+# 🧠 27. Why HashMap is O(1) Expected
 
 Suppose there are:
 
@@ -1197,21 +1478,19 @@ equals()
 value
 ```
 
-This is why basic operations are expected to be:
+This is why basic operations are **expected O(1)** under normal hash distribution.
 
-```text
-O(1)
-```
+### Important
 
-under normal hash distribution.
+The `O(1)` claim is an expected/average-case characterization, not an unconditional guarantee.
 
 ---
 
-# ⚠️ 30. Worst-Case Complexity
+# ⚠️ 28. Worst-Case Complexity
 
 If many keys collide into the same bucket, the bucket can become expensive to search.
 
-Historically, a long linked chain could lead toward:
+A heavily collided linked structure can approach:
 
 ```text
 O(n)
@@ -1225,62 +1504,90 @@ Modern Java HashMap can treeify heavily collided bins under suitable conditions,
 O(log n)
 ```
 
-rather than a long linear chain.
+rather than a long linear linked-chain search.
 
 Therefore interview wording should be:
 
 ```text
-Average / expected:
+Expected:
+
     O(1)
 
-Heavy collision linked structure:
+Heavy collision in linked structure:
+
     potentially O(n)
 
 Treeified bin:
+
     approximately O(log n)
 ```
 
-Do not claim HashMap is mathematically guaranteed to be O(1).
+### Interview Tip
+
+Do not say:
+
+> "HashMap is always O(1)."
+
+Say:
+
+> **"HashMap provides expected O(1) average-time performance for basic operations under good hash distribution; collision-heavy bins can have worse behavior, with tree bins providing approximately O(log n) lookup under suitable conditions."**
 
 ---
 
-# 🧵 31. HashMap and Threads
+# 🧵 29. HashMap and Threads
 
-HashMap is not designed as a thread-safe Map.
+`HashMap` is **not thread-safe**.
 
 Suppose:
 
 ```text
 Thread A
-    ↓
+   ↓
 map.put()
-```
 
-and simultaneously:
-
-```text
 Thread B
-    ↓
+   ↓
 map.put()
 ```
 
-Without appropriate synchronization, concurrent modifications can cause unsafe behavior.
+occur concurrently without appropriate synchronization.
+
+Concurrent modifications can result in unsafe behavior.
 
 For concurrent use cases, consider:
+
+```java
+Map<String, Integer> map =
+        new ConcurrentHashMap<>();
+```
+
+or an appropriate synchronization strategy.
+
+### Important
+
+Do not confuse:
+
+```text
+HashMap
+```
+
+with:
 
 ```text
 ConcurrentHashMap
 ```
 
-or an appropriate synchronization strategy.
+They have different concurrency characteristics.
 
 ---
 
-# 💾 32. Memory Perspective
+# 💾 30. Memory Perspective
 
 Suppose:
 
 ```java
+Map<String, Integer> map = new HashMap<>();
+
 map.put("Java", 90);
 ```
 
@@ -1301,17 +1608,29 @@ table[]
   │
   ▼
 Node
-  ├── hash
-  ├── key reference
-  ├── value reference
-  └── next reference
+ ├── hash
+ ├── key reference
+ ├── value reference
+ └── next reference
 ```
 
-The actual memory layout depends on the JVM and implementation details.
+### Important
+
+The exact memory layout depends on:
+
+- JVM implementation
+- JVM architecture
+- Object headers
+- Compressed references
+- Alignment
+- JDK implementation
+- Garbage collector
+
+Therefore, this is a conceptual memory model rather than an exact byte-level layout.
 
 ---
 
-# 🧪 33. Custom Key Example
+# 🧪 31. Custom Key Example
 
 Consider:
 
@@ -1331,6 +1650,7 @@ class Student {
 
     @Override
     public boolean equals(Object obj) {
+
         if (this == obj) {
             return true;
         }
@@ -1365,31 +1685,45 @@ Result:
 Yash
 ```
 
-Why?
+### Why?
+
+We have:
 
 ```text
 s1.id == s2.id
-      ↓
+       ↓
 equals() == true
 ```
 
 and:
 
 ```text
-s1.hashCode()
-      ==
-s2.hashCode()
+s1.hashCode() == s2.hashCode()
 ```
 
 Therefore HashMap can locate the same logical key.
 
+### Key Contract
+
+For objects used as HashMap keys:
+
+```text
+If a.equals(b) == true
+
+then:
+
+a.hashCode() == b.hashCode()
+```
+
+must also be true.
+
 ---
 
-# 🪤 34. Internal Working Interview Traps
+# 🪤 32. Internal Working Interview Traps
 
 ## ❌ Trap 1
 
-> HashMap directly uses hashCode() as the array index.
+> **"HashMap directly uses `hashCode()` as the array index."**
 
 Incorrect.
 
@@ -1407,33 +1741,49 @@ bucket index
 
 ## ❌ Trap 2
 
-> Same hash code means same key.
+> **"Same hash code means same key."**
 
 Incorrect.
 
 Two unequal objects can have the same hash code.
 
+Therefore:
+
+```text
+same hash
+   ≠
+same key
+```
+
 ---
 
 ## ❌ Trap 3
 
-> Different hash codes always mean objects cannot be equal.
+> **"Different hash codes always mean objects cannot be equal."**
 
-For correctly implemented `equals()` / `hashCode()`:
+For a correctly implemented `equals()` / `hashCode()` contract:
 
 ```text
 equals() == true
-    ⇒
+       ⇒
 hashCode() must be same
 ```
 
-So if hash codes differ, objects cannot satisfy equality.
+Therefore:
+
+```text
+different hash codes
+       ⇒
+objects cannot be equal
+```
+
+under a correctly implemented contract.
 
 ---
 
 ## ❌ Trap 4
 
-> HashMap always uses LinkedList for collisions.
+> **"HashMap always uses LinkedList for collisions."**
 
 Incomplete/outdated.
 
@@ -1443,7 +1793,7 @@ Modern Java HashMap can use tree bins under suitable conditions.
 
 ## ❌ Trap 5
 
-> At exactly 8 nodes, HashMap always treeifies.
+> **"At exactly 8 nodes, HashMap always treeifies."**
 
 Incorrect.
 
@@ -1453,97 +1803,160 @@ Treeification also depends on table capacity and implementation conditions.
 
 ## ❌ Trap 6
 
-> Load factor means percentage of used buckets.
+> **"Load factor means percentage of used buckets."**
 
 Not exactly.
 
-It is used with capacity to determine the resize threshold.
+Load factor is used with capacity to determine the resize threshold.
 
 ---
 
 ## ❌ Trap 7
 
-> Initial capacity means exactly that many buckets are immediately allocated.
+> **"Initial capacity means exactly that many buckets are immediately allocated."**
 
 Not necessarily.
 
-Table initialization is lazy in modern HashMap implementations.
+Modern HashMap uses lazy table initialization.
 
 ---
 
 ## ❌ Trap 8
 
-> HashMap is always O(1).
+> **"HashMap is always O(1)."**
 
 Incorrect.
 
-The better statement is:
+Better:
 
 ```text
-Expected O(1)
-under normal conditions.
+Expected → O(1)
 ```
+
+under normal hash distribution.
+
+Collision-heavy cases can be worse.
 
 ---
 
-# 🎯 35. DSA Connection
+## ❌ Trap 9
 
-Understanding HashMap internals helps explain why these patterns are fast.
+> **"Two keys must have different hash codes to occupy different entries."**
+
+Incorrect.
+
+Two different keys may have the same hash code.
+
+They can still coexist because `equals()` distinguishes them.
+
+---
+
+## ❌ Trap 10
+
+> **"Changing a key after insertion is harmless."**
+
+Dangerous.
+
+If a mutable key's fields involved in `hashCode()` or `equals()` are changed after insertion, the entry may no longer be found using the mutated key.
+
+Example:
+
+```java
+Map<Student, String> map = new HashMap<>();
+
+Student student = new Student(101);
+
+map.put(student, "Yash");
+
+// If fields participating in hashCode()
+// and equals() are changed here,
+// lookup behavior can become problematic.
+
+System.out.println(map.get(student));
+```
+
+This is why keys used in HashMap should generally be immutable with respect to the fields involved in equality and hashing.
+
+---
+
+# 🎯 33. DSA Connection
+
+Understanding HashMap internals helps explain why common DSA patterns are fast.
+
+---
 
 ## Two Sum
+
+Typical idea:
 
 ```text
 value
   ↓
-hash
+HashMap
   ↓
-bucket
-  ↓
-lookup
+lookup complement
   ↓
 O(1) expected
 ```
 
-Therefore:
+Overall:
 
 ```text
 O(n)
 ```
 
-overall.
+expected.
 
 ---
 
 ## Frequency Counting
 
+Typical idea:
+
 ```text
 number
    ↓
-hash
-   ↓
 frequency lookup
    ↓
-update
+increment
+   ↓
+store
 ```
 
-Therefore:
+Expected overall complexity:
 
 ```text
 O(n)
 ```
 
-expected overall.
+---
+
+## Value → Index
+
+When a problem asks:
+
+> "Where did I see this value?"
+
+Think:
+
+```text
+value → index
+```
+
+using a HashMap.
 
 ---
 
 ## Prefix Sum
+
+Typical idea:
 
 ```text
 prefixSum
     ↓
 HashMap
     ↓
-previous index/count
+previous prefix/count/index
     ↓
 O(1) expected lookup
 ```
@@ -1566,7 +1979,7 @@ problems.
 
 When you see:
 
-> "Have I seen this before?"
+> **"Have I seen this before?"**
 
 Think:
 
@@ -1576,7 +1989,7 @@ HashMap / HashSet
 
 When you see:
 
-> "How many times?"
+> **"How many times?"**
 
 Think:
 
@@ -1586,7 +1999,7 @@ Frequency Map
 
 When you see:
 
-> "Where did I see it?"
+> **"Where did I see it?"**
 
 Think:
 
@@ -1596,7 +2009,7 @@ Value → Index
 
 When you see:
 
-> "Have I seen this prefix sum?"
+> **"Have I seen this prefix sum?"**
 
 Think:
 
@@ -1606,13 +2019,13 @@ Prefix Sum + HashMap
 
 ---
 
-# 🎤 36. 30-Second Interview Answer
+# 🎤 34. 30-Second Interview Answer
 
-> **Internally, HashMap maintains a table of buckets. When a key is inserted, HashMap obtains its hash code, applies internal hash spreading, and calculates a bucket index using the table capacity. If the bucket is empty, a node is inserted. If it already contains entries, HashMap compares the hash and keys using equals() to determine whether the key already exists or whether a collision has occurred. Collisions can initially be represented through linked nodes, and heavily collided bins can be treeified under suitable conditions. As the map grows beyond its threshold, the table is resized.**
+> **Internally, HashMap maintains a table of buckets. When a key is inserted, HashMap obtains its hash code, applies internal hash spreading, and calculates a bucket index based on the table capacity. If the bucket is empty, a node is inserted. If it already contains entries, HashMap compares the hash and keys using `equals()` to determine whether the key already exists or whether a collision has occurred. Collisions can initially be represented through linked nodes, and heavily collided bins can be treeified under suitable conditions. As the map grows beyond its threshold, the table is resized.**
 
 ---
 
-# ⚡ 37. Quick Revision
+# ⚡ 35. Quick Revision
 
 ```text
 put(key, value)
@@ -1621,13 +2034,13 @@ put(key, value)
   hashCode()
       │
       ▼
-     hash()
+    hash()
       │
       ▼
  bucket index
       │
       ▼
-  table[index]
+ table[index]
       │
    ┌──┴──┐
    ▼     ▼
@@ -1635,49 +2048,70 @@ put(key, value)
    │       │
    ▼       ▼
  Node    compare
-            │
-       ┌────┴────┐
-       ▼         ▼
-    same key   collision
-       │         │
-       ▼         ▼
-   replace    chain/tree
-    value
+           │
+      ┌────┴────┐
+      ▼         ▼
+   same key   collision
+      │         │
+      ▼         ▼
+ replace      chain/tree
+ value
+```
+
+### Core Flow
+
+```text
+KEY
+ ↓
+hashCode()
+ ↓
+HashMap hash()
+ ↓
+bucket index
+ ↓
+table[index]
+ ↓
+compare candidates
+ ↓
+equals()
+ ↓
+VALUE
 ```
 
 ---
 
-# 📋 38. Internal Working Cheat Sheet
+# 📋 36. Internal Working Cheat Sheet
 
 | Concept | Meaning |
 |---|---|
-| HashMap | Hash-based Map implementation |
+| `HashMap` | Hash-based `Map` implementation |
 | Table | Internal bucket array |
-| Bucket | One position in table |
+| Bucket | One position in the table |
 | Node | Stores mapping information |
 | `hashCode()` | Key's hash code |
-| `hash()` | HashMap's internal hash spreading |
-| Index | Bucket selected for entry |
-| Collision | Different keys reach same bucket |
-| `equals()` | Confirms logical key equality |
-| Capacity | Number of table positions |
-| Load Factor | Controls resize threshold |
-| Threshold | Approximate resize trigger |
+| `hash()` | HashMap's internal hash-spreading operation |
+| Index | Bucket selected for an entry |
+| Collision | Different keys reach the same bucket |
+| `equals()` | Determines logical key equality |
+| Capacity | Number of positions in the internal table |
+| Load Factor | Controls when the table should grow |
+| Threshold | Resize trigger derived from capacity and load factor |
 | Resize | Increase table capacity |
-| Treeification | Convert heavily collided bin to tree structure |
-| Untreeification | Convert tree bin back to simpler nodes |
+| Treeification | Convert a heavily collided bin to a tree structure |
+| Untreeification | Convert a tree bin back to a simpler representation |
 | Default Load Factor | `0.75` |
-| Common initial capacity | `16` after initialization under common defaults |
-| Treeify threshold | `8` entries, subject to capacity/implementation conditions |
-| Minimum treeify capacity | `64` in common OpenJDK implementation |
-| Untreeify threshold | `6` in common OpenJDK implementation |
-| Expected `get()` | `O(1)` |
-| Expected `put()` | `O(1)` |
-| Tree-bin lookup | Approximately `O(log n)` |
+| Common default capacity | `16` when the default table is initialized |
+| Treeify Threshold | `8`, subject to implementation conditions |
+| Minimum Treeify Capacity | `64` in common OpenJDK implementations |
+| Untreeify Threshold | `6` in common OpenJDK implementations |
+| Expected `get()` | O(1) |
+| Expected `put()` | O(1) |
+| Tree-bin lookup | Approximately O(log n) |
+| Collision-heavy linked lookup | Potentially O(n) |
 
 ---
 
-# 🏁 39. Final Mental Model
+# 🏁 37. Final Mental Model
 
 ## 🔥 Remember HashMap Like This
 
@@ -1689,13 +2123,13 @@ put(key, value)
                  key,value
                     │
                     ▼
-                hashCode()
+               hashCode()
                     │
                     ▼
-                hash spread
+               hash spread
                     │
                     ▼
-              (n - 1) & hash
+             (n - 1) & hash
                     │
                     ▼
                   INDEX
@@ -1709,23 +2143,23 @@ put(key, value)
           │                   │
           ▼                   ▼
       New Node           hash + equals()
-                                │
-                       ┌────────┴────────┐
-                       │                 │
-                   Same Key         Different Key
-                       │                 │
-                       ▼                 ▼
-                 Replace Value       Collision
-                                         │
-                                ┌────────┴────────┐
-                                │                 │
-                              Nodes          Tree Nodes
-                                │                 │
-                                └────────┬────────┘
-                                         │
-                                         ▼
-                                   Resize when
-                                   threshold reached
+                              │
+                    ┌─────────┴─────────┐
+                    │                   │
+                 Same Key          Different Key
+                    │                   │
+                    ▼                   ▼
+              Replace Value        Collision
+                                        │
+                              ┌─────────┴─────────┐
+                              │                   │
+                           Nodes             Tree Nodes
+                              │                   │
+                              └─────────┬─────────┘
+                                        │
+                                        ▼
+                                 Resize when
+                              threshold reached
 ```
 
 ---
@@ -1765,13 +2199,13 @@ And for growth:
 
 ```text
 Capacity
-   ↓
+    ↓
 Load Factor
-   ↓
+    ↓
 Threshold
-   ↓
+    ↓
 Resize
-   ↓
+    ↓
 Redistribute
 ```
 
@@ -1782,44 +2216,30 @@ Redistribute
 Before moving to `04-HashCode-and-Equals.md`, make sure you can explain these without notes:
 
 1. What is a bucket?
-
 2. How does HashMap calculate a bucket index?
-
 3. Why does HashMap use power-of-two capacities?
-
 4. What is a collision?
-
 5. How are collisions handled?
-
 6. What is treeification?
-
 7. Why is the treeification threshold not simply "8 = tree"?
-
 8. What is capacity?
-
 9. What is load factor?
-
 10. What is threshold?
-
 11. Why does HashMap resize?
-
 12. Why are `hashCode()` and `equals()` both important?
-
 13. Why is HashMap expected O(1)?
-
 14. Why can HashMap become O(n) in collision-heavy linked bins?
-
 15. What happens internally during `get()`?
-
 16. What happens internally during `put()`?
-
 17. What happens internally during `remove()`?
-
 18. Why are mutable keys dangerous?
 
-> **🔥 Core takeaway:**
+---
+
+> **🔥 Core Takeaway**
 >
-> `HashMap` is essentially **hash → bucket → compare → value**.
+> `HashMap` is essentially:
+>
+> **`hash → bucket → compare → value`**
 >
 > The performance comes from quickly locating a bucket using hashing. `equals()` then identifies the correct logical key within that bucket. Collisions are handled through node structures, heavily collided bins can be treeified, and the table grows through resizing when the load threshold is reached.
-````
