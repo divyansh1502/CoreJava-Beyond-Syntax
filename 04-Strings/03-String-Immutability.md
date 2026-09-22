@@ -1,4 +1,3 @@
-```java
 # 🔒 String Immutability in Java
 
 > **String is immutable in Java, which means once a String object is created, its character sequence cannot be changed. Any operation that appears to modify a String creates/returns another String instead of modifying the original object.**
