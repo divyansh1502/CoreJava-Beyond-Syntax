@@ -1,4 +1,3 @@
-````md
 # 🎯 09 — Map Interview Questions
 
 > **Java Collections Deep Dive → Map Framework**
@@ -33,17 +32,13 @@
 
 The `Map` interface represents a collection of:
 
-```text
-key → value
-```
+    key → value
 
 Example:
 
-```text
-101 → "Divyansh"
-102 → "Rahul"
-103 → "Aman"
-```
+    101 → "Divyansh"
+    102 → "Rahul"
+    103 → "Aman"
 
 Important property:
 
@@ -55,11 +50,9 @@ However:
 
 Example:
 
-```text
-1 → Java
-2 → Java
-3 → Spring
-```
+    1 → Java
+    2 → Java
+    3 → Spring
 
 This is valid because the keys are different.
 
@@ -69,43 +62,37 @@ This is valid because the keys are different.
 
 The basic Map hierarchy:
 
-```text
-Map
- │
- ├── HashMap
- │
- ├── LinkedHashMap
- │
- ├── SortedMap
- │      │
- │      └── NavigableMap
- │             │
- │             └── TreeMap
- │
- ├── Hashtable
- │
- └── ConcurrentMap
-        │
-        └── ConcurrentHashMap
-```
+    Map
+     │
+     ├── HashMap
+     │
+     ├── LinkedHashMap
+     │
+     ├── SortedMap
+     │      │
+     │      └── NavigableMap
+     │              │
+     │              └── TreeMap
+     │
+     ├── Hashtable
+     │
+     └── ConcurrentMap
+            │
+            └── ConcurrentHashMap
 
 Important interfaces:
 
-```text
-Map
- ↓
-SortedMap
- ↓
-NavigableMap
-```
+    Map
+      ↓
+    SortedMap
+      ↓
+    NavigableMap
 
 And:
 
-```text
-Map
- ↓
-ConcurrentMap
-```
+    Map
+      ↓
+    ConcurrentMap
 
 ---
 
@@ -117,20 +104,16 @@ ConcurrentMap
 
 Example:
 
-```java
-Map<Integer, String> map =
+    Map<Integer, String> map =
         new HashMap<>();
 
-map.put(1, "Java");
-map.put(2, "Spring");
-```
+    map.put(1, "Java");
+    map.put(2, "Spring");
 
 Conceptually:
 
-```text
-1 → Java
-2 → Spring
-```
+    1 → Java
+    2 → Spring
 
 ---
 
@@ -142,23 +125,19 @@ No.
 
 Hierarchy:
 
-```text
-Collection
-   │
-   ├── List
-   ├── Set
-   └── Queue
-```
+    Collection
+       │
+       ├── List
+       ├── Set
+       └── Queue
 
 Separately:
 
-```text
-Map
-   │
-   ├── HashMap
-   ├── LinkedHashMap
-   └── TreeMap
-```
+    Map
+       │
+       ├── HashMap
+       ├── LinkedHashMap
+       └── TreeMap
 
 ---
 
@@ -166,17 +145,13 @@ Map
 
 A `Collection` represents individual elements:
 
-```text
-element
-element
-element
-```
+    element
+    element
+    element
 
 A Map represents mappings:
 
-```text
-key → value
-```
+    key → value
 
 Therefore, the data model is fundamentally different.
 
@@ -188,18 +163,14 @@ No.
 
 Example:
 
-```java
-map.put(1, "Java");
-map.put(1, "Spring");
-```
+    map.put(1, "Java");
+    map.put(1, "Spring");
 
 The second `put()` replaces the previous value.
 
 Final:
 
-```text
-1 → Spring
-```
+    1 → Spring
 
 ---
 
@@ -209,10 +180,8 @@ Yes.
 
 Example:
 
-```java
-map.put(1, "Java");
-map.put(2, "Java");
-```
+    map.put(1, "Java");
+    map.put(2, "Java");
 
 Valid.
 
@@ -224,16 +193,13 @@ The old value is replaced.
 
 Example:
 
-```java
-map.put(1, "Java");
-map.put(1, "Spring");
-```
+    map.put(1, "Java");
+
+    map.put(1, "Spring");
 
 Result:
 
-```text
-1 → Spring
-```
+    1 → Spring
 
 ---
 
@@ -243,40 +209,30 @@ Result:
 
 Example:
 
-```java
-Map<Integer, String> map =
+    Map<Integer, String> map =
         new HashMap<>();
 
-System.out.println(
+    System.out.println(
         map.put(1, "Java")
-);
-```
+    );
 
 Output:
 
-```text
-null
-```
+    null
 
 Now:
 
-```java
-System.out.println(
+    System.out.println(
         map.put(1, "Spring")
-);
-```
+    );
 
 Output:
 
-```text
-Java
-```
+    Java
 
 Final mapping:
 
-```text
-1 → Spring
-```
+    1 → Spring
 
 ---
 
@@ -284,27 +240,19 @@ Final mapping:
 
 It retrieves the value associated with a key.
 
-```java
-map.get(1);
-```
+    map.get(1)
 
 If:
 
-```text
-1 → Java
-```
+    1 → Java
 
 then:
 
-```text
-get(1)
-```
+    get(1)
 
 returns:
 
-```text
-Java
-```
+    Java
 
 ---
 
@@ -312,12 +260,10 @@ Java
 
 It returns the mapped value if the key exists; otherwise it returns the supplied default.
 
-```java
-map.getOrDefault(
+    map.getOrDefault(
         "Java",
         0
-);
-```
+    );
 
 Useful for frequency counting.
 
@@ -327,21 +273,13 @@ Useful for frequency counting.
 
 Checks whether a key exists.
 
-```java
-map.containsKey("Java");
-```
+    map.containsKey("Java")
 
 Returns:
 
-```text
-true
-```
-
-or:
-
-```text
-false
-```
+    true
+    or
+    false
 
 ---
 
@@ -349,21 +287,13 @@ false
 
 Checks whether a value exists.
 
-```java
-map.containsValue("Spring");
-```
+    map.containsValue("Spring")
 
 Returns:
 
-```text
-true
-```
-
-or:
-
-```text
-false
-```
+    true
+    or
+    false
 
 ---
 
@@ -371,9 +301,7 @@ false
 
 Removes a mapping using its key.
 
-```java
-map.remove(1);
-```
+    map.remove(1);
 
 ---
 
@@ -381,9 +309,7 @@ map.remove(1);
 
 Number of key-value mappings.
 
-```java
-map.size();
-```
+    map.size()
 
 ---
 
@@ -391,9 +317,7 @@ map.size();
 
 Returns `true` when the Map contains no mappings.
 
-```java
-map.isEmpty();
-```
+    map.isEmpty()
 
 ---
 
@@ -401,9 +325,7 @@ map.isEmpty();
 
 Removes all mappings.
 
-```java
-map.clear();
-```
+    map.clear();
 
 ---
 
@@ -415,12 +337,10 @@ map.clear();
 
 It provides expected O(1) time for common operations such as:
 
-```text
-put()
-get()
-remove()
-containsKey()
-```
+    put()
+    get()
+    remove()
+    containsKey()
 
 assuming good hash distribution.
 
@@ -432,23 +352,17 @@ Yes.
 
 HashMap allows:
 
-```text
-one null key
-```
+    one null key
 
 and:
 
-```text
-multiple null values
-```
+    multiple null values
 
 Example:
 
-```java
-map.put(null, "Java");
-map.put(1, null);
-map.put(2, null);
-```
+    map.put(null, "Java");
+    map.put(1, null);
+    map.put(2, null);
 
 ---
 
@@ -474,17 +388,15 @@ Because it uses hashing to locate the bucket associated with a key.
 
 Conceptually:
 
-```text
-key
- ↓
-hashCode()
- ↓
-hash
- ↓
-bucket index
- ↓
-entry
-```
+    key
+     ↓
+    hashCode()
+     ↓
+    hash
+     ↓
+    bucket index
+     ↓
+    entry
 
 ---
 
@@ -494,11 +406,8 @@ A collision occurs.
 
 Conceptually:
 
-```text
-Key A ──→ Bucket 5
-
-Key B ──→ Bucket 5
-```
+    Key A ──→ Bucket 5
+    Key B ──→ Bucket 5
 
 Both entries must coexist inside the same bucket.
 
@@ -510,37 +419,33 @@ HashMap handles collisions using bucket structures.
 
 The simplified flow:
 
-```text
-map.put(key, value)
-        ↓
-   hashCode()
-        ↓
-   hash spreading
-        ↓
-   bucket index
-        ↓
-   check bucket
-        ↓
-   compare keys
-        ↓
-   insert/update
-```
+    map.put(key, value)
+            ↓
+       hashCode()
+            ↓
+       hash spreading
+            ↓
+       bucket index
+            ↓
+       check bucket
+            ↓
+       compare keys
+            ↓
+       insert/update
 
 For retrieval:
 
-```text
-map.get(key)
-        ↓
-   hashCode()
-        ↓
-   bucket index
-        ↓
-   search bucket
-        ↓
-   equals()
-        ↓
-   return value
-```
+    map.get(key)
+            ↓
+       hashCode()
+            ↓
+       bucket index
+            ↓
+       search bucket
+            ↓
+       equals()
+            ↓
+       return value
 
 ---
 
@@ -550,15 +455,13 @@ A bucket is a logical position in the internal hash table where entries with rel
 
 Conceptually:
 
-```text
-table
-  │
-  ├── bucket 0
-  ├── bucket 1
-  ├── bucket 2
-  ├── bucket 3
-  └── ...
-```
+    table
+      │
+      ├── bucket 0
+      ├── bucket 1
+      ├── bucket 2
+      ├── bucket 3
+      └── ...
 
 ---
 
@@ -568,10 +471,8 @@ When different keys map to the same bucket.
 
 Example:
 
-```text
-Key A → Bucket 4
-Key B → Bucket 4
-```
+    Key A → Bucket 4
+    Key B → Bucket 4
 
 This is a collision.
 
@@ -581,35 +482,27 @@ This is a collision.
 
 Modern HashMap can use:
 
-```text
-Linked structure
-```
+    Linked structure
 
 and when a bucket becomes sufficiently collision-heavy:
 
-```text
-Tree structure
-```
+    Tree structure
 
 Conceptually:
 
-```text
-Bucket
-  ↓
-Node → Node → Node
-```
+    Bucket
+       ↓
+    Node → Node → Node
 
 may become:
 
-```text
-Bucket
-  ↓
-Tree
-  ↓
-Node
- / \
-Node Node
-```
+    Bucket
+       ↓
+      Tree
+       ↓
+    Node
+      / \
+    Node Node
 
 ---
 
@@ -619,16 +512,12 @@ Load factor determines when the HashMap should resize its internal table.
 
 Default load factor:
 
-```text
-0.75
-```
+    0.75
 
 Conceptually:
 
-```text
-threshold =
-    capacity × load factor
-```
+    threshold =
+        capacity × load factor
 
 When the number of entries reaches the threshold, resizing may occur.
 
@@ -646,9 +535,7 @@ This is called resizing.
 
 The commonly documented default initial capacity is:
 
-```text
-16
-```
+    16
 
 The table itself is lazily initialized, so an empty HashMap does not necessarily allocate a 16-element table immediately upon construction.
 
@@ -656,15 +543,11 @@ The table itself is lazily initialized, so an empty HashMap does not necessarily
 
 ## Q28. What is the default load factor?
 
-```text
-0.75
-```
+    0.75
 
 This means the default resize threshold is approximately:
 
-```text
-capacity × 0.75
-```
+    capacity × 0.75
 
 ---
 
@@ -676,17 +559,15 @@ HashMap uses hashing to find a candidate bucket and equality checks to identify 
 
 Conceptually:
 
-```text
-key
- ↓
-hashCode()
- ↓
-bucket
- ↓
-equals()
- ↓
-exact key
-```
+    key
+     ↓
+    hashCode()
+     ↓
+    bucket
+     ↓
+    equals()
+     ↓
+    exact key
 
 ---
 
@@ -694,29 +575,21 @@ exact key
 
 If:
 
-```java
-a.equals(b)
-```
+    a.equals(b)
 
 is `true`, then:
 
-```java
-a.hashCode() == b.hashCode()
-```
+    a.hashCode() == b.hashCode()
 
 must also be true.
 
 But:
 
-```text
-same hashCode
-```
+    same hashCode
 
 does NOT guarantee:
 
-```text
-equals() == true
-```
+    equals() == true
 
 Different objects can have the same hash code.
 
@@ -728,17 +601,15 @@ This can break hash-based collections.
 
 Example:
 
-```java
-class Student {
+    class Student {
 
-    int id;
+        int id;
 
-    @Override
-    public boolean equals(Object obj) {
-        // compare id
+        @Override
+        public boolean equals(Object obj) {
+            // compare id
+        }
     }
-}
-```
 
 If `hashCode()` is not overridden consistently, logically equal objects may produce different hash codes.
 
@@ -758,17 +629,13 @@ For hash-based collections, `equals()` and `hashCode()` should be implemented co
 
 Suppose a key is inserted:
 
-```java
-map.put(student, "Java");
-```
+    map.put(student, "Java");
 
 If fields used by `hashCode()` and `equals()` are changed afterward, the key may effectively belong to a different bucket.
 
 Then:
 
-```java
-map.get(student);
-```
+    map.get(student)
 
 may fail to find the mapping.
 
@@ -778,12 +645,10 @@ Best practice:
 
 Examples:
 
-```text
-String
-Integer
-Long
-UUID
-```
+    String
+    Integer
+    Long
+    UUID
 
 ---
 
@@ -799,25 +664,19 @@ UUID
 
 By default:
 
-```text
-Insertion order
-```
+    Insertion order
 
 Example:
 
-```java
-put(3, "C");
-put(1, "A");
-put(2, "B");
-```
+    put(3, "C");
+    put(1, "A");
+    put(2, "B");
 
 Iteration:
 
-```text
-3
-1
-2
-```
+    3
+    1
+    2
 
 ---
 
@@ -827,13 +686,11 @@ Yes.
 
 Constructor:
 
-```java
-new LinkedHashMap<>(
+    new LinkedHashMap<>(
         initialCapacity,
         loadFactor,
         true
-);
-```
+    );
 
 The final `true` enables access-order behavior.
 
@@ -843,13 +700,11 @@ This makes LinkedHashMap useful for implementing LRU-style caches.
 
 ## Q37. HashMap vs LinkedHashMap?
 
-```text
-HashMap
-    → No guaranteed iteration order
+    HashMap
+        → No guaranteed iteration order
 
-LinkedHashMap
-    → Predictable iteration order
-```
+    LinkedHashMap
+        → Predictable iteration order
 
 LinkedHashMap generally has slightly more overhead because it maintains linked ordering information.
 
@@ -871,11 +726,9 @@ Modern Java implementations use a Red-Black tree.
 
 Common operations are:
 
-```text
-put()    → O(log n)
-get()    → O(log n)
-remove() → O(log n)
-```
+    put()   → O(log n)
+    get()   → O(log n)
+    remove()→ O(log n)
 
 because the underlying structure is tree-based.
 
@@ -887,9 +740,7 @@ No.
 
 It maintains:
 
-```text
-sorted key order
-```
+    sorted key order
 
 ---
 
@@ -907,9 +758,7 @@ No.
 
 Like other Maps:
 
-```text
-one key → one mapping
-```
+    one key → one mapping
 
 Inserting the same key replaces its previous value.
 
@@ -919,12 +768,10 @@ Inserting the same key replaces its previous value.
 
 `NavigableMap` extends `SortedMap` and provides navigation operations such as:
 
-```text
-lowerKey()
-floorKey()
-ceilingKey()
-higherKey()
-```
+    lowerKey()
+    floorKey()
+    ceilingKey()
+    higherKey()
 
 These are useful when working with nearest keys.
 
@@ -934,35 +781,25 @@ These are useful when working with nearest keys.
 
 Suppose keys are:
 
-```text
-10, 20, 30
-```
+    10, 20, 30
 
 For:
 
-```java
-lowerKey(20);
-```
+    lowerKey(20)
 
 result:
 
-```text
-10
-```
+    10
 
 because lower means strictly less.
 
 For:
 
-```java
-floorKey(20);
-```
+    floorKey(20)
 
 result:
 
-```text
-20
-```
+    20
 
 because floor means less than or equal.
 
@@ -972,29 +809,21 @@ because floor means less than or equal.
 
 For:
 
-```java
-ceilingKey(20);
-```
+    ceilingKey(20)
 
 result:
 
-```text
-20
-```
+    20
 
 because ceiling means greater than or equal.
 
 For:
 
-```java
-higherKey(20);
-```
+    higherKey(20)
 
 result:
 
-```text
-30
-```
+    30
 
 because higher means strictly greater.
 
@@ -1008,9 +837,7 @@ because higher means strictly greater.
 
 It belongs to:
 
-```text
-java.util
-```
+    java.util
 
 ---
 
@@ -1020,15 +847,11 @@ No.
 
 It does not allow:
 
-```text
-null key
-```
+    null key
 
 or:
 
-```text
-null value
-```
+    null value
 
 ---
 
@@ -1060,9 +883,7 @@ A thread-safe Map designed for concurrent access.
 
 Package:
 
-```text
-java.util.concurrent
-```
+    java.util.concurrent
 
 ---
 
@@ -1070,10 +891,8 @@ java.util.concurrent
 
 No.
 
-```text
-null key    ❌
-null value  ❌
-```
+    null key   ❌
+    null value ❌
 
 ---
 
@@ -1081,15 +900,13 @@ null value  ❌
 
 It provides:
 
-```text
-Thread safety
+    Thread safety
     +
-Concurrent access
+    Concurrent access
     +
-Atomic Map operations
+    Atomic Map operations
     +
-Weakly consistent iteration
-```
+    Weakly consistent iteration
 
 ---
 
@@ -1097,12 +914,10 @@ Weakly consistent iteration
 
 It inserts a mapping only if the key does not already have a mapping.
 
-```java
-map.putIfAbsent(
+    map.putIfAbsent(
         "Java",
         1
-);
-```
+    );
 
 ---
 
@@ -1110,12 +925,10 @@ map.putIfAbsent(
 
 It computes a value only when the key is absent.
 
-```java
-map.computeIfAbsent(
+    map.computeIfAbsent(
         "Java",
         key -> new ArrayList<>()
-);
-```
+    );
 
 ---
 
@@ -1125,13 +938,11 @@ It combines an existing value with a new value using a remapping function.
 
 Example:
 
-```java
-map.merge(
+    map.merge(
         "Java",
         1,
         Integer::sum
-);
-```
+    );
 
 Useful for frequency counting.
 
@@ -1141,9 +952,7 @@ Useful for frequency counting.
 
 They are:
 
-```text
-Weakly Consistent
-```
+    Weakly Consistent
 
 They do not behave like traditional fail-fast iterators.
 
@@ -1171,15 +980,13 @@ Modern ConcurrentHashMap uses a more fine-grained concurrency design involving t
 
 Memory trick:
 
-```text
-HashMap
-    ↓
-Hashing
+    HashMap
+        ↓
+    Hashing
 
-LinkedHashMap
-    ↓
-Hashing + Links
-```
+    LinkedHashMap
+        ↓
+    Hashing + Links
 
 ---
 
@@ -1195,15 +1002,13 @@ Hashing + Links
 
 Memory trick:
 
-```text
-HashMap
-    ↓
-Fast lookup
+    HashMap
+        ↓
+    Fast lookup
 
-TreeMap
-    ↓
-Sorted + navigation
-```
+    TreeMap
+        ↓
+    Sorted + navigation
 
 ---
 
@@ -1239,9 +1044,7 @@ Sorted + navigation
 
 For a general single-threaded use case:
 
-```text
-HashMap
-```
+    HashMap
 
 ---
 
@@ -1249,9 +1052,7 @@ HashMap
 
 Use:
 
-```text
-LinkedHashMap
-```
+    LinkedHashMap
 
 ---
 
@@ -1259,9 +1060,7 @@ LinkedHashMap
 
 Use:
 
-```text
-TreeMap
-```
+    TreeMap
 
 ---
 
@@ -1269,15 +1068,11 @@ TreeMap
 
 Use:
 
-```text
-TreeMap
-```
+    TreeMap
 
 because it implements:
 
-```text
-NavigableMap
-```
+    NavigableMap
 
 ---
 
@@ -1285,9 +1080,7 @@ NavigableMap
 
 Consider:
 
-```text
-ConcurrentHashMap
-```
+    ConcurrentHashMap
 
 ---
 
@@ -1295,21 +1088,15 @@ ConcurrentHashMap
 
 Single-threaded:
 
-```text
-HashMap
-```
+    HashMap
 
 Concurrent:
 
-```text
-ConcurrentHashMap
-```
+    ConcurrentHashMap
 
 with:
 
-```text
-merge()
-```
+    merge()
 
 ---
 
@@ -1317,15 +1104,11 @@ merge()
 
 A common approach is:
 
-```text
-LinkedHashMap
-```
+    LinkedHashMap
 
 with:
 
-```text
-accessOrder = true
-```
+    accessOrder = true
 
 ---
 
@@ -1333,11 +1116,9 @@ accessOrder = true
 
 Possible choices include:
 
-```text
-HashMap
-LinkedHashMap
-TreeMap
-```
+    HashMap
+    LinkedHashMap
+    TreeMap
 
 with TreeMap caveats around null keys and ordering.
 
@@ -1347,9 +1128,7 @@ with TreeMap caveats around null keys and ordering.
 
 Use:
 
-```text
-ConcurrentHashMap
-```
+    ConcurrentHashMap
 
 ---
 
@@ -1359,53 +1138,45 @@ Map-based DSA problems commonly use these patterns.
 
 ## Pattern 1 — Frequency Map
 
-```java
-HashMap<Integer, Integer> map = new HashMap<>();
+    HashMap<Integer, Integer>
 
-for (int num : nums) {
+Example:
 
-    map.put(
+    for (int num : nums) {
+
+        map.put(
             num,
             map.getOrDefault(num, 0) + 1
-    );
-}
-```
+        );
+    }
 
 Use for:
 
-```text
-frequency counting
-duplicates
-anagrams
-majority/frequency problems
-```
+    frequency counting
+    duplicates
+    anagrams
+    majority/frequency problems
 
 ---
 
 ## Pattern 2 — Frequency with merge()
 
-```java
-map.merge(
+    map.merge(
         num,
         1,
         Integer::sum
-);
-```
+    );
 
 ---
 
 ## Pattern 3 — Seen Elements
 
-```java
-Set<Integer> seen =
+    Set<Integer> seen =
         new HashSet<>();
-```
 
 or:
 
-```java
-Map<Integer, Boolean> map;
-```
+    Map<Integer, Boolean>
 
 Usually a Set is more appropriate when only membership matters.
 
@@ -1415,37 +1186,31 @@ Usually a Set is more appropriate when only membership matters.
 
 Example:
 
-```java
-Map<Integer, Integer> map =
+    Map<Integer, Integer> map =
         new HashMap<>();
 
-map.put(nums[i], i);
-```
+    map.put(nums[i], i);
 
 Used in:
 
-```text
-Two Sum
-lookup problems
-complement searching
-```
+    Two Sum
+    lookup problems
+    complement searching
 
 ---
 
 ## Pattern 5 — Character Frequency
 
-```java
-Map<Character, Integer> map =
+    Map<Character, Integer> map =
         new HashMap<>();
 
-for (char ch : s.toCharArray()) {
+    for (char ch : s.toCharArray()) {
 
-    map.put(
+        map.put(
             ch,
             map.getOrDefault(ch, 0) + 1
-    );
-}
-```
+        );
+    }
 
 ---
 
@@ -1453,23 +1218,19 @@ for (char ch : s.toCharArray()) {
 
 Example:
 
-```java
-Map<String, List<Integer>> map =
+    Map<String, List<Integer>> map =
         new HashMap<>();
 
-map.computeIfAbsent(
+    map.computeIfAbsent(
         "Java",
         key -> new ArrayList<>()
-).add(10);
-```
+    ).add(10);
 
 Useful for:
 
-```text
-Group Anagrams
-Grouping objects
-Graph adjacency lists
-```
+    Group Anagrams
+    Grouping objects
+    Graph adjacency lists
 
 ---
 
@@ -1477,67 +1238,53 @@ Graph adjacency lists
 
 When solving a DSA problem, ask:
 
-```text
-1. Do I need key → value mapping?
-```
+    1. Do I need key → value mapping?
 
 If yes:
 
-```text
-Map
-```
+    Map
 
 Then ask:
 
-```text
-2. Do I need only fast lookup?
+    2. Do I need only fast lookup?
 
     HashMap
 
-3. Do I need order?
+    3. Do I need order?
 
     LinkedHashMap
 
-4. Do I need sorted keys?
+    4. Do I need sorted keys?
 
     TreeMap
 
-5. Do multiple threads access it?
+    5. Do multiple threads access it?
 
     ConcurrentHashMap
-```
 
 Then ask:
 
-```text
-6. What should the key represent?
-```
+    6. What should the key represent?
 
 Examples:
 
-```text
-number
-character
-string
-pair
-object
-```
+    number
+    character
+    string
+    pair
+    object
 
 Then:
 
-```text
-7. What should the value represent?
-```
+    7. What should the value represent?
 
 Examples:
 
-```text
-count
-index
-list
-object
-state
-```
+    count
+    index
+    list
+    object
+    state
 
 This thought process is more important than memorizing Map classes.
 
@@ -1603,17 +1350,13 @@ Keys.
 
 Typically:
 
-```text
-O(log n)
-```
+    O(log n)
 
 ---
 
 ## Q77. TreeMap implements?
 
-```text
-NavigableMap
-```
+    NavigableMap
 
 ---
 
@@ -1679,17 +1422,13 @@ Linked nodes and, when thresholds are met, tree bins.
 
 ## Q88. HashMap default load factor?
 
-```text
-0.75
-```
+    0.75
 
 ---
 
 ## Q89. HashMap default initial capacity?
 
-```text
-16
-```
+    16
 
 with lazy table initialization.
 
@@ -1723,9 +1462,7 @@ No.
 
 Usually:
 
-```text
-HashMap
-```
+    HashMap
 
 ---
 
@@ -1733,15 +1470,11 @@ HashMap
 
 A suitable option is:
 
-```text
-ConcurrentHashMap
-```
+    ConcurrentHashMap
 
 with:
 
-```text
-merge()
-```
+    merge()
 
 ---
 
@@ -1755,142 +1488,125 @@ merge()
 
 ## 🔥 Map
 
-```text
-Key → Value
+    Key → Value
 
-Duplicate keys ❌
-Duplicate values ✅
-```
+    Duplicate keys ❌
+    Duplicate values ✅
 
 ---
 
 ## ⚡ HashMap
 
-```text
-Fast lookup
-Hashing
-No guaranteed order
-One null key
-Multiple null values
-Not thread-safe
-```
+    Fast lookup
+    Hashing
+    No guaranteed order
+    One null key
+    Multiple null values
+    Not thread-safe
 
 ---
 
 ## 🔗 LinkedHashMap
 
-```text
-HashMap
-   +
-Linked ordering
+    HashMap
+       +
+    Linked ordering
 
-Default:
-insertion order
+    Default:
+    insertion order
 
-Can support:
-access order
-```
+    Can support:
+    access order
 
 ---
 
 ## 🌳 TreeMap
 
-```text
-Sorted keys
-Red-Black tree
-O(log n)
-NavigableMap
-
-lowerKey()
-floorKey()
-ceilingKey()
-higherKey()
-```
+    Sorted keys
+    Red-Black tree
+    O(log n)
+    NavigableMap
+    lowerKey()
+    floorKey()
+    ceilingKey()
+    higherKey()
 
 ---
 
 ## 🧓 Hashtable
 
-```text
-Legacy
-Synchronized
-No null key
-No null values
-```
+    Legacy
+    Synchronized
+    No null key
+    No null values
 
 ---
 
 ## 🚀 ConcurrentHashMap
 
-```text
-Thread-safe
-Concurrent
-No null key
-No null values
-Weakly consistent iterator
-Atomic operations
+    Thread-safe
+    Concurrent
+    No null key
+    No null values
+    Weakly consistent iterator
+    Atomic operations
 
-putIfAbsent()
-compute()
-computeIfAbsent()
-computeIfPresent()
-merge()
-```
+    putIfAbsent()
+    compute()
+    computeIfAbsent()
+    computeIfPresent()
+    merge()
 
 ---
 
 # 🧠 Ultimate Memory Trick
 
-```text
-HashMap
-   ↓
-FAST
+    HashMap
+       ↓
+    FAST
 
-LinkedHashMap
-   ↓
-ORDER
+    LinkedHashMap
+       ↓
+    ORDER
 
-TreeMap
-   ↓
-SORTED
+    TreeMap
+       ↓
+    SORTED
 
-Hashtable
-   ↓
-LEGACY + SYNCHRONIZED
+    Hashtable
+       ↓
+    LEGACY + SYNCHRONIZED
 
-ConcurrentHashMap
-   ↓
-CONCURRENT
-```
+    ConcurrentHashMap
+       ↓
+    CONCURRENT
 
 ---
 
 # 🏆 Interview Decision Tree
 
-```text
-Need a Map?
-    │
-    ▼
-Need concurrency?
-    │
-  ┌─┴─┐
- YES  NO
-  │    │
-  ▼    ▼
-Concurrent   Need sorted keys?
-HashMap          │
-              ┌─┴─┐
-             YES  NO
-              │    │
-              ▼    ▼
-           TreeMap  Need predictable order?
-                       │
-                     ┌─┴─┐
-                    YES  NO
-                     │    │
-                     ▼    ▼
-              LinkedHashMap HashMap
-```
+    Need a Map?
+        │
+        ▼
+    Need concurrency?
+        │
+      ┌─┴─┐
+     YES  NO
+      │    │
+      ▼    ▼
+    Concurrent   Need sorted keys?
+    HashMap          │
+                   ┌─┴─┐
+                  YES  NO
+                   │    │
+                   ▼    ▼
+                TreeMap  Need predictable order?
+                            │
+                          ┌─┴─┐
+                         YES  NO
+                          │    │
+                          ▼    ▼
+                    LinkedHashMap HashMap
 
 ---
 
@@ -1898,88 +1614,56 @@ HashMap          │
 
 Before an interview, make sure you can explain these without memorizing:
 
-```text
-[ ] What is Map?
-
-[ ] Why Map doesn't extend Collection?
-
-[ ] Why duplicate keys are not allowed?
-
-[ ] HashMap internal working
-
-[ ] HashMap collision
-
-[ ] hashCode() and equals()
-
-[ ] Load factor
-
-[ ] Resizing
-
-[ ] Tree bins
-
-[ ] HashMap vs LinkedHashMap
-
-[ ] HashMap vs TreeMap
-
-[ ] LinkedHashMap insertion order
-
-[ ] LinkedHashMap access order
-
-[ ] TreeMap Red-Black tree
-
-[ ] NavigableMap
-
-[ ] lowerKey()
-
-[ ] floorKey()
-
-[ ] ceilingKey()
-
-[ ] higherKey()
-
-[ ] Hashtable
-
-[ ] ConcurrentHashMap
-
-[ ] CAS
-
-[ ] Weakly consistent iterator
-
-[ ] putIfAbsent()
-
-[ ] computeIfAbsent()
-
-[ ] compute()
-
-[ ] merge()
-
-[ ] Frequency Map pattern
-
-[ ] Map-based DSA problems
-```
+    [ ] What is Map?
+    [ ] Why Map doesn't extend Collection?
+    [ ] Why duplicate keys are not allowed?
+    [ ] HashMap internal working
+    [ ] HashMap collision
+    [ ] hashCode() and equals()
+    [ ] Load factor
+    [ ] Resizing
+    [ ] Tree bins
+    [ ] HashMap vs LinkedHashMap
+    [ ] HashMap vs TreeMap
+    [ ] LinkedHashMap insertion order
+    [ ] LinkedHashMap access order
+    [ ] TreeMap Red-Black tree
+    [ ] NavigableMap
+    [ ] lowerKey()
+    [ ] floorKey()
+    [ ] ceilingKey()
+    [ ] higherKey()
+    [ ] Hashtable
+    [ ] ConcurrentHashMap
+    [ ] CAS
+    [ ] Weakly consistent iterator
+    [ ] putIfAbsent()
+    [ ] computeIfAbsent()
+    [ ] compute()
+    [ ] merge()
+    [ ] Frequency Map pattern
+    [ ] Map-based DSA problems
 
 ---
 
 # 🚀 Final Mental Model
 
-```text
-┌──────────────────────────────────────────────┐
-│                    MAP                       │
-│                                              │
-│              Key → Value                     │
-│                                              │
-│  ┌──────────┬───────────┬───────────┐       │
-│  │ HashMap  │ LinkedHash│ TreeMap   │       │
-│  │          │   Map     │           │       │
-│  │ FAST     │ ORDER     │ SORTED    │       │
-│  └──────────┴───────────┴───────────┘       │
-│                                              │
-│  ┌──────────┬───────────────────────┐       │
-│  │ Hashtable│ ConcurrentHashMap     │       │
-│  │ LEGACY   │ CONCURRENT            │       │
-│  └──────────┴───────────────────────┘       │
-└──────────────────────────────────────────────┘
-```
+    ┌──────────────────────────────────────────────┐
+    │                    MAP                       │
+    │                                              │
+    │              Key → Value                     │
+    │                                              │
+    │  ┌──────────┬───────────┬───────────┐        │
+    │  │ HashMap  │ LinkedHash│ TreeMap   │        │
+    │  │          │   Map     │           │        │
+    │  │ FAST     │ ORDER     │ SORTED    │        │
+    │  └──────────┴───────────┴───────────┘        │
+    │                                              │
+    │  ┌──────────┬───────────────────────┐        │
+    │  │ Hashtable│ ConcurrentHashMap      │        │
+    │  │ LEGACY   │ CONCURRENT             │        │
+    │  └──────────┴───────────────────────┘        │
+    └──────────────────────────────────────────────┘
 
 > 🔥 **Interview Gold:** Don't memorize Map implementations as isolated classes. Remember their purpose:
 >
@@ -1988,4 +1672,3 @@ Before an interview, make sure you can explain these without memorizing:
 > `TreeMap` → sorted + navigation  
 > `Hashtable` → legacy synchronization  
 > `ConcurrentHashMap` → concurrent access
-````

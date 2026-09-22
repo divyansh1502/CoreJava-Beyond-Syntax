@@ -1,8 +1,7 @@
-````md
 # ⚡ 08 — ConcurrentHashMap
 
 > **Java Collections Deep Dive → Map Framework**
->
+
 > `ConcurrentHashMap` is a thread-safe, high-performance `Map` implementation designed specifically for concurrent access.
 
 ---
@@ -46,15 +45,21 @@
 
 `ConcurrentHashMap` is a class from:
 
-`java.util.concurrent`
+```java
+java.util.concurrent
+```
 
 It implements:
 
-`ConcurrentMap<K, V>`
+```java
+ConcurrentMap<K, V>
+```
 
 which extends:
 
-`Map<K, V>`
+```java
+Map<K, V>
+```
 
 Declaration:
 
@@ -98,7 +103,11 @@ One traditional approach is:
 
 ```text
 synchronized
+```
 
+But if the entire Map is protected by one lock:
+
+```text
 Thread 1
    ↓
  LOCK
@@ -132,9 +141,9 @@ Interfaces:
 
 ```text
 Map
-  ↑
+ ↑
 ConcurrentMap
-  ↑
+ ↑
 ConcurrentHashMap
 ```
 
@@ -231,11 +240,11 @@ Actual:
 
 This is a race condition.
 
-`ConcurrentHashMap` provides atomic compound operations to solve such cases.
+ConcurrentHashMap provides atomic compound operations to solve such cases.
 
 Examples:
 
-```text
+```java
 putIfAbsent()
 compute()
 computeIfAbsent()
@@ -293,7 +302,7 @@ NullPointerException
 Consider:
 
 ```java
-map.get(key);
+map.get(key)
 ```
 
 Suppose the result is:
@@ -310,13 +319,13 @@ There are two possible meanings in a normal Map:
 2. Key exists and value is null
 ```
 
-`ConcurrentHashMap` avoids this ambiguity by not allowing null values.
+ConcurrentHashMap avoids this ambiguity by not allowing null values.
 
 Therefore:
 
 ```text
 null from get()
-      ↓
+    ↓
 key is absent
 ```
 
@@ -330,13 +339,21 @@ Modern `ConcurrentHashMap` uses a sophisticated structure involving:
 
 ```text
 Hash table
+
     +
+
 Nodes
+
     +
+
 CAS
+
     +
+
 synchronized blocks
+
     +
+
 Tree bins for heavy collisions
 ```
 
@@ -344,15 +361,15 @@ Conceptually:
 
 ```text
 ConcurrentHashMap
-       │
-       ├── Hash Table
-       │
-       ├── CAS
-       │
-       ├── Fine-grained synchronization
-       │
-       └── Tree bins
-               ↓
+      │
+      ├── Hash Table
+      │
+      ├── CAS
+      │
+      ├── Fine-grained synchronization
+      │
+      └── Tree bins
+              ↓
           Heavy collisions
 ```
 
@@ -405,23 +422,23 @@ Conceptually:
 
 ```text
 Bucket
-   │
-   ├── Node
-   ├── Node
-   ├── Node
-   └── Node
+  │
+  ├── Node
+  ├── Node
+  ├── Node
+  └── Node
 ```
 
 can become:
 
 ```text
 Bucket
-   │
-   └── Tree
-        │
-        ├── Node
-        ├── Node
-        └── Node
+  │
+  └── Tree
+       │
+       ├── Node
+       ├── Node
+       └── Node
 ```
 
 This improves lookup behavior when collisions become sufficiently large.
@@ -462,14 +479,16 @@ Think:
 
 ```text
 Entire Map Lock
-      ❌
+
+    ❌
 ```
 
 versus:
 
 ```text
 Fine-grained coordination
-      ✅
+
+    ✅
 ```
 
 ---
@@ -480,7 +499,9 @@ Modern `ConcurrentHashMap` uses a combination of:
 
 ```text
 CAS
+
 +
+
 synchronized blocks
 ```
 
@@ -638,7 +659,7 @@ for (Map.Entry<Integer, String> entry :
 }
 ```
 
-`ConcurrentHashMap` iterators are:
+ConcurrentHashMap iterators are:
 
 ```text
 Weakly Consistent
@@ -686,7 +707,7 @@ This is an important interview concept.
 
 # 🧮 16. Atomic Compound Operations
 
-One of the biggest advantages of `ConcurrentHashMap` is its atomic Map operations.
+One of the biggest advantages of ConcurrentHashMap is its atomic Map operations.
 
 Suppose we write:
 
@@ -715,7 +736,7 @@ Another thread could modify the Map during that gap.
 Instead use:
 
 ```java
-map.putIfAbsent(key, value);
+putIfAbsent()
 ```
 
 when that matches the requirement.
@@ -737,7 +758,7 @@ Meaning:
 
 ```text
 If "Java" does not exist
-       ↓
+    ↓
 Insert 1
 ```
 
@@ -769,6 +790,7 @@ Meaning:
 
 ```text
 Key exists?
+
    │
    ├── Yes → return existing value
    │
@@ -839,11 +861,11 @@ Conceptually:
 ```text
 If absent:
 
-Java → 1
+    Java → 1
 
 If present:
 
-oldValue + 1
+    oldValue + 1
 ```
 
 ---
@@ -882,11 +904,14 @@ A naive approach:
 
 ```java
 if (map.containsKey(word)) {
+
     map.put(
         word,
         map.get(word) + 1
     );
+
 } else {
+
     map.put(word, 1);
 }
 ```
@@ -989,11 +1014,7 @@ synchronizedMap
 synchronized wrapper
       ↓
 HashMap protected by synchronization
-```
 
-versus:
-
-```text
 ConcurrentHashMap
       ↓
 purpose-built concurrent Map
@@ -1001,7 +1022,7 @@ purpose-built concurrent Map
 fine-grained concurrency design
 ```
 
-For heavily concurrent workloads, `ConcurrentHashMap` is generally the more appropriate collection.
+For heavily concurrent workloads, ConcurrentHashMap is generally the more appropriate collection.
 
 ---
 
@@ -1017,7 +1038,9 @@ map.put(1, "A");
 map.put(2, "B");
 
 for (Integer key : map.keySet()) {
+
     map.put(3, "C");
+
     System.out.println(key);
 }
 ```
@@ -1078,7 +1101,9 @@ Incorrect:
 
 ```text
 ConcurrentHashMap
+
     → null key ✅
+
     → null value ✅
 ```
 
@@ -1086,6 +1111,7 @@ Correct:
 
 ```text
 null key ❌
+
 null value ❌
 ```
 
@@ -1095,7 +1121,7 @@ null value ❌
 
 This is an oversimplification.
 
-`ConcurrentHashMap` has a dedicated concurrency design.
+ConcurrentHashMap has a dedicated concurrency design.
 
 ---
 
@@ -1109,7 +1135,7 @@ Every operation
 Lock entire Map
 ```
 
-`ConcurrentHashMap` uses more fine-grained coordination.
+ConcurrentHashMap uses more fine-grained coordination.
 
 ---
 
@@ -1128,7 +1154,7 @@ is not one atomic operation.
 Use:
 
 ```java
-map.putIfAbsent(key, value);
+putIfAbsent()
 ```
 
 when appropriate.
@@ -1157,7 +1183,7 @@ It does not.
 
 That describes older implementations.
 
-Modern `ConcurrentHashMap` does not use the old segmented architecture as its primary design.
+Modern ConcurrentHashMap does not use the old segmented architecture as its primary design.
 
 ---
 
@@ -1175,7 +1201,7 @@ may be simpler and more appropriate.
 
 # 🎯 24. DSA Connection
 
-`ConcurrentHashMap` is not usually the first choice for normal single-threaded DSA problems.
+ConcurrentHashMap is not usually the first choice for normal single-threaded DSA problems.
 
 Its important applications include:
 
@@ -1215,7 +1241,9 @@ When you see:
 
 ```text
 Multiple Threads
+
       +
+
 Shared Map
 ```
 
@@ -1230,50 +1258,37 @@ Then select the method according to the operation.
 ### Normal insertion
 
 ```java
-map.put(key, value);
+put()
 ```
 
 ### Insert only if absent
 
 ```java
-map.putIfAbsent(key, value);
+putIfAbsent()
 ```
 
 ### Create value only if absent
 
 ```java
-map.computeIfAbsent(
-    key,
-    k -> createValue()
-);
+computeIfAbsent()
 ```
 
 ### Update existing value
 
 ```java
-map.computeIfPresent(
-    key,
-    (k, value) -> updateValue(value)
-);
+computeIfPresent()
 ```
 
 ### Atomic calculation
 
 ```java
-map.compute(
-    key,
-    (k, value) -> calculate(value)
-);
+compute()
 ```
 
 ### Frequency counting / combining
 
 ```java
-map.merge(
-    key,
-    1,
-    Integer::sum
-);
+merge()
 ```
 
 ---
@@ -1382,7 +1397,7 @@ The `merge()` operation provides the atomic update required for this counting pa
 
 # 🧠 Atomicity Comparison
 
-## ❌ Unsafe compound operation
+### ❌ Unsafe compound operation
 
 ```java
 map.put(
@@ -1405,7 +1420,7 @@ Another thread can interfere between these steps.
 
 ---
 
-## ✅ Atomic Map operation
+### ✅ Atomic Map operation
 
 ```java
 map.merge(
@@ -1814,17 +1829,12 @@ Modern concurrent Map
 
 And the most important concurrent methods:
 
-```text
+```java
 putIfAbsent()
-
 compute()
-
 computeIfAbsent()
-
 computeIfPresent()
-
 merge()
 ```
 
 > 🔥 **Interview Gold:** Never reduce `ConcurrentHashMap` to simply "HashMap + synchronized". Its real value is its **concurrency-aware design**, **atomic compound operations**, **no-null policy**, and **weakly consistent iteration**.
-````
