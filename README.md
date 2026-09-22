@@ -485,7 +485,7 @@ The goal is:
 
 # 🔥 Interview Question Strategy
 
-Every major topic should finish with:
+Every major topic should finish with:-
 
 ### Top 10 Most Important Questions
 
