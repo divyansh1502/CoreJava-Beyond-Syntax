@@ -4,6 +4,66 @@
 
 ---
 
+# 📚 Table of Contents
+
+- [1. What is Method Overriding?](#1-what-is-method-overriding)
+- [2. Why Do We Need Method Overriding?](#2-why-do-we-need-method-overriding)
+- [3. Basic Example](#3-basic-example)
+- [4. The `@Override` Annotation](#4-the-override-annotation)
+- [5. Why Should We Use `@Override`?](#5-why-should-we-use-override)
+- [6. Rules of Method Overriding](#6-rules-of-method-overriding)
+- [7. Same Parameter List](#7-same-parameter-list)
+- [8. Different Parameters = Overloading](#8-different-parameters--overloading)
+- [9. Overriding vs Overloading](#9-overriding-vs-overloading)
+- [10. Runtime Polymorphism](#10-runtime-polymorphism)
+- [11. Dynamic Method Dispatch](#11-dynamic-method-dispatch)
+- [12. Reference Type vs Object Type](#12-reference-type-vs-object-type)
+- [13. Upcasting and Overriding](#13-upcasting-and-overriding)
+- [14. Downcasting](#14-downcasting)
+- [15. Covariant Return Type](#15-covariant-return-type)
+- [16. What is NOT Covariant?](#16-what-is-not-covariant)
+- [17. Access Modifier Rules](#17-access-modifier-rules)
+- [18. Package-Private / Default Access](#18-package-private--default-access)
+- [19. `final` Methods](#19-final-methods)
+- [20. `static` Methods](#20-static-methods)
+- [21. Private Methods](#21-private-methods)
+- [22. Why Can't Private Methods Be Overridden?](#22-why-cant-private-methods-be-overridden)
+- [23. Constructors Cannot Be Overridden](#23-constructors-cannot-be-overridden)
+- [24. `super` and Method Overriding](#24-super-and-method-overriding)
+- [25. `super` vs `this`](#25-super-vs-this)
+- [26. Abstract Methods and Overriding](#26-abstract-methods-and-overriding)
+- [27. Interface Methods and Overriding](#27-interface-methods-and-overriding)
+- [28. Multiple Levels of Overriding](#28-multiple-levels-of-overriding)
+- [29. Calling Parent Implementation from Multiple Levels](#29-calling-parent-implementation-from-multiple-levels)
+- [30. Exceptions and Method Overriding](#30-exceptions-and-method-overriding)
+- [31. Runtime Exceptions](#31-runtime-exceptions)
+- [32. Can We Override a Method with a Different Parameter Type?](#32-can-we-override-a-method-with-a-different-parameter-type)
+- [33. Can We Override a Method with a Different Return Type?](#33-can-we-override-a-method-with-a-different-return-type)
+- [34. Can We Override a `public` Method with `protected`?](#34-can-we-override-a-public-method-with-protected)
+- [35. Can We Override a `protected` Method with `public`?](#35-can-we-override-a-protected-method-with-public)
+- [36. Can We Override a Default Interface Method?](#36-can-we-override-a-default-interface-method)
+- [37. Can We Override a `default` Method with `public`?](#37-can-we-override-a-default-method-with-public)
+- [38. Fields vs Overridden Methods](#38-fields-vs-overridden-methods)
+- [39. `static` vs Instance Method](#39-static-vs-instance-method)
+- [40. Method Overriding and `final`](#40-method-overriding-and-final)
+- [41. Overriding and Object Class](#41-overriding-and-object-class)
+- [42. Why `equals()` and `hashCode()` Matter](#42-why-equals-and-hashcode-matter)
+- [43. Real-World Example — Payment System](#43-real-world-example--payment-system)
+- [44. Real-World Backend Example](#44-real-world-backend-example)
+- [45. Advantages of Method Overriding](#45-advantages-of-method-overriding)
+- [46. Common Interview Traps](#46-common-interview-traps)
+- [47. Method Overriding vs Method Hiding](#47-method-overriding-vs-method-hiding)
+- [48. Method Overriding vs Method Overloading](#48-method-overriding-vs-method-overloading)
+- [49. Complete Mental Model](#49-complete-mental-model)
+- [50. 30-Second Interview Answer](#50-30-second-interview-answer)
+- [⭐ Final Memory Trick](#-final-memory-trick)
+- [🔥 Top 10 Interview Questions & Answers](#-top-10-interview-questions--answers)
+- [🧠 10-Question Quick Revision](#-10-question-quick-revision)
+- [🎯 30-Second Interview Answer](#-30-second-interview-answer)
+
+
+---
+
 # 1. What is Method Overriding?
 
 Suppose a parent class defines:
