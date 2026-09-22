@@ -2,7 +2,7 @@
 
 > **Java Collections Deep Dive → Map Framework**
 >
-> `TreeMap` is a sorted `Map` implementation based on a **Red-Black Tree**.  
+> `TreeMap` is a sorted `Map` implementation based on a **Red-Black Tree**.
 > It stores entries according to the ordering of its keys.
 
 ---
@@ -52,21 +52,25 @@ It stores key-value pairs in **sorted order according to the keys**.
 
 Declaration:
 
-    public class TreeMap<K,V>
-        extends AbstractMap<K,V>
-        implements NavigableMap<K,V>,
-                   Cloneable,
-                   Serializable
+```java
+public class TreeMap<K,V>
+    extends AbstractMap<K,V>
+    implements NavigableMap<K,V>,
+               Cloneable,
+               Serializable
+```
 
 The important hierarchy is:
 
-    Map
-      ↓
-    SortedMap
-      ↓
-    NavigableMap
-      ↓
-    TreeMap
+```text
+Map
+ ↓
+SortedMap
+ ↓
+NavigableMap
+ ↓
+TreeMap
+```
 
 ---
 
@@ -74,26 +78,31 @@ The important hierarchy is:
 
 Use `TreeMap` when you need:
 
-    Key-value storage
-          +
-    Sorted keys
-          +
-    Navigation operations
+```text
+Key-value storage
+        +
+Sorted keys
+        +
+Navigation operations
+```
 
 For example:
 
-    Map<Integer, String> map =
-        new TreeMap<>();
+```java
+Map<Integer, String> map = new TreeMap<>();
 
-    map.put(50, "A");
-    map.put(10, "B");
-    map.put(30, "C");
+map.put(50, "A");
+map.put(10, "B");
+map.put(30, "C");
+```
 
 Iteration will be:
 
-    10 → B
-    30 → C
-    50 → A
+```text
+10 → B
+30 → C
+50 → A
+```
 
 The keys are automatically sorted.
 
@@ -103,35 +112,27 @@ The keys are automatically sorted.
 
 Important hierarchy:
 
-    Iterable
-       ↓
-    Collection
-
-But remember:
-
-> `Map` is NOT a child of `Collection`.
+> `Map` is **NOT** a child of `Collection`.
 
 The Map hierarchy is separate.
 
-    Map
-     │
-     └── SortedMap
-           │
-           └── NavigableMap
-                 │
-                 └── TreeMap
+```text
+Map
+ │
+ └── SortedMap
+       │
+       └── NavigableMap
+             │
+             └── TreeMap
+```
 
 Therefore:
 
-    TreeMap IS-A Map
-
-and:
-
-    TreeMap IS-A SortedMap
-
-and:
-
-    TreeMap IS-A NavigableMap
+```text
+TreeMap IS-A Map
+TreeMap IS-A SortedMap
+TreeMap IS-A NavigableMap
+```
 
 ---
 
@@ -139,57 +140,71 @@ and:
 
 TreeMap is based on a:
 
-    Red-Black Tree
+```text
+Red-Black Tree
+```
 
 A Red-Black Tree is a type of:
 
-    Self-Balancing Binary Search Tree
+```text
+Self-Balancing Binary Search Tree
+```
 
 Conceptually:
 
-             50
-            /  \
-          30    70
-         / \    / \
-       20  40  60  80
+```text
+          50
+         /  \
+       30    70
+      / \    / \
+    20  40  60  80
+```
 
 The tree maintains ordering:
 
-    left subtree
-        <
-    node
-        <
-    right subtree
+```text
+left subtree
+     <
+node
+     <
+right subtree
+```
 
 Because the tree remains balanced, operations generally take:
 
-    O(log n)
+```text
+O(log n)
+```
 
----
-
-# 🧠 Why Balancing Matters
+## 🧠 Why Balancing Matters
 
 A normal unbalanced BST could become:
 
-    10
-      \
-       20
-         \
-          30
-            \
-             40
-               \
-                50
+```text
+10
+  \
+   20
+     \
+      30
+        \
+         40
+           \
+            50
+```
 
 This behaves like a linked list.
 
 Searching could become:
 
-    O(n)
+```text
+O(n)
+```
 
 A Red-Black Tree maintains balance so TreeMap operations remain:
 
-    O(log n)
+```text
+O(log n)
+```
 
 ---
 
@@ -207,15 +222,17 @@ A Red-Black Tree maintains balance so TreeMap operations remain:
 | Null key | Allows one | Generally not with natural ordering |
 | Best use | Fast lookup | Sorted/navigation operations |
 
-Mental shortcut:
+### Mental Shortcut
 
-    HashMap
-       ↓
-    Fast lookup
+```text
+HashMap
+   ↓
+Fast lookup
 
-    TreeMap
-       ↓
-    Sorted + navigable lookup
+TreeMap
+   ↓
+Sorted + navigable lookup
+```
 
 ---
 
@@ -223,8 +240,8 @@ Mental shortcut:
 
 TreeMap sorts keys using either:
 
-    1. Natural ordering
-    2. Comparator
+1. Natural ordering
+2. Comparator
 
 ---
 
@@ -232,26 +249,33 @@ TreeMap sorts keys using either:
 
 Example:
 
-    TreeMap<Integer, String> map =
-        new TreeMap<>();
+```java
+TreeMap<Integer, String> map = new TreeMap<>();
 
-    map.put(30, "C");
-    map.put(10, "A");
-    map.put(20, "B");
+map.put(30, "C");
+map.put(10, "A");
+map.put(20, "B");
+```
 
 Result:
 
-    10 → A
-    20 → B
-    30 → C
+```text
+10 → A
+20 → B
+30 → C
+```
 
-For Integer:
+For `Integer`:
 
-    smaller → larger
+```text
+smaller → larger
+```
 
-For String:
+For `String`:
 
-    lexicographical ordering
+```text
+lexicographical ordering
+```
 
 ---
 
@@ -259,36 +283,45 @@ For String:
 
 Natural ordering is commonly provided through:
 
-    Comparable<T>
+```java
+Comparable<T>
+```
 
 Example:
 
-    Integer implements Comparable<Integer>
+```text
+Integer implements Comparable<Integer>
+String implements Comparable<String>
+```
 
-    String implements Comparable<String>
+`Comparable` defines:
 
-Comparable defines:
-
-    compareTo()
+```java
+compareTo()
+```
 
 Example:
 
-    a.compareTo(b)
+```java
+a.compareTo(b);
+```
 
 Possible results:
 
-    negative
-        ↓
-    a comes before b
+```text
+negative
+   ↓
+a comes before b
 
-    zero
-        ↓
-    a and b are considered equal
-    for ordering
+zero
+   ↓
+a and b are considered equal
+for ordering
 
-    positive
-        ↓
-    a comes after b
+positive
+   ↓
+a comes after b
+```
 
 ---
 
@@ -298,27 +331,35 @@ A `Comparator` allows you to provide custom ordering.
 
 Example:
 
-    Comparator<Integer> reverse =
-        (a, b) -> b.compareTo(a);
+```java
+Comparator<Integer> reverse =
+    (a, b) -> b.compareTo(a);
+```
 
 Then:
 
-    TreeMap<Integer, String> map =
-        new TreeMap<>(reverse);
+```java
+TreeMap<Integer, String> map =
+    new TreeMap<>(reverse);
+```
 
 Now keys are sorted in descending order.
 
 Example:
 
-    map.put(10, "A");
-    map.put(30, "C");
-    map.put(20, "B");
+```java
+map.put(10, "A");
+map.put(30, "C");
+map.put(20, "B");
+```
 
 Iteration:
 
-    30 → C
-    20 → B
-    10 → A
+```text
+30 → C
+20 → B
+10 → A
+```
 
 ---
 
@@ -326,33 +367,37 @@ Iteration:
 
 Common constructors:
 
-    TreeMap()
+```java
+TreeMap()
 
-    TreeMap(Comparator<? super K> comparator)
+TreeMap(Comparator<? super K> comparator)
 
-    TreeMap(Map<? extends K, ? extends V> m)
+TreeMap(Map<? extends K, ? extends V> m)
 
-    TreeMap(
-        SortedMap<K, ? extends V> m
-    )
+TreeMap(
+    SortedMap<K, ? extends V> m
+)
+```
 
----
+## Default Constructor
 
-## Default
-
-    TreeMap<Integer, String> map =
-        new TreeMap<>();
+```java
+TreeMap<Integer, String> map =
+    new TreeMap<>();
+```
 
 Uses natural ordering.
 
 ---
 
-## Comparator
+## Comparator Constructor
 
-    TreeMap<Integer, String> map =
-        new TreeMap<>(
-            (a, b) -> b.compareTo(a)
-        );
+```java
+TreeMap<Integer, String> map =
+    new TreeMap<>(
+        (a, b) -> b.compareTo(a)
+    );
+```
 
 Uses custom ordering.
 
@@ -364,22 +409,28 @@ Uses custom ordering.
 
 Example:
 
-    TreeMap<Integer, String> map =
-        new TreeMap<>();
+```java
+TreeMap<Integer, String> map =
+    new TreeMap<>();
 
-    map.put(30, "C");
-    map.put(10, "A");
-    map.put(20, "B");
+map.put(30, "C");
+map.put(10, "A");
+map.put(20, "B");
+```
 
 Result:
 
-    10 → A
-    20 → B
-    30 → C
+```text
+10 → A
+20 → B
+30 → C
+```
 
 Complexity:
 
-    O(log n)
+```text
+O(log n)
+```
 
 ---
 
@@ -387,19 +438,22 @@ Complexity:
 
 Suppose:
 
-    map.put(10, "A");
-
-Then:
-
-    map.put(10, "Updated");
+```java
+map.put(10, "A");
+map.put(10, "Updated");
+```
 
 The value becomes:
 
-    10 → Updated
+```text
+10 → Updated
+```
 
 There is still only one key:
 
-    10
+```text
+10
+```
 
 ---
 
@@ -407,27 +461,33 @@ There is still only one key:
 
 Example:
 
-    String value = map.get(20);
+```java
+String value = map.get(20);
+```
 
 TreeMap searches through the balanced tree.
 
 Complexity:
 
-    O(log n)
+```text
+O(log n)
+```
 
 Conceptually:
 
-    root
-      ↓
-    compare key
-      ↓
-    left OR right
-      ↓
-    compare again
-      ↓
-    continue
-      ↓
-    found
+```text
+root
+ ↓
+compare key
+ ↓
+left OR right
+ ↓
+compare again
+ ↓
+continue
+ ↓
+found
+```
 
 ---
 
@@ -435,13 +495,17 @@ Conceptually:
 
 Example:
 
-    map.remove(20);
+```java
+map.remove(20);
+```
 
 The node is removed from the Red-Black Tree and the tree is rebalanced if necessary.
 
 Complexity:
 
-    O(log n)
+```text
+O(log n)
+```
 
 ---
 
@@ -449,17 +513,23 @@ Complexity:
 
 Example:
 
-    map.containsKey(30);
+```java
+map.containsKey(30);
+```
 
 Returns:
 
-    true
+```text
+true
+```
 
 if the key exists.
 
 Complexity:
 
-    O(log n)
+```text
+O(log n)
+```
 
 ---
 
@@ -469,28 +539,36 @@ Complexity:
 
 Example:
 
-    TreeMap<Integer, String> map =
-        new TreeMap<>();
+```java
+TreeMap<Integer, String> map =
+    new TreeMap<>();
 
-    map.put(30, "C");
-    map.put(10, "A");
-    map.put(20, "B");
+map.put(30, "C");
+map.put(10, "A");
+map.put(20, "B");
 
-    map.firstKey();
+map.firstKey();
+```
 
 Result:
 
-    10
+```text
+10
+```
 
 ---
 
 `lastKey()` returns the largest key.
 
-    map.lastKey();
+```java
+map.lastKey();
+```
 
 Result:
 
-    30
+```text
+30
+```
 
 ---
 
@@ -500,51 +578,69 @@ These are important `NavigableMap` methods.
 
 Suppose:
 
-    keys = 10, 20, 30, 40
+```text
+keys = 10, 20, 30, 40
+```
 
 Then:
 
-    higherKey(20)
+```java
+higherKey(20);
+```
 
 returns:
 
-    30
+```text
+30
+```
 
-because 30 is strictly greater than 20.
+because `30` is strictly greater than `20`.
 
 And:
 
-    lowerKey(20)
+```java
+lowerKey(20);
+```
 
 returns:
 
-    10
+```text
+10
+```
 
-because 10 is strictly smaller than 20.
+because `10` is strictly smaller than `20`.
 
 ---
 
-# 📊 Example
+## 📊 Example
 
-    TreeMap<Integer, String> map =
-        new TreeMap<>();
+```java
+TreeMap<Integer, String> map =
+    new TreeMap<>();
 
-    map.put(10, "A");
-    map.put(20, "B");
-    map.put(30, "C");
-    map.put(40, "D");
+map.put(10, "A");
+map.put(20, "B");
+map.put(30, "C");
+map.put(40, "D");
 
-    map.higherKey(20);
-
-Result:
-
-    30
-
-    map.lowerKey(20);
+map.higherKey(20);
+```
 
 Result:
 
-    10
+```text
+30
+```
+
+```java
+map.lowerKey(20);
+```
+
+Result:
+
+```text
+10
+```
 
 ---
 
@@ -552,49 +648,65 @@ Result:
 
 These methods are slightly different.
 
-### ceilingKey()
+## ceilingKey()
 
 Returns the smallest key greater than or equal to the given key.
 
 Example:
 
-    keys = 10, 20, 30, 40
+```text
+keys = 10, 20, 30, 40
 
-    ceilingKey(25)
+ceilingKey(25)
+```
 
 returns:
 
-    30
+```text
+30
+```
 
 But:
 
-    ceilingKey(20)
+```text
+ceilingKey(20)
+```
 
 returns:
 
-    20
+```text
+20
+```
 
 because equality is allowed.
 
 ---
 
-### floorKey()
+## floorKey()
 
 Returns the largest key less than or equal to the given key.
 
-    floorKey(25)
+```text
+floorKey(25)
+```
 
 returns:
 
-    20
+```text
+20
+```
 
 And:
 
-    floorKey(20)
+```text
+floorKey(20)
+```
 
 returns:
 
-    20
+```text
+20
+```
 
 ---
 
@@ -602,21 +714,23 @@ returns:
 
 Remember:
 
-    higher
-        ↓
-    strictly greater
+```text
+higher
+   ↓
+strictly greater
 
-    lower
-        ↓
-    strictly smaller
+lower
+   ↓
+strictly smaller
 
-    ceiling
-        ↓
-    greater OR equal
+ceiling
+   ↓
+greater OR equal
 
-    floor
-        ↓
-    smaller OR equal
+floor
+   ↓
+smaller OR equal
+```
 
 ---
 
@@ -624,46 +738,52 @@ Remember:
 
 TreeMap also provides:
 
-    firstEntry()
-    lastEntry()
+```text
+firstEntry()
+lastEntry()
 
-and:
+higherEntry()
+lowerEntry()
 
-    higherEntry()
-    lowerEntry()
-
-and:
-
-    ceilingEntry()
-    floorEntry()
+ceilingEntry()
+floorEntry()
+```
 
 Example:
 
-    Map.Entry<Integer, String> entry =
-        map.firstEntry();
+```java
+Map.Entry<Integer, String> entry =
+    map.firstEntry();
+```
 
 You get the complete key-value pair instead of only the key.
 
 ---
 
-# 🔄 Poll Methods
+## 🔄 Poll Methods
 
 TreeMap also provides:
 
-    pollFirstEntry()
-    pollLastEntry()
+```text
+pollFirstEntry()
+pollLastEntry()
+```
 
 These:
 
-    retrieve
-        +
-    remove
+```text
+retrieve
+   +
+remove
+```
 
 the first or last entry.
 
 Example:
 
-    map.pollFirstEntry();
+```java
+map.pollFirstEntry();
+```
 
 This returns and removes the smallest entry.
 
@@ -675,30 +795,36 @@ This returns and removes the smallest entry.
 
 Example:
 
-    TreeMap<Integer, String> map =
-        new TreeMap<>();
+```java
+TreeMap<Integer, String> map =
+    new TreeMap<>();
 
-    map.put(10, "A");
-    map.put(20, "B");
-    map.put(30, "C");
-    map.put(40, "D");
+map.put(10, "A");
+map.put(20, "B");
+map.put(30, "C");
+map.put(40, "D");
 
-Then:
+map.subMap(20, 40);
+```
 
-    map.subMap(20, 40);
+Represents keys in the range:
 
-represents keys in the range:
-
-    20 → 30
+```text
+20 → 30
+```
 
 The default range is:
 
-    fromKey inclusive
-    toKey exclusive
+```text
+fromKey inclusive
+toKey exclusive
+```
 
 So:
 
-    [20, 40)
+```text
+[20, 40)
+```
 
 ---
 
@@ -706,16 +832,20 @@ So:
 
 You can specify boundaries:
 
-    map.subMap(
-        20,
-        true,
-        40,
-        true
-    );
+```java
+map.subMap(
+    20,
+    true,
+    40,
+    true
+);
+```
 
 Now the range is:
 
-    [20, 40]
+```text
+[20, 40]
+```
 
 ---
 
@@ -725,28 +855,38 @@ Now the range is:
 
 Example:
 
-    keys:
+```text
+keys:
 
-    10, 20, 30, 40
+10, 20, 30, 40
+```
 
-    map.headMap(30);
+```java
+map.headMap(30);
+```
 
 Default:
 
-    10
-    20
+```text
+10
+20
+```
 
 The endpoint is exclusive.
 
 You can also specify inclusivity:
 
-    map.headMap(30, true);
+```java
+map.headMap(30, true);
+```
 
 Now:
 
-    10
-    20
-    30
+```text
+10
+20
+30
+```
 
 ---
 
@@ -756,16 +896,22 @@ Now:
 
 Example:
 
-    keys:
+```text
+keys:
 
-    10, 20, 30, 40
+10, 20, 30, 40
+```
 
-    map.tailMap(30);
+```java
+map.tailMap(30);
+```
 
 Result:
 
-    30
-    40
+```text
+30
+40
+```
 
 By default, the starting key is inclusive.
 
@@ -773,23 +919,29 @@ By default, the starting key is inclusive.
 
 # 🧠 Range Memory Trick
 
-    headMap(x)
-        ↓
-    everything BEFORE x
+```text
+headMap(x)
+    ↓
+everything BEFORE x
 
-    tailMap(x)
-        ↓
-    everything FROM x
+tailMap(x)
+    ↓
+everything FROM x
 
-    subMap(a, b)
-        ↓
-    everything BETWEEN a and b
+subMap(a, b)
+    ↓
+everything BETWEEN a and b
+```
 
 Think:
 
-    HEAD → before
-    TAIL → after/from
-    SUB  → middle section
+```text
+HEAD → before
+
+TAIL → after/from
+
+SUB → middle section
+```
 
 ---
 
@@ -799,59 +951,69 @@ TreeMap's iteration follows key ordering.
 
 Example:
 
-    TreeMap<Integer, String> map =
-        new TreeMap<>();
+```java
+TreeMap<Integer, String> map =
+    new TreeMap<>();
 
-    map.put(50, "E");
-    map.put(10, "A");
-    map.put(30, "C");
+map.put(50, "E");
+map.put(10, "A");
+map.put(30, "C");
+```
 
 Iteration:
 
-    10 → A
-    30 → C
-    50 → E
+```text
+10 → A
+30 → C
+50 → E
+```
 
 Using:
 
-    for (Map.Entry<Integer, String> entry :
-         map.entrySet()) {
+```java
+for (Map.Entry<Integer, String> entry :
+     map.entrySet()) {
 
-        System.out.println(
-            entry.getKey() + " = " +
-            entry.getValue()
-        );
-    }
+    System.out.println(
+        entry.getKey() + " = " +
+        entry.getValue()
+    );
+}
+```
 
 ---
 
-# 🔽 Descending Order
+## 🔽 Descending Order
 
 TreeMap also supports:
 
-    descendingMap()
-
-Example:
-
-    map.descendingMap();
+```java
+map.descendingMap();
+```
 
 If normal order is:
 
-    10
-    20
-    30
-    40
+```text
+10
+20
+30
+40
+```
 
 Descending view:
 
-    40
-    30
-    20
-    10
+```text
+40
+30
+20
+10
+```
 
 You can also use:
 
-    descendingKeySet()
+```java
+map.descendingKeySet();
+```
 
 for keys.
 
@@ -863,18 +1025,22 @@ TreeMap generally does not support a null key when using natural ordering.
 
 Example:
 
-    TreeMap<Integer, String> map =
-        new TreeMap<>();
+```java
+TreeMap<Integer, String> map =
+    new TreeMap<>();
 
-    map.put(null, "A");
+map.put(null, "A");
+```
 
 This can result in:
 
-    NullPointerException
+```text
+NullPointerException
+```
 
 because TreeMap needs to compare keys.
 
-With a custom Comparator, null handling can be explicitly designed if the comparator supports it.
+With a custom `Comparator`, null handling can be explicitly designed if the comparator supports it.
 
 Important interview point:
 
@@ -901,11 +1067,13 @@ Important interview point:
 
 The key idea:
 
-    HashMap
-        → expected O(1)
+```text
+HashMap
+    → expected O(1)
 
-    TreeMap
-        → O(log n)
+TreeMap
+    → O(log n)
+```
 
 The trade-off is that TreeMap provides ordering and navigation.
 
@@ -919,7 +1087,9 @@ Thinking TreeMap uses a normal BST.
 
 It uses a:
 
-    Red-Black Tree
+```text
+Red-Black Tree
+```
 
 which is self-balancing.
 
@@ -931,7 +1101,9 @@ Thinking TreeMap sorts values.
 
 TreeMap sorts:
 
-    keys
+```text
+keys
+```
 
 not values.
 
@@ -943,9 +1115,11 @@ Thinking TreeMap is faster than HashMap for simple lookup.
 
 Typically:
 
-    HashMap → expected O(1)
+```text
+HashMap → expected O(1)
 
-    TreeMap → O(log n)
+TreeMap → O(log n)
+```
 
 ---
 
@@ -963,17 +1137,23 @@ It maintains key ordering.
 
 Confusing:
 
-    higherKey()
+```text
+higherKey()
+```
 
 with:
 
-    ceilingKey()
+```text
+ceilingKey()
+```
 
 Difference:
 
-    higher → strictly greater
+```text
+higher  → strictly greater
 
-    ceiling → greater or equal
+ceiling → greater or equal
+```
 
 ---
 
@@ -981,17 +1161,23 @@ Difference:
 
 Confusing:
 
-    lowerKey()
+```text
+lowerKey()
+```
 
 with:
 
-    floorKey()
+```text
+floorKey()
+```
 
 Difference:
 
-    lower → strictly smaller
+```text
+lower → strictly smaller
 
-    floor → smaller or equal
+floor → smaller or equal
+```
 
 ---
 
@@ -1007,24 +1193,26 @@ The returned range is generally a view backed by the original map.
 
 TreeMap is extremely useful in problems where you need:
 
-    Dynamic ordering
-       +
-    Fast search
-       +
-    Nearest key
-       +
-    Range queries
+```text
+Dynamic ordering
+      +
+Fast search
+      +
+Nearest key
+      +
+Range queries
+```
 
 Important patterns:
 
-    1. Floor / ceiling
-    2. Predecessor / successor
-    3. Dynamic sorted data
-    4. Range queries
-    5. Coordinate-like navigation
-    6. Event scheduling
-    7. Interval problems
-    8. Ordered frequency structures
+1. Floor / ceiling
+2. Predecessor / successor
+3. Dynamic sorted data
+4. Range queries
+5. Coordinate-like navigation
+6. Event scheduling
+7. Interval problems
+8. Ordered frequency structures
 
 ---
 
@@ -1034,7 +1222,9 @@ Important patterns:
 
 Suppose:
 
-    values = [10, 20, 30, 40]
+```text
+values = [10, 20, 30, 40]
+```
 
 Question:
 
@@ -1042,11 +1232,15 @@ Question:
 
 TreeMap:
 
-    ceilingKey(25)
+```java
+map.ceilingKey(25);
+```
 
 Answer:
 
-    30
+```text
+30
+```
 
 ---
 
@@ -1058,11 +1252,15 @@ Question:
 
 Use:
 
-    floorKey(25)
+```java
+map.floorKey(25);
+```
 
 Answer:
 
-    20
+```text
+20
+```
 
 ---
 
@@ -1074,7 +1272,9 @@ Question:
 
 Use:
 
-    higherKey(x)
+```java
+map.higherKey(x);
+```
 
 ---
 
@@ -1086,7 +1286,9 @@ Question:
 
 Use:
 
-    lowerKey(x)
+```java
+map.lowerKey(x);
+```
 
 ---
 
@@ -1094,89 +1296,97 @@ Use:
 
 Suppose values arrive one by one:
 
-    50
-    10
-    40
-    20
+```text
+50
+10
+40
+20
+```
 
 TreeMap automatically maintains:
 
-    10
-    20
-    40
-    50
+```text
+10
+20
+40
+50
+```
 
 and supports:
 
-    floor
-    ceiling
-    higher
-    lower
+```text
+floor
+ceiling
+higher
+lower
+```
 
-in O(log n).
+in:
+
+```text
+O(log n)
+```
 
 ---
 
 # 🧪 27. Complete Example
 
-    import java.util.*;
+```java
+import java.util.*;
 
-    public class Main {
+public class Main {
 
-        public static void main(String[] args) {
+    public static void main(String[] args) {
 
-            TreeMap<Integer, String> map =
-                new TreeMap<>();
+        TreeMap<Integer, String> map =
+            new TreeMap<>();
 
-            map.put(50, "E");
-            map.put(10, "A");
-            map.put(30, "C");
-            map.put(20, "B");
-            map.put(40, "D");
+        map.put(50, "E");
+        map.put(10, "A");
+        map.put(30, "C");
+        map.put(20, "B");
+        map.put(40, "D");
 
-            System.out.println(map);
+        System.out.println(map);
 
-            System.out.println(
-                map.firstKey()
-            );
+        System.out.println(
+            map.firstKey()
+        );
 
-            System.out.println(
-                map.lastKey()
-            );
+        System.out.println(
+            map.lastKey()
+        );
 
-            System.out.println(
-                map.lowerKey(30)
-            );
+        System.out.println(
+            map.lowerKey(30)
+        );
 
-            System.out.println(
-                map.higherKey(30)
-            );
+        System.out.println(
+            map.higherKey(30)
+        );
 
-            System.out.println(
-                map.floorKey(35)
-            );
+        System.out.println(
+            map.floorKey(35)
+        );
 
-            System.out.println(
-                map.ceilingKey(35)
-            );
-        }
+        System.out.println(
+            map.ceilingKey(35)
+        );
     }
+}
+```
 
 Output:
 
-    {10=A, 20=B, 30=C, 40=D, 50=E}
-
-    10
-
-    50
-
-    20
-
-    40
-
-    30
-
-    40
+```text
+{10=A, 20=B, 30=C, 40=D, 50=E}
+10
+50
+20
+40
+30
+40
+```
 
 ---
 
@@ -1197,15 +1407,17 @@ Output:
 | LRU use | Yes | No |
 | Sorted keys | No | Yes |
 
-Mental model:
+### Mental Model
 
-    LinkedHashMap
-        ↓
-    "Keep my order"
+```text
+LinkedHashMap
+    ↓
+"Keep my order"
 
-    TreeMap
-        ↓
-    "Keep my keys sorted"
+TreeMap
+    ↓
+"Keep my keys sorted"
+```
 
 ---
 
@@ -1217,47 +1429,61 @@ Mental model:
 
 # ⚡ 30. Cheat Sheet
 
-    TreeMap
-       ↓
-    NavigableMap
-       ↓
-    Red-Black Tree
-       ↓
-    Sorted keys
+```text
+TreeMap
+   ↓
+NavigableMap
+   ↓
+Red-Black Tree
+   ↓
+Sorted keys
+```
 
 Basic operations:
 
-    put()       → O(log n)
-    get()       → O(log n)
-    remove()    → O(log n)
+```text
+put()       → O(log n)
+
+get()       → O(log n)
+
+remove()    → O(log n)
+```
 
 Navigation:
 
-    firstKey()
-    lastKey()
+```text
+firstKey()
+lastKey()
 
-    lowerKey()
-    higherKey()
+lowerKey()
+higherKey()
 
-    floorKey()
-    ceilingKey()
+floorKey()
+ceilingKey()
+```
 
 Range:
 
-    subMap()
-    headMap()
-    tailMap()
+```text
+subMap()
+headMap()
+tailMap()
+```
 
 Reverse:
 
-    descendingMap()
-    descendingKeySet()
+```text
+descendingMap()
+descendingKeySet()
+```
 
 Ordering:
 
-    Comparable
-        OR
-    Comparator
+```text
+Comparable
+    OR
+Comparator
+```
 
 ---
 
@@ -1265,36 +1491,43 @@ Ordering:
 
 Remember these four together:
 
-    LOWER
-       ↓
-    strictly smaller
+```text
+LOWER
+  ↓
+strictly smaller
 
-    FLOOR
-       ↓
-    smaller OR equal
+FLOOR
+  ↓
+smaller OR equal
 
-    CEILING
-       ↓
-    greater OR equal
+CEILING
+  ↓
+greater OR equal
 
-    HIGHER
-       ↓
-    strictly greater
+HIGHER
+  ↓
+strictly greater
+```
 
 For:
 
-    keys = 10, 20, 30
+```text
+keys = 10, 20, 30
 
-and:
-
-    x = 20
+x = 20
+```
 
 we get:
 
-    lowerKey(20)   → 10
-    floorKey(20)   → 20
-    ceilingKey(20) → 20
-    higherKey(20)  → 30
+```text
+lowerKey(20)   → 10
+
+floorKey(20)   → 20
+
+ceilingKey(20) → 20
+
+higherKey(20)  → 30
+```
 
 This is extremely important for DSA.
 
@@ -1314,9 +1547,11 @@ A self-balancing Red-Black Tree.
 
 ---
 
-## Q3. What is the time complexity of TreeMap get()?
+## Q3. What is the time complexity of TreeMap `get()`?
 
-    O(log n)
+```text
+O(log n)
+```
 
 ---
 
@@ -1346,8 +1581,10 @@ The ordering provided by a class's `Comparable` implementation.
 
 Examples:
 
-    Integer
-    String
+```text
+Integer
+String
+```
 
 ---
 
@@ -1355,29 +1592,31 @@ Examples:
 
 Using:
 
-    Comparator
+```text
+Comparator
+```
 
 ---
 
-## Q9. What does higherKey() return?
+## Q9. What does `higherKey()` return?
 
 The smallest key strictly greater than the specified key.
 
 ---
 
-## Q10. What does lowerKey() return?
+## Q10. What does `lowerKey()` return?
 
 The largest key strictly smaller than the specified key.
 
 ---
 
-## Q11. What does ceilingKey() return?
+## Q11. What does `ceilingKey()` return?
 
 The smallest key greater than or equal to the specified key.
 
 ---
 
-## Q12. What does floorKey() return?
+## Q12. What does `floorKey()` return?
 
 The largest key less than or equal to the specified key.
 
@@ -1385,17 +1624,21 @@ The largest key less than or equal to the specified key.
 
 ## Q13. What is the difference between floor and lower?
 
-    floor → <= key
+```text
+floor → <= key
 
-    lower → < key
+lower → < key
+```
 
 ---
 
 ## Q14. What is the difference between ceiling and higher?
 
-    ceiling → >= key
+```text
+ceiling → >= key
 
-    higher → > key
+higher → > key
+```
 
 ---
 
@@ -1421,19 +1664,19 @@ With natural ordering, a null key is generally not supported because keys need t
 
 ---
 
-## Q18. What is subMap()?
+## Q18. What is `subMap()`?
 
 It provides a view of a range of keys.
 
 ---
 
-## Q19. What is headMap()?
+## Q19. What is `headMap()`?
 
 It provides a view of keys before a specified key, with boundary inclusion configurable.
 
 ---
 
-## Q20. What is tailMap()?
+## Q20. What is `tailMap()`?
 
 It provides a view of keys from a specified key onward, with boundary inclusion configurable.
 
@@ -1443,34 +1686,37 @@ It provides a view of keys from a specified key onward, with boundary inclusion 
 
 Think of the three major Map implementations like this:
 
-    ┌─────────────────────────────────┐
-    │            Map                  │
-    └─────────────────────────────────┘
-          │          │          │
-          ▼          ▼          ▼
-      HashMap    LinkedHashMap  TreeMap
-          │          │          │
-          ▼          ▼          ▼
-       Hashing   Hashing +    Red-Black
-                  Linked List    Tree
-          │          │          │
-          ▼          ▼          ▼
-      Fast       Fast +       Sorted +
-      lookup     ordered      navigable
-                 iteration
+```text
+                 Map
+                  │
+        ┌─────────┼─────────┐
+        ↓         ↓         ↓
+     HashMap  LinkedHashMap TreeMap
+        │         │         │
+        ↓         ↓         ↓
+     Hashing   Hashing +   Red-Black
+                Linked List   Tree
+        │         │         │
+        ↓         ↓         ↓
+      Fast      Fast +      Sorted +
+     lookup     ordered     navigable
+                iteration
+```
 
 ---
 
 # 🔥 One-Line Memory Trick
 
-    HashMap
-    → "Give me fast lookup."
+```text
+HashMap
+→ "Give me fast lookup."
 
-    LinkedHashMap
-    → "Give me fast lookup + order."
+LinkedHashMap
+→ "Give me fast lookup + order."
 
-    TreeMap
-    → "Give me sorted keys + navigation."
+TreeMap
+→ "Give me sorted keys + navigation."
+```
 
 ---
 
@@ -1480,16 +1726,20 @@ Think of the three major Map implementations like this:
 
 The most important TreeMap methods for DSA are:
 
-    lowerKey()
-    floorKey()
-    ceilingKey()
-    higherKey()
+```text
+lowerKey()
+floorKey()
+ceilingKey()
+higherKey()
+```
 
 Remember:
 
-    lower   → <
-    floor   → <=
-    ceiling → >=
-    higher  → >
+```text
+lower   → <
+floor   → <=
+ceiling → >=
+higher  → >
+```
 
 Once you understand these four operations, TreeMap becomes a powerful tool for **nearest-element, predecessor/successor, range-query, and dynamically sorted data problems**.

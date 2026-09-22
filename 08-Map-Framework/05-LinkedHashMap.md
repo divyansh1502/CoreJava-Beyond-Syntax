@@ -43,23 +43,31 @@
 It combines:
 
     HashMap
+
        +
+
     Doubly Linked List
 
 Therefore it provides:
 
     Fast hash-based lookup
+
            +
+
     Predictable iteration order
 
 Declaration:
 
-    public class LinkedHashMap<K,V>
-        extends HashMap<K,V>
+```java
+public class LinkedHashMap<K,V>
+    extends HashMap<K,V>
+```
 
 It implements:
 
-    Map<K,V>
+```java
+Map<K,V>
+```
 
 ---
 
@@ -69,12 +77,14 @@ Normal `HashMap` does NOT guarantee iteration order.
 
 Example:
 
-    Map<Integer, String> map =
-        new HashMap<>();
+```java
+Map<Integer, String> map =
+    new HashMap<>();
 
-    map.put(3, "C");
-    map.put(1, "A");
-    map.put(2, "B");
+map.put(3, "C");
+map.put(1, "A");
+map.put(2, "B");
+```
 
 Iteration order should not be assumed to be:
 
@@ -82,12 +92,14 @@ Iteration order should not be assumed to be:
 
 With `LinkedHashMap`:
 
-    Map<Integer, String> map =
-        new LinkedHashMap<>();
+```java
+Map<Integer, String> map =
+    new LinkedHashMap<>();
 
-    map.put(3, "C");
-    map.put(1, "A");
-    map.put(2, "B");
+map.put(3, "C");
+map.put(1, "A");
+map.put(2, "B");
+```
 
 Insertion-order iteration is:
 
@@ -112,16 +124,24 @@ Conceptually:
 Important inheritance:
 
     Object
+
        ↓
+
     AbstractMap
+
        ↓
+
     HashMap
+
        ↓
+
     LinkedHashMap
 
 Interfaces include:
 
-    Map
+```java
+Map
+```
 
 `LinkedHashMap` inherits most HashMap behavior and adds ordering functionality.
 
@@ -132,9 +152,13 @@ Interfaces include:
 The most important internal idea is:
 
     LinkedHashMap
+
          │
+
          ├── Hash table
+
          │
+
          └── Doubly linked list
 
 Visual model:
@@ -142,15 +166,21 @@ Visual model:
     Hash Table
 
     Bucket 0
+
        ↓
+
     [Entry]
 
     Bucket 1
+
        ↓
+
     [Entry] → [Entry]
 
     Bucket 2
+
        ↓
+
     [Entry]
 
          +
@@ -158,9 +188,13 @@ Visual model:
     Linked List
 
     HEAD
+
       ↓
+
     [A] ⇄ [B] ⇄ [C] ⇄ [D]
+
                               ↑
+
                              TAIL
 
 The hash table provides efficient lookup.
@@ -176,13 +210,17 @@ The key difference is that `LinkedHashMap` maintains links between entries.
 Conceptually each entry contains:
 
     key
+
     value
+
     hash
+
     next
 
 and additionally maintains:
 
     before
+
     after
 
 The extra links form a doubly linked list.
@@ -190,13 +228,19 @@ The extra links form a doubly linked list.
 Therefore:
 
     HashMap
+
        ↓
+
     hash-based organization
 
     LinkedHashMap
+
        ↓
+
     hash-based organization
+
        +
+
     linked ordering
 
 ---
@@ -206,6 +250,7 @@ Therefore:
 `LinkedHashMap` supports two major ordering modes:
 
     1. Insertion-order
+
     2. Access-order
 
 Default:
@@ -224,17 +269,21 @@ Insertion order means entries are iterated in the order in which they were inser
 
 Example:
 
-    LinkedHashMap<Integer, String> map =
-        new LinkedHashMap<>();
+```java
+LinkedHashMap<Integer, String> map =
+    new LinkedHashMap<>();
 
-    map.put(10, "A");
-    map.put(20, "B");
-    map.put(30, "C");
+map.put(10, "A");
+map.put(20, "B");
+map.put(30, "C");
+```
 
 Iteration:
 
     10 → A
+
     20 → B
+
     30 → C
 
 The order is predictable.
@@ -247,15 +296,19 @@ The order is predictable.
 
 Constructor:
 
-    new LinkedHashMap<>(
-        initialCapacity,
-        loadFactor,
-        true
-    );
+```java
+new LinkedHashMap<>(
+    initialCapacity,
+    loadFactor,
+    true
+);
+```
 
 The third argument:
 
-    true
+```java
+true
+```
 
 means:
 
@@ -291,27 +344,31 @@ This behavior is useful for implementing LRU-style caches.
 
 Common constructors include:
 
-    LinkedHashMap()
+```java
+LinkedHashMap()
 
-    LinkedHashMap(int initialCapacity)
+LinkedHashMap(int initialCapacity)
 
-    LinkedHashMap(
-        int initialCapacity,
-        float loadFactor
-    )
+LinkedHashMap(
+    int initialCapacity,
+    float loadFactor
+)
 
-    LinkedHashMap(
-        int initialCapacity,
-        float loadFactor,
-        boolean accessOrder
-    )
+LinkedHashMap(
+    int initialCapacity,
+    float loadFactor,
+    boolean accessOrder
+)
+```
 
 ---
 
 ## Default Constructor
 
-    Map<Integer, String> map =
-        new LinkedHashMap<>();
+```java
+Map<Integer, String> map =
+    new LinkedHashMap<>();
+```
 
 Uses:
 
@@ -321,16 +378,20 @@ Uses:
 
 ## Access Order Constructor
 
-    Map<Integer, String> map =
-        new LinkedHashMap<>(
-            16,
-            0.75f,
-            true
-        );
+```java
+Map<Integer, String> map =
+    new LinkedHashMap<>(
+        16,
+        0.75f,
+        true
+    );
+```
 
 Here:
 
-    true
+```java
+true
+```
 
 means:
 
@@ -344,17 +405,21 @@ means:
 
 Example:
 
-    LinkedHashMap<Integer, String> map =
-        new LinkedHashMap<>();
+```java
+LinkedHashMap<Integer, String> map =
+    new LinkedHashMap<>();
 
-    map.put(1, "Java");
-    map.put(2, "Spring");
-    map.put(3, "React");
+map.put(1, "Java");
+map.put(2, "Spring");
+map.put(3, "React");
+```
 
 Iteration:
 
     1 → Java
+
     2 → Spring
+
     3 → React
 
 Expected average complexity:
@@ -367,11 +432,15 @@ Expected average complexity:
 
 Suppose:
 
-    map.put(1, "Java");
+```java
+map.put(1, "Java");
+```
 
 Then:
 
-    map.put(1, "Spring");
+```java
+map.put(1, "Spring");
+```
 
 The value changes:
 
@@ -387,7 +456,9 @@ In insertion-order mode, updating an existing key does not make it a new inserti
 
 Example:
 
-    String value = map.get(2);
+```java
+String value = map.get(2);
+```
 
 Expected average complexity:
 
@@ -411,7 +482,9 @@ can move the accessed entry to the end.
 
 Example:
 
-    map.remove(2);
+```java
+map.remove(2);
+```
 
 The corresponding entry is removed.
 
@@ -445,28 +518,34 @@ One of the biggest advantages of LinkedHashMap is predictable iteration.
 
 Example:
 
-    LinkedHashMap<Integer, String> map =
-        new LinkedHashMap<>();
+```java
+LinkedHashMap<Integer, String> map =
+    new LinkedHashMap<>();
 
-    map.put(3, "C");
-    map.put(1, "A");
-    map.put(2, "B");
+map.put(3, "C");
+map.put(1, "A");
+map.put(2, "B");
+```
 
 Iteration:
 
-    for (Map.Entry<Integer, String> entry :
-         map.entrySet()) {
+```java
+for (Map.Entry<Integer, String> entry :
+     map.entrySet()) {
 
-        System.out.println(
-            entry.getKey() + " = " +
-            entry.getValue()
-        );
-    }
+    System.out.println(
+        entry.getKey() + " = " +
+        entry.getValue()
+    );
+}
+```
 
 Output:
 
     3 = C
+
     1 = A
+
     2 = B
 
 The iteration follows insertion order.
@@ -512,15 +591,21 @@ Important:
 Mental shortcut:
 
     HashMap
+
         ↓
+
     Fast lookup
 
     LinkedHashMap
+
         ↓
+
     Fast lookup + predictable order
 
     TreeMap
+
         ↓
+
     Sorted keys
 
 ---
@@ -529,17 +614,21 @@ Mental shortcut:
 
 The constructor:
 
-    LinkedHashMap(
-        int initialCapacity,
-        float loadFactor,
-        boolean accessOrder
-    )
+```java
+LinkedHashMap(
+    int initialCapacity,
+    float loadFactor,
+    boolean accessOrder
+)
+```
 
 controls ordering.
 
 If:
 
-    accessOrder = false
+```java
+accessOrder = false
+```
 
 then:
 
@@ -547,7 +636,9 @@ then:
 
 If:
 
-    accessOrder = true
+```java
+accessOrder = true
+```
 
 then:
 
@@ -555,17 +646,21 @@ then:
 
 Example:
 
-    LinkedHashMap<Integer, String> map =
-        new LinkedHashMap<>(
-            16,
-            0.75f,
-            true
-        );
+```java
+LinkedHashMap<Integer, String> map =
+    new LinkedHashMap<>(
+        16,
+        0.75f,
+        true
+    );
+```
 
 Insert:
 
     1 → A
+
     2 → B
+
     3 → C
 
 Order:
@@ -574,7 +669,9 @@ Order:
 
 Access:
 
-    map.get(1);
+```java
+map.get(1);
+```
 
 New order:
 
@@ -582,7 +679,9 @@ New order:
 
 Access:
 
-    map.get(2);
+```java
+map.get(2);
+```
 
 New order:
 
@@ -609,6 +708,7 @@ Current order:
 Here:
 
     A = least recently used
+
     C = most recently used
 
 Access:
@@ -639,69 +739,75 @@ New order:
 
 # 🧪 18. Complete Example
 
-    import java.util.LinkedHashMap;
-    import java.util.Map;
+```java
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-    public class Main {
+public class Main {
 
-        public static void main(String[] args) {
+    public static void main(String[] args) {
 
-            LinkedHashMap<Integer, String> map =
-                new LinkedHashMap<>();
+        LinkedHashMap<Integer, String> map =
+            new LinkedHashMap<>();
 
-            map.put(101, "Java");
-            map.put(102, "Spring");
-            map.put(103, "React");
+        map.put(101, "Java");
+        map.put(102, "Spring");
+        map.put(103, "React");
 
-            for (Map.Entry<Integer, String> entry :
-                 map.entrySet()) {
+        for (Map.Entry<Integer, String> entry :
+             map.entrySet()) {
 
-                System.out.println(
-                    entry.getKey() + " = " +
-                    entry.getValue()
-                );
-            }
+            System.out.println(
+                entry.getKey() + " = " +
+                entry.getValue()
+            );
         }
     }
+}
+```
 
 Output:
 
     101 = Java
+
     102 = Spring
+
     103 = React
 
 ---
 
 # 🔥 Access-Order Example
 
-    import java.util.*;
+```java
+import java.util.*;
 
-    public class Main {
+public class Main {
 
-        public static void main(String[] args) {
+    public static void main(String[] args) {
 
-            LinkedHashMap<Integer, String> map =
-                new LinkedHashMap<>(
-                    16,
-                    0.75f,
-                    true
-                );
+        LinkedHashMap<Integer, String> map =
+            new LinkedHashMap<>(
+                16,
+                0.75f,
+                true
+            );
 
-            map.put(1, "A");
-            map.put(2, "B");
-            map.put(3, "C");
+        map.put(1, "A");
+        map.put(2, "B");
+        map.put(3, "C");
 
-            System.out.println(map);
+        System.out.println(map);
 
-            map.get(1);
+        map.get(1);
 
-            System.out.println(map);
+        System.out.println(map);
 
-            map.get(2);
+        map.get(2);
 
-            System.out.println(map);
-        }
+        System.out.println(map);
     }
+}
+```
 
 Output:
 
@@ -727,7 +833,9 @@ It maintains insertion order by default.
 
 For sorted keys use:
 
-    TreeMap
+```java
+TreeMap
+```
 
 ---
 
@@ -740,7 +848,9 @@ Incorrect.
 It is:
 
     Hash table
+
         +
+
     linked list
 
 ---
@@ -806,16 +916,23 @@ The hash table is still responsible for efficient lookup.
 LinkedHashMap is useful when a problem requires:
 
     Hashing
+
        +
+
     Maintaining order
 
 Common patterns include:
 
     1. First occurrence tracking
+
     2. Ordered frequency maps
+
     3. LRU cache
+
     4. Maintaining insertion order
+
     5. Ordered deduplication
+
     6. Cache design
 
 ---
@@ -843,7 +960,9 @@ Suppose:
 A LinkedHashMap can maintain:
 
     3 → 2
+
     1 → 2
+
     2 → 1
 
 The keys remain in first-insertion order:
@@ -856,20 +975,28 @@ The keys remain in first-insertion order:
 
 Use:
 
-    LinkedHashMap
+```java
+LinkedHashMap
+```
 
 with:
 
-    accessOrder = true
+```java
+accessOrder = true
+```
 
 Mental model:
 
     access
+
        ↓
+
     move to end
 
     new item
+
        ↓
+
     remove first item
 
 This gives the basic behavior required by an LRU cache.
@@ -885,7 +1012,9 @@ When you see a DSA problem, ask:
 Do I need fast key lookup?
 
     Yes
+
        ↓
+
     HashMap family
 
 ### Question 2
@@ -893,7 +1022,9 @@ Do I need fast key lookup?
 Do I also need insertion order?
 
     Yes
+
        ↓
+
     LinkedHashMap
 
 ### Question 3
@@ -901,7 +1032,9 @@ Do I also need insertion order?
 Do I need sorted keys?
 
     Yes
+
        ↓
+
     TreeMap
 
 ### Question 4
@@ -909,8 +1042,11 @@ Do I need sorted keys?
 Do I need recently-used ordering?
 
     Yes
+
        ↓
+
     LinkedHashMap
+
     accessOrder = true
 
 ---
@@ -924,18 +1060,27 @@ Do I need recently-used ordering?
 # ⚡ 24. Cheat Sheet
 
     LinkedHashMap
+
          │
+
          ├── Hash table
+
          │      ↓
+
          │   fast lookup
+
          │
+
          └── Doubly linked list
-                ↓
-             ordering
+
+                 ↓
+
+              ordering
 
 Default:
 
     insertionOrder = true conceptually
+
     accessOrder = false
 
 Optional:
@@ -945,9 +1090,13 @@ Optional:
 Complexity:
 
     put()         → O(1) expected
+
     get()         → O(1) expected
+
     remove()      → O(1) expected
+
     containsKey() → O(1) expected
+
     iteration     → O(n)
 
 ---
@@ -957,28 +1106,39 @@ Complexity:
 Remember:
 
     HashMap
+
         =
+
     Hashing
 
     LinkedHashMap
+
         =
+
     Hashing
+
         +
+
     Linking
 
     TreeMap
+
         =
+
     Tree / Sorting
 
 Therefore:
 
     HashMap
+
     → Fast lookup
 
     LinkedHashMap
+
     → Fast lookup + order
 
     TreeMap
+
     → Sorted keys
 
 ---
@@ -1003,7 +1163,9 @@ Yes.
 
 Use the constructor with:
 
-    accessOrder = true
+```java
+accessOrder = true
+```
 
 ---
 
@@ -1078,7 +1240,9 @@ In access-order mode, yes, accessing an entry can move it toward the end.
 Conceptually:
 
     Hash table
+
         +
+
     Doubly linked list
 
 ---
@@ -1086,22 +1250,35 @@ Conceptually:
 # 🏁 Final Mental Model
 
     LinkedHashMap
+
            │
+
            ├───────────────┐
+
            ↓               ↓
-      Hash Table       Linked List
+
+      Hash Table      Linked List
+
            │               │
+
            ↓               ↓
+
       Fast lookup      Predictable order
+
            │               │
+
            └───────┬───────┘
+
                    ↓
+
             LinkedHashMap
 
 ### Default
 
     put(A)
+
     put(B)
+
     put(C)
 
     Iteration:
@@ -1123,7 +1300,9 @@ Conceptually:
 ### One-line memory trick
 
     HashMap       → hashing
+
     LinkedHashMap → hashing + order
+
     TreeMap       → sorted keys
 
 > **🚀 Core takeaway:** LinkedHashMap gives you the speed characteristics of hashing with predictable ordering. When your DSA or backend problem says **"maintain order while doing fast key-based lookup"**, LinkedHashMap should immediately come to mind.

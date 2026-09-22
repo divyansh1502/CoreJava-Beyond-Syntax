@@ -43,33 +43,43 @@
 
 It implements:
 
-    Map<K,V>
+```java
+Map<K, V>
+```
 
 and extends:
 
-    Dictionary<K,V>
+```java
+Dictionary<K, V>
+```
 
 Declaration:
 
-    public class Hashtable<K,V>
-        extends Dictionary<K,V>
-        implements Map<K,V>,
-                   Cloneable,
-                   Serializable
+```java
+public class Hashtable<K, V>
+    extends Dictionary<K, V>
+    implements Map<K, V>,
+               Cloneable,
+               Serializable
+```
 
 It stores data as:
 
-    key → value
+```text
+key → value
+```
 
 using hashing.
 
 Example:
 
-    Hashtable<Integer, String> table =
-        new Hashtable<>();
+```java
+Hashtable<Integer, String> table =
+    new Hashtable<>();
 
-    table.put(101, "Java");
-    table.put(102, "Spring");
+table.put(101, "Java");
+table.put(102, "Spring");
+```
 
 ---
 
@@ -79,11 +89,13 @@ Example:
 
 It is:
 
-    OLD / LEGACY
-          +
-    HASH-BASED
-          +
-    SYNCHRONIZED
+```text
+OLD / LEGACY
+      +
+HASH-BASED
+      +
+SYNCHRONIZED
+```
 
 Historically, it provided thread-safe access to a hash table.
 
@@ -93,19 +105,23 @@ However, for new concurrent applications, `ConcurrentHashMap` is generally the m
 
 # 🧬 3. Hashtable Hierarchy
 
-The hierarchy is different from HashMap.
+The hierarchy is different from `HashMap`.
 
-    Object
-       ↓
-    Dictionary
-       ↓
-    Hashtable
+```text
+Object
+   ↓
+Dictionary
+   ↓
+Hashtable
+```
 
-And Hashtable also implements:
+And `Hashtable` also implements:
 
-    Map
-    Cloneable
-    Serializable
+```text
+Map
+Cloneable
+Serializable
+```
 
 Important:
 
@@ -117,33 +133,37 @@ Important:
 
 Conceptually:
 
-    Hashtable
-        │
-        └── Hash table
-                │
-                ├── Bucket 0
-                ├── Bucket 1
-                ├── Bucket 2
-                ├── ...
-                └── Bucket n
+```text
+Hashtable
+    │
+    └── Hash table
+            │
+            ├── Bucket 0
+            ├── Bucket 1
+            ├── Bucket 2
+            ├── ...
+            └── Bucket n
+```
 
 A key is processed using its hash.
 
 Conceptually:
 
-    key
-     ↓
-    hashCode()
-     ↓
-    hash
-     ↓
-    bucket index
-     ↓
-    bucket
-     ↓
-    matching key
-     ↓
-    value
+```text
+key
+ ↓
+hashCode()
+ ↓
+hash
+ ↓
+bucket index
+ ↓
+bucket
+ ↓
+matching key
+ ↓
+value
+```
 
 If multiple keys map to the same bucket, collisions need to be handled.
 
@@ -157,44 +177,48 @@ One of the most important characteristics of `Hashtable` is that its major metho
 
 Conceptually:
 
-    put()
-    get()
-    remove()
-    containsKey()
-    ...
+```text
+put()
+get()
+remove()
+containsKey()
+...
+```
 
 are synchronized operations.
 
-This provides thread-safe access to individual Hashtable operations.
-
 Example:
 
-    Hashtable<Integer, String> table =
-        new Hashtable<>();
+```java
+Hashtable<Integer, String> table =
+    new Hashtable<>();
 
-    table.put(1, "Java");
+table.put(1, "Java");
+```
 
 The operation is synchronized.
 
----
+## ⚠️ Important Thread-Safety Point
 
-# ⚠️ Important Thread-Safety Point
-
-Synchronized does NOT automatically mean:
+Synchronized does **NOT** automatically mean:
 
 > "Every multi-step operation is automatically safe."
 
 For example:
 
-    if (!table.containsKey(key)) {
-        table.put(key, value);
-    }
+```java
+if (!table.containsKey(key)) {
+    table.put(key, value);
+}
+```
 
 The individual methods are synchronized, but the entire:
 
-    containsKey()
-        +
+```text
+containsKey()
+      +
     put()
+```
 
 sequence is not automatically one atomic operation.
 
@@ -206,48 +230,60 @@ This is an important interview trap.
 
 # 🚫 6. Null Keys and Values
 
-Unlike `HashMap`, `Hashtable` does NOT allow:
+Unlike `HashMap`, `Hashtable` does **NOT** allow:
 
-    null key
+```text
+null key
+```
 
 or:
 
-    null value
+```text
+null value
+```
 
 Example:
 
-    Hashtable<Integer, String> table =
-        new Hashtable<>();
+```java
+Hashtable<Integer, String> table =
+    new Hashtable<>();
 
-    table.put(null, "Java");
+table.put(null, "Java");
+```
 
 This results in:
 
-    NullPointerException
+```text
+NullPointerException
+```
 
 Similarly:
 
-    table.put(1, null);
+```java
+table.put(1, null);
+```
 
 also results in:
 
-    NullPointerException
+```text
+NullPointerException
+```
 
----
+## 🧠 Why?
 
-# 🧠 Why?
+`Hashtable` requires keys and values to be non-null.
 
-Hashtable's design requires keys and values to be non-null.
+Remember:
 
-So remember:
+```text
+HashMap
+    → one null key
+    → multiple null values
 
-    HashMap
-    → allows one null key
-    → allows multiple null values
-
-    Hashtable
+Hashtable
     → null key ❌
     → null value ❌
+```
 
 ---
 
@@ -257,40 +293,46 @@ So remember:
 
 Example:
 
-    Hashtable<Integer, String> table =
-        new Hashtable<>();
+```java
+Hashtable<Integer, String> table =
+    new Hashtable<>();
 
-    table.put(1, "Java");
-    table.put(2, "Spring");
-    table.put(3, "React");
+table.put(1, "Java");
+table.put(2, "Spring");
+table.put(3, "React");
+```
 
 Conceptually:
 
-    1 → Java
-    2 → Spring
-    3 → React
+```text
+1 → Java
+2 → Spring
+3 → React
+```
 
 Expected average complexity:
 
-    O(1)
+```text
+O(1)
+```
 
 assuming good hashing and normal conditions.
 
----
-
-# 🔄 Updating an Existing Key
+## 🔄 Updating an Existing Key
 
 Example:
 
-    table.put(1, "Java");
+```java
+table.put(1, "Java");
 
-Then:
-
-    table.put(1, "Advanced Java");
+table.put(1, "Advanced Java");
+```
 
 Result:
 
-    1 → Advanced Java
+```text
+1 → Advanced Java
+```
 
 The key is not duplicated.
 
@@ -300,27 +342,35 @@ The key is not duplicated.
 
 Example:
 
-    String value = table.get(2);
+```java
+String value = table.get(2);
+```
 
 Result:
 
-    Spring
+```text
+Spring
+```
 
 Expected average complexity:
 
-    O(1)
+```text
+O(1)
+```
 
 Conceptually:
 
-    key
-     ↓
-    hash
-     ↓
-    bucket
-     ↓
-    matching key
-     ↓
-    value
+```text
+key
+ ↓
+hash
+ ↓
+bucket
+ ↓
+matching key
+ ↓
+value
+```
 
 ---
 
@@ -328,17 +378,23 @@ Conceptually:
 
 Example:
 
-    table.remove(2);
+```java
+table.remove(2);
+```
 
 The mapping:
 
-    2 → Spring
+```text
+2 → Spring
+```
 
 is removed.
 
 Expected average complexity:
 
-    O(1)
+```text
+O(1)
+```
 
 assuming good hashing.
 
@@ -350,93 +406,105 @@ assuming good hashing.
 
 Checks whether a key exists.
 
-    table.containsKey(1);
+```java
+table.containsKey(1);
+```
 
 Result:
 
-    true
+```text
+true
+```
 
 Expected average complexity:
 
-    O(1)
-
----
+```text
+O(1)
+```
 
 ## containsValue()
 
 Checks whether a value exists.
 
-    table.containsValue("Java");
+```java
+table.containsValue("Java");
+```
 
 Result:
 
-    true
+```text
+true
+```
 
 This requires searching through entries.
 
 Typical complexity:
 
-    O(n)
+```text
+O(n)
+```
 
 ---
 
 # 📦 11. Iteration
 
-Hashtable can be traversed using modern Map methods.
+`Hashtable` can be traversed using modern `Map` methods.
 
 Example:
 
-    for (Map.Entry<Integer, String> entry :
-         table.entrySet()) {
+```java
+for (Map.Entry<Integer, String> entry :
+     table.entrySet()) {
 
-        System.out.println(
-            entry.getKey() + " = " +
-            entry.getValue()
-        );
-    }
+    System.out.println(
+        entry.getKey() + " = " +
+        entry.getValue()
+    );
+}
+```
 
 You can also use:
 
-    keySet()
+```java
+table.keySet();
+table.values();
+table.entrySet();
+```
 
-    values()
+## 🧓 Enumeration
 
-    entrySet()
-
----
-
-# 🧓 Enumeration
-
-Because Hashtable is a legacy class, it also supports:
-
-    Enumeration
+Because `Hashtable` is a legacy class, it also supports `Enumeration`.
 
 Example:
 
-    Enumeration<Integer> keys =
-        table.keys();
+```java
+Enumeration<Integer> keys =
+    table.keys();
 
-Then:
+while (keys.hasMoreElements()) {
 
-    while (keys.hasMoreElements()) {
+    Integer key =
+        keys.nextElement();
 
-        Integer key =
-            keys.nextElement();
-
-        System.out.println(key);
-    }
+    System.out.println(key);
+}
+```
 
 `Enumeration` is an older traversal mechanism.
 
 Modern Java code generally prefers:
 
-    Iterator
+```text
+Iterator
+```
 
 or:
 
-    for-each
+```text
+for-each
+```
 
-over legacy Enumeration when possible.
+over legacy `Enumeration` when possible.
 
 ---
 
@@ -444,42 +512,50 @@ over legacy Enumeration when possible.
 
 Common constructors include:
 
-    Hashtable()
+```java
+Hashtable()
+```
 
-    Hashtable(int initialCapacity)
+```java
+Hashtable(int initialCapacity)
+```
 
-    Hashtable(
-        int initialCapacity,
-        float loadFactor
-    )
+```java
+Hashtable(
+    int initialCapacity,
+    float loadFactor
+)
+```
 
-    Hashtable(
-        Map<? extends K, ? extends V> t
-    )
-
----
+```java
+Hashtable(
+    Map<? extends K, ? extends V> t
+)
+```
 
 ## Default Constructor
 
-    Hashtable<Integer, String> table =
-        new Hashtable<>();
-
----
+```java
+Hashtable<Integer, String> table =
+    new Hashtable<>();
+```
 
 ## Initial Capacity
 
-    Hashtable<Integer, String> table =
-        new Hashtable<>(32);
-
----
+```java
+Hashtable<Integer, String> table =
+    new Hashtable<>(32);
+```
 
 ## Capacity + Load Factor
 
-    Hashtable<Integer, String> table =
-        new Hashtable<>(
-            32,
-            0.75f
-        );
+```java
+Hashtable<Integer, String> table =
+    new Hashtable<>(
+        32,
+        0.75f
+    );
+```
 
 ---
 
@@ -487,26 +563,38 @@ Common constructors include:
 
 Two important concepts:
 
-    Capacity
+```text
+Capacity
+```
 
 and:
 
-    Load Factor
+```text
+Load Factor
+```
 
-### Capacity
+## Capacity
 
-Number of buckets available in the internal table.
+Capacity represents the number of buckets available in the internal hash table.
 
-### Load Factor
+```text
+Capacity
+   ↓
+Number of buckets
+```
 
-Controls when the table should be resized.
+## Load Factor
+
+Load factor controls how full the table can become before resizing.
 
 Conceptually:
 
-    threshold =
-        capacity × loadFactor
+```text
+threshold =
+    capacity × loadFactor
+```
 
-When the number of entries reaches the threshold, rehashing can occur.
+When the number of entries reaches the resizing threshold, rehashing can occur.
 
 ---
 
@@ -514,32 +602,36 @@ When the number of entries reaches the threshold, rehashing can occur.
 
 Suppose:
 
-    capacity = 11
+```text
+capacity = 11
 
-and:
-
-    loadFactor = 0.75
+loadFactor = 0.75
+```
 
 Then approximately:
 
-    threshold =
-    11 × 0.75
-    =
-    8.25
+```text
+threshold =
+11 × 0.75
 
-When the table reaches its resizing threshold, Hashtable expands and redistributes entries.
+= 8.25
+```
+
+When the table reaches its resizing threshold, `Hashtable` expands and redistributes entries.
 
 Conceptually:
 
-    Old Table
-        ↓
-    [0][1][2][3][4]
-        ↓
-      resize
-        ↓
-    New Table
-        ↓
-    [0][1][2][3][4][5][6]...
+```text
+Old Table
+    ↓
+[0][1][2][3][4]
+    ↓
+  resize
+    ↓
+New Table
+    ↓
+[0][1][2][3][4][5][6]...
+```
 
 The exact resizing formula is implementation-specific, so focus on the concept rather than memorizing a particular formula.
 
@@ -556,19 +648,21 @@ The exact resizing formula is implementation-specific, so focus on the concept r
 | Performance | Generally slower under contention | Generally faster for non-concurrent use |
 | Legacy | Yes | No |
 | Map interface | Yes | Yes |
-| Expected get() | O(1) | O(1) |
-| Expected put() | O(1) | O(1) |
+| Expected `get()` | O(1) | O(1) |
+| Expected `put()` | O(1) | O(1) |
 | Modern default choice | Usually no | Yes for non-concurrent use |
 
 Mental model:
 
-    Hashtable
-        ↓
-    Legacy + synchronized
+```text
+Hashtable
+    ↓
+Legacy + synchronized
 
-    HashMap
-        ↓
-    Modern + non-synchronized
+HashMap
+    ↓
+Modern + non-synchronized
+```
 
 ---
 
@@ -596,96 +690,98 @@ The key difference is the concurrency design.
 
 # 🧩 17. Legacy Methods
 
-Because Hashtable extends the old `Dictionary` class, it contains older methods such as:
+Because `Hashtable` extends the old `Dictionary` class, it contains older methods such as:
 
-    put()
-    get()
-    remove()
-    keys()
-    elements()
-    isEmpty()
-    size()
+```text
+put()
+get()
+remove()
+keys()
+elements()
+isEmpty()
+size()
+```
 
 Modern code can still use the `Map` interface methods:
 
-    keySet()
-    values()
-    entrySet()
-    containsKey()
-    containsValue()
+```text
+keySet()
+values()
+entrySet()
+containsKey()
+containsValue()
+```
 
 ---
 
 # ⚠️ 18. Common Mistakes
 
-## ❌ Mistake 1
-
-Thinking Hashtable and HashMap are identical.
+## ❌ Mistake 1 — Thinking Hashtable and HashMap are identical
 
 They are not.
 
 Important differences include:
 
-    synchronization
-    null handling
-    legacy status
+```text
+synchronization
+null handling
+legacy status
+```
 
 ---
 
-## ❌ Mistake 2
-
-Thinking Hashtable allows null.
+## ❌ Mistake 2 — Thinking Hashtable allows null
 
 It doesn't.
 
-    null key   ❌
-    null value ❌
+```text
+null key    ❌
+null value  ❌
+```
 
 ---
 
-## ❌ Mistake 3
-
-Thinking Hashtable is the modern concurrent Map.
+## ❌ Mistake 3 — Thinking Hashtable is the modern concurrent Map
 
 For modern concurrent applications:
 
-    ConcurrentHashMap
+```text
+ConcurrentHashMap
+```
 
 is generally the relevant choice.
 
 ---
 
-## ❌ Mistake 4
-
-Thinking synchronized methods make every compound operation atomic.
+## ❌ Mistake 4 — Thinking synchronized methods make every compound operation atomic
 
 Example:
 
-    if (!table.containsKey(key)) {
-        table.put(key, value);
-    }
+```java
+if (!table.containsKey(key)) {
+    table.put(key, value);
+}
+```
 
 This entire sequence is not automatically atomic.
 
 ---
 
-## ❌ Mistake 5
-
-Thinking synchronization means faster.
+## ❌ Mistake 5 — Thinking synchronization means faster
 
 Synchronization introduces coordination overhead and can restrict concurrent access.
 
 ---
 
-## ❌ Mistake 6
-
-Thinking Hashtable sorts entries.
+## ❌ Mistake 6 — Thinking Hashtable sorts entries
 
 It does not.
 
 There is no sorted ordering like:
 
-    TreeMap
+```text
+TreeMap
+```
 
 ---
 
@@ -707,9 +803,11 @@ Worst-case behavior can depend on the implementation and collision distribution.
 
 For interview purposes:
 
-    Hash-based lookup
-        ↓
-    Expected O(1)
+```text
+Hash-based lookup
+       ↓
+Expected O(1)
+```
 
 is the important point.
 
@@ -717,23 +815,29 @@ is the important point.
 
 # 🎯 20. DSA Connection
 
-Hashtable is historically important for understanding:
+`Hashtable` is historically important for understanding:
 
-    Hashing
-    Hash tables
-    Collision handling
-    Key-value lookup
-    Synchronization
+```text
+Hashing
+Hash tables
+Collision handling
+Key-value lookup
+Synchronization
+```
 
 However, in modern DSA problems, you will usually encounter:
 
-    HashMap
+```text
+HashMap
+```
 
 rather than:
 
-    Hashtable
+```text
+Hashtable
+```
 
-because HashMap is the standard choice when synchronization is not required.
+because `HashMap` is the standard choice when synchronization is not required.
 
 ---
 
@@ -741,25 +845,35 @@ because HashMap is the standard choice when synchronization is not required.
 
 When solving a problem, think:
 
-### Need fast key-value lookup?
+## Need fast key-value lookup?
 
-    HashMap
+```text
+HashMap
+```
 
-### Need fast lookup + insertion order?
+## Need fast lookup + insertion/access order?
 
-    LinkedHashMap
+```text
+LinkedHashMap
+```
 
-### Need sorted keys + navigation?
+## Need sorted keys + navigation?
 
-    TreeMap
+```text
+TreeMap
+```
 
-### Need modern concurrent key-value access?
+## Need modern concurrent key-value access?
 
-    ConcurrentHashMap
+```text
+ConcurrentHashMap
+```
 
-### Hashtable?
+## Hashtable?
 
-    Legacy synchronized Map
+```text
+Legacy synchronized Map
+```
 
 This distinction is very useful in interviews.
 
@@ -767,91 +881,103 @@ This distinction is very useful in interviews.
 
 # 🧪 22. Complete Example
 
-    import java.util.Hashtable;
-    import java.util.Map;
+```java
+import java.util.Hashtable;
+import java.util.Map;
 
-    public class Main {
+public class Main {
 
-        public static void main(String[] args) {
+    public static void main(String[] args) {
 
-            Hashtable<Integer, String> table =
-                new Hashtable<>();
+        Hashtable<Integer, String> table =
+            new Hashtable<>();
 
-            table.put(101, "Java");
-            table.put(102, "Spring");
-            table.put(103, "React");
+        table.put(101, "Java");
+        table.put(102, "Spring");
+        table.put(103, "React");
+
+        System.out.println(
+            table.get(101)
+        );
+
+        System.out.println(
+            table.containsKey(102)
+        );
+
+        table.remove(103);
+
+        for (Map.Entry<Integer, String> entry :
+             table.entrySet()) {
 
             System.out.println(
-                table.get(101)
+                entry.getKey() +
+                " = " +
+                entry.getValue()
             );
-
-            System.out.println(
-                table.containsKey(102)
-            );
-
-            table.remove(103);
-
-            for (Map.Entry<Integer, String> entry :
-                 table.entrySet()) {
-
-                System.out.println(
-                    entry.getKey() +
-                    " = " +
-                    entry.getValue()
-                );
-            }
         }
     }
+}
+```
 
 Possible output:
 
-    Java
-    true
-    102 = Spring
-    101 = Java
+```text
+Java
+true
+102 = Spring
+101 = Java
+```
 
-Do not depend on the iteration order.
+> Do not depend on the iteration order.
 
 ---
 
 # 🚫 Null Example
 
-    Hashtable<Integer, String> table =
-        new Hashtable<>();
+```java
+Hashtable<Integer, String> table =
+    new Hashtable<>();
 
-    table.put(null, "Java");
+table.put(null, "Java");
+```
 
 This throws:
 
-    NullPointerException
+```text
+NullPointerException
+```
 
 Likewise:
 
-    table.put(1, null);
+```java
+table.put(1, null);
+```
 
 also throws:
 
-    NullPointerException
+```text
+NullPointerException
+```
 
 ---
 
 # 🔥 Hashtable Mental Model
 
-Think:
-
-    Hashtable
-         │
-         ├── Hashing
-         │      ↓
-         │   Fast lookup
-         │
-         ├── Synchronization
-         │      ↓
-         │   Thread-safe methods
-         │
-         └── Legacy
-                ↓
-          Older collection
+```text
+Hashtable
+     │
+     ├── Hashing
+     │      ↓
+     │   Fast lookup
+     │
+     ├── Synchronization
+     │      ↓
+     │   Thread-safe individual operations
+     │
+     └── Legacy
+            ↓
+        Older collection
+```
 
 ---
 
@@ -863,38 +989,44 @@ Think:
 
 # ⚡ 24. Cheat Sheet
 
-    Hashtable
-       ↓
-    Legacy Map
-       ↓
-    Hash-based
-       ↓
-    Synchronized
-       ↓
-    No null key
-    No null value
+```text
+Hashtable
+    ↓
+Legacy Map
+    ↓
+Hash-based
+    ↓
+Synchronized
+    ↓
+No null key
+No null value
+```
 
 Complexity:
 
-    put()          → O(1) expected
-    get()          → O(1) expected
-    remove()       → O(1) expected
-    containsKey()  → O(1) expected
-    containsValue()→ O(n)
+```text
+put()            → O(1) expected
+get()            → O(1) expected
+remove()         → O(1) expected
+containsKey()    → O(1) expected
+containsValue()  → O(n)
+```
 
 Modern comparison:
 
-    HashMap
-       ↓
-    non-synchronized Map
+```text
+HashMap
+    ↓
+non-synchronized Map
 
-    Hashtable
-       ↓
-    legacy synchronized Map
+Hashtable
+    ↓
+legacy synchronized Map
 
-    ConcurrentHashMap
-       ↓
-    modern concurrent Map
+ConcurrentHashMap
+    ↓
+modern concurrent Map
+```
 
 ---
 
@@ -902,23 +1034,27 @@ Modern comparison:
 
 Remember:
 
-    HASH + TABLE
-         ↓
-    Hash-based storage
+```text
+HASH + TABLE
+      ↓
+Hash-based storage
 
-    TABLE + synchronized
-         ↓
-    Hashtable
+TABLE + synchronized
+      ↓
+Hashtable
 
-    TABLE + old
-         ↓
-    Legacy
+TABLE + old
+      ↓
+Legacy
+```
 
 And:
 
-    Hashtable
-       ❌ null key
-       ❌ null value
+```text
+Hashtable
+    ❌ null key
+    ❌ null value
+```
 
 ---
 
@@ -926,7 +1062,7 @@ And:
 
 ## Q1. What is Hashtable?
 
-Hashtable is a legacy, hash-based implementation of the Map interface whose methods are synchronized.
+`Hashtable` is a legacy, hash-based implementation of the `Map` interface whose methods are synchronized.
 
 ---
 
@@ -948,11 +1084,13 @@ No.
 
 ---
 
-## Q5. What is the average complexity of get()?
+## Q5. What is the average complexity of `get()`?
 
 Expected:
 
-    O(1)
+```text
+O(1)
+```
 
 assuming good hash distribution.
 
@@ -976,21 +1114,23 @@ It predates the Java Collections Framework and uses the older `Dictionary` class
 
 The major differences are:
 
-    Hashtable
+```text
+Hashtable
     → synchronized
     → no null key/value
     → legacy
 
-    HashMap
+HashMap
     → not synchronized
     → allows null
     → modern Collections Framework
+```
 
 ---
 
 ## Q9. Hashtable vs ConcurrentHashMap?
 
-Both support concurrent access, but ConcurrentHashMap was specifically designed as a modern concurrent collection with better concurrency characteristics.
+Both support concurrent access, but `ConcurrentHashMap` was specifically designed as a modern concurrent collection with better concurrency characteristics.
 
 ---
 
@@ -1016,9 +1156,22 @@ Multiple keys can map to the same value.
 
 ---
 
-## Q13. What happens when put() is called with an existing key?
+## Q13. What happens when `put()` is called with an existing key?
 
 The old value is replaced.
+
+Example:
+
+```java
+table.put(1, "Java");
+table.put(1, "Advanced Java");
+```
+
+The final mapping is:
+
+```text
+1 → Advanced Java
+```
 
 ---
 
@@ -1030,44 +1183,120 @@ Rehashing is the process of resizing the internal hash table and redistributing 
 
 ## Q15. What is the difference between HashMap and Hashtable regarding null?
 
-    HashMap:
-        one null key
-        multiple null values
+```text
+HashMap:
+    one null key
+    multiple null values
 
-    Hashtable:
-        no null key
-        no null values
+Hashtable:
+    no null key
+    no null values
+```
 
 ---
 
 # 🏁 26. Final Mental Model
 
 ```text
-                    Map
-                     │
-        ┌────────────┼──────────────┐
-        │            │              │
-        ▼            ▼              ▼
-     HashMap   LinkedHashMap     TreeMap
-        │            │              │
-        │            │              │
-    Hashing     Hashing +       Red-Black
-                 Linked List       Tree
-        │            │              │
-        ▼            ▼              ▼
-      Fast       Fast +          Sorted +
-     Lookup       Order          Navigation
+                         Map
+                          │
+          ┌───────────────┼───────────────┐
+          │               │               │
+          ▼               ▼               ▼
+       HashMap      LinkedHashMap      TreeMap
+          │               │               │
+          │               │               │
+       Hashing       Hashing +       Red-Black
+                     Linked List        Tree
+          │               │               │
+          ▼               ▼               ▼
+       Fast          Fast +          Sorted +
+      Lookup          Order          Navigation
 
 
-                 Legacy Branch
-                      │
-                      ▼
-                  Hashtable
-                      │
-             ┌────────┴────────┐
-             │                 │
-          Hashing        Synchronization
-             │                 │
-             └────────┬────────┘
-                      ▼
-                 Legacy Map
+                  Legacy Branch
+                        │
+                        ▼
+                   Hashtable
+                        │
+              ┌─────────┴─────────┐
+              │                   │
+           Hashing          Synchronization
+              │                   │
+              └─────────┬─────────┘
+                        ▼
+                   Legacy Map
+```
+
+---
+
+# 🔥 One-Line Memory Trick
+
+```text
+HashMap
+→ "Give me fast lookup."
+
+LinkedHashMap
+→ "Give me fast lookup + order."
+
+TreeMap
+→ "Give me sorted keys + navigation."
+
+Hashtable
+→ "Give me the old synchronized hash-based Map."
+```
+
+---
+
+# 🚀 Final Takeaway
+
+> **`Hashtable` is a legacy, synchronized, hash-based `Map` that provides expected O(1) basic lookup but does not allow null keys or values.**
+
+The most important things to remember are:
+
+```text
+Hashtable
+    ↓
+Legacy
+    ↓
+Hash-based
+    ↓
+Synchronized methods
+    ↓
+No null key
+No null value
+    ↓
+Expected O(1) basic operations
+```
+
+For modern Java:
+
+```text
+HashMap
+    → ordinary non-concurrent Map
+
+ConcurrentHashMap
+    → modern concurrent Map
+
+TreeMap
+    → sorted + navigable Map
+
+Hashtable
+    → legacy synchronized Map
+```
+
+The key interview distinction is:
+
+```text
+Hashtable ≠ HashMap
+
+Hashtable
+→ synchronized
+→ legacy
+→ no null key/value
+
+HashMap
+→ non-synchronized
+→ modern
+→ allows null key/value
+```

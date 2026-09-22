@@ -1,9 +1,15 @@
-```md
 # 🔐 04 — hashCode() and equals()
 
 > **Java Collections Deep Dive → Map Framework**
 >
 > `hashCode()` and `equals()` are two of the most important methods behind the correct working of `HashMap`, `HashSet`, and other hash-based collections.
+>
+> These methods are especially important when working with:
+>
+> - `HashMap`
+> - `HashSet`
+> - `Hashtable`
+> - Hash-based DSA problems
 
 ---
 
@@ -42,29 +48,37 @@
 
 Every Java class directly or indirectly inherits from:
 
-    Object
+```java
+Object
+```
 
 `Object` provides important methods such as:
 
-    equals()
-    hashCode()
+```java
+equals()
+hashCode()
+```
 
 These methods become especially important when working with:
 
-    HashMap
-    HashSet
-    Hashtable
-    Hash-based DSA problems
+```java
+HashMap
+HashSet
+Hashtable
+Hash-based DSA problems
+```
 
 Think of them as two different responsibilities:
 
-    equals()
-        ↓
-    "Are these objects logically equal?"
+```text
+equals()
+    ↓
+"Are these objects logically equal?"
 
-    hashCode()
-        ↓
-    "Which hash location should I search?"
+hashCode()
+    ↓
+"Which hash location should I search?"
+```
 
 ---
 
@@ -72,37 +86,51 @@ Think of them as two different responsibilities:
 
 Consider:
 
-    Map<Student, String> map = new HashMap<>();
+```java
+Map<Student, String> map = new HashMap<>();
+```
 
 Suppose:
 
-    Student s1 = new Student(101);
-    Student s2 = new Student(101);
+```java
+Student s1 = new Student(101);
+Student s2 = new Student(101);
+```
 
 If the `id` represents the identity of a Student, we may want:
 
-    s1.equals(s2)
+```java
+s1.equals(s2)
+```
 
 to return:
 
-    true
+```text
+true
+```
 
 But HashMap also depends on:
 
-    s1.hashCode()
-    s2.hashCode()
+```java
+s1.hashCode()
+s2.hashCode()
+```
 
 For equal objects:
 
-    s1.hashCode() == s2.hashCode()
+```java
+s1.hashCode() == s2.hashCode()
+```
 
 must be true.
 
 Therefore:
 
-    equals()
-        +
-    hashCode()
+```text
+equals()
+    +
+hashCode()
+```
 
 must be implemented consistently.
 
@@ -112,34 +140,47 @@ must be implemented consistently.
 
 Every Java class ultimately inherits from:
 
-    java.lang.Object
+```java
+java.lang.Object
+```
 
 Object contains:
 
-    public boolean equals(Object obj)
+```java
+public boolean equals(Object obj)
+```
 
 and:
 
-    public native int hashCode();
+```java
+public native int hashCode();
+```
 
 Therefore even this class:
 
-    class Student {
-    }
+```java
+class Student {
+
+}
+```
 
 automatically has:
 
-    equals()
-    hashCode()
+```java
+equals()
+hashCode()
+```
 
 available.
 
 Example:
 
-    Student s = new Student();
+```java
+Student s = new Student();
 
-    s.equals(...);
-    s.hashCode();
+s.equals(...);
+s.hashCode();
+```
 
 ---
 
@@ -149,24 +190,32 @@ Example:
 
 Method signature:
 
-    public boolean equals(Object obj)
+```java
+public boolean equals(Object obj)
+```
 
 Example:
 
-    String s1 = new String("Java");
-    String s2 = new String("Java");
+```java
+String s1 = new String("Java");
+String s2 = new String("Java");
 
-    System.out.println(s1 == s2);
-    System.out.println(s1.equals(s2));
+System.out.println(s1 == s2);
+System.out.println(s1.equals(s2));
+```
 
 Output:
 
-    false
-    true
+```text
+false
+true
+```
 
 Why?
 
-    s1 == s2
+```java
+s1 == s2
+```
 
 checks whether both references point to the same object.
 
@@ -180,21 +229,27 @@ String's `equals()` compares the contents.
 
 Method:
 
-    public int hashCode()
+```java
+public int hashCode()
+```
 
 Example:
 
-    String str = "Java";
+```java
+String str = "Java";
 
-    int hash = str.hashCode();
+int hash = str.hashCode();
+```
 
 Hash-based collections use this value to help locate elements.
 
 Common examples:
 
-    HashMap
-    HashSet
-    Hashtable
+```text
+HashMap
+HashSet
+Hashtable
+```
 
 Important:
 
@@ -208,19 +263,23 @@ Important:
 
 For primitives:
 
-    int a = 10;
-    int b = 10;
+```java
+int a = 10;
+int b = 10;
 
-    a == b
+a == b
+```
 
 compares values.
 
 For object references:
 
-    Student s1 = new Student();
-    Student s2 = new Student();
+```java
+Student s1 = new Student();
+Student s2 = new Student();
 
-    s1 == s2
+s1 == s2
+```
 
 checks whether both references point to the same object.
 
@@ -230,23 +289,27 @@ checks whether both references point to the same object.
 
 For objects:
 
-    s1.equals(s2)
+```java
+s1.equals(s2)
+```
 
 checks logical equality according to the class implementation.
 
 ---
 
-# 🧠 Quick Comparison
+## 🧠 Quick Comparison
 
-    ┌───────────────┬──────────────────────────┐
-    │ ==            │ equals()                 │
-    ├───────────────┼──────────────────────────┤
-    │ Operator      │ Method                   │
-    │ Identity      │ Logical equality         │
-    │ Reference     │ Depends on implementation│
-    │ Can compare   │ Primarily objects        │
-    │ primitives    │                          │
-    └───────────────┴──────────────────────────┘
+```text
+┌───────────────┬──────────────────────────┐
+│ ==            │ equals()                 │
+├───────────────┼──────────────────────────┤
+│ Operator      │ Method                   │
+│ Identity      │ Logical equality         │
+│ Reference     │ Depends on implementation│
+│ Can compare   │ Primarily objects        │
+│ primitives    │                          │
+└───────────────┴──────────────────────────┘
+```
 
 ---
 
@@ -254,11 +317,13 @@ checks logical equality according to the class implementation.
 
 The `equals()` contract contains five important properties:
 
-    1. Reflexive
-    2. Symmetric
-    3. Transitive
-    4. Consistent
-    5. Non-null
+```text
+1. Reflexive
+2. Symmetric
+3. Transitive
+4. Consistent
+5. Non-null
+```
 
 ---
 
@@ -266,11 +331,15 @@ The `equals()` contract contains five important properties:
 
 An object must equal itself.
 
-    x.equals(x)
+```java
+x.equals(x)
+```
 
 must return:
 
-    true
+```text
+true
+```
 
 ---
 
@@ -278,17 +347,23 @@ must return:
 
 If:
 
-    x.equals(y)
+```java
+x.equals(y)
+```
 
 is true, then:
 
-    y.equals(x)
+```java
+y.equals(x)
+```
 
 must also be true.
 
 Therefore:
 
-    x.equals(y) == y.equals(x)
+```java
+x.equals(y) == y.equals(x)
+```
 
 ---
 
@@ -296,12 +371,16 @@ Therefore:
 
 If:
 
-    x.equals(y)
-    y.equals(z)
+```java
+x.equals(y)
+y.equals(z)
+```
 
 are true, then:
 
-    x.equals(z)
+```java
+x.equals(z)
+```
 
 must also be true.
 
@@ -311,9 +390,11 @@ must also be true.
 
 Repeated calls should produce the same result as long as the relevant state has not changed.
 
-    x.equals(y)
-    x.equals(y)
-    x.equals(y)
+```java
+x.equals(y)
+x.equals(y)
+x.equals(y)
+```
 
 should remain consistent.
 
@@ -323,11 +404,15 @@ should remain consistent.
 
 For a non-null object:
 
-    x.equals(null)
+```java
+x.equals(null)
+```
 
 should return:
 
-    false
+```text
+false
+```
 
 ---
 
@@ -339,25 +424,35 @@ The most important rule is:
 
 Therefore:
 
-    x.equals(y) == true
+```java
+x.equals(y) == true
+```
 
 implies:
 
-    x.hashCode() == y.hashCode()
+```java
+x.hashCode() == y.hashCode()
+```
 
 But the reverse is NOT required.
 
 This is valid:
 
-    x.hashCode() == y.hashCode()
+```java
+x.hashCode() == y.hashCode()
+```
 
 while:
 
-    x.equals(y) == false
+```java
+x.equals(y) == false
+```
 
 This situation is called a:
 
-    Hash Collision
+```text
+Hash Collision
+```
 
 ---
 
@@ -365,15 +460,19 @@ This situation is called a:
 
 Memorize this rule for interviews:
 
-    x.equals(y) == true
-            ↓
-    x.hashCode() == y.hashCode()
+```text
+x.equals(y) == true
+        ↓
+x.hashCode() == y.hashCode()
+```
 
 But NOT:
 
-    x.hashCode() == y.hashCode()
-            ↓
-    x.equals(y) == true
+```text
+x.hashCode() == y.hashCode()
+        ↓
+x.equals(y) == true
+```
 
 The second implication is incorrect.
 
@@ -383,37 +482,43 @@ The second implication is incorrect.
 
 Suppose:
 
-    Map<Student, String> map = new HashMap<>();
+```java
+Map<Student, String> map = new HashMap<>();
+```
 
 When we execute:
 
-    map.put(student, "Java");
+```java
+map.put(student, "Java");
+```
 
 HashMap conceptually uses:
 
-    student.hashCode()
-            ↓
-       hash calculation
-            ↓
-       bucket selection
-            ↓
-       compare candidate keys
-            ↓
-          equals()
-            ↓
-       identify the key
+```text
+student.hashCode()
+        ↓
+hash calculation
+        ↓
+bucket selection
+        ↓
+compare candidate keys
+        ↓
+equals()
+        ↓
+identify the key
+```
 
 Therefore:
 
-    hashCode()
-        ↓
-    WHERE should I look?
+```text
+hashCode()
+    ↓
+WHERE should I look?
 
-and:
-
-    equals()
-        ↓
-    IS this the key?
+equals()
+    ↓
+IS this the key?
+```
 
 This is one of the most important HashMap mental models.
 
@@ -423,29 +528,34 @@ This is one of the most important HashMap mental models.
 
 Suppose:
 
-    map.put(key, value);
+```java
+map.put(key, value);
+```
 
 Conceptually:
 
-    key
-     ↓
-    hashCode()
-     ↓
-    hash calculation
-     ↓
-    bucket index
-     ↓
-    bucket
-     ↓
-    existing node?
-       ↙       ↘
-     no         yes
-     ↓           ↓
-   insert      compare
-                 ↓
-              equals()
-                 ↓
-        same key / collision
+```text
+key
+ ↓
+hashCode()
+ ↓
+hash calculation
+ ↓
+bucket index
+ ↓
+bucket
+ ↓
+existing node?
+
+   ↙       ↘
+ no         yes
+ ↓           ↓
+insert     compare
+             ↓
+          equals()
+             ↓
+     same key / collision
+```
 
 If the key is logically equal to an existing key, HashMap updates the corresponding value.
 
@@ -455,37 +565,43 @@ If the key is logically equal to an existing key, HashMap updates the correspond
 
 Suppose:
 
-    map.get(key);
+```java
+map.get(key);
+```
 
 Conceptually:
 
-    key
-     ↓
-    hashCode()
-     ↓
-    bucket index
-     ↓
-    bucket
-     ↓
-    candidate entries
-     ↓
-    compare hash
-     ↓
-    equals()
-     ↓
-    matching key
-     ↓
-    return value
+```text
+key
+ ↓
+hashCode()
+ ↓
+bucket index
+ ↓
+bucket
+ ↓
+candidate entries
+ ↓
+compare hash
+ ↓
+equals()
+ ↓
+matching key
+ ↓
+return value
+```
 
 So:
 
-    hashCode()
-        ↓
-    narrows the search
+```text
+hashCode()
+    ↓
+narrows the search
 
-    equals()
-        ↓
-    confirms the key
+equals()
+    ↓
+confirms the key
+```
 
 ---
 
@@ -493,32 +609,41 @@ So:
 
 Suppose we write:
 
-    class Student {
+```java
+class Student {
 
-        int id;
+    int id;
 
-        @Override
-        public boolean equals(Object obj) {
+    @Override
+    public boolean equals(Object obj) {
 
-            if (!(obj instanceof Student)) {
-                return false;
-            }
-
-            Student other = (Student) obj;
-
-            return this.id == other.id;
+        if (!(obj instanceof Student)) {
+            return false;
         }
+
+        Student other = (Student) obj;
+
+        return this.id == other.id;
     }
+}
+```
 
 Now:
 
-    Student s1 = new Student(101);
-    Student s2 = new Student(101);
+```java
+Student s1 = new Student(101);
+Student s2 = new Student(101);
+```
 
 may produce:
 
-    s1.equals(s2)
-        → true
+```java
+s1.equals(s2)
+```
+
+```text
+→ true
+```
 
 But if `hashCode()` is not overridden, they may have different hash codes.
 
@@ -530,18 +655,24 @@ That violates the hashCode contract.
 
 Suppose:
 
-    Set<Student> set = new HashSet<>();
+```java
+Set<Student> set = new HashSet<>();
 
-    set.add(s1);
-    set.add(s2);
+set.add(s1);
+set.add(s2);
+```
 
 You may expect:
 
-    size = 1
+```text
+size = 1
+```
 
 because:
 
-    s1.equals(s2) == true
+```java
+s1.equals(s2) == true
+```
 
 But if their hash codes differ, HashSet may place them into different buckets.
 
@@ -553,20 +684,26 @@ Therefore the result can incorrectly behave as if they are different elements.
 
 Suppose we write:
 
-    @Override
-    public int hashCode() {
-        return Integer.hashCode(id);
-    }
+```java
+@Override
+public int hashCode() {
+    return Integer.hashCode(id);
+}
+```
 
 but don't override `equals()`.
 
 Then two objects can have:
 
-    same hashCode
+```text
+same hashCode
+```
 
 while:
 
-    equals() == false
+```text
+equals() == false
+```
 
 because Object's default equality is identity-based.
 
@@ -574,9 +711,11 @@ This is legal.
 
 Remember:
 
-    same hashCode
-        ≠
-    equal objects
+```text
+same hashCode
+    ≠
+equal objects
+```
 
 ---
 
@@ -586,21 +725,27 @@ A hash collision occurs when different objects produce the same hash code or ult
 
 Example:
 
-    Object A
-       ↓
-    hash = 100
+```text
+Object A
+   ↓
+hash = 100
 
-    Object B
-       ↓
-    hash = 100
+Object B
+   ↓
+hash = 100
+```
 
 But:
 
-    A.equals(B)
+```java
+A.equals(B)
+```
 
 may be:
 
-    false
+```text
+false
+```
 
 This is completely valid.
 
@@ -608,19 +753,23 @@ Hash-based collections are designed to handle collisions.
 
 ---
 
-# 🧠 Collision Mental Model
+## 🧠 Collision Mental Model
 
-    Object A ──→ hash 100 ──→ bucket 5
-                                  │
-                                  ├── A
-                                  │
-                                  └── B
+```text
+Object A ──→ hash 100 ──→ bucket 5
+                              │
+                              ├── A
+                              │
+                              └── B
 
-    Object B ──→ hash 100 ──→ bucket 5
+Object B ──→ hash 100 ──→ bucket 5
+```
 
 Then:
 
-    equals()
+```java
+equals()
+```
 
 helps determine whether A and B are actually the same logical key.
 
@@ -632,65 +781,77 @@ One of the most important HashMap traps is modifying a key after insertion.
 
 Suppose:
 
-    class Student {
+```java
+class Student {
 
-        int id;
+    int id;
 
-        Student(int id) {
-            this.id = id;
-        }
-
-        @Override
-        public int hashCode() {
-            return Integer.hashCode(id);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-
-            if (!(obj instanceof Student)) {
-                return false;
-            }
-
-            Student other = (Student) obj;
-
-            return this.id == other.id;
-        }
+    Student(int id) {
+        this.id = id;
     }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (!(obj instanceof Student)) {
+            return false;
+        }
+
+        Student other = (Student) obj;
+
+        return this.id == other.id;
+    }
+}
+```
 
 Now:
 
-    Student s = new Student(101);
+```java
+Student s = new Student(101);
 
-    Map<Student, String> map = new HashMap<>();
+Map<Student, String> map = new HashMap<>();
 
-    map.put(s, "Java");
+map.put(s, "Java");
+```
 
 Initially:
 
-    id = 101
-       ↓
-    hash = H1
-       ↓
-    bucket = B1
+```text
+id = 101
+   ↓
+hash = H1
+   ↓
+bucket = B1
+```
 
 Now suppose:
 
-    s.id = 999;
+```java
+s.id = 999;
+```
 
 Then:
 
-    id = 999
-       ↓
-    hash = H2
-       ↓
-    bucket = B2
+```text
+id = 999
+   ↓
+hash = H2
+   ↓
+bucket = B2
+```
 
 But the existing entry is still physically stored according to its original location.
 
 Therefore:
 
-    map.get(s)
+```java
+map.get(s)
+```
 
 may fail to find the entry.
 
@@ -700,16 +861,18 @@ may fail to find the entry.
 
 The dangerous sequence is:
 
-    create key
-       ↓
-    put key into HashMap
-       ↓
-    modify field used by
-    equals()/hashCode()
-       ↓
-    hash changes
-       ↓
-    lookup fails
+```text
+create key
+   ↓
+put key into HashMap
+   ↓
+modify field used by
+equals()/hashCode()
+   ↓
+hash changes
+   ↓
+lookup fails
+```
 
 Therefore:
 
@@ -723,10 +886,12 @@ Immutable objects are generally safer as HashMap keys.
 
 Examples:
 
-    String
-    Integer
-    Long
-    Enum
+```text
+String
+Integer
+Long
+Enum
+```
 
 Why?
 
@@ -734,7 +899,9 @@ Because their equality-related state does not change after creation.
 
 For example:
 
-    String key = "Java";
+```java
+String key = "Java";
+```
 
 The String's contents cannot be modified.
 
@@ -746,43 +913,55 @@ Therefore its hash-related behavior remains stable.
 
 String overrides:
 
-    equals()
-    hashCode()
+```text
+equals()
+hashCode()
+```
 
 Example:
 
-    String s1 = new String("Java");
-    String s2 = new String("Java");
+```java
+String s1 = new String("Java");
+String s2 = new String("Java");
 
-Then:
-
-    s1.equals(s2)
+System.out.println(s1.equals(s2));
+```
 
 returns:
 
-    true
+```text
+true
+```
 
 and:
 
-    s1.hashCode() == s2.hashCode()
+```java
+s1.hashCode() == s2.hashCode()
+```
 
 returns:
 
-    true
+```text
+true
+```
 
 Therefore String works correctly as a HashMap key.
 
 Example:
 
-    Map<String, Integer> map = new HashMap<>();
+```java
+Map<String, Integer> map = new HashMap<>();
 
-    map.put("Java", 100);
+map.put("Java", 100);
 
-    System.out.println(map.get("Java"));
+System.out.println(map.get("Java"));
+```
 
 Output:
 
-    100
+```text
+100
+```
 
 ---
 
@@ -792,23 +971,29 @@ Wrapper classes provide suitable implementations of equality and hashing.
 
 Examples:
 
-    Integer
-    Long
-    Short
-    Byte
-    Character
-    Boolean
+```text
+Integer
+Long
+Short
+Byte
+Character
+Boolean
+```
 
 Example:
 
-    Integer a = 100;
-    Integer b = 100;
+```java
+Integer a = 100;
+Integer b = 100;
 
-    System.out.println(a.equals(b));
+System.out.println(a.equals(b));
+```
 
 Output:
 
-    true
+```text
+true
+```
 
 Their hash codes are also consistent with equality.
 
@@ -822,34 +1007,40 @@ HashSet also depends on hashing and equality.
 
 Suppose:
 
-    Set<Integer> set = new HashSet<>();
+```java
+Set<Integer> set = new HashSet<>();
 
-    set.add(10);
-    set.add(10);
+set.add(10);
+set.add(10);
+```
 
 Conceptually:
 
-    10
-     ↓
-    hashCode()
-     ↓
-    bucket
-     ↓
-    equals()
-     ↓
-    already exists?
-     ↓
-    yes
-     ↓
-    don't add duplicate
+```text
+10
+ ↓
+hashCode()
+ ↓
+bucket
+ ↓
+equals()
+ ↓
+already exists?
+ ↓
+yes
+ ↓
+don't add duplicate
+```
 
 Therefore:
 
-    HashSet
-       ↓
-    hashCode()
-       +
-    equals()
+```text
+HashSet
+   ↓
+hashCode()
+   +
+equals()
+```
 
 ---
 
@@ -863,29 +1054,37 @@ Understanding `hashCode()` and `equals()` directly helps with common DSA pattern
 
 Problem:
 
-    Find whether an array contains duplicates.
+```text
+Find whether an array contains duplicates.
+```
 
 Approach:
 
-    HashSet
+```text
+HashSet
+```
 
 Code:
 
-    Set<Integer> set = new HashSet<>();
+```java
+Set<Integer> set = new HashSet<>();
 
-    for (int num : nums) {
+for (int num : nums) {
 
-        if (!set.add(num)) {
-            return true;
-        }
+    if (!set.add(num)) {
+        return true;
     }
+}
 
-    return false;
+return false;
+```
 
 Expected complexity:
 
-    Time:  O(n)
-    Space: O(n)
+```text
+Time:  O(n)
+Space: O(n)
+```
 
 ---
 
@@ -893,24 +1092,30 @@ Expected complexity:
 
 Problem:
 
-    Count frequency of each number.
+```text
+Count frequency of each number.
+```
 
 Code:
 
-    Map<Integer, Integer> freq = new HashMap<>();
+```java
+Map<Integer, Integer> freq = new HashMap<>();
 
-    for (int num : nums) {
+for (int num : nums) {
 
-        freq.put(
-            num,
-            freq.getOrDefault(num, 0) + 1
-        );
-    }
+    freq.put(
+        num,
+        freq.getOrDefault(num, 0) + 1
+    );
+}
+```
 
 Complexity:
 
-    Time:  O(n) expected
-    Space: O(n)
+```text
+Time:  O(n) expected
+Space: O(n)
+```
 
 ---
 
@@ -918,34 +1123,40 @@ Complexity:
 
 Code:
 
-    Map<Integer, Integer> map = new HashMap<>();
+```java
+Map<Integer, Integer> map = new HashMap<>();
 
-    for (int i = 0; i < nums.length; i++) {
+for (int i = 0; i < nums.length; i++) {
 
-        int required = target - nums[i];
+    int required = target - nums[i];
 
-        if (map.containsKey(required)) {
+    if (map.containsKey(required)) {
 
-            return new int[] {
-                map.get(required),
-                i
-            };
-        }
-
-        map.put(nums[i], i);
+        return new int[] {
+            map.get(required),
+            i
+        };
     }
 
-    return new int[0];
+    map.put(nums[i], i);
+}
+
+return new int[0];
+```
 
 The important HashMap operations are expected O(1):
 
-    containsKey()
-    get()
-    put()
+```text
+containsKey()
+get()
+put()
+```
 
 Therefore:
 
-    O(n)
+```text
+O(n)
+```
 
 overall expected time.
 
@@ -953,88 +1164,101 @@ overall expected time.
 
 # 🧩 22. Complete Example
 
-    import java.util.*;
+```java
+import java.util.*;
 
-    class Student {
+class Student {
 
-        private int id;
-        private String name;
+    private int id;
+    private String name;
 
-        public Student(int id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-
-            if (this == obj) {
-                return true;
-            }
-
-            if (!(obj instanceof Student)) {
-                return false;
-            }
-
-            Student other = (Student) obj;
-
-            return this.id == other.id;
-        }
-
-        @Override
-        public int hashCode() {
-            return Integer.hashCode(id);
-        }
+    public Student(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public class Main {
+    @Override
+    public boolean equals(Object obj) {
 
-        public static void main(String[] args) {
-
-            Student s1 =
-                new Student(101, "Rahul");
-
-            Student s2 =
-                new Student(101, "Aman");
-
-            System.out.println(
-                s1.equals(s2)
-            );
-
-            System.out.println(
-                s1.hashCode() == s2.hashCode()
-            );
-
-            Set<Student> set =
-                new HashSet<>();
-
-            set.add(s1);
-            set.add(s2);
-
-            System.out.println(set.size());
+        if (this == obj) {
+            return true;
         }
+
+        if (!(obj instanceof Student)) {
+            return false;
+        }
+
+        Student other = (Student) obj;
+
+        return this.id == other.id;
     }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Student s1 =
+            new Student(101, "Rahul");
+
+        Student s2 =
+            new Student(101, "Aman");
+
+        System.out.println(
+            s1.equals(s2)
+        );
+
+        System.out.println(
+            s1.hashCode() == s2.hashCode()
+        );
+
+        Set<Student> set =
+            new HashSet<>();
+
+        set.add(s1);
+        set.add(s2);
+
+        System.out.println(set.size());
+    }
+}
+```
 
 Expected output:
 
-    true
-    true
-    1
+```text
+true
+true
+1
+```
 
 Why?
 
 Both objects have:
 
-    id = 101
+```text
+id = 101
+```
 
 and our equality logic uses only:
 
-    id
+```text
+id
+```
 
 Therefore:
 
-    s1.equals(s2)
-        → true
+```java
+s1.equals(s2)
+```
+
+```text
+→ true
+```
 
 and their hash codes are equal.
 
@@ -1044,27 +1268,35 @@ and their hash codes are equal.
 
 ## ❌ Mistake 1
 
-    Same hashCode means objects are equal.
+```text
+Same hashCode means objects are equal.
+```
 
 Correct:
 
-    Same hashCode
-        ≠
-    equals true
+```text
+Same hashCode
+    ≠
+equals true
+```
 
 ---
 
 ## ❌ Mistake 2
 
-    Equal objects can have different hashCodes.
+```text
+Equal objects can have different hashCodes.
+```
 
 Incorrect.
 
 Correct:
 
-    equals true
-        ⇒
-    same hashCode
+```text
+equals true
+    ⇒
+same hashCode
+```
 
 ---
 
@@ -1074,9 +1306,11 @@ Overriding only `equals()`.
 
 Better:
 
-    Override equals()
-        +
-    Override hashCode()
+```text
+Override equals()
+    +
+Override hashCode()
+```
 
 ---
 
@@ -1112,11 +1346,15 @@ This can make the key effectively unreachable.
 
 Comparing Strings using:
 
-    ==
+```java
+==
+```
 
 Use:
 
-    equals()
+```java
+equals()
+```
 
 for content comparison.
 
@@ -1154,38 +1392,42 @@ for content comparison.
 
 # 🧠 Core Mental Model
 
-    KEY
-     │
-     ▼
-    hashCode()
-     │
-     ▼
-    hash calculation
-     │
-     ▼
-    bucket
-     │
-     ▼
-    candidate entries
-     │
-     ▼
-    equals()
-     │
-     ▼
-    matching key
-     │
-     ▼
-    VALUE
+```text
+KEY
+ │
+ ▼
+hashCode()
+ │
+ ▼
+hash calculation
+ │
+ ▼
+bucket
+ │
+ ▼
+candidate entries
+ │
+ ▼
+equals()
+ │
+ ▼
+matching key
+ │
+ ▼
+VALUE
+```
 
 Remember:
 
-    hashCode()
-        ↓
-    WHERE should I look?
+```text
+hashCode()
+    ↓
+WHERE should I look?
 
-    equals()
-        ↓
-    WHICH key is it?
+equals()
+    ↓
+WHICH key is it?
+```
 
 ---
 
@@ -1207,11 +1449,15 @@ Remember:
 
 If:
 
-    a.equals(b) == true
+```java
+a.equals(b) == true
+```
 
 then:
 
-    a.hashCode() == b.hashCode()
+```java
+a.hashCode() == b.hashCode()
+```
 
 must be true.
 
@@ -1295,27 +1541,30 @@ Conceptually, the key's hash value contributes to determining the bucket.
 
 # 🏆 Final Memory Trick
 
-    hashCode()
-        ↓
-    LOCATION
+```text
+hashCode()
+    ↓
+LOCATION
 
-    equals()
-        ↓
-    EQUALITY
+equals()
+    ↓
+EQUALITY
+```
 
 Therefore:
 
-    HashMap
-
-        KEY
-         ↓
-      hashCode()
-         ↓
-       bucket
-         ↓
-       equals()
-         ↓
-       VALUE
+```text
+HashMap
+    KEY
+     ↓
+  hashCode()
+     ↓
+   bucket
+     ↓
+   equals()
+     ↓
+   VALUE
+```
 
 ---
 
@@ -1325,26 +1574,31 @@ Therefore:
 
 The golden rule:
 
-    equals() == true
-            ↓
-    hashCode() MUST be same
+```text
+equals() == true
+        ↓
+hashCode() MUST be same
+```
 
 But:
 
-    hashCode() same
-            ↓
-    does NOT guarantee
-    equals() == true
+```text
+hashCode() same
+        ↓
+does NOT guarantee
+equals() == true
+```
 
 Once this relationship is clear, the behavior of:
 
-    HashMap
-    HashSet
-    Hashtable
-    Duplicate Detection
-    Frequency Maps
-    Two Sum
-    Many Hashing DSA Problems
+```text
+HashMap
+HashSet
+Hashtable
+Duplicate Detection
+Frequency Maps
+Two Sum
+Many Hashing DSA Problems
+```
 
 becomes much easier to understand.
-```
