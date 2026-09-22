@@ -1,7 +1,65 @@
 # ☕ Java OOP — Abstract Class
 
-> **An abstract class is a class declared with the `abstract` keyword that can define a common blueprint for its subclasses while allowing both implemented and abstract behavior.**
+> **An abstract class is a class declared with the `abstract` keyword that provides a common base for subclasses and can contain both implemented and abstract behavior.**
 
+---
+
+# 📚 Table of Contents
+
+- [1. What is an Abstract Class?](#1-what-is-an-abstract-class)
+- [2. Why Do We Need Abstract Classes?](#2-why-do-we-need-abstract-classes)
+- [3. Syntax](#3-syntax)
+- [4. Abstract Class Cannot Be Instantiated](#4-abstract-class-cannot-be-instantiated)
+- [5. Can We Create a Reference of an Abstract Class?](#5-can-we-create-a-reference-of-an-abstract-class)
+- [6. Abstract Method](#6-abstract-method)
+- [7. Concrete Method](#7-concrete-method)
+- [8. Abstract Class Can Have Both Methods](#8-abstract-class-can-have-both-methods)
+- [9. Abstract Class Without Abstract Methods](#9-abstract-class-without-abstract-methods)
+- [10. Can an Abstract Class Have Constructors?](#10-can-an-abstract-class-have-constructors)
+- [11. Why Does an Abstract Class Need a Constructor?](#11-why-does-an-abstract-class-need-a-constructor)
+- [12. Can Abstract Class Have Instance Variables?](#12-can-abstract-class-have-instance-variables)
+- [13. Can Abstract Class Have Static Methods?](#13-can-abstract-class-have-static-methods)
+- [14. Can Abstract Class Have Final Methods?](#14-can-abstract-class-have-final-methods)
+- [15. Can an Abstract Method Be Final?](#15-can-an-abstract-method-be-final)
+- [16. Can an Abstract Method Be Static?](#16-can-an-abstract-method-be-static)
+- [17. Can an Abstract Method Be Private?](#17-can-an-abstract-method-be-private)
+- [18. Can an Abstract Method Be Protected?](#18-can-an-abstract-method-be-protected)
+- [19. Can an Abstract Class Implement an Interface?](#19-can-an-abstract-class-implement-an-interface)
+- [20. Can an Abstract Class Extend Another Abstract Class?](#20-can-an-abstract-class-extend-another-abstract-class)
+- [21. Can a Concrete Class Extend an Abstract Class?](#21-can-a-concrete-class-extend-an-abstract-class)
+- [22. What Happens If the Child Doesn't Implement an Abstract Method?](#22-what-happens-if-the-child-doesnt-implement-an-abstract-method)
+- [23. Abstract Class and Runtime Polymorphism](#23-abstract-class-and-runtime-polymorphism)
+- [24. Abstract Class vs Normal Class](#24-abstract-class-vs-normal-class)
+- [25. Abstract Class vs Interface](#25-abstract-class-vs-interface)
+- [26. When Should We Use an Abstract Class?](#26-when-should-we-use-an-abstract-class)
+- [27. Real-World Example — Employee](#27-real-world-example--employee)
+- [28. Abstract Class Can Have a Main Method](#28-abstract-class-can-have-a-main-method)
+- [29. Can We Create an Anonymous Class from an Abstract Class?](#29-can-we-create-an-anonymous-class-from-an-abstract-class)
+- [30. Abstract Class Reference](#30-abstract-class-reference)
+- [31. Abstract Class and `super`](#31-abstract-class-and-super)
+- [32. Abstract Class and Access Modifiers](#32-abstract-class-and-access-modifiers)
+- [33. Can an Abstract Class Be Final?](#33-can-an-abstract-class-be-final)
+- [34. Can an Abstract Class Be Private?](#34-can-an-abstract-class-be-private)
+- [35. Can an Abstract Class Be Static?](#35-can-an-abstract-class-be-static)
+- [36. Abstract Method Syntax](#36-abstract-method-syntax)
+- [37. Abstract Class Can Have Zero Abstract Methods](#37-abstract-class-can-have-zero-abstract-methods)
+- [38. Abstract Class Can Have All Concrete Methods](#38-abstract-class-can-have-all-concrete-methods)
+- [39. Abstract Class Can Have No Methods](#39-abstract-class-can-have-no-methods)
+- [40. Abstract Class and Data Hiding](#40-abstract-class-and-data-hiding)
+- [41. Abstract Class and Template Method Pattern](#41-abstract-class-and-template-method-pattern)
+- [42. Important Interview Trap — Abstract Does Not Mean "Only Abstract"](#42-important-interview-trap--abstract-does-not-mean-only-abstract)
+- [43. Important Interview Trap — Abstract Class Does Not Mean Objectless](#43-important-interview-trap--abstract-class-does-not-mean-objectless)
+- [44. Important Interview Trap — Abstract Constructor](#44-important-interview-trap--abstract-constructor)
+- [45. Important Interview Trap — Abstract + Static](#45-important-interview-trap--abstract--static)
+- [46. Important Interview Trap — Abstract + Final](#46-important-interview-trap--abstract--final)
+- [47. Important Interview Trap — Abstract + Private](#47-important-interview-trap--abstract--private)
+- [48. Abstract Class Can Be Used as Reference](#48-abstract-class-can-be-used-as-reference)
+- [49. Abstract Class and Multiple Inheritance](#49-abstract-class-and-multiple-inheritance)
+- [50. Abstract Class — Complete Mental Model](#50-abstract-class--complete-mental-model)
+- [51. Abstract Class — 30-Second Interview Answer](#51-abstract-class--30-second-interview-answer)
+- [Top 10 Most Important Interview Questions + Answers](#-top-10-most-important-interview-questions--answers)
+- [Quick Revision](#-quick-revision)
+- [Final Memory Tricks](#-final-memory-tricks)
 ---
 
 # 1. What is an Abstract Class?
