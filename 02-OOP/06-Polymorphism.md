@@ -2,56 +2,86 @@
 
 > **Polymorphism = One interface/reference, multiple forms of behavior.**
 
-Polymorphism is one of the four major pillars of Object-Oriented Programming:
+## 📚 Table of Contents
 
-```text
-Encapsulation
-Inheritance
-Polymorphism
-Abstraction
-```
+- [1. What is Polymorphism?](#1-what-is-polymorphism)
+- [2. Why Do We Need Polymorphism?](#2-why-do-we-need-polymorphism)
+- [3. Real-Life Example](#3-real-life-example)
+- [4. Types of Polymorphism in Java](#4-types-of-polymorphism-in-java)
+- [5. Compile-Time Polymorphism](#5-compile-time-polymorphism)
+- [6. Why Is It Called Compile-Time Polymorphism?](#6-why-is-it-called-compile-time-polymorphism)
+- [7. Runtime Polymorphism](#7-runtime-polymorphism)
+- [8. The Most Important Rule](#8-the-most-important-rule)
+- [9. Upcasting and Runtime Polymorphism](#9-upcasting-and-runtime-polymorphism)
+- [10. Polymorphism Through Parent Reference](#10-polymorphism-through-parent-reference)
+- [11. Polymorphism with Arrays](#11-polymorphism-with-arrays)
+- [12. Polymorphism with Collections](#12-polymorphism-with-collections)
+- [13. Method Overloading vs Method Overriding](#13-method-overloading-vs-method-overriding)
+- [14. Static Binding](#14-static-binding)
+- [15. Dynamic Binding](#15-dynamic-binding)
+- [16. Dynamic Method Dispatch](#16-dynamic-method-dispatch)
+- [17. Fields Do NOT Behave Like Overridden Methods](#17-fields-do-not-behave-like-overridden-methods)
+- [18. Static Methods and Polymorphism](#18-static-methods-and-polymorphism)
+- [19. Private Methods and Polymorphism](#19-private-methods-and-polymorphism)
+- [20. Final Methods and Polymorphism](#20-final-methods-and-polymorphism)
+- [21. Constructors and Polymorphism](#21-constructors-and-polymorphism)
+- [22. Covariant Return Type](#22-covariant-return-type)
+- [23. Polymorphism and Casting](#23-polymorphism-and-casting)
+- [24. instanceof with Polymorphism](#24-instanceof-with-polymorphism)
+- [25. Polymorphism Does Not Mean Everything Is Dynamic](#25-polymorphism-does-not-mean-everything-is-dynamic)
+- [26. Polymorphism and Abstraction](#26-polymorphism-and-abstraction)
+- [27. Real-World Backend Example](#27-real-world-backend-example)
+- [28. Main Advantages of Polymorphism](#28-main-advantages-of-polymorphism)
+- [29. Common Interview Traps](#29-common-interview-traps)
+- [30. Polymorphism vs Inheritance](#30-polymorphism-vs-inheritance)
+- [31. Polymorphism vs Abstraction](#31-polymorphism-vs-abstraction)
+- [32. Core Mental Model](#32-core-mental-model)
+- [33. 30-Second Interview Answer](#33-30-second-interview-answer)
+- [34. Top Interview Questions](#34-top-interview-questions)
+- [35. DSA & Problem-Solving Patterns](#35-dsa--problem-solving-patterns)
+- [36. DSA Practice Questions](#36-dsa-practice-questions)
+- [37. Quick Revision Cheat Sheet](#37-quick-revision-cheat-sheet)
 
 ---
 
 # 1. What is Polymorphism?
 
+Polymorphism is one of the four major pillars of Object-Oriented Programming:
+
+    Encapsulation
+    Inheritance
+    Polymorphism
+    Abstraction
+
 The word **Polymorphism** comes from two Greek words:
 
-```text
-Poly  → Many
-Morph → Forms
-```
+    Poly  → Many
+    Morph → Forms
 
 So, polymorphism literally means:
 
 > **One thing having many forms.**
 
-In Java, polymorphism allows the **same method call or reference** to behave differently depending on the situation.
+In Java, polymorphism allows the same method call or reference to represent different forms of behavior.
 
 Example:
 
-```java
-Animal a;
+    Animal animal;
 
-a = new Dog();
-a.sound();
+    animal = new Dog();
+    animal.sound();
 
-a = new Cat();
-a.sound();
-```
+    animal = new Cat();
+    animal.sound();
 
-The same:
+The same method call:
 
-```java
-a.sound();
-```
+    animal.sound();
 
 can produce different behavior:
 
-```text
-Dog  → Bark
-Cat  → Meow
-```
+    Dog → Bark
+    Cat → Meow
 
 This is polymorphism.
 
@@ -59,111 +89,76 @@ This is polymorphism.
 
 # 2. Why Do We Need Polymorphism?
 
-Without polymorphism, we may need to write separate code for every class.
+Without polymorphism, code can become tightly coupled to concrete classes.
 
-Suppose we have:
+Example:
 
-```java
-class Dog {
-    void sound() {
-        System.out.println("Bark");
-    }
-}
+    Dog dog = new Dog();
+    dog.sound();
 
-class Cat {
-    void sound() {
-        System.out.println("Meow");
-    }
-}
-```
-
-Without polymorphism:
-
-```java
-Dog d = new Dog();
-d.sound();
-
-Cat c = new Cat();
-c.sound();
-```
-
-The calling code becomes tightly coupled to concrete classes.
+    Cat cat = new Cat();
+    cat.sound();
 
 With polymorphism:
 
-```java
-Animal a;
+    Animal animal;
 
-a = new Dog();
-a.sound();
+    animal = new Dog();
+    animal.sound();
 
-a = new Cat();
-a.sound();
-```
+    animal = new Cat();
+    animal.sound();
 
-Now the calling code works with the common parent type:
+Now the calling code depends on:
 
-```java
-Animal
-```
+    Animal
 
-while the actual behavior comes from the object.
+instead of directly depending on every concrete implementation.
 
-This gives us:
+This provides:
 
-```text
-Loose coupling
-Extensibility
-Flexible code
-Runtime method selection
-Better maintainability
-```
+    Flexibility
+    Loose coupling
+    Extensibility
+    Maintainability
+    Reusability
 
 ---
 
 # 3. Real-Life Example
 
-Imagine a person using a payment system.
+Imagine a payment system.
 
-The user only knows:
+A user wants to perform:
 
-```text
-Pay()
-```
+    pay()
 
-But payment can happen through:
+The payment can happen through:
 
-```text
-UPI
-Credit Card
-Debit Card
-Net Banking
-```
-
-The user does not need to know the internal implementation of every payment method.
+    UPI
+    Credit Card
+    Debit Card
+    Net Banking
+    Wallet
 
 Conceptually:
 
-```java
-Payment p;
+    Payment payment;
 
-p = new UPI();
-p.pay();
+    payment = new UPI();
+    payment.pay();
 
-p = new CreditCard();
-p.pay();
+    payment = new CreditCard();
+    payment.pay();
 
-p = new DebitCard();
-p.pay();
-```
+    payment = new DebitCard();
+    payment.pay();
 
 Same method:
 
-```java
-pay()
-```
+    pay()
 
-Different behavior.
+Different implementation.
 
 That is polymorphism.
 
@@ -171,85 +166,67 @@ That is polymorphism.
 
 # 4. Types of Polymorphism in Java
 
-Java mainly supports two types:
+Java mainly supports two commonly discussed types:
 
-```text
-                 Polymorphism
-                      |
-             +--------+--------+
-             |                 |
-       Compile-Time        Runtime
-       Polymorphism        Polymorphism
-             |                 |
-       Method Overloading  Method Overriding
-```
+    Polymorphism
+         |
+         +-------------------+
+         |                   |
+    Compile-Time          Runtime
+    Polymorphism          Polymorphism
+         |                   |
+    Method Overloading   Method Overriding
 
 ## Compile-Time Polymorphism
 
-Achieved using:
+Usually achieved through:
 
-```text
-Method Overloading
-```
+    Method Overloading
 
-The compiler decides which method should be called.
-
----
+The compiler selects the appropriate overloaded method.
 
 ## Runtime Polymorphism
 
-Achieved using:
+Achieved through:
 
-```text
-Method Overriding
-```
+    Method Overriding
 
-The JVM determines which overridden method should execute at runtime.
+The overridden instance method is selected based on the actual object at runtime.
 
 ---
 
 # 5. Compile-Time Polymorphism
 
-Compile-time polymorphism means the method call is resolved during compilation.
+Compile-time polymorphism means method selection is performed during compilation.
 
-The most common way to achieve it is:
-
-```text
-Method Overloading
-```
+The common example is **method overloading**.
 
 Example:
 
-```java
-class Calculator {
+    class Calculator {
 
-    int add(int a, int b) {
-        return a + b;
+        int add(int a, int b) {
+            return a + b;
+        }
+
+        int add(int a, int b, int c) {
+            return a + b + c;
+        }
+
+        double add(double a, double b) {
+            return a + b;
+        }
     }
 
-    int add(int a, int b, int c) {
-        return a + b + c;
-    }
+Usage:
 
-    double add(double a, double b) {
-        return a + b;
-    }
-}
-```
+    Calculator calculator = new Calculator();
 
-Now:
+    calculator.add(10, 20);
+    calculator.add(10, 20, 30);
+    calculator.add(10.5, 20.5);
 
-```java
-Calculator c = new Calculator();
-
-c.add(10, 20);
-
-c.add(10, 20, 30);
-
-c.add(10.5, 20.5);
-```
-
-The compiler determines which `add()` method matches the arguments.
+The compiler determines which overloaded method matches the arguments.
 
 ---
 
@@ -257,410 +234,344 @@ The compiler determines which `add()` method matches the arguments.
 
 Consider:
 
-```java
-c.add(10, 20);
-```
+    calculator.add(10, 20);
 
-The compiler sees:
+The compiler identifies:
 
-```text
-add(int, int)
-```
-
-So it selects:
-
-```java
-int add(int a, int b)
-```
-
-Similarly:
-
-```java
-c.add(10, 20, 30);
-```
-
-matches:
-
-```java
-int add(int a, int b, int c)
-```
-
-The method selection is determined using the **compile-time type of the reference and the argument types**.
+    add(int, int)
 
 Therefore:
 
-```text
-Method Overloading
-        ↓
-Compile-Time Polymorphism
-        ↓
-Early / Static Binding
-```
+    int add(int a, int b)
+
+is selected.
+
+Similarly:
+
+    calculator.add(10, 20, 30);
+
+matches:
+
+    int add(int a, int b, int c)
+
+So:
+
+    Method Overloading
+            ↓
+    Compile-Time Polymorphism
+            ↓
+    Early / Static Binding
 
 ---
 
 # 7. Runtime Polymorphism
 
-Runtime polymorphism occurs when a child class overrides a method of its parent class.
+Runtime polymorphism occurs when a child class overrides an instance method inherited from its parent.
 
 Example:
 
-```java
-class Animal {
+    class Animal {
 
-    void sound() {
-        System.out.println("Animal makes sound");
+        void sound() {
+            System.out.println("Animal makes sound");
+        }
     }
-}
 
-class Dog extends Animal {
+    class Dog extends Animal {
 
-    @Override
-    void sound() {
-        System.out.println("Dog barks");
+        @Override
+        void sound() {
+            System.out.println("Dog barks");
+        }
     }
-}
 
-class Cat extends Animal {
+    class Cat extends Animal {
 
-    @Override
-    void sound() {
-        System.out.println("Cat meows");
+        @Override
+        void sound() {
+            System.out.println("Cat meows");
+        }
     }
-}
-```
 
 Now:
 
-```java
-Animal a;
+    Animal animal;
 
-a = new Dog();
-a.sound();
+    animal = new Dog();
+    animal.sound();
 
-a = new Cat();
-a.sound();
-```
+    animal = new Cat();
+    animal.sound();
 
 Output:
 
-```text
-Dog barks
-Cat meows
-```
+    Dog barks
+    Cat meows
 
 The reference type is:
 
-```java
-Animal
-```
+    Animal
 
-but the actual object changes:
+The actual objects are:
 
-```text
-Animal reference
-       |
-       +----> Dog object
-       |
-       +----> Cat object
-```
+    Dog
+    Cat
 
-The JVM executes the overridden method belonging to the actual object.
+The overridden method is selected according to the actual object.
 
 ---
 
 # 8. The Most Important Rule
 
-For runtime polymorphism:
+One of the most important rules in Java polymorphism is:
 
-> **Reference type decides what members are accessible, while object type decides which overridden instance method executes.**
+> **Reference type decides what members are accessible, while the actual object decides which overridden instance method executes.**
 
 Example:
 
-```java
-Animal a = new Dog();
-```
+    Animal animal = new Dog();
 
 Here:
 
-```text
-Reference type → Animal
-Object type    → Dog
-```
+    Reference type → Animal
+    Actual object  → Dog
 
 Suppose:
 
-```java
-class Animal {
+    class Animal {
 
-    void sound() {
-        System.out.println("Animal");
+        void sound() {
+            System.out.println("Animal");
+        }
+
+        void eat() {
+            System.out.println("Eating");
+        }
     }
 
-    void eat() {
-        System.out.println("Animal eats");
+    class Dog extends Animal {
+
+        @Override
+        void sound() {
+            System.out.println("Dog");
+        }
+
+        void bark() {
+            System.out.println("Barking");
+        }
     }
-}
 
-class Dog extends Animal {
+Now:
 
-    @Override
-    void sound() {
-        System.out.println("Dog");
-    }
+    Animal animal = new Dog();
 
-    void bark() {
-        System.out.println("Bark");
-    }
-}
-```
+This works:
 
-Then:
+    animal.sound();
+    animal.eat();
 
-```java
-Animal a = new Dog();
+But this does not compile:
 
-a.sound();  // Dog
-a.eat();    // Animal
-a.bark();   // Compile-time error
-```
+    animal.bark();
 
 Why?
 
-Because:
+Because the reference type is:
 
-```text
-Reference type = Animal
-```
+    Animal
 
-So the compiler only allows members available through `Animal`.
+and `bark()` is not declared in `Animal`.
 
-But for an overridden method:
+However:
 
-```java
-a.sound();
-```
+    animal.sound();
 
-the actual object is:
+executes:
 
-```text
-Dog
-```
+    Dog.sound()
 
-Therefore:
-
-```text
-Dog.sound()
-```
-
-executes.
+because `sound()` is overridden and the actual object is a `Dog`.
 
 ---
 
 # 9. Upcasting and Runtime Polymorphism
 
-Runtime polymorphism commonly uses **upcasting**.
-
-```java
-Dog d = new Dog();
-
-Animal a = d;
-```
-
-Or directly:
-
-```java
-Animal a = new Dog();
-```
-
-This is:
-
-```text
-Child object
-     ↓
-Parent reference
-```
+Upcasting means assigning a child object to a parent reference.
 
 Example:
 
-```java
-Animal a = new Dog();
-```
+    Dog dog = new Dog();
 
-This is valid because:
+    Animal animal = dog;
 
-```text
-Dog IS-A Animal
-```
+Or directly:
 
-Now:
+    Animal animal = new Dog();
 
-```java
-a.sound();
-```
+This is called:
 
-can execute the Dog implementation.
+    Upcasting
 
-This is one of the most important uses of inheritance + polymorphism.
+It is generally implicit because every `Dog` is an `Animal`.
+
+Relationship:
+
+    Animal
+       ↑
+      Dog
+
+Therefore:
+
+    Animal animal = new Dog();
+
+is valid.
+
+The important point is:
+
+    Reference Type → Animal
+    Object Type    → Dog
+
+This is the foundation of runtime polymorphism.
 
 ---
 
 # 10. Polymorphism Through Parent Reference
 
-Consider:
+A parent reference can point to different child objects.
 
-```java
-class Animal {
+Example:
 
-    void sound() {
-        System.out.println("Animal sound");
-    }
-}
+    Animal animal;
 
-class Dog extends Animal {
-
-    @Override
-    void sound() {
-        System.out.println("Bark");
-    }
-}
-
-class Cat extends Animal {
-
-    @Override
-    void sound() {
-        System.out.println("Meow");
-    }
-}
-```
-
-We can write:
-
-```java
-Animal a1 = new Dog();
-Animal a2 = new Cat();
-
-a1.sound();
-a2.sound();
-```
-
-Output:
-
-```text
-Bark
-Meow
-```
-
-This allows us to write generic code:
-
-```java
-static void makeSound(Animal animal) {
+    animal = new Dog();
     animal.sound();
-}
-```
 
-Now:
+    animal = new Cat();
+    animal.sound();
 
-```java
-makeSound(new Dog());
-makeSound(new Cat());
-```
+    animal = new Cow();
+    animal.sound();
 
-Output:
+This gives us one common reference:
 
-```text
-Bark
-Meow
-```
+    Animal
 
-The method does not care about the exact child class.
+with multiple possible implementations:
 
-It only depends on:
+    Dog
+    Cat
+    Cow
 
-```java
-Animal
-```
-
-This is a major reason polymorphism is powerful in real applications.
+This is one of the most useful forms of runtime polymorphism.
 
 ---
 
 # 11. Polymorphism with Arrays
 
-Polymorphism becomes especially useful when handling multiple child objects together.
+An array of a parent type can store objects of different child types.
 
-```java
-Animal[] animals = {
-    new Dog(),
-    new Cat(),
-    new Dog()
-};
+Example:
 
-for (Animal animal : animals) {
-    animal.sound();
-}
-```
+    Animal[] animals = {
+        new Dog(),
+        new Cat(),
+        new Cow()
+    };
 
-Output:
+Now:
 
-```text
-Bark
-Meow
-Bark
-```
+    for (Animal animal : animals) {
+        animal.sound();
+    }
+
+Possible output:
+
+    Dog barks
+    Cat meows
+    Cow moos
 
 The array type is:
 
-```java
-Animal[]
-```
+    Animal[]
 
-but it contains different child objects.
+but it contains different objects.
 
-This is a very common real-world pattern.
+This is polymorphism.
 
 ---
 
 # 12. Polymorphism with Collections
 
-The same idea works with collections.
+Polymorphism is heavily used with Java Collections.
 
-```java
-ArrayList<Animal> animals = new ArrayList<>();
+Example:
 
-animals.add(new Dog());
-animals.add(new Cat());
-animals.add(new Dog());
+    List<Animal> animals = new ArrayList<>();
 
-for (Animal animal : animals) {
-    animal.sound();
-}
-```
+    animals.add(new Dog());
+    animals.add(new Cat());
+    animals.add(new Cow());
 
-Here:
+Now:
 
-```text
-List type → Animal
-Objects   → Dog, Cat, Dog
-```
+    for (Animal animal : animals) {
+        animal.sound();
+    }
 
-This gives us a flexible design.
+The collection works with the common parent type:
+
+    Animal
+
+while storing different implementations.
+
+This concept is extremely important in real-world Java and Spring Boot development.
 
 ---
 
 # 13. Method Overloading vs Method Overriding
 
-| Feature               | Overloading                  | Overriding                 |
-| --------------------- | ---------------------------- | -------------------------- |
-| Polymorphism          | Compile-time                 | Runtime                    |
-| Usually occurs in     | Same class                   | Parent-child classes       |
-| Method name           | Same                         | Same                       |
-| Parameters            | Must differ                  | Must be same               |
-| Return type           | Cannot distinguish overloads | Same/covariant allowed     |
-| Binding               | Static/Early                 | Dynamic/Late               |
-| Inheritance required? | No                           | Yes                        |
-| Decision              | Compiler                     | Runtime/JVM                |
-| Main purpose          | Multiple ways to call        | Specialized child behavior |
+| Feature | Method Overloading | Method Overriding |
+|---|---|---|
+| Meaning | Same method name, different parameters | Child provides new implementation |
+| Relationship | Usually same class | Parent-child relationship |
+| Binding | Compile-time | Runtime |
+| Polymorphism | Compile-time | Runtime |
+| Parameters | Must differ | Must be same |
+| Return type | Can differ, but cannot distinguish overload by return type alone | Same or covariant |
+| `static` | Can be overloaded | Cannot be overridden |
+| `private` | Can be overloaded | Cannot be overridden |
+| `final` | Can be overloaded | Cannot be overridden |
+| Main purpose | Convenience | Different implementation |
+
+Example of overloading:
+
+    class Calculator {
+
+        int add(int a, int b) {
+            return a + b;
+        }
+
+        int add(int a, int b, int c) {
+            return a + b + c;
+        }
+    }
+
+Example of overriding:
+
+    class Animal {
+
+        void sound() {
+            System.out.println("Animal");
+        }
+    }
+
+    class Dog extends Animal {
+
+        @Override
+        void sound() {
+            System.out.println("Dog");
+        }
+    }
 
 ---
 
@@ -668,88 +579,138 @@ This gives us a flexible design.
 
 Static binding means the method call is resolved at compile time.
 
-Method overloading is an example.
+It is also called:
 
-```java
-class Demo {
+    Early Binding
+    Static Binding
 
-    void show(int x) {
-        System.out.println("int");
+Examples include:
+
+    Method Overloading
+    Static methods
+    Private methods
+
+Example:
+
+    class Calculator {
+
+        void show(int x) {
+            System.out.println("int");
+        }
+
+        void show(double x) {
+            System.out.println("double");
+        }
     }
 
-    void show(double x) {
-        System.out.println("double");
-    }
-}
-```
+The compiler decides which method matches:
 
-```java
-Demo d = new Demo();
+    calculator.show(10);
 
-d.show(10);
-```
+Therefore:
 
-Compiler selects:
+    show(int)
 
-```java
-show(int)
-```
-
-before execution.
+is selected.
 
 ---
 
 # 15. Dynamic Binding
 
-Dynamic binding means the overridden method is selected based on the actual object at runtime.
+Dynamic binding means the overridden instance method is selected at runtime.
 
-```java
-Animal a = new Dog();
+It is also called:
 
-a.sound();
-```
+    Late Binding
+    Dynamic Binding
 
-At compile time:
+Example:
 
-```text
-a → Animal reference
-```
+    class Animal {
 
-At runtime:
+        void sound() {
+            System.out.println("Animal");
+        }
+    }
 
-```text
-actual object → Dog
-```
+    class Dog extends Animal {
 
-Therefore:
+        @Override
+        void sound() {
+            System.out.println("Dog");
+        }
+    }
 
-```text
-Dog.sound()
-```
+    Animal animal = new Dog();
 
-executes.
+    animal.sound();
+
+Output:
+
+    Dog
+
+The reference is:
+
+    Animal
+
+but the actual object is:
+
+    Dog
+
+Therefore the overridden method from `Dog` executes.
 
 ---
 
 # 16. Dynamic Method Dispatch
 
-The mechanism through which Java selects an overridden method at runtime is commonly called:
-
-> **Dynamic Method Dispatch**
+Dynamic Method Dispatch is the mechanism through which Java determines the overridden method to execute at runtime.
 
 Example:
 
-```java
-Animal animal;
+    class Animal {
 
-animal = new Dog();
-animal.sound();
+        void sound() {
+            System.out.println("Animal");
+        }
+    }
 
-animal = new Cat();
-animal.sound();
-```
+    class Dog extends Animal {
 
-The JVM dynamically dispatches the call to the appropriate overridden method.
+        @Override
+        void sound() {
+            System.out.println("Dog");
+        }
+    }
+
+    class Cat extends Animal {
+
+        @Override
+        void sound() {
+            System.out.println("Cat");
+        }
+    }
+
+    Animal animal;
+
+    animal = new Dog();
+    animal.sound();
+
+    animal = new Cat();
+    animal.sound();
+
+At runtime:
+
+    animal → Dog object
+             ↓
+         Dog.sound()
+
+Then:
+
+    animal → Cat object
+             ↓
+         Cat.sound()
+
+The JVM dynamically dispatches the overridden instance method.
 
 ---
 
@@ -761,148 +722,134 @@ Fields are not dynamically dispatched like overridden instance methods.
 
 Example:
 
-```java
-class Parent {
-    int value = 10;
-}
+    class Parent {
 
-class Child extends Parent {
-    int value = 20;
-}
-```
+        int value = 10;
+    }
+
+    class Child extends Parent {
+
+        int value = 20;
+    }
 
 Now:
 
-```java
-Parent p = new Child();
+    Parent p = new Child();
 
-System.out.println(p.value);
-```
+    System.out.println(p.value);
 
 Output:
 
-```text
-10
-```
+    10
 
 The field is selected based on the **reference type**.
 
-But methods behave differently:
+But methods behave differently.
 
-```java
-class Parent {
+Example:
 
-    void show() {
-        System.out.println("Parent");
+    class Parent {
+
+        void show() {
+            System.out.println("Parent");
+        }
     }
-}
 
-class Child extends Parent {
+    class Child extends Parent {
 
-    @Override
-    void show() {
-        System.out.println("Child");
+        @Override
+        void show() {
+            System.out.println("Child");
+        }
     }
-}
-```
 
-```java
-Parent p = new Child();
+Now:
 
-p.show();
-```
+    Parent p = new Child();
+
+    p.show();
 
 Output:
 
-```text
-Child
-```
+    Child
 
 Remember:
 
-```text
-Fields  → Reference type
-Methods → Actual object for overridden instance methods
-```
+    Fields  → Reference type
+    Methods → Actual object for overridden instance methods
 
 ---
 
 # 18. Static Methods and Polymorphism
 
-Static methods are associated with the class, not the object.
+Static methods belong to the class, not the object.
 
 They are **hidden**, not overridden.
 
 Example:
 
-```java
-class Parent {
+    class Parent {
 
-    static void show() {
-        System.out.println("Parent");
+        static void show() {
+            System.out.println("Parent");
+        }
     }
-}
 
-class Child extends Parent {
+    class Child extends Parent {
 
-    static void show() {
-        System.out.println("Child");
+        static void show() {
+            System.out.println("Child");
+        }
     }
-}
-```
 
 Now:
 
-```java
-Parent p = new Child();
+    Parent p = new Child();
 
-p.show();
-```
+    p.show();
 
 Output:
 
-```text
-Parent
-```
-
-Because static method selection depends on the reference/class context.
+    Parent
 
 Therefore:
 
-```text
-Instance method → Overriding + Runtime Polymorphism
-Static method   → Method hiding
-```
+    Instance method → Overriding + Runtime Polymorphism
+    Static method   → Method Hiding
+
+Static methods are resolved using the reference/class context rather than runtime object dispatch.
 
 ---
 
 # 19. Private Methods and Polymorphism
 
-Private methods are not inherited by subclasses in the normal overriding sense.
+Private methods are not inherited in the normal overriding sense.
 
 Therefore, they cannot be overridden.
 
 Example:
 
-```java
-class Parent {
+    class Parent {
 
-    private void show() {
-        System.out.println("Parent");
+        private void show() {
+            System.out.println("Parent");
+        }
     }
-}
 
-class Child extends Parent {
+    class Child extends Parent {
 
-    private void show() {
-        System.out.println("Child");
+        private void show() {
+            System.out.println("Child");
+        }
     }
-}
-```
 
 These are two separate methods.
 
 They do not participate in runtime overriding.
+
+Remember:
+
+    private → not overridden
 
 ---
 
@@ -910,36 +857,32 @@ They do not participate in runtime overriding.
 
 A `final` method cannot be overridden.
 
-```java
-class Parent {
+Example:
 
-    final void show() {
-        System.out.println("Parent");
+    class Parent {
+
+        final void show() {
+            System.out.println("Parent");
+        }
     }
-}
-```
 
 This is illegal:
 
-```java
-class Child extends Parent {
+    class Child extends Parent {
 
-    @Override
-    void show() {
-        System.out.println("Child");
+        @Override
+        void show() {
+            System.out.println("Child");
+        }
     }
-}
-```
 
 Because:
 
-```text
-final method
-     ↓
-cannot be overridden
-     ↓
-no runtime polymorphic replacement
-```
+    final method
+         ↓
+    cannot be overridden
+         ↓
+    no runtime replacement
 
 ---
 
@@ -949,85 +892,87 @@ Constructors are not inherited and cannot be overridden.
 
 Therefore:
 
-```text
-Constructors → No method overriding
-```
+    Constructors → No method overriding
 
-However, constructor calls participate in inheritance through constructor chaining.
+However, constructors participate in constructor chaining.
 
 Example:
 
-```java
-class Parent {
+    class Parent {
 
-    Parent() {
-        System.out.println("Parent constructor");
+        Parent() {
+            System.out.println("Parent constructor");
+        }
     }
-}
 
-class Child extends Parent {
+    class Child extends Parent {
 
-    Child() {
-        System.out.println("Child constructor");
+        Child() {
+            System.out.println("Child constructor");
+        }
     }
-}
-```
 
-```java
-Child c = new Child();
-```
+Now:
+
+    Child child = new Child();
 
 Output:
 
-```text
-Parent constructor
-Child constructor
-```
+    Parent constructor
+    Child constructor
 
-This is constructor chaining, not polymorphism.
+This is:
+
+    Constructor Chaining
+
+not polymorphism.
 
 ---
 
-# 22. Can We Override a Method with a More Specific Return Type?
+# 22. Covariant Return Type
 
-Yes.
+A child class can override a method and return a more specific subtype.
 
 This is called a **covariant return type**.
 
 Example:
 
-```java
-class Animal {
-}
-
-class Dog extends Animal {
-}
-
-class Parent {
-
-    Animal getAnimal() {
-        return new Animal();
+    class Animal {
     }
-}
 
-class Child extends Parent {
-
-    @Override
-    Dog getAnimal() {
-        return new Dog();
+    class Dog extends Animal {
     }
-}
-```
 
-The child method returns a subtype of the parent's return type.
+    class Parent {
 
-```text
-Animal
-   ↑
-  Dog
-```
+        Animal getAnimal() {
+            return new Animal();
+        }
+    }
 
-This is allowed.
+    class Child extends Parent {
+
+        @Override
+        Dog getAnimal() {
+            return new Dog();
+        }
+    }
+
+Relationship:
+
+    Animal
+       ↑
+      Dog
+
+The child method returns:
+
+    Dog
+
+which is a subtype of:
+
+    Animal
+
+Therefore, this is valid.
 
 ---
 
@@ -1035,66 +980,67 @@ This is allowed.
 
 Suppose:
 
-```java
-Animal a = new Dog();
-```
+    Animal animal = new Dog();
 
 This is upcasting.
 
 If we need Dog-specific functionality:
 
-```java
-Dog d = (Dog) a;
-```
+    Dog dog = (Dog) animal;
 
 This is downcasting.
 
 Now:
 
-```java
-d.bark();
-```
+    dog.bark();
 
 can be called.
 
 But incorrect downcasting can cause:
 
-```text
-ClassCastException
-```
+    ClassCastException
 
 Example:
 
-```java
-Animal a = new Cat();
+    Animal animal = new Cat();
 
-Dog d = (Dog) a;
-```
+    Dog dog = (Dog) animal;
 
 This compiles but fails at runtime because the actual object is a `Cat`.
+
+Important:
+
+    Reference type → Animal
+    Actual object  → Cat
+
+You cannot treat a Cat object as a Dog object.
 
 ---
 
 # 24. instanceof with Polymorphism
 
-Before downcasting, we can check the actual object:
+Before downcasting, we can check the actual object type.
 
-```java
-if (a instanceof Dog) {
-    Dog d = (Dog) a;
-    d.bark();
-}
-```
+Example:
+
+    if (animal instanceof Dog) {
+        Dog dog = (Dog) animal;
+        dog.bark();
+    }
 
 Modern Java also supports pattern matching:
 
-```java
-if (a instanceof Dog d) {
-    d.bark();
-}
-```
+    if (animal instanceof Dog dog) {
+        dog.bark();
+    }
 
-This makes type checking and casting more concise.
+This combines:
+
+    Type Checking
+    +
+    Casting
+
+in a concise form.
 
 ---
 
@@ -1104,24 +1050,22 @@ A common misconception is:
 
 > "If Java has polymorphism, every method call is decided at runtime."
 
-Incorrect.
+That is incorrect.
 
 Java has both:
 
-```text
-Compile-time binding
-Runtime binding
-```
+    Compile-time binding
+    Runtime binding
 
-For example:
+Important cases:
 
-```text
-Overloading  → Compile-time
-Overriding   → Runtime
-Static       → Compile-time
-Private      → Compile-time
-Final        → Compile-time constraints / no overriding
-```
+    Overloading → Compile-time
+    Overriding  → Runtime
+    Static      → Class/reference based
+    Private     → Not overridden
+    Final       → Cannot be overridden
+
+Therefore, always identify what kind of member or method is involved.
 
 ---
 
@@ -1131,50 +1075,42 @@ Polymorphism works especially well with abstraction.
 
 Example:
 
-```java
-abstract class Payment {
+    abstract class Payment {
 
-    abstract void pay();
-}
-```
+        abstract void pay();
+    }
 
 Implementations:
 
-```java
-class UPI extends Payment {
+    class UPI extends Payment {
 
-    @Override
-    void pay() {
-        System.out.println("Paid using UPI");
+        @Override
+        void pay() {
+            System.out.println("Paid using UPI");
+        }
     }
-}
 
-class Card extends Payment {
+    class Card extends Payment {
 
-    @Override
-    void pay() {
-        System.out.println("Paid using Card");
+        @Override
+        void pay() {
+            System.out.println("Paid using Card");
+        }
     }
-}
-```
 
 Now:
 
-```java
-Payment payment;
+    Payment payment;
 
-payment = new UPI();
-payment.pay();
+    payment = new UPI();
+    payment.pay();
 
-payment = new Card();
-payment.pay();
-```
+    payment = new Card();
+    payment.pay();
 
 The parent type defines the common contract:
 
-```text
-Payment
-```
+    Payment
 
 while child classes provide different implementations.
 
@@ -1184,67 +1120,57 @@ This combination is extremely important in software design.
 
 # 27. Real-World Backend Example
 
-Imagine a Spring Boot application supporting multiple notification types:
+Imagine a backend application supporting multiple notification types.
 
-```java
-interface Notification {
+Common contract:
 
-    void send();
-}
-```
+    interface Notification {
+
+        void send();
+    }
 
 Implementations:
 
-```java
-class EmailNotification implements Notification {
+    class EmailNotification implements Notification {
 
-    @Override
-    public void send() {
-        System.out.println("Sending Email");
+        @Override
+        public void send() {
+            System.out.println("Sending Email");
+        }
     }
-}
-```
 
-```java
-class SMSNotification implements Notification {
+    class SMSNotification implements Notification {
 
-    @Override
-    public void send() {
-        System.out.println("Sending SMS");
+        @Override
+        public void send() {
+            System.out.println("Sending SMS");
+        }
     }
-}
-```
 
-```java
-class WhatsAppNotification implements Notification {
+    class WhatsAppNotification implements Notification {
 
-    @Override
-    public void send() {
-        System.out.println("Sending WhatsApp message");
+        @Override
+        public void send() {
+            System.out.println("Sending WhatsApp message");
+        }
     }
-}
-```
 
 Now:
 
-```java
-Notification notification;
+    Notification notification;
 
-notification = new EmailNotification();
-notification.send();
+    notification = new EmailNotification();
+    notification.send();
 
-notification = new SMSNotification();
-notification.send();
+    notification = new SMSNotification();
+    notification.send();
 
-notification = new WhatsAppNotification();
-notification.send();
-```
+    notification = new WhatsAppNotification();
+    notification.send();
 
 The business code can depend on:
 
-```java
-Notification
-```
+    Notification
 
 rather than every concrete implementation.
 
@@ -1254,127 +1180,126 @@ This is one of the foundations of extensible backend architecture.
 
 # 28. Main Advantages of Polymorphism
 
-### 1. Flexibility
+## 1. Flexibility
 
 The same code can work with different object types.
 
-### 2. Loose Coupling
+## 2. Loose Coupling
 
-Code can depend on parent classes/interfaces instead of concrete implementations.
+Code can depend on parent classes or interfaces instead of concrete implementations.
 
-### 3. Extensibility
+## 3. Extensibility
 
 New child classes can often be introduced without changing existing client code.
 
-### 4. Maintainability
+## 4. Maintainability
 
 Behavior can be separated into specialized classes.
 
-### 5. Reusability
+## 5. Reusability
 
 Generic methods can operate on parent types.
 
 Example:
 
-```java
-void processPayment(Payment payment) {
-    payment.pay();
-}
-```
+    void processPayment(Payment payment) {
+        payment.pay();
+    }
 
 The method can accept:
 
-```text
-UPI
-Card
-NetBanking
-Wallet
-```
+    UPI
+    Card
+    NetBanking
+    Wallet
 
-as long as they are `Payment` types.
+as long as they implement or extend `Payment`.
 
 ---
 
 # 29. Common Interview Traps
 
-## Trap 1
+## Trap 1 — Reference Type vs Object Type
 
-```java
-Animal a = new Dog();
-```
+Example:
 
-What is:
+    Animal animal = new Dog();
 
-```text
-Reference type? → Animal
-Object type?    → Dog
-```
+Answer:
+
+    Reference type → Animal
+    Object type    → Dog
 
 ---
 
-## Trap 2
+## Trap 2 — Which method executes?
 
-```java
-a.sound();
-```
+Example:
+
+    animal.sound();
 
 If `sound()` is overridden:
 
-```text
-Actual object determines implementation.
-```
+    Actual object determines the implementation.
 
 ---
 
-## Trap 3
+## Trap 3 — Fields
 
-Fields are not polymorphic like overridden methods.
+Example:
 
-```java
-Parent p = new Child();
+    Parent parent = new Child();
 
-p.x;
-```
+    parent.value;
 
-Field selection depends on the reference type.
+Field selection depends on:
+
+    Reference type
+
+Fields are not dynamically dispatched like overridden instance methods.
 
 ---
 
-## Trap 4
+## Trap 4 — Static Methods
 
 Static methods are not overridden.
 
 They are:
 
-```text
-Hidden
-```
+    Hidden
 
 ---
 
-## Trap 5
+## Trap 5 — Private Methods
 
 Private methods cannot be overridden.
 
 ---
 
-## Trap 6
+## Trap 6 — Final Methods
 
 Final methods cannot be overridden.
 
 ---
 
-## Trap 7
+## Trap 7 — Constructors
 
 Constructors cannot be overridden.
 
 ---
 
-## Trap 8
+## Trap 8 — Overloading vs Overriding
 
-Overloading is resolved at compile time.
+    Overloading → Compile-time
+    Overriding  → Runtime
 
-Overriding is resolved at runtime.
+---
+
+## Trap 9 — Downcasting
+
+Incorrect downcasting can cause:
+
+    ClassCastException
 
 ---
 
@@ -1382,112 +1307,106 @@ Overriding is resolved at runtime.
 
 These concepts are related but not identical.
 
-```text
-Inheritance
-    ↓
-Creates IS-A relationship
-    ↓
-Allows child classes to inherit/extend behavior
-```
+Inheritance:
 
-While:
+    Inheritance
+         ↓
+    Creates IS-A relationship
+         ↓
+    Allows child classes to inherit/extend behavior
 
-```text
-Polymorphism
-    ↓
-Allows common parent/interface references
-    ↓
-To work with different implementations
-```
+Polymorphism:
 
-Inheritance is one common mechanism that enables runtime polymorphism, but polymorphism can also be achieved through interfaces.
+    Polymorphism
+         ↓
+    Allows common parent/interface references
+         ↓
+    To work with different implementations
+
+Inheritance is one common mechanism that enables runtime polymorphism, while interfaces can also enable runtime polymorphism.
 
 ---
 
 # 31. Polymorphism vs Abstraction
 
-| Polymorphism                                  | Abstraction                                  |
-| --------------------------------------------- | -------------------------------------------- |
-| Multiple forms of behavior                    | Hides implementation details                 |
-| Focuses on behavior selection                 | Focuses on exposing essential features       |
-| Achieved through overloading/overriding       | Achieved through abstract classes/interfaces |
-| Supports flexibility                          | Supports design/contracts                    |
+| Polymorphism | Abstraction |
+|---|---|
+| Multiple forms of behavior | Hides implementation details |
+| Focuses on behavior selection | Focuses on essential features |
+| Achieved through overloading/overriding | Achieved through abstract classes/interfaces |
+| Supports flexibility | Supports contracts/design |
 | Example: `animal.sound()` behaves differently | Example: `Animal` defines `sound()` contract |
 
 They often work together.
 
+Example:
+
+    Payment payment = new UPI();
+
+Here:
+
+    Abstraction → Payment hides implementation details
+    Polymorphism → UPI provides the runtime behavior
+
 ---
 
-# 32. The Core Mental Model
+# 32. Core Mental Model
 
 Remember this:
 
-```text
-                Polymorphism
-                     |
-          +----------+----------+
-          |                     |
-     Compile-Time          Runtime
-          |                     |
-    Method Overloading    Method Overriding
-          |                     |
-      Early Binding        Dynamic Binding
+    Polymorphism
+         |
+         +----------------------+
+         |                      |
+    Compile-Time             Runtime
+         |                      |
+    Method Overloading      Method Overriding
+         |                      |
+    Early Binding           Dynamic Binding
                                 |
-                         Actual Object
-                         decides method
-```
+                           Actual Object
+                           decides method
 
 And:
 
-```text
-Parent reference
-       +
-Child object
-       ↓
-Runtime Polymorphism
-```
+    Parent reference
+           +
+      Child object
+           ↓
+    Runtime Polymorphism
 
 Example:
 
-```java
-Animal a = new Dog();
-a.sound();
-```
+    Animal animal = new Dog();
 
 Think:
 
-```text
-Reference → Animal
-Object    → Dog
-Method    → Dog.sound()
-```
+    Reference → Animal
+    Object    → Dog
+    Method    → Dog's overridden method
 
 ---
 
 # 33. 30-Second Interview Answer
 
-> **Polymorphism is an OOP concept where the same interface, reference, or method call can represent different forms of behavior. In Java, polymorphism is mainly of two types: compile-time polymorphism through method overloading and runtime polymorphism through method overriding. In runtime polymorphism, a parent reference can refer to a child object, and the overridden instance method is selected based on the actual object at runtime.**
+> **Polymorphism is an OOP concept where the same interface, reference, or method call can represent different forms of behavior. In Java, it is commonly divided into compile-time polymorphism through method overloading and runtime polymorphism through method overriding. In runtime polymorphism, a parent reference can refer to a child object, and the overridden instance method is selected based on the actual object at runtime.**
 
 Example:
 
-```java
-Animal a = new Dog();
-a.sound();
-```
+    Animal animal = new Dog();
+    animal.sound();
 
 Here:
 
-```text
-Animal → reference type
-Dog    → actual object
-Dog.sound() → executed at runtime
-```
+    Animal → Reference type
+    Dog    → Actual object
+    Dog.sound() → Executed at runtime
 
 ---
 
 # 34. Top Interview Questions
 
-### Basic
+## Basic
 
 1. What is polymorphism?
 2. Why is polymorphism important?
@@ -1497,13 +1416,13 @@ Dog.sound() → executed at runtime
 6. How is method overloading related to polymorphism?
 7. How is method overriding related to polymorphism?
 
-### Intermediate
+## Intermediate
 
 8. What is dynamic method dispatch?
 9. What is static binding?
 10. What is dynamic binding?
 11. What happens when a parent reference points to a child object?
-12. What determines method accessibility?
+12. What determines which members are accessible?
 13. What determines which overridden method executes?
 14. Can static methods be overridden?
 15. Can private methods be overridden?
@@ -1511,9 +1430,9 @@ Dog.sound() → executed at runtime
 17. Can constructors be overridden?
 18. Are fields polymorphic?
 
-### Advanced
+## Advanced
 
-19. What is covariant return type?
+19. What is a covariant return type?
 20. What is the difference between method hiding and overriding?
 21. Why does `Parent p = new Child()` enable runtime polymorphism?
 22. How does downcasting work with polymorphism?
@@ -1528,47 +1447,329 @@ Dog.sound() → executed at runtime
 
 ---
 
-# 35. Quick Revision Cheat Sheet
+# 35. 🧩 DSA & Problem-Solving Patterns
 
-```text
-POLYMORPHISM
-│
-├── Meaning
-│   └── One thing → Multiple forms
-│
-├── Compile-Time
-│   └── Method Overloading
-│       └── Static/Early Binding
-│
-└── Runtime
-    └── Method Overriding
-        └── Dynamic/Late Binding
-```
+Polymorphism itself is not a DSA algorithm, but it is important for understanding how Java's collection and object-oriented APIs work.
 
-```text
-Animal a = new Dog();
+## DSA-Relevant Concepts
 
-Reference Type → Animal
-Object Type    → Dog
+### 1. Programming to an Interface
 
-Accessible members
-        ↓
-Reference type
+Very important when working with Java Collections.
 
-Overridden instance method
-        ↓
-Actual object
-```
+Example:
 
-```text
-Fields          → Not dynamically dispatched
-Static methods  → Hidden
-Private methods → Not overridden
-Final methods   → Cannot be overridden
-Constructors    → Cannot be overridden
-Instance methods → Runtime polymorphism possible
-```
+    List<Integer> list = new ArrayList<>();
 
-### ⭐ One line to remember
+Here:
 
-> **Reference decides what you can access; the actual object decides which overridden instance method runs.**
+    List → Interface
+    ArrayList → Implementation
+
+This allows the implementation to be changed without changing the code that uses the `List` abstraction.
+
+Example:
+
+    List<Integer> list = new LinkedList<>();
+
+The variable type remains:
+
+    List<Integer>
+
+while the implementation changes.
+
+---
+
+### 2. Parent Type with Different Implementations
+
+Example:
+
+    List<Integer> list;
+
+    list = new ArrayList<>();
+    list.add(10);
+
+    list = new LinkedList<>();
+    list.add(20);
+
+The same interface can represent different implementations.
+
+This concept is heavily used throughout the Collections Framework.
+
+---
+
+### 3. Polymorphic Traversal
+
+Collections can be processed through common interfaces:
+
+    Collection<Integer> numbers = new ArrayList<>();
+
+    for (Integer number : numbers) {
+        System.out.println(number);
+    }
+
+The traversal code does not need to know the concrete collection implementation.
+
+---
+
+### 4. Strategy Pattern Connection
+
+A common DSA/interview design pattern is the **Strategy Pattern**.
+
+Different algorithms can implement the same interface.
+
+Example:
+
+    interface SortStrategy {
+
+        void sort(int[] arr);
+    }
+
+    class BubbleSort implements SortStrategy {
+
+        @Override
+        public void sort(int[] arr) {
+            // Bubble Sort
+        }
+    }
+
+    class MergeSort implements SortStrategy {
+
+        @Override
+        public void sort(int[] arr) {
+            // Merge Sort
+        }
+    }
+
+Then:
+
+    SortStrategy strategy = new MergeSort();
+    strategy.sort(arr);
+
+The caller works with:
+
+    SortStrategy
+
+while the actual algorithm can change.
+
+---
+
+# 36. DSA Practice Questions
+
+## Question 1 — Parent Reference
+
+What is the output?
+
+    class Animal {
+
+        void sound() {
+            System.out.println("Animal");
+        }
+    }
+
+    class Dog extends Animal {
+
+        @Override
+        void sound() {
+            System.out.println("Dog");
+        }
+    }
+
+    public class Main {
+
+        public static void main(String[] args) {
+
+            Animal animal = new Dog();
+
+            animal.sound();
+        }
+    }
+
+Answer:
+
+    Dog
+
+Reason:
+
+    Reference type → Animal
+    Actual object  → Dog
+    Overridden method → Dog.sound()
+
+---
+
+## Question 2 — Polymorphic Array
+
+What will this print?
+
+    Animal[] animals = {
+        new Dog(),
+        new Cat()
+    };
+
+    for (Animal animal : animals) {
+        animal.sound();
+    }
+
+Answer:
+
+    Dog barks
+    Cat meows
+
+Pattern:
+
+    Parent array
+         ↓
+    Different child objects
+         ↓
+    Runtime dispatch
+
+---
+
+## Question 3 — Collections
+
+Which declaration demonstrates programming to an interface?
+
+    ArrayList<Integer> list = new ArrayList<>();
+
+or:
+
+    List<Integer> list = new ArrayList<>();
+
+Answer:
+
+    List<Integer> list = new ArrayList<>();
+
+Why?
+
+Because the variable depends on the abstraction:
+
+    List
+
+rather than the concrete implementation:
+
+    ArrayList
+
+---
+
+## Question 4 — Strategy Pattern
+
+Suppose we have:
+
+    interface SearchStrategy {
+        void search(int[] arr, int target);
+    }
+
+and:
+
+    class LinearSearch implements SearchStrategy {
+        public void search(int[] arr, int target) {
+            // Linear Search
+        }
+    }
+
+    class BinarySearch implements SearchStrategy {
+        public void search(int[] arr, int target) {
+            // Binary Search
+        }
+    }
+
+Then:
+
+    SearchStrategy strategy = new BinarySearch();
+
+    strategy.search(arr, target);
+
+Question:
+
+Which algorithm runs?
+
+Answer:
+
+    Binary Search
+
+Reason:
+
+The actual object is:
+
+    BinarySearch
+
+The overridden method is selected at runtime.
+
+---
+
+# 37. Quick Revision Cheat Sheet
+
+    POLYMORPHISM
+    │
+    ├── Meaning
+    │   └── One thing → Multiple forms
+    │
+    ├── Compile-Time
+    │   └── Method Overloading
+    │       └── Early / Static Binding
+    │
+    └── Runtime
+        └── Method Overriding
+            └── Dynamic / Late Binding
+
+---
+
+    Animal animal = new Dog();
+
+    Reference Type → Animal
+    Object Type    → Dog
+
+    Accessible Members
+           ↓
+    Reference Type
+
+    Overridden Instance Method
+           ↓
+    Actual Object
+
+---
+
+    Fields           → Not dynamically dispatched
+    Static methods   → Hidden
+    Private methods  → Not overridden
+    Final methods    → Cannot be overridden
+    Constructors     → Cannot be overridden
+    Instance methods → Runtime polymorphism possible
+
+---
+
+# 🧠 Final Memory Trick
+
+Remember:
+
+    "REFERENCE DECIDES ACCESS,
+     OBJECT DECIDES OVERRIDDEN BEHAVIOR."
+
+Or even shorter:
+
+    Access → Reference
+    Behavior → Object
+
+And the most important runtime polymorphism pattern:
+
+    Parent reference
+           +
+      Child object
+           ↓
+    Overridden method
+           ↓
+    Runtime Polymorphism
+
+Example:
+
+    Animal animal = new Dog();
+    animal.sound();
+
+    Animal → What can I access?
+    Dog    → What implementation runs?
+
+---
+
+# 🎯 One-Line Interview Definition
+
+> **Polymorphism allows a common reference or interface to represent different implementations, with overloaded methods selected at compile time and overridden instance methods selected at runtime.**

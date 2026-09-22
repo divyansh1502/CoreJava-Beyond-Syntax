@@ -4,6 +4,57 @@
 
 ---
 
+# 📚 Table of Contents
+
+- [1. What is Method Overloading?](#1-what-is-method-overloading)
+- [2. Why Do We Need Method Overloading?](#2-why-do-we-need-method-overloading)
+- [3. Rules of Method Overloading](#3-rules-of-method-overloading)
+- [4. Overloading by Number of Parameters](#4-overloading-by-number-of-parameters)
+- [5. Overloading by Parameter Type](#5-overloading-by-parameter-type)
+- [6. Overloading by Order of Parameters](#6-overloading-by-order-of-parameters)
+- [7. What is NOT Method Overloading?](#7-what-is-not-method-overloading)
+- [8. Method Signature](#8-method-signature)
+- [9. Is Method Name Part of the Signature?](#9-is-method-name-part-of-the-signature)
+- [10. Method Overloading is Compile-Time Polymorphism](#10-method-overloading-is-compile-time-polymorphism)
+- [11. How Does the Compiler Choose an Overloaded Method?](#11-how-does-the-compiler-choose-an-overloaded-method)
+- [12. Exact Match Has Priority](#12-exact-match-has-priority)
+- [13. Primitive Widening During Overloading](#13-primitive-widening-during-overloading)
+- [14. Primitive Widening Order](#14-primitive-widening-order)
+- [15. Widening vs Narrowing](#15-widening-vs-narrowing)
+- [16. Overloading with Boxing](#16-overloading-with-boxing)
+- [17. Widening vs Boxing](#17-widening-vs-boxing)
+- [18. Boxing vs Varargs](#18-boxing-vs-varargs)
+- [19. Varargs and Overloading](#19-varargs-and-overloading)
+- [20. Important Overload Resolution Order](#20-important-overload-resolution-order)
+- [21. Overloading with null](#21-overloading-with-null)
+- [22. null with Parent and Child](#22-null-with-parent-and-child)
+- [23. Ambiguous null Example](#23-ambiguous-null-example)
+- [24. Overloading and Inheritance](#24-overloading-and-inheritance)
+- [25. Overloading vs Overriding](#25-overloading-vs-overriding)
+- [26. Can main() Be Overloaded?](#26-can-main-be-overloaded)
+- [27. Can Constructors Be Overloaded?](#27-can-constructors-be-overloaded)
+- [28. Constructor Overloading vs Method Overloading](#28-constructor-overloading-vs-method-overloading)
+- [29. Can Static Methods Be Overloaded?](#29-can-static-methods-be-overloaded)
+- [30. Can Private Methods Be Overloaded?](#30-can-private-methods-be-overloaded)
+- [31. Can Final Methods Be Overloaded?](#31-can-final-methods-be-overloaded)
+- [32. Return Type and Overloading](#32-return-type-and-overloading)
+- [33. Access Modifiers and Overloading](#33-access-modifiers-and-overloading)
+- [34. Generic Methods and Overloading](#34-generic-methods-and-overloading)
+- [35. Overloading and Compile-Time Type](#35-overloading-and-compile-time-type)
+- [36. Overloading + Overriding Together](#36-overloading--overriding-together)
+- [37. Real-World Example](#37-real-world-example)
+- [38. Advantages of Method Overloading](#38-advantages-of-method-overloading)
+- [39. Disadvantages / Limitations](#39-disadvantages--limitations)
+- [40. Common Interview Traps](#40-common-interview-traps)
+- [41. Important Interview Questions](#41-important-interview-questions)
+- [42. Quick Revision Cheat Sheet](#42-quick-revision-cheat-sheet)
+- [43. Most Important Conversion Priority](#43-most-important-conversion-priority)
+- [44. The Golden Difference](#44-the-golden-difference)
+- [45. 30-Second Interview Answer](#45-30-second-interview-answer)
+- [46. Final Memory Trick](#46-final-memory-trick)
+
+---
+
 # 1. What is Method Overloading?
 
 Method overloading allows a class to have multiple methods with the same name but different parameters.
