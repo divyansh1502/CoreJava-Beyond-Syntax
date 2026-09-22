@@ -121,6 +121,7 @@ Conceptually:
 
 ```text
 arr ───────────────► [0, 0, 0, 0, 0]
+
                          Array Object
 ```
 
@@ -156,7 +157,8 @@ Conceptually:
 Stack                    Heap
 
 arr ──────────────────► Array Object
-                         [0][0][0][0][0]
+
+                        [0][0][0][0][0]
 ```
 
 The variable does not contain all five integers itself.
@@ -211,9 +213,13 @@ Conceptually:
 
 ```text
 arr
+
  │
+
  │ reference
+
  ▼
+
 Heap
 
 ┌─────────────────┐
@@ -242,7 +248,9 @@ Example:
 
 ```java
 public static void main(String[] args) {
+
     int[] arr = new int[3];
+
 }
 ```
 
@@ -324,8 +332,11 @@ Initially:
 
 ```text
 students
+
    │
+
    ▼
+
 [ null ][ null ][ null ]
 ```
 
@@ -340,11 +351,15 @@ Now conceptually:
 
 ```text
 students
+
    │
    ▼
+
 [ ref ][ ref ][ null ]
-   │     │
-   ▼     ▼
+
+   │      │
+   ▼      ▼
+
 Student Student
 Object  Object
 ```
@@ -359,6 +374,7 @@ Consider:
 
 ```java
 int[] a = {10, 20, 30};
+
 int[] b = a;
 ```
 
@@ -374,9 +390,12 @@ Conceptually:
 a ──────┐
         │
         ▼
+
       [10][20][30]
+
         ▲
         │
+
 b ──────┘
 ```
 
@@ -390,6 +409,7 @@ Example:
 
 ```java
 int[] a = {10, 20, 30};
+
 int[] b = a;
 ```
 
@@ -413,9 +433,12 @@ Conceptually:
 a ─────────┐
            │
            ▼
-         [10][20][30]
+
+        [10][20][30]
+
            ▲
            │
+
 b ─────────┘
 ```
 
@@ -429,6 +452,7 @@ This distinction is extremely important.
 
 ```java
 int[] a = {1, 2, 3};
+
 int[] b = a;
 ```
 
@@ -449,6 +473,7 @@ To create a separate array:
 
 ```java
 int[] a = {1, 2, 3};
+
 int[] b = a.clone();
 ```
 
@@ -486,6 +511,7 @@ Example:
 
 ```java
 int[] a = {10, 20, 30};
+
 int[] b = a;
 
 b[0] = 100;
@@ -508,9 +534,12 @@ Before:
 ```text
 a ───────┐
          ▼
+
        [10][20][30]
+
          ▲
          │
+
 b ───────┘
 ```
 
@@ -519,9 +548,12 @@ After:
 ```text
 a ───────┐
          ▼
+
       [100][20][30]
+
          ▲
          │
+
 b ───────┘
 ```
 
@@ -535,6 +567,7 @@ Example:
 
 ```java
 int[] a = new int[3];
+
 int[] b = new int[3];
 ```
 
@@ -787,8 +820,11 @@ Conceptually, Java instead has:
 
 ```text
 arr
+
  │
+
  ▼
+
 Outer Array
 
 ┌─────────┬─────────┐
@@ -796,7 +832,8 @@ Outer Array
 └────┬────┴────┬────┘
      │         │
      ▼         ▼
-  Row 0      Row 1
+
+   Row 0      Row 1
 
 [1][2][3]  [4][5][6]
 ```
@@ -871,8 +908,11 @@ Conceptually:
 
 ```text
 arr
+
  │
+
  ▼
+
 Outer Array
 
 ┌────────┬────────┬────────┐
@@ -881,7 +921,7 @@ Outer Array
     │        │        │
     ▼        ▼        ▼
 
- [ ][ ]  [ ][ ][ ][ ]  [ ][ ][ ]
+  [ ][ ]  [ ][ ][ ][ ]  [ ][ ][ ]
 ```
 
 Different rows can have different lengths.
@@ -938,8 +978,11 @@ Conceptually:
 Stack
 
 matrix
+
    │
+
    │ reference
+
    ▼
 
 Heap
@@ -1030,6 +1073,7 @@ class Student {
     Student(String name) {
         this.name = name;
     }
+
 }
 ```
 
@@ -1043,7 +1087,9 @@ Initially:
 
 ```text
 students
+
    ↓
+
 [null][null][null]
 ```
 
@@ -1051,6 +1097,7 @@ Create objects:
 
 ```java
 students[0] = new Student("A");
+
 students[1] = new Student("B");
 ```
 
@@ -1058,12 +1105,16 @@ Now conceptually:
 
 ```text
 students
+
    ↓
+
 [ref][ref][null]
-  │    │
-  ▼    ▼
+
+ │    │
+ ▼    ▼
+
 Student Student
-  A      B
+  A       B
 ```
 
 Important:
@@ -1104,10 +1155,14 @@ Conceptually:
 
 ```text
 names
-  ↓
+
+ ↓
+
 [ref][ref][ref]
-  │    │    │
-  ▼    ▼    ▼
+
+ │    │     │
+ ▼    ▼     ▼
+
 "Yash" "Rahul" "Aman"
 ```
 
@@ -1129,7 +1184,9 @@ Here:
 
 ```text
 arr
- ↓
+
+↓
+
 null
 ```
 
@@ -1215,7 +1272,9 @@ Consider:
 
 ```java
 static void change(int[] arr) {
+
     arr[0] = 100;
+
 }
 
 public static void main(String[] args) {
@@ -1225,6 +1284,7 @@ public static void main(String[] args) {
     change(nums);
 
     System.out.println(nums[0]);
+
 }
 ```
 
@@ -1245,9 +1305,12 @@ main:
 
 nums ───────┐
             ▼
+
           [10,20,30]
+
             ▲
             │
+
 change: arr ┘
 ```
 
@@ -1294,9 +1357,12 @@ So:
 ```text
 nums ───────┐
             ▼
+
           [10,20,30]
+
             ▲
             │
+
 arr ────────┘
 ```
 
@@ -1310,7 +1376,9 @@ Example:
 
 ```java
 static void change(int[] arr) {
+
     arr[0] = 999;
+
 }
 
 public static void main(String[] args) {
@@ -1320,6 +1388,7 @@ public static void main(String[] args) {
     change(nums);
 
     System.out.println(nums[0]);
+
 }
 ```
 
@@ -1341,7 +1410,9 @@ Now consider:
 
 ```java
 static void change(int[] arr) {
+
     arr = new int[]{100, 200, 300};
+
 }
 
 public static void main(String[] args) {
@@ -1351,6 +1422,7 @@ public static void main(String[] args) {
     change(nums);
 
     System.out.println(nums[0]);
+
 }
 ```
 
@@ -1375,9 +1447,12 @@ Initially:
 ```text
 nums ───────┐
             ▼
+
           [10,20,30]
+
             ▲
             │
+
 arr ────────┘
 ```
 
@@ -1407,6 +1482,7 @@ Wrong assumption:
 
 ```java
 int[] a = {1, 2, 3};
+
 int[] b = a;
 ```
 
@@ -1484,6 +1560,7 @@ What happens here?
 
 ```java
 int[] a = {1, 2, 3};
+
 int[] b = a;
 ```
 
@@ -1803,9 +1880,11 @@ int[] arr = {4, 7, 2, 9, 1};
 int max = arr[0];
 
 for (int i = 1; i < arr.length; i++) {
+
     if (arr[i] > max) {
         max = arr[i];
     }
+
 }
 
 System.out.println(max);
@@ -1845,7 +1924,8 @@ Two pointers usually means maintaining two indexes.
 Common forms:
 
 ```text
-left → 
+left →
+
        ← right
 ```
 
@@ -1853,6 +1933,7 @@ or:
 
 ```text
 slow →
+
 fast  →
 ```
 
@@ -1874,6 +1955,7 @@ int[] arr = {1, 2, 3, 4, 6};
 
 int left = 0;
 int right = arr.length - 1;
+
 int target = 7;
 
 while (left < right) {
@@ -1890,6 +1972,7 @@ while (left < right) {
     } else {
         right--;
     }
+
 }
 ```
 
@@ -1964,6 +2047,7 @@ Example:
 
 ```java
 int[] arr = {2, 1, 5, 1, 3, 2};
+
 int k = 3;
 
 int windowSum = 0;
@@ -1980,6 +2064,7 @@ for (int i = k; i < arr.length; i++) {
     windowSum -= arr[i - k];
 
     maxSum = Math.max(maxSum, windowSum);
+
 }
 
 System.out.println(maxSum);
@@ -2108,7 +2193,12 @@ int[] arr = {2, 7, 11, 2, 7};
 HashMap<Integer, Integer> frequency = new HashMap<>();
 
 for (int value : arr) {
-    frequency.put(value, frequency.getOrDefault(value, 0) + 1);
+
+    frequency.put(
+        value,
+        frequency.getOrDefault(value, 0) + 1
+    );
+
 }
 ```
 
@@ -2176,6 +2266,7 @@ while (left <= right) {
     } else {
         right = mid - 1;
     }
+
 }
 ```
 
@@ -2291,14 +2382,19 @@ int write = 0;
 for (int read = 0; read < arr.length; read++) {
 
     if (arr[read] != 0) {
+
         arr[write] = arr[read];
         write++;
+
     }
+
 }
 
 while (write < arr.length) {
+
     arr[write] = 0;
     write++;
+
 }
 ```
 
@@ -2306,6 +2402,7 @@ while (write < arr.length) {
 
 ```text
 read  → scans
+
 write → places
 ```
 
@@ -2353,6 +2450,7 @@ for (int i = 1; i < arr.length; i++) {
     current = Math.max(arr[i], current + arr[i]);
 
     best = Math.max(best, current);
+
 }
 
 System.out.println(best);
@@ -2459,6 +2557,7 @@ import java.util.Stack;
 int[] arr = {2, 1, 2, 4, 3};
 
 Stack<Integer> stack = new Stack<>();
+
 int[] result = new int[arr.length];
 
 for (int i = arr.length - 1; i >= 0; i--) {
@@ -2470,6 +2569,7 @@ for (int i = arr.length - 1; i >= 0; i--) {
     result[i] = stack.isEmpty() ? -1 : stack.peek();
 
     stack.push(arr[i]);
+
 }
 ```
 
@@ -2503,10 +2603,15 @@ Common patterns:
 
 ```text
 Row-wise
+
 Column-wise
+
 Diagonal
+
 Spiral
+
 Boundary
+
 BFS/DFS
 ```
 
@@ -2524,9 +2629,11 @@ for (int row = 0; row < matrix.length; row++) {
     for (int col = 0; col < matrix[row].length; col++) {
 
         System.out.print(matrix[row][col] + " ");
+
     }
 
     System.out.println();
+
 }
 ```
 
@@ -2552,9 +2659,13 @@ Then determine whether it requires:
 
 ```text
 Simple traversal
+
 Boundary traversal
+
 Spiral traversal
+
 DFS
+
 BFS
 ```
 
@@ -2580,8 +2691,11 @@ Ask:
 
 ```text
 1D or 2D?
+
 Sorted or unsorted?
+
 Positive, negative, or both?
+
 Duplicates?
 ```
 
@@ -2593,10 +2707,15 @@ Ask:
 
 ```text
 Single value?
+
 Index?
+
 Pair?
+
 Subarray?
+
 Modified array?
+
 Count?
 ```
 
@@ -2635,6 +2754,7 @@ Then analyze:
 
 ```text
 Time Complexity
+
 Space Complexity
 ```
 
@@ -2683,13 +2803,21 @@ Always test:
 
 ```text
 Empty array
+
 One element
+
 Two elements
+
 All same values
+
 Already sorted
+
 Reverse sorted
+
 Duplicates
+
 Negative values
+
 Very large values
 ```
 
@@ -2765,6 +2893,7 @@ Patterns:
 
 ```text
 Hashing
+
 Two Pointers after sorting
 ```
 
@@ -2822,7 +2951,9 @@ Possible patterns:
 
 ```text
 Sliding Window
+
 Prefix Sum
+
 Hashing
 ```
 
@@ -2836,7 +2967,9 @@ Patterns:
 
 ```text
 Two Pointers
+
 Prefix/Suffix
+
 Monotonic Stack
 ```
 
@@ -2902,9 +3035,13 @@ for (int i = 0; i < arr.length; i++) {
     for (int j = i + 1; j < arr.length; j++) {
 
         if (arr[i] + arr[j] == target) {
+
             // pair found
+
         }
+
     }
+
 }
 ```
 
@@ -3098,6 +3235,7 @@ Example:
 
 ```java
 int[] a = {1, 2};
+
 int[] b = a;
 ```
 
@@ -3209,7 +3347,9 @@ Remember:
 
 ```text
 Reference variable
+
        ↓
+
 Array object
 ```
 
@@ -3254,9 +3394,13 @@ Remember:
 
 ```text
 Variable
+
    ↓
+
 Reference
+
    ↓
+
 Object
 ```
 
@@ -3264,9 +3408,13 @@ For arrays:
 
 ```text
 arr
+
  ↓
+
 reference
+
  ↓
+
 array object
 ```
 
@@ -3316,11 +3464,17 @@ Remember:
 
 ```text
 int[][]
+
    ↓
+
 array
+
    ↓
+
 arrays
+
    ↓
+
 values
 ```
 
@@ -3370,50 +3524,91 @@ Before moving to the next topic, make sure you can explain:
 
 ```text
 [ ] Arrays are objects
+
 [ ] Arrays are allocated in the heap
+
 [ ] Array variables contain references
+
 [ ] Difference between reference and object
+
 [ ] What new does
+
 [ ] Default values of array elements
+
 [ ] What length means
+
 [ ] Why indexing is O(1)
+
 [ ] Difference between reference copy and array copy
+
 [ ] Why a = b does not clone an array
+
 [ ] How clone() creates a separate array
+
 [ ] Primitive arrays
+
 [ ] Reference arrays
+
 [ ] Arrays of objects
+
 [ ] Arrays of Strings
+
 [ ] Null array references
+
 [ ] Garbage collection of arrays
+
 [ ] 2D array memory
+
 [ ] Array of arrays
+
 [ ] Jagged array memory
+
 [ ] Java pass-by-value
+
 [ ] Passing arrays to methods
+
 [ ] Modifying arrays inside methods
+
 [ ] Reassigning array references inside methods
 
 DSA:
 
 [ ] Array traversal
+
 [ ] Two pointers
+
 [ ] Sliding window
+
 [ ] Prefix sum
+
 [ ] Hashing / frequency
+
 [ ] Binary search
+
 [ ] Sorting + scanning
+
 [ ] In-place modification
+
 [ ] Kadane's algorithm
+
 [ ] Difference array
+
 [ ] Monotonic stack
+
 [ ] Matrix traversal
+
 [ ] How to identify subarray problems
+
 [ ] How to identify sorted-array problems
+
 [ ] How to identify pair problems
+
 [ ] How to identify range-query problems
+
 [ ] How to identify frequency problems
+
 [ ] How to identify O(1)-space problems
+
 [ ] How to distinguish subarray vs subsequence
 ```
 
@@ -3423,7 +3618,7 @@ DSA:
 
 ```text
 ┌────────────────────────────────────────────────────┐
-│              ARRAY MEMORY IN JAVA                   │
+│              ARRAY MEMORY IN JAVA                  │
 ├────────────────────────────────────────────────────┤
 │ Array → Object                                     │
 │ Array object → Heap                                │
@@ -3445,7 +3640,7 @@ DSA:
 │ Contiguous range → Sliding Window / Prefix Sum     │
 │ Frequency → HashMap / Frequency Array              │
 │ Sorted search → Binary Search                      │
-│ Need ordering → Sorting                            │
+│ Need ordering → Sorting                             │
 │ O(1) extra space → In-place / Two Pointers         │
 │ Max subarray → Kadane                              │
 │ Many range updates → Difference Array              │
@@ -3472,12 +3667,19 @@ DSA:
 
 ```text
 05-Arrays/
+
 │
+
 ├── 01-Array-Introduction.md
+
 ├── 02-One-Dimensional-Array.md
+
 ├── 03-Multidimensional-Array.md
+
 ├── 04-Array-Memory.md          ← YOU ARE HERE
+
 ├── 05-Arrays-Class.md
+
 └── 06-Array-Interview-Questions.md
 ```
 
