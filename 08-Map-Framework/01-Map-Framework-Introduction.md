@@ -53,16 +53,22 @@ Example:
     Roll Number → Student Name
 
     101 → "Rahul"
+
     102 → "Aman"
+
     103 → "Yash"
 
 Instead of accessing data using an index like an array:
 
-    arr[0]
+```java
+arr[0]
+```
 
 we access data using a key:
 
-    map.get(101)
+```java
+map.get(101)
+```
 
 ---
 
@@ -70,12 +76,14 @@ we access data using a key:
 
 Suppose we have:
 
-    String[] names = {
-        "Rahul",
-        "Aman",
-        "Yash",
-        "Rohit"
-    };
+```java
+String[] names = {
+    "Rahul",
+    "Aman",
+    "Yash",
+    "Rohit"
+};
+```
 
 If we want:
 
@@ -108,17 +116,21 @@ Each entry contains:
 Example:
 
     101 → "Yash"
+
     102 → "Aman"
+
     103 → "Rohit"
 
 Here:
 
     Key:
+
         101
         102
         103
 
     Value:
+
         Yash
         Aman
         Rohit
@@ -129,7 +141,7 @@ The complete pair is called a:
 
 ---
 
-# 🔒 3.1 Are Keys Unique?
+## 🔒 3.1 Are Keys Unique?
 
 Yes.
 
@@ -137,8 +149,11 @@ A Map cannot contain duplicate keys.
 
 Example:
 
-    map.put(101, "Yash");
-    map.put(101, "Rahul");
+```java
+map.put(101, "Yash");
+
+map.put(101, "Rahul");
+```
 
 The second insertion does not create another key.
 
@@ -150,14 +165,16 @@ The value associated with key `101` is replaced.
 
 ---
 
-# 📦 3.2 Can Values Be Duplicated?
+## 📦 3.2 Can Values Be Duplicated?
 
 Yes.
 
 Example:
 
     101 → "Java"
+
     102 → "Spring"
+
     103 → "Java"
 
 Here:
@@ -178,20 +195,26 @@ That is completely valid.
 
 Basic declaration:
 
-    public interface Map<K, V>
+```java
+public interface Map<K, V>
+```
 
 Where:
 
     K → Key type
+
     V → Value type
 
 Example:
 
-    Map<Integer, String>
+```java
+Map<Integer, String>
+```
 
 means:
 
     Integer → Key
+
     String  → Value
 
 ---
@@ -201,21 +224,37 @@ means:
 A simplified hierarchy:
 
     Map<K, V>
+
        │
+
        ├── HashMap<K, V>
+
        │      │
+
        │      └── LinkedHashMap<K, V>
+
        │
+
        ├── SortedMap<K, V>
+
        │      │
+
        │      └── NavigableMap<K, V>
+
        │             │
+
        │             └── TreeMap<K, V>
+
        │
+
        ├── Hashtable<K, V>
+
        │
+
        └── ConcurrentMap<K, V>
+
               │
+
               └── ConcurrentHashMap<K, V>
 
 Important:
@@ -239,16 +278,20 @@ are interfaces.
 
 ---
 
-# 🧩 5.1 Map Does NOT Extend Collection
+## 🧩 5.1 Map Does NOT Extend Collection
 
 This is a very important interview point.
 
 The hierarchy is:
 
     Iterable
+
        ↓
+
     Collection
+
        ↓
+
     List / Set / Queue
 
 Map is separate:
@@ -268,7 +311,7 @@ Therefore:
 | Stores | Individual elements | Key-value pairs |
 | Structure | Element | Entry |
 | Duplicate handling | Depends on implementation | Keys are unique |
-| Main method | add() | put() |
+| Main method | `add()` | `put()` |
 | Retrieval | Based on iteration/index/etc. | Based on key |
 | Example | List, Set | HashMap, TreeMap |
 | Interface | Collection | Map |
@@ -283,26 +326,31 @@ A Map logically contains:
 
 Example:
 
-    Map<Integer, String> students =
-            new HashMap<>();
+```java
+Map<Integer, String> students =
+        new HashMap<>();
 
-    students.put(101, "Yash");
-    students.put(102, "Aman");
+students.put(101, "Yash");
+
+students.put(102, "Aman");
+```
 
 Conceptually:
 
     Entry<Integer, String>
 
     101 → Yash
+
     102 → Aman
 
 ---
 
-# 🔑 7.1 Key Requirements
+## 🔑 7.1 Key Requirements
 
 The key should have a meaningful:
 
     hashCode()
+
     equals()
 
 relationship for hash-based maps.
@@ -315,7 +363,7 @@ This topic is covered deeply in:
 
 ---
 
-# 💎 7.2 Can a Map Have null Keys?
+## 💎 7.2 Can a Map Have null Keys?
 
 This depends on the implementation.
 
@@ -344,6 +392,7 @@ The most important implementations for interviews are:
 General-purpose hash-based Map.
 
     Average:
+
     O(1)
 
 for basic operations under normal conditions.
@@ -377,6 +426,7 @@ Legacy synchronized Map implementation.
 It does not allow:
 
     null key
+
     null value
 
 ---
@@ -390,6 +440,7 @@ It belongs to the concurrent collections framework.
 It does not allow:
 
     null key
+
     null value
 
 ---
@@ -414,38 +465,56 @@ It does not allow:
 
 Import:
 
-    import java.util.HashMap;
-    import java.util.Map;
+```java
+import java.util.HashMap;
+import java.util.Map;
+```
 
 Example:
 
-    Map<String, Integer> marks =
-            new HashMap<>();
+```java
+Map<String, Integer> marks =
+        new HashMap<>();
 
-    marks.put("Java", 90);
-    marks.put("DSA", 85);
-    marks.put("DBMS", 80);
+marks.put("Java", 90);
+
+marks.put("DSA", 85);
+
+marks.put("DBMS", 80);
+```
 
 Retrieval:
 
-    int score = marks.get("Java");
+```java
+int score = marks.get("Java");
+```
 
 ---
 
-# 🔥 10.1 Why HashMap Is Fast
+## 🔥 10.1 Why HashMap Is Fast
 
 Conceptually:
 
     key
+
       ↓
+
     hashCode()
+
       ↓
+
     hash calculation
+
       ↓
+
     bucket
+
       ↓
+
     key comparison
+
       ↓
+
     value
 
 This allows HashMap to locate entries efficiently.
@@ -463,24 +532,32 @@ Its internal structure is discussed in detail in:
 Conceptually:
 
     HashMap
+
        ↓
+
     LinkedHashMap
 
 It maintains predictable iteration order.
 
 Example:
 
-    Map<Integer, String> map =
-            new LinkedHashMap<>();
+```java
+Map<Integer, String> map =
+        new LinkedHashMap<>();
 
-    map.put(3, "C");
-    map.put(1, "A");
-    map.put(2, "B");
+map.put(3, "C");
+
+map.put(1, "A");
+
+map.put(2, "B");
+```
 
 Iteration generally follows insertion order:
 
     3 → C
+
     1 → A
+
     2 → B
 
 It can also be configured for access-order behavior.
@@ -500,34 +577,48 @@ and therefore also participates in:
 Hierarchy:
 
     Map
+
       ↓
+
     SortedMap
+
       ↓
+
     NavigableMap
+
       ↓
+
     TreeMap
 
 Keys are maintained according to their ordering.
 
 Example:
 
-    Map<Integer, String> map =
-            new TreeMap<>();
+```java
+Map<Integer, String> map =
+        new TreeMap<>();
 
-    map.put(30, "C");
-    map.put(10, "A");
-    map.put(20, "B");
+map.put(30, "C");
+
+map.put(10, "A");
+
+map.put(20, "B");
+```
 
 Iteration:
 
     10 → A
+
     20 → B
+
     30 → C
 
 Typical operations:
 
     get()  → O(log n)
+
     put()  → O(log n)
+
     remove() → O(log n)
 
 ---
@@ -538,10 +629,12 @@ Typical operations:
 
 Example:
 
-    Hashtable<Integer, String> table =
-            new Hashtable<>();
+```java
+Hashtable<Integer, String> table =
+        new Hashtable<>();
 
-    table.put(1, "Java");
+table.put(1, "Java");
+```
 
 Important characteristics:
 
@@ -562,8 +655,10 @@ For modern concurrent applications, `ConcurrentHashMap` is generally the more re
 
 Example:
 
-    ConcurrentHashMap<Integer, String> map =
-            new ConcurrentHashMap<>();
+```java
+ConcurrentHashMap<Integer, String> map =
+        new ConcurrentHashMap<>();
+```
 
 It is designed for concurrent access.
 
@@ -574,6 +669,7 @@ Important:
 does not allow:
 
     null keys
+
     null values
 
 It provides significantly more suitable concurrency behavior than simply synchronizing every operation on a legacy Hashtable.
@@ -588,32 +684,53 @@ Its internal concurrency model is covered separately in:
 
 Consider:
 
-    Map<Integer, String> map =
-            new HashMap<>();
+```java
+Map<Integer, String> map =
+        new HashMap<>();
 
-    map.put(101, "Yash");
+map.put(101, "Yash");
+```
 
 Conceptually:
 
     Key
+
      │
+
      ▼
+
     101
+
      │
+
      ▼
+
     hashCode()
+
      │
+
      ▼
+
     Hash calculation
+
      │
+
      ▼
+
     Bucket
+
      │
+
      ▼
+
     Entry
+
      │
+
      ├── Key   → 101
+
      ├── Value → "Yash"
+
      └── Next  → ...
 
 The exact internal structure depends on the implementation.
@@ -624,44 +741,54 @@ For `HashMap`, the internal details involve buckets and nodes, and collision han
 
 # 🔍 16. Important Map Methods
 
-## put()
+## `put()`
 
 Adds or updates a key-value pair.
 
-    map.put("Java", 90);
+```java
+map.put("Java", 90);
+```
 
 If the key already exists:
 
-    map.put("Java", 95);
+```java
+map.put("Java", 95);
+```
 
 the existing value is replaced.
 
 ---
 
-## get()
+## `get()`
 
 Retrieves the value associated with a key.
 
-    Integer value = map.get("Java");
+```java
+Integer value = map.get("Java");
+```
 
 ---
 
-## getOrDefault()
+## `getOrDefault()`
 
 Returns the value for a key.
 
 If the key is absent, returns the supplied default.
 
-    int value =
-            map.getOrDefault("Spring", 0);
+```java
+int value =
+        map.getOrDefault("Spring", 0);
+```
 
 ---
 
-## containsKey()
+## `containsKey()`
 
 Checks whether a key exists.
 
-    map.containsKey("Java");
+```java
+map.containsKey("Java");
+```
 
 Returns:
 
@@ -669,143 +796,173 @@ Returns:
 
 ---
 
-## containsValue()
+## `containsValue()`
 
 Checks whether a value exists.
 
-    map.containsValue(90);
+```java
+map.containsValue(90);
+```
 
 ---
 
-## remove()
+## `remove()`
 
 Removes a mapping using its key.
 
-    map.remove("Java");
+```java
+map.remove("Java");
+```
 
 ---
 
-## size()
+## `size()`
 
 Returns the number of mappings.
 
-    map.size();
+```java
+map.size();
+```
 
 ---
 
-## isEmpty()
+## `isEmpty()`
 
 Checks whether the Map contains no entries.
 
-    map.isEmpty();
+```java
+map.isEmpty();
+```
 
 ---
 
-## clear()
+## `clear()`
 
 Removes all mappings.
 
-    map.clear();
+```java
+map.clear();
+```
 
 ---
 
-## keySet()
+## `keySet()`
 
 Returns a Set view of keys.
 
-    Set<String> keys =
-            map.keySet();
+```java
+Set<String> keys =
+        map.keySet();
+```
 
 ---
 
-## values()
+## `values()`
 
 Returns a Collection view of values.
 
-    Collection<Integer> values =
-            map.values();
+```java
+Collection<Integer> values =
+        map.values();
+```
 
 ---
 
-## entrySet()
+## `entrySet()`
 
 Returns a Set view of key-value entries.
 
-    Set<Map.Entry<String, Integer>> entries =
-            map.entrySet();
+```java
+Set<Map.Entry<String, Integer>> entries =
+        map.entrySet();
+```
 
 ---
 
-## putIfAbsent()
+## `putIfAbsent()`
 
 Adds the mapping only if the key does not already have a mapping.
 
-    map.putIfAbsent("Java", 90);
+```java
+map.putIfAbsent("Java", 90);
+```
 
 ---
 
-## replace()
+## `replace()`
 
 Replaces an existing value.
 
-    map.replace("Java", 95);
+```java
+map.replace("Java", 95);
+```
 
 ---
 
-## replaceAll()
+## `replaceAll()`
 
 Applies a function to all mappings.
 
-    map.replaceAll(
-        (key, value) -> value + 5
-    );
+```java
+map.replaceAll(
+    (key, value) -> value + 5
+);
+```
 
 ---
 
-## compute()
+## `compute()`
 
 Computes a value for a key.
 
-    map.compute(
-        "Java",
-        (key, value) -> value == null
-                ? 1
-                : value + 1
-    );
+```java
+map.compute(
+    "Java",
+    (key, value) -> value == null
+            ? 1
+            : value + 1
+);
+```
 
 ---
 
-## computeIfAbsent()
+## `computeIfAbsent()`
 
 Computes a value only when the key is absent.
 
-    map.computeIfAbsent(
-        "Java",
-        key -> 90
-    );
+```java
+map.computeIfAbsent(
+    "Java",
+    key -> 90
+);
+```
 
 ---
 
-## computeIfPresent()
+## `computeIfPresent()`
 
 Computes a new value only when the key is present.
 
-    map.computeIfPresent(
-        "Java",
-        (key, value) -> value + 10
-    );
+```java
+map.computeIfPresent(
+    "Java",
+    (key, value) -> value + 10
+);
+```
 
 ---
 
-## merge()
+## `merge()`
 
 Combines an existing value with a new value.
 
-    map.merge(
-        "Java",
-        1,
-        Integer::sum
-    );
+```java
+map.merge(
+    "Java",
+    1,
+    Integer::sum
+);
+```
 
 This is extremely useful for frequency-counting problems.
 
@@ -817,45 +974,50 @@ There are several approaches.
 
 ---
 
-## Method 1 — keySet()
+## Method 1 — `keySet()`
 
-    for (String key : map.keySet()) {
+```java
+for (String key : map.keySet()) {
+    Integer value = map.get(key);
 
-        Integer value = map.get(key);
-
-        System.out.println(
-            key + " = " + value
-        );
-    }
+    System.out.println(
+        key + " = " + value
+    );
+}
+```
 
 This works, but for simply processing both key and value, `entrySet()` is usually preferable.
 
 ---
 
-## Method 2 — entrySet()
+## Method 2 — `entrySet()`
 
-    for (Map.Entry<String, Integer> entry
-            : map.entrySet()) {
+```java
+for (Map.Entry<String, Integer> entry
+        : map.entrySet()) {
 
-        System.out.println(
-            entry.getKey()
-            + " = "
-            + entry.getValue()
-        );
-    }
+    System.out.println(
+        entry.getKey()
+        + " = "
+        + entry.getValue()
+    );
+}
+```
 
 This directly accesses both key and value.
 
 ---
 
-## Method 3 — forEach()
+## Method 3 — `forEach()`
 
-    map.forEach(
-        (key, value) ->
-            System.out.println(
-                key + " = " + value
-            )
-    );
+```java
+map.forEach(
+    (key, value) ->
+        System.out.println(
+            key + " = " + value
+        )
+);
+```
 
 ---
 
@@ -873,45 +1035,63 @@ Each Entry represents:
 
 Example:
 
-    for (Map.Entry<Integer, String> entry
-            : map.entrySet()) {
+```java
+for (Map.Entry<Integer, String> entry
+        : map.entrySet()) {
 
-        int key = entry.getKey();
+    int key = entry.getKey();
 
-        String value = entry.getValue();
-    }
+    String value = entry.getValue();
+}
+```
 
 Think:
 
     Map
+
       ↓
+
     entrySet()
+
       ↓
+
     Set<Entry<K,V>>
+
       ↓
+
     Entry
+
       ├── getKey()
+
       └── getValue()
 
 ---
 
-# 🧠 18.1 Why entrySet() Is Important
+## 🧠 18.1 Why entrySet() Is Important
 
 Suppose:
 
-    Map<Integer, String> map;
+```java
+Map<Integer, String> map;
+```
 
 Using:
 
-    map.keySet()
+```java
+map.keySet()
+```
 
 you first get keys and then potentially perform:
 
-    map.get(key)
+```java
+map.get(key)
+```
 
 Using:
 
-    map.entrySet()
+```java
+map.entrySet()
+```
 
 you already have:
 
@@ -946,13 +1126,21 @@ It does NOT mean every operation is mathematically guaranteed to always take exa
 For a typical hash-based Map, conceptually memory contains:
 
     Map Object
+
          ↓
+
     Internal Table
+
          ↓
+
     Buckets
+
          ↓
+
     Entries / Nodes
+
          ↓
+
     Key + Value
 
 For example:
@@ -974,14 +1162,23 @@ Maps are extremely important in DSA.
 The most important patterns are:
 
     1. Frequency Counting
+
     2. Fast Lookup
+
     3. Complement Lookup
+
     4. Duplicate Detection
+
     5. Prefix Sum + HashMap
+
     6. Grouping
+
     7. Counting Pairs
+
     8. Sliding Window
+
     9. Character Frequency
+
     10. Index Tracking
 
 ---
@@ -999,25 +1196,28 @@ Input:
 Expected:
 
     1 → 2
+
     2 → 3
+
     3 → 1
 
 Solution:
 
-    int[] nums = {
-        1, 2, 2, 3, 1, 2
-    };
+```java
+int[] nums = {
+    1, 2, 2, 3, 1, 2
+};
 
-    Map<Integer, Integer> freq =
-            new HashMap<>();
+Map<Integer, Integer> freq =
+        new HashMap<>();
 
-    for (int num : nums) {
-
-        freq.put(
-            num,
-            freq.getOrDefault(num, 0) + 1
-        );
-    }
+for (int num : nums) {
+    freq.put(
+        num,
+        freq.getOrDefault(num, 0) + 1
+    );
+}
+```
 
 Output:
 
@@ -1030,8 +1230,11 @@ Output:
 Whenever the problem says:
 
     frequency
+
     count occurrences
+
     how many times
+
     duplicate count
 
 think:
@@ -1043,6 +1246,7 @@ think:
 ## Complexity
 
     Time:  O(n) average
+
     Space: O(k)
 
 where:
@@ -1060,6 +1264,7 @@ Given an array and target, find two numbers whose sum equals the target.
 Example:
 
     nums = [2, 7, 11, 15]
+
     target = 9
 
 Answer:
@@ -1076,26 +1281,28 @@ For each number:
 
 Then check whether the required value already exists.
 
-    Map<Integer, Integer> map =
-            new HashMap<>();
+```java
+Map<Integer, Integer> map =
+        new HashMap<>();
 
-    for (int i = 0;
-         i < nums.length;
-         i++) {
+for (int i = 0;
+     i < nums.length;
+     i++) {
 
-        int required =
-                target - nums[i];
+    int required =
+            target - nums[i];
 
-        if (map.containsKey(required)) {
+    if (map.containsKey(required)) {
 
-            return new int[] {
-                map.get(required),
-                i
-            };
-        }
-
-        map.put(nums[i], i);
+        return new int[] {
+            map.get(required),
+            i
+        };
     }
+
+    map.put(nums[i], i);
+}
+```
 
 The Map stores:
 
@@ -1106,6 +1313,7 @@ The Map stores:
 ## Complexity
 
     Time:  O(n) average
+
     Space: O(n)
 
 This improves over the brute-force:
@@ -1154,8 +1362,11 @@ Choosing the correct key is often the main insight.
 
 Thinking:
 
-    map.put("Java", 90);
-    map.put("Java", 95);
+```java
+map.put("Java", 90);
+
+map.put("Java", 95);
+```
 
 creates two entries.
 
@@ -1167,15 +1378,19 @@ Final mapping:
 
 ---
 
-## ❌ Mistake 2 — Using add()
+## ❌ Mistake 2 — Using `add()`
 
 Map does not use:
 
-    add()
+```java
+add()
+```
 
 It uses:
 
-    put()
+```java
+put()
+```
 
 ---
 
@@ -1184,7 +1399,8 @@ It uses:
 It does not.
 
     Map
-       separate hierarchy
+
+      separate hierarchy
 
 ---
 
@@ -1212,7 +1428,9 @@ If predictable insertion ordering is required:
 
 Consider:
 
-    map.get(key)
+```java
+map.get(key)
+```
 
 If the result is `null`, the key may be absent.
 
@@ -1224,7 +1442,9 @@ Therefore, when the question is specifically:
 
 use:
 
-    map.containsKey(key)
+```java
+map.containsKey(key)
+```
 
 ---
 
@@ -1317,6 +1537,7 @@ Multiple keys can point to the same value.
 Example:
 
     101 → Java
+
     102 → Java
 
 ---
@@ -1378,22 +1599,35 @@ It uses hashing to locate an appropriate bucket, allowing expected constant-time
 # ⚡ 27. Quick Revision
 
     Map
+
      ↓
+
     Key → Value
 
 ---
 
     Map
+
       ├── HashMap
+
       │      └── LinkedHashMap
+
       │
+
       ├── SortedMap
+
       │      └── NavigableMap
+
       │             └── TreeMap
+
       │
+
       ├── Hashtable
+
       │
+
       └── ConcurrentMap
+
              └── ConcurrentHashMap
 
 ---
@@ -1421,15 +1655,21 @@ It uses hashing to locate an appropriate bucket, allowing expected constant-time
 ## Important Views
 
     keySet()
+
         ↓
+
     Set<K>
 
     values()
+
         ↓
+
     Collection<V>
 
     entrySet()
+
         ↓
+
     Set<Entry<K,V>>
 
 ---
@@ -1437,23 +1677,41 @@ It uses hashing to locate an appropriate bucket, allowing expected constant-time
 ## Most Important Methods
 
     put()
+
     get()
+
     getOrDefault()
+
     containsKey()
+
     containsValue()
+
     remove()
+
     size()
+
     isEmpty()
+
     clear()
+
     keySet()
+
     values()
+
     entrySet()
+
     putIfAbsent()
+
     replace()
+
     replaceAll()
+
     compute()
+
     computeIfAbsent()
+
     computeIfPresent()
+
     merge()
 
 ---
@@ -1505,33 +1763,37 @@ It uses hashing to locate an appropriate bucket, allowing expected constant-time
           ┌─────────┼──────────┐
           ▼         ▼          ▼
        HashMap   LinkedHashMap TreeMap
-          │         │          │
-       Fast      Ordered     Sorted
-       Lookup    Iteration    Keys
+          │         │           │
+        Fast      Ordered      Sorted
+        Lookup    Iteration     Keys
           │
           ├───────────────┐
           ▼               ▼
       Hashtable     ConcurrentHashMap
-       Legacy          Concurrent
-      Synchronized       Access
+       Legacy           Concurrent
+      Synchronized        Access
 
 ---
 
 # 🧠 The Interview Connection
 
     Need KEY → VALUE?
+
             ↓
+
            MAP
+
             ↓
+
     ┌───────┼────────┐
     ▼       ▼        ▼
- Fast     Ordered   Sorted
- Lookup   Order     Keys
+  Fast    Ordered   Sorted
+  Lookup  Order     Keys
     │       │        │
  HashMap LinkedHashMap TreeMap
     │
     ▼
- DSA
+   DSA
     │
     ├── Frequency
     ├── Two Sum
