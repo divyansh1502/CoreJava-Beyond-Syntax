@@ -1,1738 +1,1999 @@
-# 🎯 String — Interview Questions
+````md
+# 📚 Arrays — Introduction
 
-> **A complete interview-focused revision of Java Strings, covering fundamentals, String Pool, immutability, methods, StringBuilder, StringBuffer, comparisons, internal behavior, traps, and practical interview questions.**
-
----
-
-# 📌 Table of Contents
-
-1. [String Quick Revision](#1--string-quick-revision)
-2. [String Fundamentals](#2--string-fundamentals)
-3. [String Creation](#3--string-creation)
-4. [String Pool](#4--string-pool)
-5. [String Immutability](#5--string-immutability)
-6. [`==` vs `equals()`](#6---vs-equals)
-7. [String Methods](#7--string-methods)
-8. [StringBuilder](#8--stringbuilder)
-9. [StringBuffer](#9--stringbuffer)
-10. [String vs StringBuilder vs StringBuffer](#10--string-vs-stringbuilder-vs-stringbuffer)
-11. [String and Memory](#11--string-and-memory)
-12. [Common Coding Questions](#12--common-coding-questions)
-13. [Interview Traps](#13--interview-traps)
-14. [Top 30 Interview Questions](#14--top-30-interview-questions)
-15. [Rapid-Fire Questions](#15--rapid-fire-questions)
-16. [Output-Based Questions](#16--output-based-questions)
-17. [30-Second Interview Answer](#17--30-second-interview-answer)
-18. [1-Minute Interview Answer](#18--1-minute-interview-answer)
-19. [Cheat Sheet](#19--cheat-sheet)
-20. [Memory Tricks](#20--memory-tricks)
-21. [Final Revision Checklist](#21--final-revision-checklist)
+> Arrays are one of the most fundamental data structures in Java and the foundation for many DSA techniques such as searching, sorting, two pointers, sliding window, prefix sum, and binary search.
 
 ---
 
-# 1. 🔤 String Quick Revision
+## 📌 Table of Contents
 
-## What is String?
-
-> A String in Java is an object that represents a sequence of characters.
-
-`String` is:
-
-- A class
-- Part of `java.lang`
-- Immutable
-- `final`
-- Commonly used for textual data
-
-Example:
-
-    String name = "Java";
+1. [What is an Array?](#-what-is-an-array)
+2. [Why Do We Need Arrays?](#-why-do-we-need-arrays)
+3. [Real-World Example](#-real-world-example)
+4. [Basic Syntax](#-basic-syntax)
+5. [Creating an Array](#-creating-an-array)
+6. [Initializing an Array](#-initializing-an-array)
+7. [Declaration vs Creation vs Initialization](#-declaration-vs-creation-vs-initialization)
+8. [Accessing Array Elements](#-accessing-array-elements)
+9. [Array Indexing](#-array-indexing)
+10. [Array Length](#-array-length)
+11. [Default Values](#-default-values)
+12. [How Arrays Work Internally](#-how-arrays-work-internally)
+13. [Arrays and Heap Memory](#-arrays-and-heap-memory)
+14. [Reference Variable](#-reference-variable)
+15. [Fixed Size](#-fixed-size)
+16. [Homogeneous Elements](#-homogeneous-elements)
+17. [Types of Arrays](#-types-of-arrays)
+18. [One-Dimensional Array](#-one-dimensional-array)
+19. [Multidimensional Array](#-multidimensional-array)
+20. [Jagged Array](#-jagged-array)
+21. [Traversing an Array](#-traversing-an-array)
+22. [For Loop vs Enhanced For Loop](#-for-loop-vs-enhanced-for-loop)
+23. [Taking Array Input](#-taking-array-input)
+24. [Printing an Array](#-printing-an-array)
+25. [Array Object and Object Class](#-array-object-and-object-class)
+26. [Important Array Properties](#-important-array-properties)
+27. [Common Operations](#-common-array-operations)
+28. [Time Complexity](#-time-complexity)
+29. [Common Mistakes](#-common-mistakes)
+30. [Interview Traps](#-interview-traps)
+31. [Advantages](#-advantages)
+32. [Disadvantages](#-disadvantages)
+33. [Array vs Variable](#-array-vs-variable)
+34. [Array vs ArrayList](#-array-vs-arraylist)
+35. [DSA Patterns Related to Arrays](#-dsa-patterns-related-to-arrays)
+36. [Important DSA Questions](#-important-dsa-questions)
+37. [How to Think About Array Problems](#-how-to-think-about-array-problems)
+38. [Top 10 Interview Questions](#-top-10-interview-questions)
+39. [30-Second Interview Answer](#-30-second-interview-answer)
+40. [Cheat Sheet](#-cheat-sheet)
 
 ---
 
-## Most Important String Properties
+# 🔹 What is an Array?
 
-    String
-       ↓
-    Class
-       ↓
-    java.lang
-       ↓
-    final
-       ↓
-    Immutable
-       ↓
-    Supports String Pool
+An **array** is an object in Java that stores a fixed number of elements of the same component type.
 
----
+Each element can be accessed using an integer index.
 
-# 2. 📚 String Fundamentals
-
-## Q1. Is String a primitive data type?
-
-### Answer:
-
-No.
-
-`String` is a class.
-
-Example:
-
-    String name = "Divyansh";
+```java
+int[] numbers = {10, 20, 30, 40, 50};
+````
 
 Here:
 
-    String → class
-    name   → reference variable
-    "Divyansh" → String object/value
+* `numbers` → reference variable
+* `int[]` → array type
+* `10, 20, 30, 40, 50` → elements
+* `0, 1, 2, 3, 4` → indexes
+* `5` → length
+
+### Simple Definition
+
+> An array is a fixed-size, indexed collection of elements having the same component type.
+
+### Interview Definition
+
+> In Java, an array is an object that contains a fixed number of components of the same type, with each component accessed using a zero-based integer index.
 
 ---
 
-## Q2. Why can we use String without importing it?
+# 🔹 Why Do We Need Arrays?
 
-Because String belongs to:
+Suppose we want to store marks of five students.
 
-    java.lang
+Without an array:
 
-Classes from `java.lang` are automatically available.
+```java
+int marks1 = 80;
+int marks2 = 75;
+int marks3 = 90;
+int marks4 = 85;
+int marks5 = 70;
+```
 
-Examples:
+This becomes difficult to manage as the amount of data increases.
 
-    String
-    Object
-    System
-    Math
-    Integer
-    Thread
+Using an array:
+
+```java
+int[] marks = {80, 75, 90, 85, 70};
+```
+
+Now we can process all values using a loop:
+
+```java
+for (int i = 0; i < marks.length; i++) {
+    System.out.println(marks[i]);
+}
+```
+
+### Arrays are useful because they provide:
+
+* Multiple values under one reference
+* Indexed access
+* Efficient traversal
+* Easy searching
+* Easy sorting
+* A foundation for many DSA algorithms
 
 ---
 
-## Q3. Is String a final class?
+# 🔹 Real-World Example
 
-Yes.
+Consider marks of five students:
+
+```text
+Student       Marks
+-------------------
+Student 1      80
+Student 2      75
+Student 3      90
+Student 4      85
+Student 5      70
+```
+
+We can represent them as:
+
+```text
+Index:    0    1    2    3    4
+          ↓    ↓    ↓    ↓    ↓
+Marks:   80   75   90   85   70
+```
+
+So:
+
+```java
+marks[0] → 80
+marks[1] → 75
+marks[2] → 90
+marks[3] → 85
+marks[4] → 70
+```
+
+---
+
+# 🔹 Basic Syntax
+
+## Declaration
+
+```java
+int[] arr;
+```
+
+Another valid syntax:
+
+```java
+int arr[];
+```
+
+Preferred Java style:
+
+```java
+int[] arr;
+```
+
+---
+
+## Creation
+
+```java
+arr = new int[5];
+```
+
+This creates an integer array capable of storing five elements.
+
+---
+
+## Declaration + Creation
+
+```java
+int[] arr = new int[5];
+```
+
+---
+
+## Declaration + Initialization
+
+```java
+int[] arr = {10, 20, 30, 40, 50};
+```
+
+---
+
+# 🔹 Creating an Array
+
+The `new` keyword creates the array object.
+
+```java
+int[] arr = new int[5];
+```
 
 Conceptually:
 
-    public final class String
+```text
+Stack                         Heap
+-----                         ----
+arr  --------------------->  int[5]
+                              ↓
+                         [0, 0, 0, 0, 0]
+```
 
-Because String is final, it cannot be subclassed.
-
-You cannot do:
-
-    class MyString extends String {
-    }
-
-This is not allowed.
-
----
-
-## Q4. Why is String final?
-
-Important reasons include:
-
-- Preserving immutability guarantees
-- Preventing subclasses from changing String behavior
-- Security
-- Predictable behavior
-- Stable use in collections and APIs
+The reference variable `arr` refers to the array object.
 
 ---
 
-## Q5. What does immutable mean?
+# 🔹 Initializing an Array
 
-Immutable means:
+We can initialize an array directly:
 
-> Once a String object is created, its content cannot be changed.
+```java
+int[] arr = {10, 20, 30, 40, 50};
+```
 
-Example:
+Java determines the size automatically.
 
-    String s = "Java";
-
-    s.concat(" Developer");
-
-The original String remains:
-
-    "Java"
-
-The result of `concat()` is a different String.
-
----
-
-# 3. 🏗️ String Creation
-
-There are two major ways to create Strings.
-
-## Method 1 — String Literal
-
-    String s1 = "Java";
-
-## Method 2 — Using `new`
-
-    String s2 = new String("Java");
-
-These two forms can have different memory/reference behavior.
-
----
-
-## Q6. Difference between String literal and new String()?
-
-### Literal
-
-    String s = "Java";
-
-The JVM can use the String Pool.
-
-### `new`
-
-    String s = new String("Java");
-
-A new String object is explicitly created.
-
-The `"Java"` literal itself can still be present in the String Pool.
-
----
-
-# 4. 🏊 String Pool
-
-The String Pool is a special area associated with String literals.
-
-Example:
-
-    String s1 = "Java";
-    String s2 = "Java";
-
-The two references can point to the same pooled String object.
-
-Conceptually:
-
-    s1 ─────┐
-            ↓
-          "Java"
-       String Pool
-            ↑
-    s2 ─────┘
-
-Therefore:
-
-    s1 == s2
-
-can be:
-
-    true
-
----
-
-## Q7. What is String Pool?
-
-> String Pool is a special pool maintained by the JVM for canonical String objects, particularly String literals, allowing identical literal values to be shared.
-
----
-
-## Q8. What happens with `new String()`?
-
-Example:
-
-    String s1 = "Java";
-    String s2 = new String("Java");
-
-Conceptually:
-
-    String Pool:
-
-        "Java"
-           ↑
-          s1
-
-    Heap object:
-
-        new String("Java")
-              ↑
-             s2
-
-Therefore:
-
-    s1 == s2
-
-is:
-
-    false
-
-But:
-
-    s1.equals(s2)
-
-is:
-
-    true
-
----
-
-## Q9. What does intern() do?
-
-`intern()` returns the canonical representation of a String from the String Pool.
-
-Example:
-
-    String s1 = new String("Java");
-
-    String s2 = s1.intern();
-
-Now `s2` refers to the pooled `"Java"` representation.
-
----
-
-# 5. 🔒 String Immutability
-
-## Q10. Why is String immutable?
-
-Important benefits include:
-
-### 1. Security
-
-Strings are commonly used for:
-
-    File paths
-    URLs
-    Class names
-    Database URLs
-    Configuration
-    Credentials
-
-If Strings could be changed unexpectedly, security and correctness could be affected.
-
-### 2. String Pool
-
-Because Strings are immutable, the JVM can safely share identical pooled String objects.
-
-### 3. Thread Safety
-
-Immutable objects can be safely shared because their state cannot be changed.
-
-### 4. Hashing
-
-A String's content and hash code remain stable.
-
-This makes String useful as a key in:
-
-    HashMap
-    HashSet
-    Hashtable
-
----
-
-## Q11. Does concat() modify the original String?
-
-No.
-
-Example:
-
-    String s = "Java";
-
-    s.concat(" Developer");
-
-    System.out.println(s);
+```java
+System.out.println(arr.length);
+```
 
 Output:
 
-    Java
+```text
+5
+```
 
-Because the returned String was ignored.
+We can also initialize individual elements:
 
-Correct:
+```java
+int[] arr = new int[5];
 
-    s = s.concat(" Developer");
-
----
-
-# 6. ⚖️ `==` vs `equals()`
-
-This is one of the most important String interview topics.
-
-## `==`
-
-For references, `==` checks whether two references refer to the same object.
-
-## `equals()`
-
-`equals()` checks logical/content equality for String.
+arr[0] = 10;
+arr[1] = 20;
+arr[2] = 30;
+arr[3] = 40;
+arr[4] = 50;
+```
 
 ---
 
-## Example
+# 🔹 Declaration vs Creation vs Initialization
 
-    String s1 = "Java";
-    String s2 = "Java";
+This distinction is very important in interviews.
 
-    System.out.println(s1 == s2);
-    System.out.println(s1.equals(s2));
+## 1. Declaration
+
+```java
+int[] arr;
+```
+
+A reference variable is declared.
+
+No array object has been created yet.
+
+---
+
+## 2. Creation
+
+```java
+arr = new int[5];
+```
+
+The array object is created.
+
+---
+
+## 3. Initialization
+
+```java
+arr[0] = 10;
+arr[1] = 20;
+```
+
+Values are assigned to array components.
+
+---
+
+## Combined
+
+```java
+int[] arr = new int[5];
+```
+
+This performs:
+
+```text
+Declaration + Object Creation
+```
+
+While:
+
+```java
+int[] arr = {10, 20, 30, 40, 50};
+```
+
+performs:
+
+```text
+Declaration + Creation + Initialization
+```
+
+---
+
+# 🔹 Accessing Array Elements
+
+Array elements are accessed using their index.
+
+```java
+int[] arr = {10, 20, 30, 40, 50};
+
+System.out.println(arr[0]);
+System.out.println(arr[2]);
+System.out.println(arr[4]);
+```
 
 Output:
 
-    true
-    true
-
-Because both literals can refer to the same pooled object.
-
----
-
-## Another Example
-
-    String s1 = new String("Java");
-    String s2 = new String("Java");
-
-    System.out.println(s1 == s2);
-    System.out.println(s1.equals(s2));
-
-Output:
-
-    false
-    true
-
-Different objects:
-
-    == → false
-
-Same content:
-
-    equals() → true
+```text
+10
+30
+50
+```
 
 ---
 
-## Interview Rule
+# 🔹 Array Indexing
 
-Remember:
-
-    == 
-       → Same reference?
-
-    equals()
-       → Same content?
-
----
-
-# 7. 🛠️ String Methods
-
-Important String methods:
-
-    length()
-    charAt()
-    substring()
-    indexOf()
-    lastIndexOf()
-    equals()
-    equalsIgnoreCase()
-    contains()
-    startsWith()
-    endsWith()
-    concat()
-    replace()
-    replaceAll()
-    split()
-    trim()
-    strip()
-    toLowerCase()
-    toUpperCase()
-
----
-
-## Q12. What does length() return?
-
-Number of characters represented by the String.
-
-Example:
-
-    String s = "Java";
-
-    System.out.println(s.length());
-
-Output:
-
-    4
-
----
-
-## Q13. What does charAt() return?
-
-A character at a specified index.
-
-Example:
-
-    String s = "Java";
-
-    System.out.println(s.charAt(2));
-
-Output:
-
-    v
-
-Indexes:
-
-    J a v a
-    0 1 2 3
-
----
-
-## Q14. What does substring() do?
-
-Returns a portion of a String.
-
-Example:
-
-    String s = "Java Programming";
-
-    System.out.println(s.substring(5));
-
-Output:
-
-    Programming
-
----
-
-## Q15. Is substring() inclusive or exclusive?
+Java arrays use **zero-based indexing**.
 
 For:
 
-    substring(beginIndex, endIndex)
-
-the:
-
-    beginIndex → inclusive
-    endIndex   → exclusive
-
-Example:
-
-    "Java"
-
-    substring(1, 3)
-
-returns:
-
-    "av"
-
----
-
-## Q16. What does indexOf() return?
-
-The index of the first occurrence.
-
-Example:
-
-    String s = "Java Java";
-
-    System.out.println(s.indexOf("Java"));
-
-Output:
-
-    0
-
-If not found:
-
-    -1
-
----
-
-## Q17. What does lastIndexOf() do?
-
-Returns the index of the last occurrence.
-
-Example:
-
-    String s = "Java Java";
-
-    System.out.println(s.lastIndexOf("Java"));
-
-Output:
-
-    5
-
----
-
-## Q18. Difference between equals() and equalsIgnoreCase()?
-
-    equals()
-
-is case-sensitive.
-
-    equalsIgnoreCase()
-
-ignores case differences.
-
-Example:
-
-    "Java".equals("java")
-
-Output:
-
-    false
-
-But:
-
-    "Java".equalsIgnoreCase("java")
-
-Output:
-
-    true
-
----
-
-## Q19. What does contains() do?
-
-Checks whether a sequence exists.
-
-Example:
-
-    String s = "Java Developer";
-
-    s.contains("Dev");
-
-Result:
-
-    true
-
----
-
-## Q20. What does startsWith() do?
-
-Checks whether a String starts with a specified prefix.
-
-Example:
-
-    "Java Developer".startsWith("Java")
-
-Result:
-
-    true
-
----
-
-## Q21. What does endsWith() do?
-
-Checks whether a String ends with a specified suffix.
-
-Example:
-
-    "Java Developer".endsWith("Developer")
-
-Result:
-
-    true
-
----
-
-# 8. 🏗️ StringBuilder
-
-StringBuilder is:
-
-    Mutable
-    Not synchronized
-    Generally faster than StringBuffer
-
-Example:
-
-    StringBuilder sb = new StringBuilder("Java");
-
-    sb.append(" Developer");
-
-    System.out.println(sb);
-
-Output:
-
-    Java Developer
-
----
-
-## Q22. Why use StringBuilder?
-
-Use it for frequent String modifications.
-
-Example:
-
-    StringBuilder sb = new StringBuilder();
-
-    for (int i = 0; i < 5; i++) {
-        sb.append(i);
-    }
-
----
-
-## Important StringBuilder Methods
-
-    append()
-    insert()
-    delete()
-    deleteCharAt()
-    replace()
-    reverse()
-    charAt()
-    setCharAt()
-    substring()
-    length()
-    capacity()
-    toString()
-
----
-
-# 9. 🧵 StringBuffer
-
-StringBuffer is:
-
-    Mutable
-    Synchronized
-
-Example:
-
-    StringBuffer sb = new StringBuffer("Java");
-
-    sb.append(" Developer");
-
----
-
-## Q23. Difference between StringBuilder and StringBuffer?
-
-| Feature | StringBuilder | StringBuffer |
-|---|---|---|
-| Mutable | Yes | Yes |
-| Synchronized | No | Yes |
-| Generally faster | Yes | No |
-| Thread-safe individual methods | No | Yes |
-| Package | java.lang | java.lang |
-| Introduced | Java 5 | Java 1.0 |
-
----
-
-## Q24. Which should you use when synchronization is unnecessary?
-
-Generally:
-
-    StringBuilder
-
----
-
-# 10. ⚔️ String vs StringBuilder vs StringBuffer
-
-| Feature | String | StringBuilder | StringBuffer |
-|---|---|---|---|
-| Mutable | ❌ | ✅ | ✅ |
-| Immutable | ✅ | ❌ | ❌ |
-| Synchronized methods | N/A | ❌ | ✅ |
-| Repeated modification | Less suitable | Excellent | Good |
-| Generally fastest for mutable building | ❌ | ✅ | ❌ |
-| String Pool | Yes | No | No |
-| `append()` | ❌ | ✅ | ✅ |
-| `reverse()` | ❌ | ✅ | ✅ |
-| `setCharAt()` | ❌ | ✅ | ✅ |
-| `toString()` | Already String | Converts to String | Converts to String |
-
----
-
-# 11. 🧠 String and Memory
-
-## Example 1
-
-    String s1 = "Java";
-    String s2 = "Java";
-
-Conceptually:
-
-    String Pool
-
-        "Java"
-         ↑ ↑
-         │ │
-        s1 s2
+```java
+int[] arr = {10, 20, 30, 40, 50};
+```
+
+The structure is:
+
+```text
+Index:    0    1    2    3    4
+          ↓    ↓    ↓    ↓    ↓
+Value:   10   20   30   40   50
+```
 
 Therefore:
 
-    s1 == s2
+```java
+arr[0] → 10
+arr[1] → 20
+arr[2] → 30
+arr[3] → 40
+arr[4] → 50
+```
 
-can be:
+The last valid index is:
 
-    true
-
----
-
-## Example 2
-
-    String s1 = new String("Java");
-    String s2 = new String("Java");
-
-Conceptually:
-
-    Pool:
-        "Java"
-
-    Heap:
-        String object
-             ↑
-            s1
-
-        String object
-             ↑
-            s2
-
-Therefore:
-
-    s1 == s2
-
-is:
-
-    false
-
-But:
-
-    s1.equals(s2)
-
-is:
-
-    true
+```java
+arr.length - 1
+```
 
 ---
 
-# 12. 💻 Common Coding Questions
+# 🔹 Array Length
 
-## Q25. Reverse a String
+The `length` property gives the number of elements in an array.
 
-### Using StringBuilder
+```java
+int[] arr = {10, 20, 30, 40, 50};
 
-    String s = "Java";
-
-    String reversed = new StringBuilder(s)
-                            .reverse()
-                            .toString();
-
-    System.out.println(reversed);
+System.out.println(arr.length);
+```
 
 Output:
 
-    avaJ
+```text
+5
+```
+
+### Important
+
+For arrays:
+
+```java
+arr.length
+```
+
+For Strings:
+
+```java
+str.length()
+```
+
+For collections such as `ArrayList`:
+
+```java
+list.size()
+```
+
+Do not confuse them.
 
 ---
 
-## Q26. Reverse a String Without StringBuilder
+# 🔹 Default Values
 
-Use a loop:
+When an array is created using `new`, its elements automatically receive default values.
 
-    String s = "Java";
-    String reversed = "";
+```java
+int[] arr = new int[5];
+```
 
-    for (int i = s.length() - 1; i >= 0; i--) {
-        reversed += s.charAt(i);
-    }
+Initially:
 
-    System.out.println(reversed);
+```text
+[0, 0, 0, 0, 0]
+```
 
-For learning purposes this demonstrates the logic, but for repeated concatenation in production code, StringBuilder is generally preferable.
+### Default Values
 
----
-
-## Q27. Check Palindrome
+| Data Type      | Default Value |
+| -------------- | ------------- |
+| `byte`         | `0`           |
+| `short`        | `0`           |
+| `int`          | `0`           |
+| `long`         | `0L`          |
+| `float`        | `0.0f`        |
+| `double`       | `0.0d`        |
+| `char`         | `'\u0000'`    |
+| `boolean`      | `false`       |
+| Reference type | `null`        |
 
 Example:
 
-    String s = "madam";
+```java
+String[] names = new String[3];
 
-    String reversed = new StringBuilder(s)
-                            .reverse()
-                            .toString();
-
-    if (s.equals(reversed)) {
-        System.out.println("Palindrome");
-    } else {
-        System.out.println("Not Palindrome");
-    }
+System.out.println(names[0]);
+```
 
 Output:
 
-    Palindrome
+```text
+null
+```
 
 ---
 
-## Q28. Count Characters
+# 🔹 How Arrays Work Internally
 
-    String s = "Java";
+When we write:
 
-    int count = s.length();
+```java
+int[] arr = new int[5];
+```
 
-    System.out.println(count);
+Java performs several conceptual steps.
+
+```text
+1. Reference variable is declared
+          ↓
+2. Array object is created
+          ↓
+3. Memory is allocated for 5 int components
+          ↓
+4. Components receive default values
+          ↓
+5. Reference points to the array object
+```
+
+Conceptually:
+
+```text
+Stack
+┌──────────────┐
+│ arr          │
+│ reference ─────────────┐
+└──────────────┘         │
+                         ↓
+                    Heap
+                ┌───────────────┐
+                │ Array Object  │
+                ├───────────────┤
+                │ 0 │ 0 │ 0 │ 0 │ 0 │
+                └───────────────┘
+```
+
+> Exact JVM implementation details are JVM-dependent, but Java arrays are objects and are normally allocated in heap memory.
+
+---
+
+# 🔹 Arrays and Heap Memory
+
+Arrays are objects.
+
+Therefore:
+
+```java
+int[] arr = new int[5];
+```
+
+creates an array object.
+
+The object is stored in heap memory.
+
+The variable:
+
+```java
+arr
+```
+
+holds a reference to that object.
+
+### Important Interview Point
+
+```text
+Array object → Heap
+Reference variable → depends on where the variable itself is declared
+```
+
+For example, a local reference variable is associated with a stack frame, while the array object itself is allocated in the heap.
+
+---
+
+# 🔹 Reference Variable
+
+Consider:
+
+```java
+int[] arr = new int[3];
+```
+
+`arr` is **not the array itself**.
+
+It is a reference variable that refers to the array object.
+
+```text
+arr
+ ↓
+[0, 0, 0]
+```
+
+Another reference can point to the same array:
+
+```java
+int[] arr1 = {10, 20, 30};
+
+int[] arr2 = arr1;
+
+arr2[0] = 100;
+
+System.out.println(arr1[0]);
+```
 
 Output:
 
-    4
+```text
+100
+```
+
+Why?
+
+Because both references point to the same array object.
+
+```text
+arr1 ─────┐
+          ↓
+       [100, 20, 30]
+          ↑
+arr2 ─────┘
+```
 
 ---
 
-## Q29. Count a Specific Character
+# 🔹 Fixed Size
 
-    String s = "banana";
+An array has a fixed length.
 
-    int count = 0;
+```java
+int[] arr = new int[5];
+```
 
-    for (int i = 0; i < s.length(); i++) {
+Its length is permanently:
 
-        if (s.charAt(i) == 'a') {
-            count++;
+```text
+5
+```
+
+You cannot increase it to 10 directly.
+
+This is invalid:
+
+```java
+arr.length = 10;    // ❌
+```
+
+If a larger array is required, a new array must be created.
+
+```java
+int[] oldArr = {10, 20, 30};
+
+int[] newArr = new int[5];
+
+for (int i = 0; i < oldArr.length; i++) {
+    newArr[i] = oldArr[i];
+}
+```
+
+This fixed-size property is one of the major differences between arrays and dynamic collections such as `ArrayList`.
+
+---
+
+# 🔹 Homogeneous Elements
+
+A normal array stores elements of one component type.
+
+```java
+int[] numbers = {10, 20, 30};
+```
+
+All elements are `int`.
+
+This is invalid:
+
+```java
+int[] numbers = {10, 20, "Hello"};  // ❌
+```
+
+However, reference-type arrays have an important concept called **array covariance**.
+
+Example:
+
+```java
+Object[] arr = new String[3];
+
+arr[0] = "Hello";
+```
+
+This is allowed because `String` is a subtype of `Object`.
+
+But:
+
+```java
+arr[1] = 100;
+```
+
+causes:
+
+```text
+ArrayStoreException
+```
+
+because the actual array object is a `String[]`.
+
+---
+
+# 🔹 Types of Arrays
+
+Arrays can be classified based on dimensions.
+
+### 1. One-dimensional array
+
+```java
+int[] arr;
+```
+
+### 2. Two-dimensional array
+
+```java
+int[][] matrix;
+```
+
+### 3. Multidimensional array
+
+```java
+int[][][] cube;
+```
+
+Java technically supports arrays of arrays, which allows structures with multiple dimensions.
+
+---
+
+# 🔹 One-Dimensional Array
+
+A one-dimensional array stores elements in a single sequence.
+
+```java
+int[] arr = {10, 20, 30, 40, 50};
+```
+
+Representation:
+
+```text
+[10] [20] [30] [40] [50]
+  0    1    2    3    4
+```
+
+Example:
+
+```java
+for (int i = 0; i < arr.length; i++) {
+    System.out.println(arr[i]);
+}
+```
+
+---
+
+# 🔹 Multidimensional Array
+
+Java does not have a separate built-in matrix type.
+
+A multidimensional array is essentially an **array whose elements are themselves arrays**.
+
+Example:
+
+```java
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+```
+
+Representation:
+
+```text
+        0  1  2
+      ┌─────────
+0     │ 1  2  3
+1     │ 4  5  6
+2     │ 7  8  9
+```
+
+Access:
+
+```java
+System.out.println(matrix[1][2]);
+```
+
+Output:
+
+```text
+6
+```
+
+---
+
+# 🔹 Jagged Array
+
+Since Java arrays are arrays of arrays, each inner array can have a different length.
+
+```java
+int[][] arr = new int[3][];
+
+arr[0] = new int[2];
+arr[1] = new int[4];
+arr[2] = new int[3];
+```
+
+Representation:
+
+```text
+Row 0 → [0, 0]
+
+Row 1 → [0, 0, 0, 0]
+
+Row 2 → [0, 0, 0]
+```
+
+This is called a **jagged array**.
+
+Example:
+
+```java
+int[][] arr = {
+    {1, 2},
+    {3, 4, 5, 6},
+    {7, 8, 9}
+};
+```
+
+---
+
+# 🔹 Traversing an Array
+
+Traversal means visiting each element of an array.
+
+## Using Traditional For Loop
+
+```java
+int[] arr = {10, 20, 30, 40, 50};
+
+for (int i = 0; i < arr.length; i++) {
+    System.out.println(arr[i]);
+}
+```
+
+Output:
+
+```text
+10
+20
+30
+40
+50
+```
+
+---
+
+# 🔹 For Loop vs Enhanced For Loop
+
+## Traditional For Loop
+
+```java
+for (int i = 0; i < arr.length; i++) {
+    System.out.println(arr[i]);
+}
+```
+
+Useful when:
+
+* Index is required
+* We need to modify elements
+* We need to traverse partially
+* We need to traverse backwards
+
+Example:
+
+```java
+for (int i = arr.length - 1; i >= 0; i--) {
+    System.out.println(arr[i]);
+}
+```
+
+---
+
+## Enhanced For Loop
+
+```java
+for (int value : arr) {
+    System.out.println(value);
+}
+```
+
+Useful when:
+
+* Only values are required
+* Index is not required
+* Simple traversal is needed
+
+---
+
+# 🔹 Taking Array Input
+
+Using `Scanner`:
+
+```java
+import java.util.Scanner;
+
+public class ArrayInput {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = sc.nextInt();
         }
+
+        for (int value : arr) {
+            System.out.println(value);
+        }
+
+        sc.close();
     }
+}
+```
 
-    System.out.println(count);
+Example Input:
+
+```text
+5
+10 20 30 40 50
+```
+
+---
+
+# 🔹 Printing an Array
+
+This does **not** print array elements correctly:
+
+```java
+System.out.println(arr);
+```
+
+It generally prints a class-name/hash-style representation.
+
+For example:
+
+```text
+[I@5e91993f
+```
+
+For primitive arrays, use:
+
+```java
+import java.util.Arrays;
+
+System.out.println(Arrays.toString(arr));
+```
 
 Output:
 
-    3
+```text
+[10, 20, 30, 40, 50]
+```
+
+For multidimensional arrays:
+
+```java
+System.out.println(Arrays.deepToString(matrix));
+```
 
 ---
 
-## Q30. Remove Spaces
+# 🔹 Array Object and Object Class
 
-    String s = "Java Developer";
+Every Java array is an object.
 
-    String result = s.replace(" ", "");
+Arrays implicitly inherit methods from `Object`.
 
-    System.out.println(result);
+For example:
+
+```java
+int[] arr = {10, 20, 30};
+
+System.out.println(arr.getClass());
+System.out.println(arr.toString());
+System.out.println(arr.hashCode());
+```
+
+Arrays do not override methods like `toString()` to display their contents.
+
+Therefore:
+
+```java
+System.out.println(arr);
+```
+
+does not produce:
+
+```text
+[10, 20, 30]
+```
+
+Use:
+
+```java
+Arrays.toString(arr);
+```
+
+instead.
+
+---
+
+# 🔹 Important Array Properties
+
+Arrays have an important built-in property:
+
+```java
+arr.length
+```
+
+Example:
+
+```java
+int[] arr = {10, 20, 30};
+
+System.out.println(arr.length);
+```
 
 Output:
 
-    JavaDeveloper
+```text
+3
+```
+
+### Important
+
+`length` is a property, not a method.
+
+Correct:
+
+```java
+arr.length
+```
+
+Incorrect:
+
+```java
+arr.length()
+```
 
 ---
 
-# 13. 🚨 Interview Traps
+# 🔹 Common Array Operations
 
-## Trap 1
-
-    String s = "Java";
-
-    s.concat(" Developer");
-
-    System.out.println(s);
-
-Output:
-
-    Java
-
-Reason:
-
-    String → Immutable
+| Operation     | Example           | Typical Complexity |
+| ------------- | ----------------- | -----------------: |
+| Access        | `arr[i]`          |               O(1) |
+| Update        | `arr[i] = x`      |               O(1) |
+| Traverse      | loop              |               O(n) |
+| Linear Search | loop              |               O(n) |
+| Binary Search | sorted array      |           O(log n) |
+| Find Minimum  | loop              |               O(n) |
+| Find Maximum  | loop              |               O(n) |
+| Reverse       | two pointers      |               O(n) |
+| Copy          | `Arrays.copyOf()` |               O(n) |
 
 ---
 
-## Trap 2
+# 🔹 Time Complexity
 
-    String s = "Java";
+Array access is generally:
 
-    s = s.concat(" Developer");
+```text
+O(1)
+```
 
-Now:
+because the JVM can directly access an element using its index.
 
-    Java Developer
+For example:
 
-Because the new String was assigned back to `s`.
+```java
+arr[500];
+```
 
----
+does not require visiting:
 
-## Trap 3
+```text
+arr[0]
+arr[1]
+arr[2]
+...
+arr[499]
+```
 
-    String a = "Java";
-    String b = "Java";
+The index is used to locate the required component directly.
 
-    System.out.println(a == b);
+### Traversal
 
-Output:
+```java
+for (int i = 0; i < arr.length; i++) {
+    System.out.println(arr[i]);
+}
+```
 
-    true
+Time:
 
-Because identical literals can refer to the same pooled object.
+```text
+O(n)
+```
 
----
+### Linear Search
 
-## Trap 4
+```text
+O(n)
+```
 
-    String a = new String("Java");
-    String b = new String("Java");
+### Binary Search
 
-    System.out.println(a == b);
+For a sorted array:
 
-Output:
-
-    false
-
-Different objects.
-
----
-
-## Trap 5
-
-    String a = new String("Java");
-    String b = new String("Java");
-
-    System.out.println(a.equals(b));
-
-Output:
-
-    true
-
-Same content.
-
----
-
-## Trap 6
-
-    StringBuilder sb = new StringBuilder("Java");
-
-    sb.append(" Developer");
-
-    System.out.println(sb);
-
-Output:
-
-    Java Developer
-
-Because StringBuilder is mutable.
+```text
+O(log n)
+```
 
 ---
 
-## Trap 7
+# 🔹 Common Mistakes
 
-    StringBuffer sb = new StringBuffer("Java");
+## Mistake 1: Using Invalid Index
 
-    sb.reverse();
+```java
+int[] arr = {10, 20, 30};
 
-    System.out.println(sb);
+System.out.println(arr[3]); // ❌
+```
 
-Output:
+Valid indexes:
 
-    avaJ
+```text
+0
+1
+2
+```
 
----
+Result:
 
-## Trap 8
-
-    String s = null;
-
-    System.out.println(s.length());
-
-This throws:
-
-    NullPointerException
-
-Because `s` does not reference a String object.
+```text
+ArrayIndexOutOfBoundsException
+```
 
 ---
 
-# 14. 🔥 Top 30 Interview Questions
+## Mistake 2: Using `length()`
 
-## Q1. What is String?
+```java
+arr.length(); // ❌
+```
 
-**Answer:**
+Correct:
 
-String is a class representing a sequence of characters.
-
----
-
-## Q2. Is String primitive?
-
-**Answer:**
-
-No. String is a class.
+```java
+arr.length;
+```
 
 ---
 
-## Q3. Is String immutable?
+## Mistake 3: Confusing Array and ArrayList Size
 
-**Answer:**
+Array:
+
+```java
+arr.length
+```
+
+ArrayList:
+
+```java
+list.size()
+```
+
+---
+
+## Mistake 4: Assuming Array Can Grow
+
+```java
+int[] arr = new int[5];
+```
+
+The array length cannot be changed.
+
+---
+
+## Mistake 5: Printing Directly
+
+```java
+System.out.println(arr);
+```
+
+Use:
+
+```java
+System.out.println(Arrays.toString(arr));
+```
+
+---
+
+## Mistake 6: Forgetting Zero-Based Indexing
+
+For:
+
+```java
+int[] arr = new int[5];
+```
+
+The last index is:
+
+```java
+4
+```
+
+not:
+
+```java
+5
+```
+
+---
+
+# 🔹 Interview Traps
+
+### Trap 1: Is an array an object?
 
 Yes.
 
----
+```java
+int[] arr = new int[5];
+```
 
-## Q4. Why is String immutable?
-
-**Answer:**
-
-Immutability supports safe sharing, String Pooling, security, stable hashing, and predictable behavior.
+The array itself is an object.
 
 ---
 
-## Q5. Is String final?
-
-**Answer:**
+### Trap 2: Can an array store primitive values?
 
 Yes.
 
----
+```java
+int[] arr = {1, 2, 3};
+```
 
-## Q6. Which package contains String?
+The components are primitive `int` values.
 
-**Answer:**
-
-    java.lang
-
----
-
-## Q7. What is String Pool?
-
-**Answer:**
-
-A JVM-managed pool used to share canonical String objects, particularly String literals.
+The array object itself is still an object.
 
 ---
 
-## Q8. What is the difference between `==` and `equals()`?
-
-**Answer:**
-
-For references, `==` checks reference identity, while String's `equals()` checks content equality.
-
----
-
-## Q9. What happens with `new String("Java")`?
-
-**Answer:**
-
-It explicitly creates a new String object, while the literal `"Java"` may also exist in the String Pool.
-
----
-
-## Q10. What does intern() do?
-
-**Answer:**
-
-It returns the canonical pooled representation of the String.
-
----
-
-## Q11. Can String be modified?
-
-**Answer:**
-
-No. String is immutable.
-
----
-
-## Q12. What does concat() return?
-
-**Answer:**
-
-A String containing the concatenated result.
-
----
-
-## Q13. What is StringBuilder?
-
-**Answer:**
-
-A mutable sequence of characters designed for efficient string construction and modification.
-
----
-
-## Q14. Is StringBuilder synchronized?
-
-**Answer:**
+### Trap 3: Is array size dynamic?
 
 No.
 
----
+Once created:
 
-## Q15. What is StringBuffer?
+```java
+int[] arr = new int[5];
+```
 
-**Answer:**
-
-A mutable sequence of characters whose methods are synchronized.
-
----
-
-## Q16. Is StringBuffer synchronized?
-
-**Answer:**
-
-Its methods are synchronized.
+its length is fixed.
 
 ---
 
-## Q17. Which is generally faster, StringBuilder or StringBuffer?
+### Trap 4: Can arrays contain objects?
 
-**Answer:**
+Yes.
 
-StringBuilder is generally faster when synchronization is not required.
+```java
+String[] names = {"A", "B", "C"};
+```
 
----
-
-## Q18. Why is StringBuilder faster?
-
-**Answer:**
-
-It does not incur method synchronization overhead.
+The array contains references to `String` objects.
 
 ---
 
-## Q19. What is the difference between mutable and immutable?
+### Trap 5: What happens if the index is invalid?
 
-**Answer:**
+An exception is thrown:
 
-Mutable objects can change their state after creation. Immutable objects cannot.
-
----
-
-## Q20. Can StringBuilder be converted to String?
-
-**Answer:**
-
-Yes:
-
-    sb.toString();
+```text
+ArrayIndexOutOfBoundsException
+```
 
 ---
 
-## Q21. Can StringBuffer be converted to String?
+### Trap 6: Does `arr.length` return the last index?
 
-**Answer:**
+No.
 
-Yes:
+It returns the number of elements.
 
-    sb.toString();
+```java
+int[] arr = new int[5];
 
----
-
-## Q22. What does charAt() return?
-
-**Answer:**
-
-A `char` at the specified index.
+arr.length      // 5
+arr.length - 1  // 4 → last valid index
+```
 
 ---
 
-## Q23. What does length() return?
+# 🔹 Advantages
 
-**Answer:**
+### 1. Fast Random Access
 
-The number of characters represented by the String.
+```java
+arr[index]
+```
 
----
+typically provides:
 
-## Q24. What does substring() return?
+```text
+O(1)
+```
 
-**Answer:**
+access.
 
-A new String representing the requested range.
+### 2. Simple Structure
 
----
+Arrays are easy to understand and use.
 
-## Q25. What does indexOf() return if the value is not found?
+### 3. Memory Efficiency
 
-**Answer:**
+Primitive arrays can store primitive values directly as components without wrapper objects.
 
-    -1
+### 4. Foundation of DSA
 
----
+Many DSA problems are based on arrays.
 
-## Q26. Difference between equals() and equalsIgnoreCase()?
+Examples:
 
-**Answer:**
+* Searching
+* Sorting
+* Prefix Sum
+* Two Pointers
+* Sliding Window
+* Binary Search
+* Kadane's Algorithm
+* Frequency Counting
 
-`equals()` is case-sensitive, while `equalsIgnoreCase()` ignores case.
+### 5. Predictable Size
 
----
-
-## Q27. Why can String be used as a HashMap key?
-
-**Answer:**
-
-Because String is immutable, its equality-relevant content and hash code remain stable after insertion.
-
----
-
-## Q28. What happens if you modify a String?
-
-**Answer:**
-
-You cannot modify the existing String object. Operations that appear to modify it return a new String.
+The fixed size can be useful when the required number of elements is known.
 
 ---
 
-## Q29. What should you use for repeated concatenation inside a loop?
+# 🔹 Disadvantages
 
-**Answer:**
+### 1. Fixed Size
 
-Generally `StringBuilder` when synchronization is not required.
+Cannot grow or shrink after creation.
 
----
+### 2. Insertion Can Be Expensive
 
-## Q30. Give the difference in one line.
+Inserting into the middle may require shifting elements.
 
-**Answer:**
+### 3. Deletion Can Be Expensive
 
-    String
-        → Immutable
+Deleting from the middle may require shifting elements.
 
-    StringBuilder
-        → Mutable + Not synchronized
+### 4. Limited Built-In Operations
 
-    StringBuffer
-        → Mutable + Synchronized
+Arrays provide basic indexing and length information, while collections provide many additional methods.
 
----
+### 5. Homogeneous Components
 
-# 15. ⚡ Rapid-Fire Questions
-
-| Question | Answer |
-|---|---|
-| String primitive? | No |
-| String class? | Yes |
-| String package? | `java.lang` |
-| String final? | Yes |
-| String mutable? | No |
-| StringBuilder mutable? | Yes |
-| StringBuffer mutable? | Yes |
-| StringBuilder synchronized? | No |
-| StringBuffer synchronized? | Yes |
-| String Pool? | Yes |
-| `==` checks? | Reference identity |
-| `equals()` checks? | Content |
-| `charAt()` returns? | `char` |
-| `length()` returns? | `int` |
-| `indexOf()` not found? | `-1` |
-| StringBuilder → String? | `toString()` |
-| StringBuffer → String? | `toString()` |
-| Reverse String? | `StringBuilder.reverse()` |
-| StringBuilder generally faster? | Yes |
-| StringBuffer synchronization overhead? | Yes |
+A normal array has a single component type.
 
 ---
 
-# 16. 🧪 Output-Based Questions
+# 🔹 Array vs Variable
 
-## Question 1
-
-    String s1 = "Java";
-    String s2 = "Java";
-
-    System.out.println(s1 == s2);
-
-### Answer
-
-    true
-
-### Reason
-
-Both literals can refer to the same pooled String object.
+| Feature   | Variable          | Array                    |
+| --------- | ----------------- | ------------------------ |
+| Stores    | Usually one value | Multiple values          |
+| Example   | `int x = 10`      | `int[] arr`              |
+| Indexing  | No                | Yes                      |
+| Size      | One value         | Fixed number of elements |
+| Data Type | Declared type     | Component type           |
+| DSA Usage | Limited           | Very high                |
 
 ---
 
-## Question 2
+# 🔹 Array vs ArrayList
 
-    String s1 = new String("Java");
-    String s2 = new String("Java");
+| Feature                    | Array          | ArrayList            |
+| -------------------------- | -------------- | -------------------- |
+| Size                       | Fixed          | Dynamic              |
+| Stores primitives directly | Yes            | No                   |
+| Stores objects             | Yes            | Yes                  |
+| Syntax                     | `int[]`        | `ArrayList<Integer>` |
+| Access                     | `arr[i]`       | `list.get(i)`        |
+| Length                     | `arr.length`   | `list.size()`        |
+| Add element                | Not directly   | `add()`              |
+| Remove element             | Not directly   | `remove()`           |
+| Performance                | Lower overhead | More abstraction     |
+| Generics                   | No             | Yes                  |
 
-    System.out.println(s1 == s2);
+Example:
 
-### Answer
+```java
+int[] arr = new int[5];
+```
 
-    false
+vs
 
-### Reason
-
-Two separate String objects are explicitly created.
-
----
-
-## Question 3
-
-    String s1 = new String("Java");
-    String s2 = new String("Java");
-
-    System.out.println(s1.equals(s2));
-
-### Answer
-
-    true
-
-### Reason
-
-Their contents are equal.
+```java
+ArrayList<Integer> list = new ArrayList<>();
+```
 
 ---
 
-## Question 4
+# 🔹 DSA Patterns Related to Arrays
 
-    String s = "Java";
+Arrays are extremely important in DSA.
 
-    s.concat(" Developer");
+## 1. Linear Traversal
 
-    System.out.println(s);
+Pattern:
 
-### Answer
+```java
+for (int i = 0; i < arr.length; i++) {
+    // process arr[i]
+}
+```
 
-    Java
+Used for:
 
-### Reason
-
-The returned String was not assigned back.
-
----
-
-## Question 5
-
-    String s = "Java";
-
-    s = s.concat(" Developer");
-
-    System.out.println(s);
-
-### Answer
-
-    Java Developer
+* Sum
+* Minimum
+* Maximum
+* Counting
+* Searching
 
 ---
 
-## Question 6
+## 2. Two Pointers
 
-    StringBuilder sb = new StringBuilder("Java");
+Typical structure:
 
-    sb.append(" Developer");
+```java
+int left = 0;
+int right = arr.length - 1;
 
-    System.out.println(sb);
+while (left < right) {
 
-### Answer
+    // process
 
-    Java Developer
+    left++;
+    right--;
+}
+```
 
----
+Used for:
 
-## Question 7
-
-    StringBuffer sb = new StringBuffer("Java");
-
-    sb.reverse();
-
-    System.out.println(sb);
-
-### Answer
-
-    avaJ
+* Reverse array
+* Two Sum in sorted array
+* Pair problems
+* Palindrome-like problems
 
 ---
 
-## Question 8
+## 3. Sliding Window
 
-    String s = "Java";
+Used when dealing with contiguous subarrays.
 
-    System.out.println(s.charAt(1));
+Example pattern:
 
-### Answer
+```java
+int left = 0;
 
-    a
+for (int right = 0; right < arr.length; right++) {
 
----
+    // expand window
 
-## Question 9
+    while (/* condition */) {
+        // shrink window
+        left++;
+    }
+}
+```
 
-    String s = "Java";
+Used for:
 
-    System.out.println(s.substring(1, 3));
-
-### Answer
-
-    av
-
----
-
-## Question 10
-
-    String s = "Java";
-
-    System.out.println(s.indexOf("v"));
-
-### Answer
-
-    2
+* Maximum subarray with constraints
+* Longest/shortest valid subarray
+* Fixed-size windows
 
 ---
 
-# 17. 🎤 30-Second Interview Answer
+## 4. Prefix Sum
 
-> **String is a final, immutable class in Java's `java.lang` package that represents a sequence of characters. Java also provides StringBuilder and StringBuffer for mutable character sequences. StringBuilder is not synchronized and is generally preferred for repeated string manipulation when synchronization is unnecessary. StringBuffer is synchronized and can be used when synchronized operations on a shared mutable buffer are required. String also has special support through the String Pool, which allows identical String literals to be shared.**
+Used for efficient range-sum queries.
 
----
+```java
+int[] prefix = new int[arr.length];
 
-# 18. 🎤 1-Minute Interview Answer
+prefix[0] = arr[0];
 
-> **In Java, String is an immutable class representing a sequence of characters. Because it is immutable, operations such as concatenation don't modify the existing String; they produce a new String result. String literals can be stored and shared through the String Pool. For frequent string modifications, Java provides StringBuilder and StringBuffer. Both are mutable. StringBuilder is not synchronized and generally has better performance, so it is commonly used when synchronization isn't required. StringBuffer provides synchronized methods and can be useful for synchronized operations on shared mutable character data. One important interview distinction is that `==` compares reference identity, while `equals()` compares String content.**
-
----
-
-# 19. 🧾 Cheat Sheet
-
-## String
-
-    Immutable
-    Final
-    java.lang
-    String Pool
-    Content comparison → equals()
-    Reference comparison → ==
+for (int i = 1; i < arr.length; i++) {
+    prefix[i] = prefix[i - 1] + arr[i];
+}
+```
 
 ---
 
-## StringBuilder
+## 5. Frequency Counting
 
-    Mutable
-    Not synchronized
-    Generally faster
-    Repeated modifications
-    append()
-    insert()
-    delete()
-    reverse()
+For values with a manageable range:
 
----
+```java
+int[] frequency = new int[10];
 
-## StringBuffer
-
-    Mutable
-    Synchronized methods
-    More synchronization overhead
-    Shared mutable operations
-    append()
-    insert()
-    delete()
-    reverse()
+for (int value : arr) {
+    frequency[value]++;
+}
+```
 
 ---
 
-## Important String Methods
+## 6. Binary Search
 
-    length()
-    charAt()
-    substring()
-    indexOf()
-    lastIndexOf()
-    equals()
-    equalsIgnoreCase()
-    contains()
-    startsWith()
-    endsWith()
-    concat()
-    replace()
-    split()
-    trim()
-    strip()
-    toLowerCase()
-    toUpperCase()
+Works on a sorted array.
+
+```java
+int left = 0;
+int right = arr.length - 1;
+
+while (left <= right) {
+
+    int mid = left + (right - left) / 2;
+
+    if (arr[mid] == target) {
+        return mid;
+    }
+
+    if (arr[mid] < target) {
+        left = mid + 1;
+    } else {
+        right = mid - 1;
+    }
+}
+```
+
+Time complexity:
+
+```text
+O(log n)
+```
 
 ---
 
-# 20. 🧠 Memory Tricks
+# 🔹 Important DSA Questions
 
-## 🔥 Trick 1
+## 1. Find Maximum Element
+
+```java
+int max = arr[0];
+
+for (int i = 1; i < arr.length; i++) {
+    if (arr[i] > max) {
+        max = arr[i];
+    }
+}
+```
+
+Time:
+
+```text
+O(n)
+```
+
+---
+
+## 2. Find Minimum Element
+
+```java
+int min = arr[0];
+
+for (int i = 1; i < arr.length; i++) {
+    if (arr[i] < min) {
+        min = arr[i];
+    }
+}
+```
+
+Time:
+
+```text
+O(n)
+```
+
+---
+
+## 3. Reverse an Array
+
+```java
+int left = 0;
+int right = arr.length - 1;
+
+while (left < right) {
+
+    int temp = arr[left];
+    arr[left] = arr[right];
+    arr[right] = temp;
+
+    left++;
+    right--;
+}
+```
+
+Time:
+
+```text
+O(n)
+```
+
+Space:
+
+```text
+O(1)
+```
+
+---
+
+## 4. Linear Search
+
+```java
+for (int i = 0; i < arr.length; i++) {
+
+    if (arr[i] == target) {
+        return i;
+    }
+}
+
+return -1;
+```
+
+Time:
+
+```text
+O(n)
+```
+
+---
+
+## 5. Find Sum
+
+```java
+int sum = 0;
+
+for (int value : arr) {
+    sum += value;
+}
+```
+
+Time:
+
+```text
+O(n)
+```
+
+---
+
+# 🔹 How to Think About Array Problems
+
+When you see an array problem, ask these questions:
+
+### Step 1 — What is the input?
+
+```text
+Array?
+Sorted array?
+Unsorted array?
+Positive numbers?
+Negative numbers?
+Duplicates?
+```
+
+### Step 2 — What is being asked?
+
+```text
+Search?
+Maximum?
+Minimum?
+Pair?
+Subarray?
+Subsequence?
+Frequency?
+Sorting?
+Modification?
+```
+
+### Step 3 — Is the array sorted?
+
+If yes, consider:
+
+```text
+Binary Search
+Two Pointers
+```
+
+### Step 4 — Is the problem about a contiguous section?
+
+Consider:
+
+```text
+Sliding Window
+Prefix Sum
+Kadane's Algorithm
+```
+
+### Step 5 — Is frequency involved?
+
+Consider:
+
+```text
+HashMap
+HashSet
+Frequency Array
+```
+
+### Step 6 — Can we solve it in-place?
+
+Ask:
+
+> Do I really need another array?
+
+If not, try to solve it using:
+
+```text
+O(1) extra space
+```
+
+---
+
+# 🔹 Top 10 Interview Questions
+
+### 1. What is an array in Java?
+
+An array is an object that stores a fixed number of components of the same type and provides indexed access to them.
+
+---
+
+### 2. Is an array an object in Java?
+
+Yes.
+
+```java
+int[] arr = new int[5];
+```
+
+The array itself is an object.
+
+---
+
+### 3. Where is an array stored?
+
+The array object is allocated in heap memory under the normal Java memory model.
+
+---
+
+### 4. Is array size fixed?
+
+Yes.
+
+Once an array is created, its length cannot be changed.
+
+---
+
+### 5. What is the first index of an array?
+
+```text
+0
+```
+
+Java arrays use zero-based indexing.
+
+---
+
+### 6. What is the last valid index?
+
+```java
+arr.length - 1
+```
+
+---
+
+### 7. What is the difference between `length` and `length()`?
+
+For arrays:
+
+```java
+arr.length
+```
+
+For Strings:
+
+```java
+str.length()
+```
+
+---
+
+### 8. What happens when an invalid index is accessed?
+
+An:
+
+```text
+ArrayIndexOutOfBoundsException
+```
+
+is thrown.
+
+---
+
+### 9. Can an array store primitive values?
+
+Yes.
+
+```java
+int[] arr = {10, 20, 30};
+```
+
+---
+
+### 10. Can an array size be increased?
+
+Not directly.
+
+A new array must be created and elements copied if more capacity is required.
+
+---
+
+# 🔹 30-Second Interview Answer
+
+> "An array in Java is an object used to store a fixed number of elements of the same component type. It uses zero-based indexing, so elements can be accessed using an integer index, generally in O(1) time. Arrays are created using the `new` keyword or an array initializer, and their length is fixed after creation. Arrays are widely used in DSA because they provide efficient random access and form the foundation for techniques such as searching, sorting, two pointers, sliding window, and prefix sums."
+
+---
+
+# 🔹 Cheat Sheet
+
+```text
+ARRAY
+│
+├── Object
+│
+├── Fixed Size
+│
+├── Same Component Type
+│
+├── Zero-Based Indexing
+│
+├── Random Access → O(1)
+│
+├── Length → arr.length
+│
+├── Last Index → arr.length - 1
+│
+├── Creation
+│      └── new int[5]
+│
+├── Initialization
+│      └── {10, 20, 30}
+│
+├── Traversal
+│      ├── for loop
+│      └── enhanced for loop
+│
+├── Dimensions
+│      ├── 1D
+│      ├── 2D
+│      └── Multidimensional
+│
+└── DSA Patterns
+       ├── Linear Traversal
+       ├── Two Pointers
+       ├── Sliding Window
+       ├── Prefix Sum
+       ├── Binary Search
+       ├── Frequency Counting
+       └── Kadane's Algorithm
+```
+
+---
+
+# 🧠 Quick Memory Trick
+
+```text
+ARRAY = FIXED + SAME TYPE + INDEXED
+
+F → Fixed Size
+S → Same Component Type
+I → Indexed Access
+```
 
 Remember:
 
-    S
-    ↓
-    String
-    ↓
-    Still / Stable
-    ↓
-    Immutable
+```java
+arr.length        // number of elements
+arr.length - 1    // last valid index
+arr[i]            // access element
+```
 
 ---
 
-## 🔥 Trick 2
+# ⚠️ Important Interview Traps
 
-    Builder
-       ↓
-    Build
-       ↓
-    Mutable
-       ↓
-    No synchronization
-
----
-
-## 🔥 Trick 3
-
-    Buffer
-       ↓
-    Shared buffer
-       ↓
-    Synchronization
+```text
+Array is an object                → YES
+Array has fixed length            → YES
+Array starts from index 0         → YES
+Array length can be changed       → NO
+arr.length()                      → WRONG
+arr.length                        → CORRECT
+Array object                      → Heap
+Array reference                   → depends on variable scope
+Invalid index                     → ArrayIndexOutOfBoundsException
+Array access                      → O(1)
+Array traversal                   → O(n)
+```
 
 ---
 
-## 🔥 Trick 4
+# 🚀 DSA Importance
 
-For comparison:
+Arrays are one of the **most important foundations of DSA**.
 
-    String
-        = Immutable
+Before moving deeply into advanced data structures, become comfortable with:
 
-    StringBuilder
-        = Mutable + No Sync
+* Array traversal
+* Searching
+* Sorting
+* Reversal
+* Rotation
+* Prefix sum
+* Two pointers
+* Sliding window
+* Binary search
+* Subarrays
+* Frequency counting
+* In-place modification
+* Kadane's algorithm
+* Matrix problems
 
-    StringBuffer
-        = Mutable + Sync
-
----
-
-## 🔥 Trick 5 — `==` vs equals()
-
-    ==
-       ↓
-    Same object?
-
-    equals()
-       ↓
-    Same content?
+> **Mastering arrays makes many later DSA topics significantly easier.**
 
 ---
 
-# 21. ✅ Final Revision Checklist
+# 📌 Final Summary
 
-Before considering the String chapter complete, make sure you can explain all of these without looking at the notes:
+An array in Java:
 
-### Fundamentals
+```text
+✔ Is an object
+✔ Stores a fixed number of components
+✔ Has a single component type
+✔ Uses zero-based indexing
+✔ Provides O(1) indexed access
+✔ Has a fixed length
+✔ Uses arr.length
+✔ Can contain primitive values
+✔ Can contain object references
+✔ Can be multidimensional
+✔ Is heavily used in DSA
+```
 
-    [ ] What is String?
-    [ ] Is String primitive?
-    [ ] Why is String a class?
-    [ ] Which package contains String?
-    [ ] Why is String final?
-    [ ] What does immutable mean?
+### Core Example
 
-### Creation
+```java
+public class ArrayDemo {
 
-    [ ] String literal
-    [ ] new String()
-    [ ] Difference between them
-    [ ] String Pool
-    [ ] intern()
+    public static void main(String[] args) {
 
-### Immutability
+        int[] arr = {10, 20, 30, 40, 50};
 
-    [ ] Why is String immutable?
-    [ ] What happens during concatenation?
-    [ ] Why is immutability useful?
-    [ ] Why is String useful as a HashMap key?
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println("Index " + i + " = " + arr[i]);
+        }
+    }
+}
+```
 
-### Comparison
+Output:
 
-    [ ] == vs equals()
-    [ ] equalsIgnoreCase()
-    [ ] String vs StringBuilder
-    [ ] StringBuilder vs StringBuffer
-    [ ] String vs StringBuffer
-
-### Methods
-
-    [ ] length()
-    [ ] charAt()
-    [ ] substring()
-    [ ] indexOf()
-    [ ] lastIndexOf()
-    [ ] contains()
-    [ ] startsWith()
-    [ ] endsWith()
-    [ ] concat()
-    [ ] replace()
-    [ ] split()
-    [ ] trim()
-    [ ] strip()
-
-### Mutable Strings
-
-    [ ] StringBuilder
-    [ ] StringBuffer
-    [ ] append()
-    [ ] insert()
-    [ ] delete()
-    [ ] reverse()
-    [ ] setCharAt()
-    [ ] capacity()
-    [ ] toString()
-
-### Interview Concepts
-
-    [ ] String Pool
-    [ ] Immutability
-    [ ] Final class
-    [ ] Reference equality
-    [ ] Content equality
-    [ ] Thread safety
-    [ ] Synchronization
-    [ ] Performance
-    [ ] Memory behavior
+```text
+Index 0 = 10
+Index 1 = 20
+Index 2 = 30
+Index 3 = 40
+Index 4 = 50
+```
 
 ---
 
-# 🏆 MASTER MEMORY CARD
+# 🎯 Key Takeaway
 
-    ┌────────────────────────────────────────────┐
-    │                  STRING                    │
-    ├────────────────────────────────────────────┤
-    │ Immutable                                  │
-    │ final class                                │
-    │ java.lang                                  │
-    │ String Pool                                │
-    │ == → reference identity                    │
-    │ equals() → content equality                │
-    └────────────────────────────────────────────┘
+> **An array is a fixed-size Java object containing elements of the same component type, where each element is accessed through a zero-based index.**
 
-                      VS
+For DSA:
 
-    ┌────────────────────────────────────────────┐
-    │              STRINGBUILDER                 │
-    ├────────────────────────────────────────────┤
-    │ Mutable                                    │
-    │ Not synchronized                           │
-    │ Generally faster                           │
-    │ Repeated string construction               │
-    └────────────────────────────────────────────┘
+```text
+Array
+  ↓
+Traversal
+  ↓
+Searching / Sorting
+  ↓
+Two Pointers
+  ↓
+Sliding Window
+  ↓
+Prefix Sum
+  ↓
+Binary Search
+  ↓
+Advanced DSA
+```
 
-                      VS
-
-    ┌────────────────────────────────────────────┐
-    │               STRINGBUFFER                 │
-    ├────────────────────────────────────────────┤
-    │ Mutable                                    │
-    │ Synchronized methods                       │
-    │ More synchronization overhead              │
-    │ Shared mutable operations                  │
-    └────────────────────────────────────────────┘
-
----
-
-# ⭐ THE 3-LINE INTERVIEW REVISION
-
-    String
-        → Immutable
-
-    StringBuilder
-        → Mutable + Not Synchronized
-
-    StringBuffer
-        → Mutable + Synchronized
-
-> 💡 If you remember only these three lines, you already have the core distinction between the three classes.
-
----
-
-# 🚀 STRING CHAPTER COMPLETE
-
-    04-Strings/
-    │
-    ├── 01-String-Introduction.md
-    ├── 02-String-Pool.md
-    ├── 03-String-Immutability.md
-    ├── 04-String-Methods.md
-    ├── 05-StringBuilder.md
-    ├── 06-StringBuffer.md
-    ├── 07-String-vs-StringBuilder-vs-StringBuffer.md
-    └── 08-String-Interview-Questions.md  ← YOU ARE HERE
-
----
-
-# 🎯 Final Takeaway
-
-> **String is immutable and ideal for fixed textual values. StringBuilder is mutable and generally preferred for efficient string construction when synchronization is unnecessary. StringBuffer is also mutable but provides synchronized methods for situations where synchronized access to a shared buffer is required.**
-
-# 🔥 STRING MASTERED
+```
+```
