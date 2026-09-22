@@ -1,6 +1,6 @@
 # 🔢 Multidimensional Array in Java
 
-> **A multidimensional array in Java is an array whose elements are themselves arrays. The most common multidimensional array is a 2D array, which is commonly represented as rows and columns.**
+> **A multidimensional array in Java is an array whose elements are themselves arrays. The most common multidimensional array is a 2D array, commonly used to represent rows and columns.**
 
 ---
 
@@ -42,55 +42,72 @@
 34. [Multidimensional Array and `null`](#34--multidimensional-array-and-null)
 35. [Common Exceptions](#35--common-exceptions)
 36. [Time Complexity](#36--time-complexity)
-37. [Common Mistakes](#37--common-mistakes)
-38. [Interview Traps](#38--interview-traps)
-39. [Top 20 Interview Questions](#39--top-20-interview-questions)
-40. [Coding Problems](#40--coding-problems)
-41. [30-Second Interview Answer](#41--30-second-interview-answer)
-42. [Cheat Sheet](#42--cheat-sheet)
-43. [Memory Tricks](#43--memory-tricks)
-44. [Final Revision Checklist](#44--final-revision-checklist)
+37. [DSA Patterns](#37--dsa-patterns)
+38. [How to Identify 2D Array Problems](#38--how-to-identify-2d-array-problems)
+39. [DSA Problem-Solving Approach](#39--dsa-problem-solving-approach)
+40. [DSA Coding Problems](#40--dsa-coding-problems)
+41. [Common Mistakes](#41--common-mistakes)
+42. [Interview Traps](#42--interview-traps)
+43. [Top 20 Interview Questions](#43--top-20-interview-questions)
+44. [30-Second Interview Answer](#44--30-second-interview-answer)
+45. [Cheat Sheet](#45--cheat-sheet)
+46. [Memory Tricks](#46--memory-tricks)
+47. [Final Revision Checklist](#47--final-revision-checklist)
+48. [Master Memory Card](#48--master-memory-card)
+49. [One-Line Interview Definition](#49--one-line-interview-definition)
 
 ---
 
 # 1. 🔹 What is a Multidimensional Array?
 
-A multidimensional array is an array containing other arrays.
+A multidimensional array is an array whose elements are themselves arrays.
 
 The most commonly used multidimensional array is a **two-dimensional array**.
 
 Example:
 
-    int[][] matrix = {
-        {1, 2, 3},
-        {4, 5, 6},
-        {7, 8, 9}
-    };
+```java
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+```
 
 Visual representation:
 
-    Column
-       0   1   2
-    ┌───┬───┬───┐
- 0  │ 1 │ 2 │ 3 │
-    ├───┼───┼───┤
- 1  │ 4 │ 5 │ 6 │
-    ├───┼───┼───┤
- 2  │ 7 │ 8 │ 9 │
-    └───┴───┴───┘
+```text
+       Column
+
+         0   1   2
+
+     ┌───┬───┬───┐
+  0  │ 1 │ 2 │ 3 │
+     ├───┼───┼───┤
+  1  │ 4 │ 5 │ 6 │
+     ├───┼───┼───┤
+  2  │ 7 │ 8 │ 9 │
+     └───┴───┴───┘
+```
 
 To access `5`:
 
-    matrix[1][1]
+```java
+matrix[1][1];
+```
 
 Here:
 
-    1 → row
-    1 → column
+```text
+1 → row
+1 → column
+```
 
 Therefore:
 
-    matrix[row][column]
+```text
+matrix[row][column]
+```
 
 ---
 
@@ -98,38 +115,61 @@ Therefore:
 
 A one-dimensional array is useful for linear data:
 
-    10 20 30 40 50
+```text
+10 20 30 40 50
+```
 
 But some data naturally has multiple dimensions.
 
-Examples:
+## 🏫 Student Marks
 
-### 🏫 Student Marks
+```text
+Student     Maths   Java   DBMS
 
-    Student      Maths    Java    DBMS
-       0           80      90      75
-       1           70      85      80
-       2           95      88      90
+   0          80     90     75
+   1          70     85     80
+   2          95     88     90
+```
 
 This can be represented as:
 
-    int[][] marks;
+```java
+int[][] marks;
+```
 
-### 🧮 Matrix
+## 🧮 Matrix
 
-    1 2 3
-    4 5 6
-    7 8 9
+```text
+1 2 3
+4 5 6
+7 8 9
+```
 
-### 🎮 Game Board
+## 🎮 Game Board
 
-    X . X
-    . X .
-    X . .
+```text
+X . X
+. X .
+X . .
+```
 
-### 🖼️ Image Data
+## 🖼️ Image Data
 
 An image can be represented using rows and columns of pixels.
+
+## 🌳 DSA Usage
+
+2D arrays are extremely common in:
+
+- Matrix problems
+- Grid problems
+- Dynamic Programming
+- Graph adjacency matrices
+- Game boards
+- BFS/DFS grid problems
+- Prefix sum problems
+- Island/grid traversal
+- Simulation problems
 
 ---
 
@@ -139,32 +179,44 @@ A two-dimensional array contains multiple rows.
 
 Example:
 
-    int[][] arr = new int[3][4];
+```java
+int[][] arr = new int[3][4];
+```
 
 This represents:
 
-    3 rows
-    4 columns
+```text
+3 rows
+4 columns
+```
 
 Visual:
 
-             Columns
-          0   1   2   3
-        ┌───┬───┬───┬───┐
-    0   │ 0 │ 0 │ 0 │ 0 │
-        ├───┼───┼───┼───┤
-    1   │ 0 │ 0 │ 0 │ 0 │
-        ├───┼───┼───┼───┤
-    2   │ 0 │ 0 │ 0 │ 0 │
-        └───┴───┴───┴───┘
+```text
+         Columns
+
+         0   1   2   3
+
+     ┌───┬───┬───┬───┐
+  0  │ 0 │ 0 │ 0 │ 0 │
+     ├───┼───┼───┼───┤
+  1  │ 0 │ 0 │ 0 │ 0 │
+     ├───┼───┼───┼───┤
+  2  │ 0 │ 0 │ 0 │ 0 │
+     └───┴───┴───┴───┘
+```
 
 Total elements:
 
-    3 × 4 = 12
+```text
+3 × 4 = 12
+```
 
 Because this is an `int` array, every element initially contains:
 
-    0
+```text
+0
+```
 
 ---
 
@@ -172,19 +224,27 @@ Because this is an `int` array, every element initially contains:
 
 Recommended syntax:
 
-    int[][] arr;
+```java
+int[][] arr;
+```
 
-Other valid syntax:
+Other valid syntaxes:
 
-    int arr[][];
+```java
+int arr[][];
+```
 
-    int[] arr[];
+```java
+int[] arr[];
+```
 
 All three represent a two-dimensional array reference.
 
 Recommended:
 
-    int[][] arr;
+```java
+int[][] arr;
+```
 
 because it clearly communicates that the array has two dimensions.
 
@@ -194,20 +254,26 @@ because it clearly communicates that the array has two dimensions.
 
 Use the `new` keyword:
 
-    int[][] arr = new int[3][4];
+```java
+int[][] arr = new int[3][4];
+```
 
 This creates:
 
-    3 row arrays
-    4 elements in each row
+```text
+3 row arrays
+4 elements in each row
+```
 
 Conceptually:
 
-    arr
-     ↓
-    Row 0 → [0, 0, 0, 0]
-    Row 1 → [0, 0, 0, 0]
-    Row 2 → [0, 0, 0, 0]
+```text
+arr
+ ↓
+Row 0 → [0, 0, 0, 0]
+Row 1 → [0, 0, 0, 0]
+Row 2 → [0, 0, 0, 0]
+```
 
 ---
 
@@ -215,17 +281,23 @@ Conceptually:
 
 These can be written separately.
 
-### Declaration
+## Declaration
 
-    int[][] arr;
+```java
+int[][] arr;
+```
 
-### Creation
+## Creation
 
-    arr = new int[3][4];
+```java
+arr = new int[3][4];
+```
 
-### Combined
+## Combined
 
-    int[][] arr = new int[3][4];
+```java
+int[][] arr = new int[3][4];
+```
 
 ---
 
@@ -233,20 +305,24 @@ These can be written separately.
 
 Elements can be initialized individually.
 
-    int[][] arr = new int[2][3];
+```java
+int[][] arr = new int[2][3];
 
-    arr[0][0] = 10;
-    arr[0][1] = 20;
-    arr[0][2] = 30;
+arr[0][0] = 10;
+arr[0][1] = 20;
+arr[0][2] = 30;
 
-    arr[1][0] = 40;
-    arr[1][1] = 50;
-    arr[1][2] = 60;
+arr[1][0] = 40;
+arr[1][1] = 50;
+arr[1][2] = 60;
+```
 
 Result:
 
-    10 20 30
-    40 50 60
+```text
+10 20 30
+40 50 60
+```
 
 ---
 
@@ -254,28 +330,36 @@ Result:
 
 We can initialize the complete array directly.
 
-    int[][] arr = {
-        {10, 20, 30},
-        {40, 50, 60}
-    };
+```java
+int[][] arr = {
+    {10, 20, 30},
+    {40, 50, 60}
+};
+```
 
 Visual:
 
-    10 20 30
-    40 50 60
+```text
+10 20 30
+40 50 60
+```
 
 Another example:
 
-    int[][] matrix = {
-        {1, 2},
-        {3, 4},
-        {5, 6}
-    };
+```java
+int[][] matrix = {
+    {1, 2},
+    {3, 4},
+    {5, 6}
+};
+```
 
 This contains:
 
-    3 rows
-    2 columns
+```text
+3 rows
+2 columns
+```
 
 ---
 
@@ -283,38 +367,52 @@ This contains:
 
 Suppose:
 
-    int[][] arr = new int[3][4];
+```java
+int[][] arr = new int[3][4];
+```
 
 Then:
 
-    Number of rows = 3
-    Number of columns = 4
+```text
+Number of rows = 3
+Number of columns = 4
+```
 
 To get the number of rows:
 
-    arr.length
+```java
+arr.length;
+```
 
 Result:
 
-    3
+```text
+3
+```
 
 To get the number of columns in a particular row:
 
-    arr[0].length
+```java
+arr[0].length;
+```
 
 Result:
 
-    4
+```text
+4
+```
 
 Important:
 
-    arr.length
-        ↓
-    number of rows
+```text
+arr.length
+    ↓
+number of rows
 
-    arr[i].length
-        ↓
-    number of elements in row i
+arr[i].length
+    ↓
+number of elements in row i
+```
 
 ---
 
@@ -322,32 +420,42 @@ Important:
 
 Syntax:
 
-    arr[row][column]
+```text
+arr[row][column]
+```
 
 Example:
 
-    int[][] arr = {
-        {10, 20, 30},
-        {40, 50, 60},
-        {70, 80, 90}
-    };
+```java
+int[][] arr = {
+    {10, 20, 30},
+    {40, 50, 60},
+    {70, 80, 90}
+};
+```
 
 Access:
 
-    arr[0][0] → 10
-    arr[0][1] → 20
-    arr[1][0] → 40
-    arr[1][2] → 60
-    arr[2][1] → 80
-    arr[2][2] → 90
+```text
+arr[0][0] → 10
+arr[0][1] → 20
+arr[1][0] → 40
+arr[1][2] → 60
+arr[2][1] → 80
+arr[2][2] → 90
+```
 
 Example:
 
-    System.out.println(arr[2][2]);
+```java
+System.out.println(arr[2][2]);
+```
 
 Output:
 
-    90
+```text
+90
+```
 
 ---
 
@@ -357,22 +465,28 @@ A 2D array is mutable.
 
 Example:
 
-    int[][] arr = {
-        {10, 20},
-        {30, 40}
-    };
+```java
+int[][] arr = {
+    {10, 20},
+    {30, 40}
+};
 
-    arr[1][0] = 99;
+arr[1][0] = 99;
+```
 
 Before:
 
-    10 20
-    30 40
+```text
+10 20
+30 40
+```
 
 After:
 
-    10 20
-    99 40
+```text
+10 20
+99 40
+```
 
 ---
 
@@ -382,25 +496,27 @@ Since we have two indexes, we generally use nested loops.
 
 Example:
 
-    int[][] arr = {
-        {10, 20, 30},
-        {40, 50, 60}
-    };
+```java
+int[][] arr = {
+    {10, 20, 30},
+    {40, 50, 60}
+};
 
-    for (int i = 0; i < arr.length; i++) {
-
-        for (int j = 0; j < arr[i].length; j++) {
-
-            System.out.print(arr[i][j] + " ");
-        }
-
-        System.out.println();
+for (int i = 0; i < arr.length; i++) {
+    for (int j = 0; j < arr[i].length; j++) {
+        System.out.print(arr[i][j] + " ");
     }
+
+    System.out.println();
+}
+```
 
 Output:
 
-    10 20 30
-    40 50 60
+```text
+10 20 30
+40 50 60
+```
 
 ---
 
@@ -408,61 +524,75 @@ Output:
 
 This is one of the most important patterns for 2D arrays.
 
-    for (int i = 0; i < arr.length; i++) {
-
-        for (int j = 0; j < arr[i].length; j++) {
-
-            System.out.println(arr[i][j]);
-        }
+```java
+for (int i = 0; i < arr.length; i++) {
+    for (int j = 0; j < arr[i].length; j++) {
+        System.out.println(arr[i][j]);
     }
+}
+```
 
 Think of it like this:
 
-    i → row
-    j → column
+```text
+i → row
+j → column
+```
 
 Therefore:
 
-    arr[i][j]
+```text
+arr[i][j]
+```
 
 means:
 
 > Element at row `i` and column `j`.
 
----
-
 ## 🧠 Dry Run
 
 Suppose:
 
-    int[][] arr = {
-        {10, 20, 30},
-        {40, 50, 60}
-    };
+```java
+int[][] arr = {
+    {10, 20, 30},
+    {40, 50, 60}
+};
+```
 
 ### First iteration
 
-    i = 0
+```text
+i = 0
+```
 
 Inner loop:
 
-    j = 0 → arr[0][0] → 10
-    j = 1 → arr[0][1] → 20
-    j = 2 → arr[0][2] → 30
+```text
+j = 0 → arr[0][0] → 10
+j = 1 → arr[0][1] → 20
+j = 2 → arr[0][2] → 30
+```
 
 ### Second iteration
 
-    i = 1
+```text
+i = 1
+```
 
 Inner loop:
 
-    j = 0 → arr[1][0] → 40
-    j = 1 → arr[1][1] → 50
-    j = 2 → arr[1][2] → 60
+```text
+j = 0 → arr[1][0] → 40
+j = 1 → arr[1][1] → 50
+j = 2 → arr[1][2] → 60
+```
 
 Traversal:
 
-    10 → 20 → 30 → 40 → 50 → 60
+```text
+10 → 20 → 30 → 40 → 50 → 60
+```
 
 ---
 
@@ -470,33 +600,35 @@ Traversal:
 
 A 2D array can also be traversed using nested enhanced `for` loops.
 
-    int[][] arr = {
-        {10, 20, 30},
-        {40, 50, 60}
-    };
+```java
+int[][] arr = {
+    {10, 20, 30},
+    {40, 50, 60}
+};
 
-    for (int[] row : arr) {
-
-        for (int value : row) {
-
-            System.out.print(value + " ");
-        }
-
-        System.out.println();
+for (int[] row : arr) {
+    for (int value : row) {
+        System.out.print(value + " ");
     }
+
+    System.out.println();
+}
+```
 
 Output:
 
-    10 20 30
-    40 50 60
-
----
+```text
+10 20 30
+40 50 60
+```
 
 ## How Does This Work?
 
 Outer loop:
 
-    for (int[] row : arr)
+```java
+for (int[] row : arr)
+```
 
 means:
 
@@ -504,7 +636,9 @@ means:
 
 Inner loop:
 
-    for (int value : row)
+```java
+for (int value : row)
+```
 
 means:
 
@@ -512,11 +646,13 @@ means:
 
 So:
 
-    arr
-     ↓
-    row
-     ↓
-    value
+```text
+arr
+ ↓
+row
+ ↓
+value
+```
 
 ---
 
@@ -524,34 +660,37 @@ So:
 
 Example:
 
-    Scanner sc = new Scanner(System.in);
+```java
+Scanner sc = new Scanner(System.in);
 
-    int rows = sc.nextInt();
-    int columns = sc.nextInt();
+int rows = sc.nextInt();
+int columns = sc.nextInt();
 
-    int[][] arr = new int[rows][columns];
+int[][] arr = new int[rows][columns];
 
-    for (int i = 0; i < rows; i++) {
-
-        for (int j = 0; j < columns; j++) {
-
-            arr[i][j] = sc.nextInt();
-        }
+for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < columns; j++) {
+        arr[i][j] = sc.nextInt();
     }
+}
+```
 
 Input:
 
-    3 4
-
-    1 2 3 4
-    5 6 7 8
-    9 10 11 12
+```text
+3 4
+1 2 3 4
+5 6 7 8
+9 10 11 12
+```
 
 Array:
 
-    1  2  3  4
-    5  6  7  8
-    9 10 11 12
+```text
+1  2  3  4
+5  6  7  8
+9 10 11 12
+```
 
 ---
 
@@ -559,38 +698,44 @@ Array:
 
 Using nested loops:
 
-    for (int i = 0; i < arr.length; i++) {
-
-        for (int j = 0; j < arr[i].length; j++) {
-
-            System.out.print(arr[i][j] + " ");
-        }
-
-        System.out.println();
+```java
+for (int i = 0; i < arr.length; i++) {
+    for (int j = 0; j < arr[i].length; j++) {
+        System.out.print(arr[i][j] + " ");
     }
+
+    System.out.println();
+}
+```
 
 Output:
 
-    10 20 30
-    40 50 60
-
----
+```text
+10 20 30
+40 50 60
+```
 
 ## Using `Arrays.deepToString()`
 
 For displaying a multidimensional array:
 
-    System.out.println(Arrays.deepToString(arr));
+```java
+System.out.println(Arrays.deepToString(arr));
+```
 
 Output:
 
-    [[10, 20, 30], [40, 50, 60]]
+```text
+[[10, 20, 30], [40, 50, 60]]
+```
 
 `deepToString()` is useful because a multidimensional array contains nested arrays.
 
 The `Arrays` class is covered in:
 
-    05-Arrays-Class.md
+```text
+05-Arrays-Class.md
+```
 
 ---
 
@@ -598,18 +743,24 @@ The `Arrays` class is covered in:
 
 Consider:
 
-    int[][] arr = {
-        {1, 2, 3},
-        {4, 5, 6}
-    };
+```java
+int[][] arr = {
+    {1, 2, 3},
+    {4, 5, 6}
+};
+```
 
 Then:
 
-    arr.length
+```java
+arr.length;
+```
 
 is:
 
-    2
+```text
+2
+```
 
 Why?
 
@@ -617,13 +768,17 @@ Because the outer array contains two row arrays.
 
 Conceptually:
 
-    arr
-     ↓
-    [ row0, row1 ]
+```text
+arr
+ ↓
+[ row0, row1 ]
+```
 
 Therefore:
 
-    arr.length = 2
+```text
+arr.length = 2
+```
 
 ---
 
@@ -631,19 +786,25 @@ Therefore:
 
 For:
 
-    int[][] arr = {
-        {1, 2, 3},
-        {4, 5, 6}
-    };
+```java
+int[][] arr = {
+    {1, 2, 3},
+    {4, 5, 6}
+};
+```
 
 We have:
 
-    arr[0].length → 3
-    arr[1].length → 3
+```text
+arr[0].length → 3
+arr[1].length → 3
+```
 
 Therefore:
 
-    arr.length
+```text
+arr.length
+```
 
 means:
 
@@ -651,7 +812,9 @@ means:
 
 And:
 
-    arr[i].length
+```text
+arr[i].length
+```
 
 means:
 
@@ -673,32 +836,40 @@ But internally, Java's 2D array is an:
 
 Consider:
 
-    int[][] arr = {
-        {10, 20},
-        {30, 40},
-        {50, 60}
-    };
+```java
+int[][] arr = {
+    {10, 20},
+    {30, 40},
+    {50, 60}
+};
+```
 
 Conceptually:
 
-    arr
-     ↓
-    ┌────────┬────────┬────────┐
-    │ row 0  │ row 1  │ row 2  │
-    │   ↓    │   ↓    │   ↓    │
-    └───┼────┴───┼────┴───┼────┘
-        ↓        ↓        ↓
-      [10,20]  [30,40]  [50,60]
+```text
+arr
+ ↓
+┌────────┬────────┬────────┐
+│ row 0  │ row 1  │ row 2  │
+│   ↓    │   ↓    │   ↓    │
+└───┼────┴───┼────┴───┼────┘
+    ↓        ↓        ↓
+ [10,20]  [30,40]  [50,60]
+```
 
 The outer array contains references to the row arrays.
 
 So:
 
-    int[][]
+```text
+int[][]
+```
 
 is essentially:
 
-    array of int[]
+```text
+array of int[]
+```
 
 ---
 
@@ -706,15 +877,19 @@ is essentially:
 
 Think of:
 
-    int[][] arr;
+```java
+int[][] arr;
+```
 
 as:
 
-    Array
-      |
-      ├── int[]
-      ├── int[]
-      └── int[]
+```text
+Array
+  |
+  ├── int[]
+  ├── int[]
+  └── int[]
+```
 
 Each element of the outer array is itself an integer array.
 
@@ -728,19 +903,23 @@ A jagged array is a multidimensional array where different rows can have differe
 
 Example:
 
-    int[][] arr = {
-        {1, 2},
-        {3, 4, 5},
-        {6},
-        {7, 8, 9, 10}
-    };
+```java
+int[][] arr = {
+    {1, 2},
+    {3, 4, 5},
+    {6},
+    {7, 8, 9, 10}
+};
+```
 
 Visual:
 
-    Row 0 → 1 2
-    Row 1 → 3 4 5
-    Row 2 → 6
-    Row 3 → 7 8 9 10
+```text
+Row 0 → 1 2
+Row 1 → 3 4 5
+Row 2 → 6
+Row 3 → 7 8 9 10
+```
 
 This is completely valid Java.
 
@@ -750,29 +929,39 @@ This is completely valid Java.
 
 First create the outer array:
 
-    int[][] arr = new int[3][];
+```java
+int[][] arr = new int[3][];
+```
 
 Notice:
 
-    new int[3][]
+```text
+new int[3][]
+```
 
 The number of rows is specified:
 
-    3
+```text
+3
+```
 
 But the length of each row is not specified yet.
 
 Then create rows individually:
 
-    arr[0] = new int[2];
-    arr[1] = new int[4];
-    arr[2] = new int[3];
+```java
+arr[0] = new int[2];
+arr[1] = new int[4];
+arr[2] = new int[3];
+```
 
 Now:
 
-    Row 0 → 2 elements
-    Row 1 → 4 elements
-    Row 2 → 3 elements
+```text
+Row 0 → 2 elements
+Row 1 → 4 elements
+Row 2 → 3 elements
+```
 
 ---
 
@@ -780,39 +969,45 @@ Now:
 
 Example:
 
-    int[][] arr = new int[3][];
+```java
+int[][] arr = new int[3][];
 
-    arr[0] = new int[]{10, 20};
-
-    arr[1] = new int[]{30, 40, 50};
-
-    arr[2] = new int[]{60, 70, 80, 90};
+arr[0] = new int[]{10, 20};
+arr[1] = new int[]{30, 40, 50};
+arr[2] = new int[]{60, 70, 80, 90};
+```
 
 Result:
 
-    10 20
-    30 40 50
-    60 70 80 90
+```text
+10 20
+30 40 50
+60 70 80 90
+```
 
 Traversal must use:
 
-    for (int i = 0; i < arr.length; i++) {
-
-        for (int j = 0; j < arr[i].length; j++) {
-
-            System.out.print(arr[i][j] + " ");
-        }
-
-        System.out.println();
+```java
+for (int i = 0; i < arr.length; i++) {
+    for (int j = 0; j < arr[i].length; j++) {
+        System.out.print(arr[i][j] + " ");
     }
+
+    System.out.println();
+}
+```
 
 Notice:
 
-    arr[i].length
+```text
+arr[i].length
+```
 
 instead of:
 
-    arr[0].length
+```text
+arr[0].length
+```
 
 This is important because each row can have a different size.
 
@@ -824,53 +1019,73 @@ Java supports more than two dimensions.
 
 Example:
 
-    int[][][] arr = new int[2][3][4];
+```java
+int[][][] arr = new int[2][3][4];
+```
 
 This can be visualized as:
 
-    2 blocks
-    3 rows per block
-    4 columns per row
+```text
+2 blocks
+3 rows per block
+4 columns per row
+```
 
 Conceptually:
 
-    Block 0
-        Row 0 → 4 elements
-        Row 1 → 4 elements
-        Row 2 → 4 elements
+```text
+Block 0
 
-    Block 1
-        Row 0 → 4 elements
-        Row 1 → 4 elements
-        Row 2 → 4 elements
+    Row 0 → 4 elements
+    Row 1 → 4 elements
+    Row 2 → 4 elements
+
+Block 1
+
+    Row 0 → 4 elements
+    Row 1 → 4 elements
+    Row 2 → 4 elements
+```
 
 Access:
 
-    arr[block][row][column]
+```text
+arr[block][row][column]
+```
 
 Example:
 
-    arr[1][2][3]
+```java
+arr[1][2][3];
+```
 
 ---
 
 # 25. 🧱 General Multidimensional Syntax
 
-### 1D Array
+## 1D Array
 
-    int[] arr;
+```java
+int[] arr;
+```
 
-### 2D Array
+## 2D Array
 
-    int[][] arr;
+```java
+int[][] arr;
+```
 
-### 3D Array
+## 3D Array
 
-    int[][][] arr;
+```java
+int[][][] arr;
+```
 
-### 4D Array
+## 4D Array
 
-    int[][][][] arr;
+```java
+int[][][][] arr;
+```
 
 The pattern continues.
 
@@ -882,30 +1097,48 @@ However, in practical Java development and DSA, 1D and 2D arrays are much more c
 
 Example:
 
-    int[][] arr = {
-        {10, 20, 30},
-        {40, 50, 60}
-    };
+```java
+int[][] arr = {
+    {10, 20, 30},
+    {40, 50, 60}
+};
 
-    int sum = 0;
+int sum = 0;
 
-    for (int i = 0; i < arr.length; i++) {
-
-        for (int j = 0; j < arr[i].length; j++) {
-
-            sum += arr[i][j];
-        }
+for (int i = 0; i < arr.length; i++) {
+    for (int j = 0; j < arr[i].length; j++) {
+        sum += arr[i][j];
     }
+}
 
-    System.out.println(sum);
+System.out.println(sum);
+```
 
 Output:
 
-    210
+```text
+210
+```
 
 Calculation:
 
-    10 + 20 + 30 + 40 + 50 + 60 = 210
+```text
+10 + 20 + 30 + 40 + 50 + 60 = 210
+```
+
+### DSA Pattern
+
+This is the **complete matrix traversal pattern**.
+
+Whenever every cell contributes to the answer:
+
+```java
+for (int i = 0; i < matrix.length; i++) {
+    for (int j = 0; j < matrix[i].length; j++) {
+        // process matrix[i][j]
+    }
+}
+```
 
 ---
 
@@ -913,50 +1146,68 @@ Calculation:
 
 ## Maximum
 
-    int[][] arr = {
-        {10, 50, 30},
-        {80, 20, 60}
-    };
+```java
+int[][] arr = {
+    {10, 50, 30},
+    {80, 20, 60}
+};
 
-    int max = arr[0][0];
+int max = arr[0][0];
 
-    for (int i = 0; i < arr.length; i++) {
-
-        for (int j = 0; j < arr[i].length; j++) {
-
-            if (arr[i][j] > max) {
-                max = arr[i][j];
-            }
+for (int i = 0; i < arr.length; i++) {
+    for (int j = 0; j < arr[i].length; j++) {
+        if (arr[i][j] > max) {
+            max = arr[i][j];
         }
     }
+}
 
-    System.out.println(max);
+System.out.println(max);
+```
 
 Output:
 
-    80
-
----
+```text
+80
+```
 
 ## Minimum
 
-    int min = arr[0][0];
+```java
+int min = arr[0][0];
 
-    for (int i = 0; i < arr.length; i++) {
-
-        for (int j = 0; j < arr[i].length; j++) {
-
-            if (arr[i][j] < min) {
-                min = arr[i][j];
-            }
+for (int i = 0; i < arr.length; i++) {
+    for (int j = 0; j < arr[i].length; j++) {
+        if (arr[i][j] < min) {
+            min = arr[i][j];
         }
     }
+}
 
-    System.out.println(min);
+System.out.println(min);
+```
 
 Output:
 
-    10
+```text
+10
+```
+
+### DSA Pattern
+
+This is the **running best / running answer pattern**.
+
+Think:
+
+```text
+Initialize answer
+        ↓
+Visit every cell
+        ↓
+Compare current value
+        ↓
+Update answer
+```
 
 ---
 
@@ -964,36 +1215,58 @@ Output:
 
 Suppose:
 
-    int[][] arr = {
-        {10, 20, 30},
-        {40, 50, 60},
-        {70, 80, 90}
-    };
+```java
+int[][] arr = {
+    {10, 20, 30},
+    {40, 50, 60},
+    {70, 80, 90}
+};
+```
 
 Target:
 
-    50
+```text
+50
+```
 
 Linear search through the 2D array:
 
-    int target = 50;
+```java
+int target = 50;
 
-    for (int i = 0; i < arr.length; i++) {
-
-        for (int j = 0; j < arr[i].length; j++) {
-
-            if (arr[i][j] == target) {
-
-                System.out.println(
-                    "Found at row " + i + ", column " + j
-                );
-            }
+for (int i = 0; i < arr.length; i++) {
+    for (int j = 0; j < arr[i].length; j++) {
+        if (arr[i][j] == target) {
+            System.out.println(
+                "Found at row " + i + ", column " + j
+            );
         }
     }
+}
+```
 
 Output:
 
-    Found at row 1, column 1
+```text
+Found at row 1, column 1
+```
+
+### DSA Pattern
+
+This is a **grid linear search**.
+
+Use it when:
+
+- No sorted property exists.
+- You need to inspect every cell.
+- The question asks whether a target exists.
+- The question asks for the coordinates of a target.
+
+Complexity:
+
+```text
+O(R × C)
+```
 
 ---
 
@@ -1003,42 +1276,64 @@ Two matrices can be added when they have the same dimensions.
 
 Example:
 
-    Matrix A:
+```text
+Matrix A:
 
-    1 2
-    3 4
+1 2
+3 4
 
-    Matrix B:
+Matrix B:
 
-    5 6
-    7 8
+5 6
+7 8
+```
 
 Result:
 
-    6  8
-    10 12
+```text
+6  8
+10 12
+```
 
 Code:
 
-    int[][] a = {
-        {1, 2},
-        {3, 4}
-    };
+```java
+int[][] a = {
+    {1, 2},
+    {3, 4}
+};
 
-    int[][] b = {
-        {5, 6},
-        {7, 8}
-    };
+int[][] b = {
+    {5, 6},
+    {7, 8}
+};
 
-    int[][] result = new int[2][2];
+int[][] result = new int[2][2];
 
-    for (int i = 0; i < a.length; i++) {
-
-        for (int j = 0; j < a[i].length; j++) {
-
-            result[i][j] = a[i][j] + b[i][j];
-        }
+for (int i = 0; i < a.length; i++) {
+    for (int j = 0; j < a[i].length; j++) {
+        result[i][j] = a[i][j] + b[i][j];
     }
+}
+```
+
+### DSA Pattern
+
+This is an **element-wise matrix operation**.
+
+General idea:
+
+```text
+result[i][j] = operation(a[i][j], b[i][j])
+```
+
+This pattern also appears in:
+
+- Matrix addition
+- Matrix subtraction
+- Grid comparison
+- Pixel manipulation
+- State comparison
 
 ---
 
@@ -1050,44 +1345,82 @@ Transpose means:
 
 Original:
 
-    1 2 3
-    4 5 6
+```text
+1 2 3
+4 5 6
+```
 
 Transpose:
 
-    1 4
-    2 5
-    3 6
+```text
+1 4
+2 5
+3 6
+```
 
 For an `m × n` matrix, transpose becomes:
 
-    n × m
+```text
+n × m
+```
 
 Code:
 
-    int[][] arr = {
-        {1, 2, 3},
-        {4, 5, 6}
-    };
+```java
+int[][] arr = {
+    {1, 2, 3},
+    {4, 5, 6}
+};
 
-    int rows = arr.length;
-    int columns = arr[0].length;
+int rows = arr.length;
+int columns = arr[0].length;
 
-    int[][] transpose = new int[columns][rows];
+int[][] transpose = new int[columns][rows];
 
-    for (int i = 0; i < rows; i++) {
-
-        for (int j = 0; j < columns; j++) {
-
-            transpose[j][i] = arr[i][j];
-        }
+for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < columns; j++) {
+        transpose[j][i] = arr[i][j];
     }
+}
+```
 
 Result:
 
-    1 4
-    2 5
-    3 6
+```text
+1 4
+2 5
+3 6
+```
+
+### DSA Pattern
+
+Important coordinate transformation:
+
+```text
+Original:
+(i, j)
+
+Transpose:
+(j, i)
+```
+
+Whenever a problem says:
+
+- transpose
+- swap rows and columns
+- mirror across diagonal
+
+think about changing:
+
+```text
+matrix[i][j]
+```
+
+into:
+
+```text
+matrix[j][i]
+```
 
 ---
 
@@ -1095,63 +1428,103 @@ Result:
 
 For a square matrix:
 
-    1 2 3
-    4 5 6
-    7 8 9
+```text
+1 2 3
+4 5 6
+7 8 9
+```
 
 Main diagonal:
 
-    1
-       5
-          9
+```text
+1
+  5
+    9
+```
 
 Indexes:
 
-    [0][0]
-    [1][1]
-    [2][2]
+```text
+[0][0]
+[1][1]
+[2][2]
+```
 
 The pattern is:
 
-    arr[i][i]
+```text
+arr[i][i]
+```
 
 Example:
 
-    for (int i = 0; i < arr.length; i++) {
-        System.out.println(arr[i][i]);
-    }
+```java
+for (int i = 0; i < arr.length; i++) {
+    System.out.println(arr[i][i]);
+}
+```
 
 Output:
 
-    1
-    5
-    9
-
----
+```text
+1
+5
+9
+```
 
 ## Secondary Diagonal
 
 For:
 
-    1 2 3
-    4 5 6
-    7 8 9
+```text
+1 2 3
+4 5 6
+7 8 9
+```
 
 Secondary diagonal:
 
+```text
     3
-       5
-          7
+  5
+7
+```
 
 Indexes:
 
-    [0][2]
-    [1][1]
-    [2][0]
+```text
+[0][2]
+[1][1]
+[2][0]
+```
 
 General pattern:
 
-    arr[i][n - 1 - i]
+```text
+arr[i][n - 1 - i]
+```
+
+Example:
+
+```java
+int n = arr.length;
+
+for (int i = 0; i < n; i++) {
+    System.out.println(arr[i][n - 1 - i]);
+}
+```
+
+### DSA Pattern
+
+For square matrices, memorize:
+
+```text
+Main diagonal:
+[i][i]
+
+Secondary diagonal:
+[i][n - 1 - i]
+```
 
 ---
 
@@ -1161,27 +1534,28 @@ A 2D array can be passed to a method.
 
 Example:
 
-    static void printMatrix(int[][] arr) {
-
-        for (int i = 0; i < arr.length; i++) {
-
-            for (int j = 0; j < arr[i].length; j++) {
-
-                System.out.print(arr[i][j] + " ");
-            }
-
-            System.out.println();
+```java
+static void printMatrix(int[][] arr) {
+    for (int i = 0; i < arr.length; i++) {
+        for (int j = 0; j < arr[i].length; j++) {
+            System.out.print(arr[i][j] + " ");
         }
+
+        System.out.println();
     }
+}
+```
 
 Call:
 
-    int[][] matrix = {
-        {1, 2},
-        {3, 4}
-    };
+```java
+int[][] matrix = {
+    {1, 2},
+    {3, 4}
+};
 
-    printMatrix(matrix);
+printMatrix(matrix);
+```
 
 ---
 
@@ -1191,23 +1565,28 @@ A method can return a 2D array.
 
 Example:
 
-    static int[][] createMatrix() {
+```java
+static int[][] createMatrix() {
+    int[][] matrix = {
+        {1, 2},
+        {3, 4}
+    };
 
-        int[][] matrix = {
-            {1, 2},
-            {3, 4}
-        };
-
-        return matrix;
-    }
+    return matrix;
+}
+```
 
 Call:
 
-    int[][] result = createMatrix();
+```java
+int[][] result = createMatrix();
+```
 
 Now:
 
-    result
+```text
+result
+```
 
 refers to the returned 2D array.
 
@@ -1219,89 +1598,115 @@ Because a 2D array is an array of row references, individual rows can also be `n
 
 Example:
 
-    int[][] arr = new int[3][];
+```java
+int[][] arr = new int[3][];
+```
 
 At this point:
 
-    arr[0] = null
-    arr[1] = null
-    arr[2] = null
+```text
+arr[0] = null
+arr[1] = null
+arr[2] = null
+```
 
 If we do:
 
-    System.out.println(arr[0].length);
+```java
+System.out.println(arr[0].length);
+```
 
 we get:
 
-    NullPointerException
+```text
+NullPointerException
+```
 
 because `arr[0]` does not currently refer to an inner array.
 
 We can create a row:
 
-    arr[0] = new int[3];
+```java
+arr[0] = new int[3];
+```
 
 Now:
 
-    arr[0].length
+```java
+arr[0].length;
+```
 
 is:
 
-    3
+```text
+3
+```
 
 ---
 
 # 35. 💥 Common Exceptions
 
-## 1. ArrayIndexOutOfBoundsException
+## 1. `ArrayIndexOutOfBoundsException`
 
 Example:
 
-    int[][] arr = {
-        {10, 20},
-        {30, 40}
-    };
+```java
+int[][] arr = {
+    {10, 20},
+    {30, 40}
+};
 
-    System.out.println(arr[2][0]);
+System.out.println(arr[2][0]);
+```
 
 Valid row indexes are:
 
-    0
-    1
+```text
+0
+1
+```
 
 So row `2` is invalid.
 
 ---
 
-## 2. NullPointerException
+## 2. `NullPointerException`
 
 Example:
 
-    int[][] arr = new int[3][];
+```java
+int[][] arr = new int[3][];
 
-    System.out.println(arr[0].length);
+System.out.println(arr[0].length);
+```
 
 `arr[0]` is `null`.
 
 ---
 
-## 3. ArrayStoreException
+## 3. `ArrayStoreException`
 
 This can occur when an incompatible object is stored into an array whose runtime component type does not allow it.
 
 Example:
 
-    Object[][] arr = new String[2][];
+```java
+Object[][] arr = new String[2][];
 
-    arr[0] = new String[2];
+arr[0] = new String[2];
 
-    Object[] row = arr[0];
+Object[] row = arr[0];
 
-    row[0] = 100;
+row[0] = 100;
+```
 
-The runtime row is actually a `String[]`, so storing an `Integer` can cause:
+The runtime row is actually a `String[]`.
 
-    ArrayStoreException
+Therefore storing an `Integer` can cause:
+
+```text
+ArrayStoreException
+```
 
 ---
 
@@ -1309,10 +1714,10 @@ The runtime row is actually a `String[]`, so storing an `Integer` can cause:
 
 Suppose a matrix contains:
 
-    R rows
-    C columns
-
-Then:
+```text
+R rows
+C columns
+```
 
 | Operation | Complexity |
 |---|---:|
@@ -1327,39 +1732,1416 @@ Then:
 
 For a square matrix of size `n × n`:
 
-    O(R × C)
+```text
+O(R × C)
+```
 
 becomes:
 
-    O(n²)
+```text
+O(n²)
+```
 
 ---
 
-# 37. ⚠️ Common Mistakes
+# 37. 🧠 DSA Patterns
+
+2D arrays are extremely important in DSA because many **matrix and grid problems** are based on a small number of reusable patterns.
+
+The goal is not to memorize every problem.
+
+The goal is to recognize the underlying pattern.
+
+---
+
+## Pattern 1 — Complete Matrix Traversal
+
+### Idea
+
+Visit every cell exactly once.
+
+```java
+for (int i = 0; i < matrix.length; i++) {
+    for (int j = 0; j < matrix[i].length; j++) {
+        // process matrix[i][j]
+    }
+}
+```
+
+### Identify It When
+
+The question says:
+
+- process every element
+- calculate sum
+- find maximum
+- find minimum
+- count cells
+- search every cell
+- modify every cell
+
+### Complexity
+
+```text
+O(R × C)
+```
+
+---
+
+# Pattern 2 — Coordinate-Based Access
+
+Every matrix element is represented by:
+
+```text
+(row, column)
+```
+
+Code:
+
+```java
+int value = matrix[row][column];
+```
+
+### Identify It When
+
+The problem talks about:
+
+- coordinates
+- rows
+- columns
+- positions
+- neighboring cells
+- moving through a grid
+
+---
+
+# Pattern 3 — Directional Traversal
+
+Grid problems often require movement:
+
+```text
+Up
+Down
+Left
+Right
+```
+
+The four direction vectors are commonly represented as:
+
+```java
+int[][] directions = {
+    {-1, 0},
+    {1, 0},
+    {0, -1},
+    {0, 1}
+};
+```
+
+For a cell:
+
+```text
+(row, col)
+```
+
+the neighboring cells become:
+
+```text
+(row - 1, col) → Up
+(row + 1, col) → Down
+(row, col - 1) → Left
+(row, col + 1) → Right
+```
+
+### Identify It When
+
+The problem contains words such as:
+
+- neighboring
+- adjacent
+- connected
+- move
+- direction
+- grid
+- island
+- maze
+- shortest path
+
+This pattern commonly leads to:
+
+- BFS
+- DFS
+- flood fill
+
+---
+
+# Pattern 4 — Boundary Checking
+
+When moving through a grid, always verify that the position is valid.
+
+```java
+if (row >= 0 &&
+    row < matrix.length &&
+    col >= 0 &&
+    col < matrix[row].length) {
+    
+    // valid cell
+}
+```
+
+### Identify It When
+
+You are calculating:
+
+```text
+row ± 1
+col ± 1
+```
+
+because those operations can move outside the matrix.
+
+---
+
+# Pattern 5 — Main Diagonal
+
+Main diagonal:
+
+```text
+matrix[i][i]
+```
+
+Example:
+
+```java
+for (int i = 0; i < matrix.length; i++) {
+    System.out.println(matrix[i][i]);
+}
+```
+
+### Identify It When
+
+The problem says:
+
+- main diagonal
+- primary diagonal
+- diagonal from top-left
+- diagonal elements
+
+---
+
+# Pattern 6 — Secondary Diagonal
+
+Secondary diagonal:
+
+```text
+matrix[i][n - 1 - i]
+```
+
+Example:
+
+```java
+int n = matrix.length;
+
+for (int i = 0; i < n; i++) {
+    System.out.println(matrix[i][n - 1 - i]);
+}
+```
+
+### Identify It When
+
+The problem says:
+
+- secondary diagonal
+- anti-diagonal
+- top-right to bottom-left
+
+---
+
+# Pattern 7 — Row-Wise Processing
+
+Sometimes the problem asks you to process each row independently.
+
+Example:
+
+```java
+for (int i = 0; i < matrix.length; i++) {
+    int rowSum = 0;
+
+    for (int j = 0; j < matrix[i].length; j++) {
+        rowSum += matrix[i][j];
+    }
+
+    System.out.println(rowSum);
+}
+```
+
+### Identify It When
+
+The problem asks:
+
+- sum of each row
+- maximum element in every row
+- row with maximum sum
+- process students row by row
+
+---
+
+# Pattern 8 — Column-Wise Processing
+
+Process each column independently.
+
+For a rectangular matrix:
+
+```java
+for (int j = 0; j < matrix[0].length; j++) {
+    int columnSum = 0;
+
+    for (int i = 0; i < matrix.length; i++) {
+        columnSum += matrix[i][j];
+    }
+
+    System.out.println(columnSum);
+}
+```
+
+### Identify It When
+
+The problem asks:
+
+- sum of each column
+- maximum column
+- column-wise statistics
+- process vertical data
+
+For jagged arrays, column-wise traversal requires additional care because rows may have different lengths.
+
+---
+
+# Pattern 9 — Transpose / Coordinate Swap
+
+Original:
+
+```text
+matrix[i][j]
+```
+
+Transpose:
+
+```text
+transpose[j][i]
+```
+
+Code:
+
+```java
+transpose[j][i] = matrix[i][j];
+```
+
+### Identify It When
+
+The problem says:
+
+- transpose
+- rows become columns
+- columns become rows
+- reflect across the main diagonal
+
+---
+
+# Pattern 10 — Layer / Boundary Traversal
+
+Some matrix problems process the outer boundary first and then move inward.
+
+Typical examples:
+
+- Spiral Matrix
+- Spiral traversal
+- Rotate matrix
+- Print matrix layer by layer
+
+Think in terms of:
+
+```text
+top
+bottom
+left
+right
+```
+
+Example state:
+
+```java
+int top = 0;
+int bottom = matrix.length - 1;
+int left = 0;
+int right = matrix[0].length - 1;
+```
+
+### Identify It When
+
+The problem mentions:
+
+- spiral
+- boundary
+- clockwise
+- anticlockwise
+- layers
+- rings
+
+---
+
+# Pattern 11 — Matrix Rotation
+
+A common approach for rotating a square matrix by 90 degrees clockwise is:
+
+```text
+1. Transpose
+2. Reverse every row
+```
+
+Example:
+
+```java
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+for (int i = 0; i < matrix.length; i++) {
+    for (int j = i + 1; j < matrix.length; j++) {
+        int temp = matrix[i][j];
+        matrix[i][j] = matrix[j][i];
+        matrix[j][i] = temp;
+    }
+}
+
+for (int i = 0; i < matrix.length; i++) {
+    int left = 0;
+    int right = matrix[i].length - 1;
+
+    while (left < right) {
+        int temp = matrix[i][left];
+        matrix[i][left] = matrix[i][right];
+        matrix[i][right] = temp;
+
+        left++;
+        right--;
+    }
+}
+```
+
+### Identify It When
+
+The problem says:
+
+- rotate matrix
+- rotate 90 degrees
+- rotate clockwise
+- rotate in-place
+
+---
+
+# Pattern 12 — Grid BFS / DFS
+
+A grid can be treated as a graph.
+
+Each cell can represent a node.
+
+Adjacent cells can represent edges.
+
+Typical movement:
+
+```java
+int[][] directions = {
+    {-1, 0},
+    {1, 0},
+    {0, -1},
+    {0, 1}
+};
+```
+
+### Identify It When
+
+Look for:
+
+- islands
+- connected components
+- shortest path
+- flood fill
+- maze
+- rotten oranges
+- surrounded regions
+- number of regions
+- connected cells
+
+This usually means:
+
+```text
+2D Grid
+   ↓
+Neighbors
+   ↓
+BFS / DFS
+```
+
+---
+
+# Pattern 13 — Prefix Sum Matrix
+
+A 2D prefix sum allows repeated rectangular-sum queries to be answered efficiently.
+
+For a prefix matrix:
+
+```text
+prefix[i][j]
+```
+
+stores cumulative information from the top-left region.
+
+Typical formula:
+
+```java
+prefix[i][j] =
+    matrix[i][j]
+    + prefix[i - 1][j]
+    + prefix[i][j - 1]
+    - prefix[i - 1][j - 1];
+```
+
+### Identify It When
+
+The problem contains:
+
+- many rectangle sum queries
+- submatrix sum
+- sum of a rectangular region
+- repeated range queries
+
+The important idea is:
+
+```text
+Many queries
+    ↓
+Precompute
+    ↓
+Answer each query faster
+```
+
+---
+
+# Pattern 14 — Dynamic Programming on a Grid
+
+A 2D array is frequently used as a DP table.
+
+Example:
+
+```java
+int[][] dp = new int[rows][columns];
+```
+
+Each cell stores the answer to a smaller subproblem.
+
+### Identify It When
+
+Look for:
+
+- minimum path
+- maximum path
+- number of ways
+- grid paths
+- minimum cost
+- previous cell
+- state
+- recurrence
+
+Typical relationship:
+
+```text
+dp[i][j]
+depends on
+dp[i-1][j]
+dp[i][j-1]
+```
+
+---
+
+# 38. 🔎 How to Identify 2D Array Problems
+
+When you see a DSA problem, first identify the **shape of the data**.
+
+## Step 1 — Is the input a grid or matrix?
+
+Look for:
+
+```text
+matrix
+grid
+rows
+columns
+cells
+board
+table
+```
+
+If yes, think:
+
+```text
+2D array
+```
+
+---
+
+## Step 2 — Does Every Cell Need Processing?
+
+If yes:
+
+```text
+Nested loops
+```
+
+Pattern:
+
+```java
+for (int i = 0; i < matrix.length; i++) {
+    for (int j = 0; j < matrix[i].length; j++) {
+        // process
+    }
+}
+```
+
+---
+
+## Step 3 — Does the Problem Mention Neighbors?
+
+If yes, think:
+
+```text
+Directions
+```
+
+Usually:
+
+```java
+int[][] directions = {
+    {-1, 0},
+    {1, 0},
+    {0, -1},
+    {0, 1}
+};
+```
+
+Then consider:
+
+```text
+BFS / DFS
+```
+
+---
+
+## Step 4 — Does It Mention Diagonals?
+
+Think:
+
+```text
+Main diagonal:
+[i][i]
+
+Secondary diagonal:
+[i][n - 1 - i]
+```
+
+---
+
+## Step 5 — Does It Mention Rotation?
+
+Think:
+
+```text
+Transpose
++
+Reverse
+```
+
+---
+
+## Step 6 — Does It Mention Spiral?
+
+Think:
+
+```text
+top
+bottom
+left
+right
+```
+
+Use boundary/layer traversal.
+
+---
+
+## Step 7 — Does It Ask Many Rectangle Sums?
+
+Think:
+
+```text
+2D Prefix Sum
+```
+
+---
+
+## Step 8 — Does It Ask Paths or Minimum/Maximum Cost?
+
+Think:
+
+```text
+2D Dynamic Programming
+```
+
+---
+
+## Step 9 — Does It Ask Connectivity?
+
+Think:
+
+```text
+BFS / DFS
+```
+
+---
+
+# 39. 🧠 DSA Problem-Solving Approach
+
+When you get a matrix problem, do not immediately start coding.
+
+Use this process.
+
+```text
+1. Understand dimensions
+        ↓
+2. Identify what one cell represents
+        ↓
+3. Determine movement
+        ↓
+4. Determine whether every cell is visited
+        ↓
+5. Identify the pattern
+        ↓
+6. Choose traversal
+        ↓
+7. Handle boundaries
+        ↓
+8. Analyze complexity
+```
+
+## Question 1 — What does one cell represent?
+
+For example:
+
+```text
+matrix[i][j]
+```
+
+could represent:
+
+- a number
+- a character
+- a blocked cell
+- an island
+- a cost
+- a DP state
+
+---
+
+## Question 2 — Do I need neighbors?
+
+If yes, identify directions.
+
+```text
+Up
+Down
+Left
+Right
+```
+
+Possibly also diagonals:
+
+```text
+Top-left
+Top-right
+Bottom-left
+Bottom-right
+```
+
+---
+
+## Question 3 — Is the matrix sorted?
+
+This is important.
+
+If the matrix has a special ordering property, you may not need to inspect every cell.
+
+For example, a sorted matrix can sometimes support:
+
+```text
+O(R + C)
+```
+
+instead of:
+
+```text
+O(R × C)
+```
+
+---
+
+## Question 4 — Is the answer local or global?
+
+### Local
+
+Each cell is processed independently.
+
+Example:
+
+```text
+sum
+count
+maximum
+minimum
+```
+
+Usually:
+
+```text
+O(R × C)
+```
+
+### Global
+
+Cells depend on other cells.
+
+Examples:
+
+```text
+path
+connectivity
+minimum cost
+number of ways
+```
+
+Consider:
+
+```text
+BFS
+DFS
+DP
+```
+
+---
+
+# 40. 💻 DSA Coding Problems
+
+## Problem 1 — Print a Matrix
+
+```java
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+for (int i = 0; i < matrix.length; i++) {
+    for (int j = 0; j < matrix[i].length; j++) {
+        System.out.print(matrix[i][j] + " ");
+    }
+
+    System.out.println();
+}
+```
+
+Output:
+
+```text
+1 2 3
+4 5 6
+7 8 9
+```
+
+### Pattern
+
+```text
+Complete traversal
+```
+
+---
+
+## Problem 2 — Find Sum
+
+```java
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6}
+};
+
+int sum = 0;
+
+for (int i = 0; i < matrix.length; i++) {
+    for (int j = 0; j < matrix[i].length; j++) {
+        sum += matrix[i][j];
+    }
+}
+
+System.out.println(sum);
+```
+
+Output:
+
+```text
+21
+```
+
+### Pattern
+
+```text
+Complete traversal + running answer
+```
+
+---
+
+## Problem 3 — Find Maximum
+
+```java
+int[][] matrix = {
+    {10, 20, 30},
+    {40, 50, 60}
+};
+
+int max = matrix[0][0];
+
+for (int i = 0; i < matrix.length; i++) {
+    for (int j = 0; j < matrix[i].length; j++) {
+        if (matrix[i][j] > max) {
+            max = matrix[i][j];
+        }
+    }
+}
+
+System.out.println(max);
+```
+
+Output:
+
+```text
+60
+```
+
+### Pattern
+
+```text
+Running maximum
+```
+
+---
+
+## Problem 4 — Search an Element
+
+```java
+int[][] matrix = {
+    {10, 20, 30},
+    {40, 50, 60}
+};
+
+int target = 50;
+
+for (int i = 0; i < matrix.length; i++) {
+    for (int j = 0; j < matrix[i].length; j++) {
+        if (matrix[i][j] == target) {
+            System.out.println(
+                "Found at row " + i + ", column " + j
+            );
+        }
+    }
+}
+```
+
+Output:
+
+```text
+Found at row 1, column 1
+```
+
+### Pattern
+
+```text
+Grid linear search
+```
+
+---
+
+## Problem 5 — Print Main Diagonal
+
+For:
+
+```text
+1 2 3
+4 5 6
+7 8 9
+```
+
+Code:
+
+```java
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+for (int i = 0; i < matrix.length; i++) {
+    System.out.println(matrix[i][i]);
+}
+```
+
+Output:
+
+```text
+1
+5
+9
+```
+
+### Pattern
+
+```text
+matrix[i][i]
+```
+
+---
+
+## Problem 6 — Create a Jagged Array
+
+```java
+int[][] arr = new int[3][];
+
+arr[0] = new int[]{1, 2};
+arr[1] = new int[]{3, 4, 5};
+arr[2] = new int[]{6, 7, 8, 9};
+
+for (int i = 0; i < arr.length; i++) {
+    for (int j = 0; j < arr[i].length; j++) {
+        System.out.print(arr[i][j] + " ");
+    }
+
+    System.out.println();
+}
+```
+
+Output:
+
+```text
+1 2
+3 4 5
+6 7 8 9
+```
+
+### Pattern
+
+```text
+Array of arrays
+```
+
+---
+
+## Problem 7 — Row Sum
+
+Given a matrix, print the sum of every row.
+
+```java
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+for (int i = 0; i < matrix.length; i++) {
+    int sum = 0;
+
+    for (int j = 0; j < matrix[i].length; j++) {
+        sum += matrix[i][j];
+    }
+
+    System.out.println(sum);
+}
+```
+
+Output:
+
+```text
+6
+15
+24
+```
+
+### Pattern
+
+```text
+Outer loop = row
+Inner loop = elements of current row
+```
+
+---
+
+## Problem 8 — Column Sum
+
+```java
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+for (int j = 0; j < matrix[0].length; j++) {
+    int sum = 0;
+
+    for (int i = 0; i < matrix.length; i++) {
+        sum += matrix[i][j];
+    }
+
+    System.out.println(sum);
+}
+```
+
+Output:
+
+```text
+12
+15
+18
+```
+
+### Pattern
+
+```text
+Outer loop = column
+Inner loop = rows
+```
+
+---
+
+## Problem 9 — Main Diagonal Sum
+
+```java
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+int sum = 0;
+
+for (int i = 0; i < matrix.length; i++) {
+    sum += matrix[i][i];
+}
+
+System.out.println(sum);
+```
+
+Output:
+
+```text
+15
+```
+
+---
+
+## Problem 10 — Secondary Diagonal Sum
+
+```java
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+int n = matrix.length;
+int sum = 0;
+
+for (int i = 0; i < n; i++) {
+    sum += matrix[i][n - 1 - i];
+}
+
+System.out.println(sum);
+```
+
+Output:
+
+```text
+15
+```
+
+---
+
+## Problem 11 — Count Even Numbers
+
+```java
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+int count = 0;
+
+for (int i = 0; i < matrix.length; i++) {
+    for (int j = 0; j < matrix[i].length; j++) {
+        if (matrix[i][j] % 2 == 0) {
+            count++;
+        }
+    }
+}
+
+System.out.println(count);
+```
+
+Output:
+
+```text
+4
+```
+
+### Pattern
+
+```text
+Traversal + condition + counter
+```
+
+---
+
+## Problem 12 — Matrix Addition
+
+```java
+int[][] a = {
+    {1, 2},
+    {3, 4}
+};
+
+int[][] b = {
+    {5, 6},
+    {7, 8}
+};
+
+int[][] result = new int[a.length][a[0].length];
+
+for (int i = 0; i < a.length; i++) {
+    for (int j = 0; j < a[i].length; j++) {
+        result[i][j] = a[i][j] + b[i][j];
+    }
+}
+```
+
+Result:
+
+```text
+6 8
+10 12
+```
+
+---
+
+## Problem 13 — Transpose
+
+```java
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6}
+};
+
+int rows = matrix.length;
+int columns = matrix[0].length;
+
+int[][] transpose = new int[columns][rows];
+
+for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < columns; j++) {
+        transpose[j][i] = matrix[i][j];
+    }
+}
+```
+
+Result:
+
+```text
+1 4
+2 5
+3 6
+```
+
+---
+
+## Problem 14 — Find Number of Islands
+
+A classic grid problem.
+
+Example:
+
+```text
+1 1 0
+1 0 0
+0 0 1
+```
+
+The problem asks for the number of connected groups of `1`s.
+
+### Identification
+
+The words:
+
+```text
+island
+connected
+adjacent
+grid
+```
+
+should immediately make you think:
+
+```text
+DFS / BFS
+```
+
+Typical DFS structure:
+
+```java
+static void dfs(char[][] grid, int row, int col) {
+    if (row < 0 ||
+        row >= grid.length ||
+        col < 0 ||
+        col >= grid[row].length ||
+        grid[row][col] != '1') {
+        return;
+    }
+
+    grid[row][col] = '0';
+
+    dfs(grid, row - 1, col);
+    dfs(grid, row + 1, col);
+    dfs(grid, row, col - 1);
+    dfs(grid, row, col + 1);
+}
+```
+
+The important DSA idea is:
+
+```text
+Current cell
+     ↓
+Visit neighbors
+     ↓
+Mark visited
+     ↓
+Continue
+```
+
+---
+
+## Problem 15 — Rotate Matrix 90° Clockwise
+
+Common in interviews.
+
+The standard in-place strategy for a square matrix is:
+
+```text
+Transpose
+    ↓
+Reverse every row
+```
+
+Implementation:
+
+```java
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+int n = matrix.length;
+
+for (int i = 0; i < n; i++) {
+    for (int j = i + 1; j < n; j++) {
+        int temp = matrix[i][j];
+        matrix[i][j] = matrix[j][i];
+        matrix[j][i] = temp;
+    }
+}
+
+for (int i = 0; i < n; i++) {
+    int left = 0;
+    int right = n - 1;
+
+    while (left < right) {
+        int temp = matrix[i][left];
+        matrix[i][left] = matrix[i][right];
+        matrix[i][right] = temp;
+
+        left++;
+        right--;
+    }
+}
+```
+
+### Identification
+
+If the problem says:
+
+```text
+rotate matrix 90 degrees clockwise
+```
+
+think:
+
+```text
+Transpose + Reverse rows
+```
+
+---
+
+# 41. ⚠️ Common Mistakes
 
 ## ❌ Mistake 1 — Using `arr.length` for columns
 
 Wrong for general 2D arrays:
 
-    for (int j = 0; j < arr.length; j++)
+```java
+for (int j = 0; j < arr.length; j++) {
+    // ...
+}
+```
 
 Correct:
 
-    for (int j = 0; j < arr[i].length; j++)
+```java
+for (int j = 0; j < arr[i].length; j++) {
+    // ...
+}
+```
 
 Why?
 
 Because:
 
-    arr.length
-        ↓
-    number of rows
+```text
+arr.length
+    ↓
+number of rows
+```
 
 while:
 
-    arr[i].length
-        ↓
-    number of elements in row i
+```text
+arr[i].length
+    ↓
+number of elements in row i
+```
 
 ---
 
@@ -1369,7 +3151,9 @@ This is unsafe for jagged arrays.
 
 Wrong assumption:
 
-    arr[0].length == arr[1].length
+```text
+arr[0].length == arr[1].length
+```
 
 It may be true for rectangular arrays, but not necessarily for jagged arrays.
 
@@ -1379,13 +3163,17 @@ It may be true for rectangular arrays, but not necessarily for jagged arrays.
 
 For a 2D array:
 
-    arr[i]
+```java
+arr[i];
+```
 
 returns a row array.
 
 To access an individual element:
 
-    arr[i][j]
+```java
+arr[i][j];
+```
 
 ---
 
@@ -1393,16 +3181,22 @@ To access an individual element:
 
 Remember:
 
-    arr[row][column]
+```text
+arr[row][column]
+```
 
 So:
 
-    arr[1][2]
+```java
+arr[1][2];
+```
 
 means:
 
-    row 1
-    column 2
+```text
+row 1
+column 2
+```
 
 ---
 
@@ -1410,30 +3204,77 @@ means:
 
 For:
 
-    int[][] arr = new int[3][4];
+```java
+int[][] arr = new int[3][4];
+```
 
 Valid rows:
 
-    0, 1, 2
+```text
+0, 1, 2
+```
 
 Valid columns:
 
-    0, 1, 2, 3
+```text
+0, 1, 2, 3
+```
 
 ---
 
-# 38. 🚨 Interview Traps
+## ❌ Mistake 6 — Assuming a 2D array is always rectangular
+
+Java allows:
+
+```java
+int[][] arr = {
+    {1, 2},
+    {3, 4, 5}
+};
+```
+
+Therefore:
+
+```text
+2D array ≠ necessarily rectangular matrix
+```
+
+---
+
+## ❌ Mistake 7 — Accessing a null row
+
+This can fail:
+
+```java
+int[][] arr = new int[3][];
+
+System.out.println(arr[0][0]);
+```
+
+because:
+
+```text
+arr[0] == null
+```
+
+---
+
+# 42. 🚨 Interview Traps
 
 ## Trap 1
 
 What is:
 
-    int[][] arr = new int[3][4];
+```java
+int[][] arr = new int[3][4];
+```
 
 Answer:
 
-    3 rows
-    4 elements per row
+```text
+3 rows
+4 elements in each row
+```
 
 ---
 
@@ -1441,11 +3282,13 @@ Answer:
 
 What is:
 
-    arr.length
+```java
+arr.length;
+```
 
 Answer:
 
-    Number of rows.
+> Number of rows.
 
 ---
 
@@ -1453,11 +3296,13 @@ Answer:
 
 What is:
 
-    arr[0].length
+```java
+arr[0].length;
+```
 
 Answer:
 
-    Number of elements in row 0.
+> Number of elements in row `0`.
 
 ---
 
@@ -1475,10 +3320,12 @@ Answer:
 
 Is this valid?
 
-    int[][] arr = {
-        {1, 2},
-        {3, 4, 5}
-    };
+```java
+int[][] arr = {
+    {1, 2},
+    {3, 4, 5}
+};
+```
 
 Yes.
 
@@ -1490,7 +3337,9 @@ This is a jagged array.
 
 Is this valid?
 
-    int[][] arr = new int[3][];
+```java
+int[][] arr = new int[3][];
+```
 
 Yes.
 
@@ -1502,9 +3351,9 @@ The outer array has three row references, and individual rows can be created lat
 
 What is:
 
-    arr[0]
-
-for a 2D array?
+```java
+arr[0];
+```
 
 Answer:
 
@@ -1516,7 +3365,9 @@ Answer:
 
 What is:
 
-    arr[0][1]
+```java
+arr[0][1];
+```
 
 Answer:
 
@@ -1524,7 +3375,50 @@ Answer:
 
 ---
 
-# 39. 🔥 Top 20 Interview Questions
+## Trap 9
+
+What is the difference between:
+
+```java
+arr.length
+```
+
+and:
+
+```java
+arr[0].length
+```
+
+Answer:
+
+```text
+arr.length       → number of rows
+arr[0].length    → number of elements in row 0
+```
+
+---
+
+## Trap 10
+
+Can a 2D array have `null` rows?
+
+Yes.
+
+```java
+int[][] arr = new int[3][];
+```
+
+Initially:
+
+```text
+arr[0] → null
+arr[1] → null
+arr[2] → null
+```
+
+---
+
+# 43. 🔥 Top 20 Interview Questions
 
 ## Q1. What is a multidimensional array?
 
@@ -1540,19 +3434,25 @@ A two-dimensional array.
 
 ## Q3. How do you declare a 2D array?
 
-    int[][] arr;
+```java
+int[][] arr;
+```
 
 ---
 
 ## Q4. How do you create a 2D array?
 
-    int[][] arr = new int[3][4];
+```java
+int[][] arr = new int[3][4];
+```
 
 ---
 
 ## Q5. How do you access an element?
 
-    arr[row][column]
+```java
+arr[row][column];
+```
 
 ---
 
@@ -1592,11 +3492,13 @@ Yes.
 
 Example:
 
-    int[][] arr = new int[3][];
+```java
+int[][] arr = new int[3][];
 
-    arr[0] = new int[2];
-    arr[1] = new int[4];
-    arr[2] = new int[3];
+arr[0] = new int[2];
+arr[1] = new int[4];
+arr[2] = new int[3];
+```
 
 ---
 
@@ -1616,7 +3518,9 @@ The element at row `i` and column `j`.
 
 Yes, especially when created like:
 
-    new int[3][]
+```java
+new int[3][]
+```
 
 before individual rows are initialized.
 
@@ -1628,7 +3532,11 @@ Yes.
 
 Example:
 
-    static void display(int[][] arr)
+```java
+static void display(int[][] arr) {
+    // ...
+}
+```
 
 ---
 
@@ -1638,13 +3546,19 @@ Yes.
 
 Example:
 
-    static int[][] createMatrix()
+```java
+static int[][] createMatrix() {
+    // ...
+}
+```
 
 ---
 
 ## Q17. What is the complexity of traversing an `R × C` matrix?
 
-    O(R × C)
+```text
+O(R × C)
+```
 
 ---
 
@@ -1654,7 +3568,9 @@ An array with three dimensions.
 
 Example:
 
-    int[][][] arr;
+```java
+int[][][] arr;
+```
 
 ---
 
@@ -1670,257 +3586,148 @@ Because a multidimensional array is an array of arrays, and each inner array can
 
 ---
 
-# 40. 💻 Coding Problems
-
-## Problem 1 — Print a Matrix
-
-    int[][] matrix = {
-        {1, 2, 3},
-        {4, 5, 6},
-        {7, 8, 9}
-    };
-
-    for (int i = 0; i < matrix.length; i++) {
-
-        for (int j = 0; j < matrix[i].length; j++) {
-
-            System.out.print(matrix[i][j] + " ");
-        }
-
-        System.out.println();
-    }
-
-Output:
-
-    1 2 3
-    4 5 6
-    7 8 9
-
----
-
-## Problem 2 — Find Sum
-
-    int[][] matrix = {
-        {1, 2, 3},
-        {4, 5, 6}
-    };
-
-    int sum = 0;
-
-    for (int i = 0; i < matrix.length; i++) {
-
-        for (int j = 0; j < matrix[i].length; j++) {
-
-            sum += matrix[i][j];
-        }
-    }
-
-    System.out.println(sum);
-
-Output:
-
-    21
-
----
-
-## Problem 3 — Find Maximum
-
-    int[][] matrix = {
-        {10, 20, 30},
-        {40, 50, 60}
-    };
-
-    int max = matrix[0][0];
-
-    for (int i = 0; i < matrix.length; i++) {
-
-        for (int j = 0; j < matrix[i].length; j++) {
-
-            if (matrix[i][j] > max) {
-                max = matrix[i][j];
-            }
-        }
-    }
-
-    System.out.println(max);
-
-Output:
-
-    60
-
----
-
-## Problem 4 — Search an Element
-
-    int[][] matrix = {
-        {10, 20, 30},
-        {40, 50, 60}
-    };
-
-    int target = 50;
-
-    for (int i = 0; i < matrix.length; i++) {
-
-        for (int j = 0; j < matrix[i].length; j++) {
-
-            if (matrix[i][j] == target) {
-
-                System.out.println(
-                    "Found at row " + i + ", column " + j
-                );
-            }
-        }
-    }
-
-Output:
-
-    Found at row 1, column 1
-
----
-
-## Problem 5 — Print Main Diagonal
-
-For:
-
-    1 2 3
-    4 5 6
-    7 8 9
-
-Code:
-
-    int[][] matrix = {
-        {1, 2, 3},
-        {4, 5, 6},
-        {7, 8, 9}
-    };
-
-    for (int i = 0; i < matrix.length; i++) {
-        System.out.println(matrix[i][i]);
-    }
-
-Output:
-
-    1
-    5
-    9
-
----
-
-## Problem 6 — Create a Jagged Array
-
-    int[][] arr = new int[3][];
-
-    arr[0] = new int[]{1, 2};
-    arr[1] = new int[]{3, 4, 5};
-    arr[2] = new int[]{6, 7, 8, 9};
-
-    for (int i = 0; i < arr.length; i++) {
-
-        for (int j = 0; j < arr[i].length; j++) {
-
-            System.out.print(arr[i][j] + " ");
-        }
-
-        System.out.println();
-    }
-
-Output:
-
-    1 2
-    3 4 5
-    6 7 8 9
-
----
-
-# 41. 🎤 30-Second Interview Answer
+# 44. 🎤 30-Second Interview Answer
 
 > **A multidimensional array in Java is an array whose elements are themselves arrays. The most common example is a 2D array, which is generally represented as rows and columns. We access an element using two indexes such as `arr[i][j]`. An important point is that Java's 2D arrays are actually arrays of arrays, which means Java supports jagged arrays where different rows can have different lengths.**
 
 ---
 
-# 42. 🧾 Cheat Sheet
+# 45. 🧾 Cheat Sheet
 
 ## Declaration
 
-    int[][] arr;
+```java
+int[][] arr;
+```
 
 ## Creation
 
-    int[][] arr = new int[3][4];
+```java
+int[][] arr = new int[3][4];
+```
 
 ## Direct Initialization
 
-    int[][] arr = {
-        {1, 2},
-        {3, 4}
-    };
+```java
+int[][] arr = {
+    {1, 2},
+    {3, 4}
+};
+```
 
 ## Access
 
-    arr[i][j]
+```java
+arr[i][j];
+```
 
 ## Rows
 
-    arr.length
+```java
+arr.length;
+```
 
 ## Columns of Row `i`
 
-    arr[i].length
+```java
+arr[i].length;
+```
 
 ## Traverse
 
-    for (int i = 0; i < arr.length; i++) {
-        for (int j = 0; j < arr[i].length; j++) {
-            // arr[i][j]
-        }
+```java
+for (int i = 0; i < arr.length; i++) {
+    for (int j = 0; j < arr[i].length; j++) {
+        // arr[i][j]
     }
+}
+```
 
 ## Enhanced Traversal
 
-    for (int[] row : arr) {
-        for (int value : row) {
-            // value
-        }
+```java
+for (int[] row : arr) {
+    for (int value : row) {
+        // value
     }
+}
+```
 
 ## Jagged Array
 
-    int[][] arr = new int[3][];
+```java
+int[][] arr = new int[3][];
+```
 
 ## 3D Array
 
-    int[][][] arr;
+```java
+int[][][] arr;
+```
 
 ## Print Nested Array
 
-    Arrays.deepToString(arr)
+```java
+Arrays.deepToString(arr);
+```
+
+## Main Diagonal
+
+```java
+arr[i][i];
+```
+
+## Secondary Diagonal
+
+```java
+arr[i][n - 1 - i];
+```
+
+## Direction Array
+
+```java
+int[][] directions = {
+    {-1, 0},
+    {1, 0},
+    {0, -1},
+    {0, 1}
+};
+```
 
 ---
 
-# 43. 🧠 Memory Tricks
+# 46. 🧠 Memory Tricks
 
 ## 🔥 Trick 1 — Remember the Index
 
 For a 2D array:
 
-    arr[row][column]
+```text
+arr[row][column]
+```
 
 Think:
 
-    First → Row
-    Second → Column
+```text
+First  → Row
+Second → Column
+```
 
 ---
 
 ## 🔥 Trick 2 — Remember the Length
 
-    arr.length
-        ↓
-    Rows
+```text
+arr.length
+    ↓
+Rows
+```
 
-    arr[i].length
-        ↓
-    Columns / elements in row i
+```text
+arr[i].length
+    ↓
+Elements in row i
+```
 
 ---
 
@@ -1928,14 +3735,18 @@ Think:
 
 Think:
 
-    Outer loop  → Rows
-    Inner loop  → Columns
+```text
+Outer loop  → Rows
+Inner loop  → Columns
+```
 
 Therefore:
 
-    for each row
-        for each column
-            process element
+```text
+for each row
+    for each column
+        process element
+```
 
 ---
 
@@ -1943,17 +3754,21 @@ Therefore:
 
 Never think:
 
-    2D array = one giant block
+```text
+2D array = one giant block
+```
 
 Think:
 
-    2D array
-        ↓
-    array of arrays
-        ↓
-    row references
-        ↓
-    individual row arrays
+```text
+2D array
+    ↓
+array of arrays
+    ↓
+row references
+    ↓
+individual row arrays
+```
 
 ---
 
@@ -1961,97 +3776,178 @@ Think:
 
 Remember:
 
-    Different rows
-        ↓
-    Different lengths
-        ↓
-    Jagged array
+```text
+Different rows
+      ↓
+Different lengths
+      ↓
+Jagged array
+```
 
 ---
 
 ## 🔥 Trick 6 — Dimensions
 
-    int[]       → 1D
-    int[][]     → 2D
-    int[][][]   → 3D
+```text
+int[]       → 1D
+int[][]     → 2D
+int[][][]   → 3D
+```
 
 ---
 
-# 44. ✅ Final Revision Checklist
+## 🔥 Trick 7 — DSA Pattern Recognition
+
+```text
+Every cell
+    ↓
+Nested loops
+
+Neighbors
+    ↓
+Directions
+    ↓
+BFS / DFS
+
+Diagonal
+    ↓
+[i][i] or [i][n-1-i]
+
+Rotate
+    ↓
+Transpose + Reverse
+
+Spiral
+    ↓
+Top / Bottom / Left / Right
+
+Many rectangle queries
+    ↓
+2D Prefix Sum
+
+Path / minimum / maximum / ways
+    ↓
+2D DP
+```
+
+---
+
+# 47. ✅ Final Revision Checklist
 
 Before moving to the next topic, make sure you can explain:
 
-    [ ] What is a multidimensional array?
-    [ ] What is a 2D array?
-    [ ] How to declare a 2D array?
-    [ ] How to create a 2D array?
-    [ ] How to initialize it?
-    [ ] How to access an element?
-    [ ] What does arr[i][j] mean?
-    [ ] What does arr.length mean?
-    [ ] What does arr[i].length mean?
-    [ ] How to traverse a 2D array?
-    [ ] Why do we use nested loops?
-    [ ] How to use enhanced for loops?
-    [ ] How to take 2D array input?
-    [ ] How to print a 2D array?
-    [ ] How does a 2D array work internally?
-    [ ] What is an array of arrays?
-    [ ] What is a jagged array?
-    [ ] How to create a jagged array?
-    [ ] What is a 3D array?
-    [ ] How to find sum?
-    [ ] How to find maximum?
-    [ ] How to search?
-    [ ] How to add matrices?
-    [ ] What is matrix transpose?
-    [ ] What are diagonal elements?
-    [ ] How to pass a 2D array to a method?
-    [ ] How to return a 2D array?
-    [ ] What exceptions can occur?
-    [ ] What is the traversal complexity?
-    [ ] Why are Java 2D arrays called arrays of arrays?
+```text
+[ ] What is a multidimensional array?
+[ ] What is a 2D array?
+[ ] How to declare a 2D array?
+[ ] How to create a 2D array?
+[ ] How to initialize it?
+[ ] How to access an element?
+[ ] What does arr[i][j] mean?
+[ ] What does arr.length mean?
+[ ] What does arr[i].length mean?
+[ ] How to traverse a 2D array?
+[ ] Why do we use nested loops?
+[ ] How to use enhanced for loops?
+[ ] How to take 2D array input?
+[ ] How to print a 2D array?
+[ ] How does a 2D array work internally?
+[ ] What is an array of arrays?
+[ ] What is a jagged array?
+[ ] How to create a jagged array?
+[ ] What is a 3D array?
+[ ] How to find sum?
+[ ] How to find maximum?
+[ ] How to search?
+[ ] How to add matrices?
+[ ] What is matrix transpose?
+[ ] What are diagonal elements?
+[ ] How to pass a 2D array to a method?
+[ ] How to return a 2D array?
+[ ] What exceptions can occur?
+[ ] What is the traversal complexity?
+[ ] Why are Java 2D arrays called arrays of arrays?
+[ ] How to identify a grid problem?
+[ ] When should I use BFS/DFS?
+[ ] When should I use directions?
+[ ] How do I recognize diagonal problems?
+[ ] How do I recognize matrix rotation?
+[ ] How do I recognize spiral traversal?
+[ ] When should I think about 2D prefix sum?
+[ ] When should I think about 2D DP?
+```
 
 ---
 
-# 🏆 MASTER MEMORY CARD
+# 48. 🏆 MASTER MEMORY CARD
 
-    ┌─────────────────────────────────────────────┐
-    │       MULTIDIMENSIONAL ARRAY IN JAVA        │
-    ├─────────────────────────────────────────────┤
-    │ 2D array → array of arrays                  │
-    │ Access → arr[row][column]                   │
-    │ arr.length → number of rows                │
-    │ arr[i].length → length of row i            │
-    │ Traversal → nested loops                   │
-    │ Can contain jagged rows                    │
-    │ Can have null row references               │
-    │ 3D → int[][][]                              │
-    │ Access element → O(1)                      │
-    │ Traverse R × C → O(R × C)                  │
-    └─────────────────────────────────────────────┘
+```text
+┌────────────────────────────────────────────────────┐
+│          MULTIDIMENSIONAL ARRAY IN JAVA            │
+├────────────────────────────────────────────────────┤
+│ 2D array → array of arrays                         │
+│ Access → arr[row][column]                          │
+│ arr.length → number of rows                        │
+│ arr[i].length → length of row i                   │
+│ Traversal → nested loops                           │
+│ Can contain jagged rows                            │
+│ Can have null row references                       │
+│ 3D → int[][][]                                     │
+│ Access element → O(1)                             │
+│ Traverse R × C → O(R × C)                         │
+├────────────────────────────────────────────────────┤
+│ DSA PATTERNS                                       │
+├────────────────────────────────────────────────────┤
+│ Every cell → Nested traversal                      │
+│ Neighbors → Directions + BFS/DFS                   │
+│ Main diagonal → [i][i]                             │
+│ Secondary diagonal → [i][n-1-i]                    │
+│ Rotate → Transpose + Reverse                       │
+│ Spiral → Boundary / Layer traversal                │
+│ Rectangle queries → 2D Prefix Sum                  │
+│ Grid paths → 2D DP                                 │
+└────────────────────────────────────────────────────┘
+```
 
 ---
 
-# ⭐ ONE-LINE INTERVIEW DEFINITION
+# 49. ⭐ One-Line Interview Definition
 
-> **A multidimensional array in Java is an array of arrays, commonly used to represent multidimensional data such as matrices, with each element accessed using multiple indexes.**
+> **A multidimensional array in Java is an array of arrays, commonly used to represent multidimensional data such as matrices and grids, with each element accessed using multiple indexes.**
 
 ---
 
 # 🔗 ARRAY FOLDER PROGRESS
 
-    05-Arrays/
-    │
-    ├── 01-Array-Introduction.md
-    ├── 02-One-Dimensional-Array.md
-    ├── 03-Multidimensional-Array.md       ← YOU ARE HERE
-    ├── 04-Array-Memory.md
-    ├── 05-Arrays-Class.md
-    └── 06-Array-Interview-Questions.md
+```text
+05-Arrays/
+
+│
+├── 01-Array-Introduction.md
+├── 02-One-Dimensional-Array.md
+├── 03-Multidimensional-Array.md     ← YOU ARE HERE
+├── 04-Array-Memory.md
+├── 05-Arrays-Class.md
+└── 06-Array-Interview-Questions.md
+```
 
 ### Next:
 
 > **04 — Array Memory**
 
-This will cover how arrays are represented in JVM memory, array objects, references, heap allocation, `length`, primitive arrays vs reference arrays, 1D/2D memory structure, and important interview traps.
+This will cover:
+
+- Array objects
+- Array references
+- Heap allocation
+- `length`
+- Primitive arrays
+- Reference arrays
+- 1D array memory structure
+- 2D array memory structure
+- Array of arrays
+- Jagged array memory
+- References between outer and inner arrays
+- JVM-level interview concepts
+- Common memory traps
+- DSA relevance of array memory

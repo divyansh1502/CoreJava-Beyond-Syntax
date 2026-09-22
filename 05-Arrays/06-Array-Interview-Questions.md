@@ -50,22 +50,28 @@
 
 # 1. 🔹 What is an Array?
 
-An **array** is an object that stores a fixed number of elements of the same type in indexed form.
+An **array** is an object that stores a fixed number of elements of the same component type in indexed form.
 
 Example:
 
-    int[] nums = {10, 20, 30, 40};
+```java
+int[] nums = {10, 20, 30, 40};
+```
 
-Here:
+Conceptually:
 
-    nums
-       ↓
-    [10, 20, 30, 40]
+```text
+nums
+ ↓
+[10, 20, 30, 40]
+```
 
 Each element has an index:
 
-    Index:  0   1   2   3
-    Value: 10  20  30  40
+```text
+Index:  0   1   2   3
+Value: 10  20  30  40
+```
 
 The first element is at index `0`.
 
@@ -77,15 +83,19 @@ Suppose we need to store marks of 5 students.
 
 Without an array:
 
-    int marks1 = 80;
-    int marks2 = 75;
-    int marks3 = 90;
-    int marks4 = 85;
-    int marks5 = 70;
+```java
+int marks1 = 80;
+int marks2 = 75;
+int marks3 = 90;
+int marks4 = 85;
+int marks5 = 70;
+```
 
 With an array:
 
-    int[] marks = {80, 75, 90, 85, 70};
+```java
+int[] marks = {80, 75, 90, 85, 70};
+```
 
 Arrays allow us to:
 
@@ -99,8 +109,6 @@ Arrays allow us to:
 ---
 
 # 3. ⭐ Array Characteristics
-
-Important characteristics:
 
 | Property | Array |
 |---|---|
@@ -123,23 +131,31 @@ There are two commonly seen declaration styles.
 
 ## Style 1
 
-    int[] arr;
+```java
+int[] arr;
+```
 
 ## Style 2
 
-    int arr[];
+```java
+int arr[];
+```
 
 Both are valid.
 
 Recommended style:
 
-    int[] arr;
+```java
+int[] arr;
+```
 
 Why?
 
 Because the type clearly appears as:
 
-    int[]
+```text
+int[]
+```
 
 ---
 
@@ -149,23 +165,31 @@ Declaration does not create the array object.
 
 Example:
 
-    int[] arr;
+```java
+int[] arr;
+```
 
 At this point:
 
-    arr
+```text
+arr
+```
 
 is only a reference variable.
 
 We create the array using:
 
-    arr = new int[5];
+```java
+arr = new int[5];
+```
 
 Now an array object containing 5 `int` elements is created.
 
 Combined:
 
-    int[] arr = new int[5];
+```java
+int[] arr = new int[5];
+```
 
 ---
 
@@ -175,17 +199,23 @@ We can initialize an array directly.
 
 Example:
 
-    int[] arr = {10, 20, 30, 40};
+```java
+int[] arr = {10, 20, 30, 40};
+```
 
 This creates an array containing four elements.
 
 Another form:
 
-    int[] arr = new int[]{10, 20, 30, 40};
+```java
+int[] arr = new int[]{10, 20, 30, 40};
+```
 
 Both represent an array containing:
 
-    [10, 20, 30, 40]
+```text
+[10, 20, 30, 40]
+```
 
 ---
 
@@ -195,11 +225,15 @@ When an array is created using `new`, its elements receive default values.
 
 Example:
 
-    int[] arr = new int[5];
+```java
+int[] arr = new int[5];
+```
 
 Initially:
 
-    [0, 0, 0, 0, 0]
+```text
+[0, 0, 0, 0, 0]
+```
 
 Default values:
 
@@ -217,11 +251,15 @@ Default values:
 
 Example:
 
-    String[] names = new String[3];
+```java
+String[] names = new String[3];
+```
 
 Result conceptually:
 
-    [null, null, null]
+```text
+[null, null, null]
+```
 
 ---
 
@@ -231,19 +269,25 @@ Java arrays use zero-based indexing.
 
 Example:
 
-    int[] arr = {10, 20, 30, 40};
+```java
+int[] arr = {10, 20, 30, 40};
+```
 
 Indexes:
 
-    Index:  0   1   2   3
-    Value: 10  20  30  40
+```text
+Index:  0   1   2   3
+Value: 10  20  30  40
+```
 
 Access:
 
-    arr[0] → 10
-    arr[1] → 20
-    arr[2] → 30
-    arr[3] → 40
+```java
+arr[0]; // 10
+arr[1]; // 20
+arr[2]; // 30
+arr[3]; // 40
+```
 
 ---
 
@@ -253,15 +297,21 @@ The index represents an offset from the beginning of the array.
 
 The first element has offset:
 
-    0
+```text
+0
+```
 
 The second:
 
-    1
+```text
+1
+```
 
 The third:
 
-    2
+```text
+2
+```
 
 This is a fundamental convention used throughout Java and many other languages.
 
@@ -271,27 +321,37 @@ This is a fundamental convention used throughout Java and many other languages.
 
 Arrays have a field called:
 
-    length
+```text
+length
+```
 
 Example:
 
-    int[] arr = {10, 20, 30};
+```java
+int[] arr = {10, 20, 30};
 
-    System.out.println(arr.length);
+System.out.println(arr.length);
+```
 
 Output:
 
-    3
+```text
+3
+```
 
 Important:
 
-    array.length
+```java
+array.length
+```
 
 is a field.
 
 It is NOT:
 
-    array.length()
+```java
+array.length()
+```
 
 ---
 
@@ -299,11 +359,15 @@ It is NOT:
 
 Array:
 
-    arr.length
+```java
+arr.length
+```
 
 String:
 
-    str.length()
+```java
+str.length()
+```
 
 This is a common interview trap.
 
@@ -313,20 +377,26 @@ This is a common interview trap.
 
 When we write:
 
-    int[] arr = new int[5];
+```java
+int[] arr = new int[5];
+```
 
 Conceptually:
 
-    Stack
-    ┌───────────────┐
-    │ arr           │
-    │ reference ────┼──────────────┐
-    └───────────────┘              │
-                                   ▼
+```text
+Stack
+
+┌───────────────┐
+│ arr           │
+│ reference ────┼──────────────┐
+└───────────────┘              │
+                               ▼
                               Heap
+
                          ┌───────────────┐
                          │ 0 │ 0 │ 0 │ 0 │ 0 │
                          └───────────────┘
+```
 
 The variable `arr` stores a reference to the array object.
 
@@ -334,11 +404,15 @@ The array object itself is created on the heap.
 
 For interview purposes:
 
-    Reference variable
+```text
+Reference variable
         ↓
     points to
         ↓
-    Array object on heap
+Array object on heap
+```
+
+> **Interview note:** The exact physical memory layout is JVM-implementation dependent. The stack/heap model above is the standard conceptual model used for explaining Java memory.
 
 ---
 
@@ -350,31 +424,41 @@ Arrays are objects in Java.
 
 Example:
 
-    int[] arr = new int[5];
+```java
+int[] arr = new int[5];
+```
 
 The array itself is an object.
 
 This is why:
 
-    arr.length
+```java
+arr.length
+```
 
 is available.
 
 Also:
 
-    arr instanceof Object
+```java
+arr instanceof Object
+```
 
 is valid.
 
 Example:
 
-    int[] arr = new int[5];
+```java
+int[] arr = new int[5];
 
-    System.out.println(arr instanceof Object);
+System.out.println(arr instanceof Object);
+```
 
 Output:
 
-    true
+```text
+true
+```
 
 ---
 
@@ -382,7 +466,9 @@ Output:
 
 ## Primitive Array
 
-    int[] nums = {10, 20, 30};
+```java
+int[] nums = {10, 20, 30};
+```
 
 The array contains primitive `int` values.
 
@@ -390,19 +476,23 @@ The array contains primitive `int` values.
 
 ## Reference Array
 
-    String[] names = {"A", "B", "C"};
+```java
+String[] names = {"A", "B", "C"};
+```
 
 The array contains references to `String` objects.
 
 Conceptually:
 
-    names
-      │
-      ▼
-    [ref][ref][ref]
-      │    │    │
-      ▼    ▼    ▼
-     "A"  "B"  "C"
+```text
+names
+  │
+  ▼
+[ref][ref][ref]
+  │    │    │
+  ▼    ▼    ▼
+ "A"  "B"  "C"
+```
 
 ---
 
@@ -410,9 +500,11 @@ Conceptually:
 
 Consider:
 
-    int[] a = {10, 20, 30};
+```java
+int[] a = {10, 20, 30};
 
-    int[] b = a;
+int[] b = a;
+```
 
 This does NOT create another array.
 
@@ -420,35 +512,41 @@ Both variables point to the same array.
 
 Conceptually:
 
-    a ─────┐
-           │
-           ▼
-        [10,20,30]
-           ▲
-           │
-    b ─────┘
+```text
+a ─────┐
+       │
+       ▼
+    [10,20,30]
+       ▲
+       │
+b ─────┘
+```
 
 Therefore:
 
-    a == b
+```java
+a == b
+```
 
 returns:
 
-    true
+```text
+true
+```
 
 ---
 
-## Modifying Through b
+## Modifying Through `b`
 
-    b[0] = 100;
+```java
+b[0] = 100;
+```
 
-Now:
+Now `a` also becomes:
 
-    a
-
-also becomes:
-
-    [100, 20, 30]
+```text
+[100, 20, 30]
+```
 
 because both references point to the same array.
 
@@ -460,21 +558,29 @@ If we want a separate array, we need to copy the elements.
 
 One option:
 
-    int[] a = {10, 20, 30};
+```java
+int[] a = {10, 20, 30};
 
-    int[] b = Arrays.copyOf(a, a.length);
+int[] b = Arrays.copyOf(a, a.length);
+```
 
 Now:
 
-    a != b
+```java
+a != b
+```
 
 but:
 
-    Arrays.equals(a, b)
+```java
+Arrays.equals(a, b)
+```
 
 is:
 
-    true
+```text
+true
+```
 
 ---
 
@@ -482,23 +588,33 @@ is:
 
 ### `Arrays.copyOf()`
 
-    int[] b = Arrays.copyOf(a, a.length);
+```java
+int[] b = Arrays.copyOf(a, a.length);
+```
 
 ### `System.arraycopy()`
 
-    System.arraycopy(a, 0, b, 0, a.length);
+```java
+int[] b = new int[a.length];
+
+System.arraycopy(a, 0, b, 0, a.length);
+```
 
 ### `clone()`
 
-    int[] b = a.clone();
+```java
+int[] b = a.clone();
+```
 
 ### Manual Copy
 
-    int[] b = new int[a.length];
+```java
+int[] b = new int[a.length];
 
-    for(int i = 0; i < a.length; i++) {
-        b[i] = a[i];
-    }
+for (int i = 0; i < a.length; i++) {
+    b[i] = a[i];
+}
+```
 
 ---
 
@@ -508,9 +624,11 @@ Shallow copying becomes important with arrays of objects.
 
 Example:
 
-    Student[] a = {student1, student2};
+```java
+Student[] a = {student1, student2};
 
-    Student[] b = a.clone();
+Student[] b = a.clone();
+```
 
 A new array object is created.
 
@@ -518,23 +636,29 @@ But the references to the students are copied.
 
 Conceptually:
 
-    a ─────► [ref1][ref2]
-               │     │
-               ▼     ▼
-            Student Student
+```text
+a ─────► [ref1][ref2]
+           │     │
+           ▼     ▼
+        Student Student
 
-    b ─────► [ref1][ref2]
-               │     │
-               ▼     ▼
-            Student Student
+b ─────► [ref1][ref2]
+           │     │
+           ▼     ▼
+        Student Student
+```
 
 Therefore:
 
-    a != b
+```java
+a != b
+```
 
 but:
 
-    a[0] == b[0]
+```java
+a[0] == b[0]
+```
 
 can be true.
 
@@ -548,26 +672,32 @@ Java supports arrays of arrays.
 
 Example:
 
-    int[][] matrix = {
-        {1, 2, 3},
-        {4, 5, 6}
-    };
+```java
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6}
+};
+```
 
 Conceptually:
 
-    matrix
-       │
-       ▼
-    [ ref ][ ref ]
-       │      │
-       ▼      ▼
-    [1,2,3] [4,5,6]
+```text
+matrix
+   │
+   ▼
+[ ref ][ ref ]
+   │     │
+   ▼     ▼
+[1,2,3] [4,5,6]
+```
 
 Access:
 
-    matrix[0][0] → 1
-    matrix[0][1] → 2
-    matrix[1][2] → 6
+```java
+matrix[0][0]; // 1
+matrix[0][1]; // 2
+matrix[1][2]; // 6
+```
 
 ---
 
@@ -577,25 +707,35 @@ Java does not require all rows of a multidimensional array to have the same leng
 
 Example:
 
-    int[][] arr = new int[3][];
+```java
+int[][] arr = new int[3][];
 
-    arr[0] = new int[2];
-    arr[1] = new int[4];
-    arr[2] = new int[1];
+arr[0] = new int[2];
+arr[1] = new int[4];
+arr[2] = new int[1];
+```
 
 Conceptually:
 
-    row 0 → [0, 0]
-    row 1 → [0, 0, 0, 0]
-    row 2 → [0]
+```text
+row 0 → [0, 0]
+
+row 1 → [0, 0, 0, 0]
+
+row 2 → [0]
+```
 
 This is called a:
 
-    Jagged Array
+```text
+Jagged Array
+```
 
 or:
 
-    Ragged Array
+```text
+Ragged Array
+```
 
 ---
 
@@ -603,255 +743,341 @@ or:
 
 Java provides:
 
-    java.util.Arrays
+```java
+java.util.Arrays
+```
 
 It is a utility class containing many static methods for working with arrays.
 
+Import:
+
+```java
+import java.util.Arrays;
+```
+
 Important methods:
 
-    Arrays.toString()
-    Arrays.deepToString()
-    Arrays.sort()
-    Arrays.parallelSort()
-    Arrays.binarySearch()
-    Arrays.copyOf()
-    Arrays.copyOfRange()
-    Arrays.fill()
-    Arrays.equals()
-    Arrays.deepEquals()
-    Arrays.compare()
-    Arrays.mismatch()
-    Arrays.asList()
-    Arrays.stream()
-    Arrays.hashCode()
+```java
+Arrays.toString()
+Arrays.deepToString()
+Arrays.sort()
+Arrays.parallelSort()
+Arrays.binarySearch()
+Arrays.copyOf()
+Arrays.copyOfRange()
+Arrays.fill()
+Arrays.equals()
+Arrays.deepEquals()
+Arrays.compare()
+Arrays.mismatch()
+Arrays.asList()
+Arrays.stream()
+Arrays.hashCode()
+```
 
 ---
 
-# 19. 🖨️ Arrays.toString()
+# 19. 🖨️ `Arrays.toString()`
 
 Used to get a readable representation of a one-dimensional array.
 
 Example:
 
-    int[] arr = {10, 20, 30};
+```java
+int[] arr = {10, 20, 30};
 
-    System.out.println(Arrays.toString(arr));
+System.out.println(Arrays.toString(arr));
+```
 
 Output:
 
-    [10, 20, 30]
+```text
+[10, 20, 30]
+```
 
 ---
 
-# 20. 🌳 Arrays.deepToString()
+# 20. 🌳 `Arrays.deepToString()`
 
 Used for nested arrays.
 
 Example:
 
-    int[][] arr = {
-        {1, 2},
-        {3, 4}
-    };
+```java
+int[][] arr = {
+    {1, 2},
+    {3, 4}
+};
 
-    System.out.println(Arrays.deepToString(arr));
+System.out.println(Arrays.deepToString(arr));
+```
 
 Output:
 
-    [[1, 2], [3, 4]]
+```text
+[[1, 2], [3, 4]]
+```
 
 Memory:
 
-    1D      → toString()
-    Nested  → deepToString()
+```text
+1D array       → toString()
+Nested arrays  → deepToString()
+```
 
 ---
 
-# 21. 🔃 Arrays.sort()
+# 21. 🔃 `Arrays.sort()`
 
 Sorts an array.
 
 Example:
 
-    int[] arr = {5, 2, 8, 1};
+```java
+int[] arr = {5, 2, 8, 1};
 
-    Arrays.sort(arr);
+Arrays.sort(arr);
+```
 
 Result:
 
-    [1, 2, 5, 8]
+```text
+[1, 2, 5, 8]
+```
 
 It modifies the original array.
 
+For primitive arrays, the standard `Arrays.sort()` uses an optimized dual-pivot quicksort for many primitive types. For object arrays, Java uses a stable TimSort-based implementation.
+
 ---
 
-# 22. 🔎 Arrays.binarySearch()
+# 22. 🔎 `Arrays.binarySearch()`
 
 Searches a sorted array using binary search.
 
 Example:
 
-    int[] arr = {10, 20, 30, 40, 50};
+```java
+int[] arr = {10, 20, 30, 40, 50};
 
-    int index = Arrays.binarySearch(arr, 30);
+int index = Arrays.binarySearch(arr, 30);
+```
 
 Result:
 
-    2
+```text
+2
+```
 
 Typical complexity:
 
-    O(log n)
+```text
+O(log n)
+```
 
 Important:
 
 > The array should be sorted according to the required ordering before using binary search.
 
+If the array is not appropriately sorted, the result is unspecified.
+
 ---
 
-# 23. 📋 Arrays.copyOf()
+# 23. 📋 `Arrays.copyOf()`
 
 Creates a new array with a specified length.
 
 Example:
 
-    int[] arr = {10, 20, 30};
+```java
+int[] arr = {10, 20, 30};
 
-    int[] copy = Arrays.copyOf(arr, 5);
+int[] copy = Arrays.copyOf(arr, 5);
+```
 
 Result:
 
-    [10, 20, 30, 0, 0]
+```text
+[10, 20, 30, 0, 0]
+```
 
 If the requested size is smaller:
 
-    int[] copy = Arrays.copyOf(arr, 2);
+```java
+int[] copy = Arrays.copyOf(arr, 2);
+```
 
 Result:
 
-    [10, 20]
+```text
+[10, 20]
+```
 
 ---
 
-# 24. ✂️ Arrays.copyOfRange()
+# 24. ✂️ `Arrays.copyOfRange()`
 
 Copies a specific range.
 
 Example:
 
-    int[] arr = {10, 20, 30, 40, 50};
+```java
+int[] arr = {10, 20, 30, 40, 50};
 
-    int[] copy = Arrays.copyOfRange(arr, 1, 4);
+int[] copy = Arrays.copyOfRange(arr, 1, 4);
+```
 
 Result:
 
-    [20, 30, 40]
+```text
+[20, 30, 40]
+```
 
 Remember:
 
-    from → inclusive
-    to   → exclusive
+```text
+from → inclusive
+to   → exclusive
+```
 
 ---
 
-# 25. 🪣 Arrays.fill()
+# 25. 🪣 `Arrays.fill()`
 
 Fills all or part of an array.
 
 Example:
 
-    int[] arr = new int[5];
+```java
+int[] arr = new int[5];
 
-    Arrays.fill(arr, 10);
+Arrays.fill(arr, 10);
+```
 
 Result:
 
-    [10, 10, 10, 10, 10]
+```text
+[10, 10, 10, 10, 10]
+```
 
 Range:
 
-    int[] arr = {1, 2, 3, 4, 5};
+```java
+int[] arr = {1, 2, 3, 4, 5};
 
-    Arrays.fill(arr, 1, 4, 100);
+Arrays.fill(arr, 1, 4, 100);
+```
 
 Result:
 
-    [1, 100, 100, 100, 5]
+```text
+[1, 100, 100, 100, 5]
+```
+
+The range is:
+
+```text
+from → inclusive
+to   → exclusive
+```
 
 ---
 
-# 26. ⚖️ Arrays.equals()
+# 26. ⚖️ `Arrays.equals()`
 
 Compares two one-dimensional arrays element by element.
 
 Example:
 
-    int[] a = {1, 2, 3};
-    int[] b = {1, 2, 3};
+```java
+int[] a = {1, 2, 3};
 
-    Arrays.equals(a, b);
+int[] b = {1, 2, 3};
+
+System.out.println(Arrays.equals(a, b));
+```
 
 Result:
 
-    true
+```text
+true
+```
 
 ---
 
-# 27. 🌳 Arrays.deepEquals()
+# 27. 🌳 `Arrays.deepEquals()`
 
 Used for nested arrays.
 
 Example:
 
-    int[][] a = {
-        {1, 2},
-        {3, 4}
-    };
+```java
+int[][] a = {
+    {1, 2},
+    {3, 4}
+};
 
-    int[][] b = {
-        {1, 2},
-        {3, 4}
-    };
+int[][] b = {
+    {1, 2},
+    {3, 4}
+};
 
-    Arrays.deepEquals(a, b);
+System.out.println(Arrays.deepEquals(a, b));
+```
 
 Result:
 
-    true
+```text
+true
+```
 
 ---
 
-# 28. 📦 Arrays.asList()
+# 28. 📦 `Arrays.asList()`
 
 Converts an array of reference types into a fixed-size List view backed by the array.
 
 Example:
 
-    String[] arr = {"A", "B", "C"};
+```java
+String[] arr = {"A", "B", "C"};
 
-    List<String> list = Arrays.asList(arr);
+List<String> list = Arrays.asList(arr);
+```
 
 Result conceptually:
 
-    [A, B, C]
+```text
+[A, B, C]
+```
 
 Important:
 
-    Arrays.asList()
+```java
+Arrays.asList()
+```
 
 does NOT create a normal resizable `ArrayList`.
 
 This works:
 
-    list.set(0, "X");
+```java
+list.set(0, "X");
+```
 
 But this does not:
 
-    list.add("D");
+```java
+list.add("D");
+```
 
 It throws:
 
-    UnsupportedOperationException
+```text
+UnsupportedOperationException
+```
+
+The list is fixed-size, but changes made through `set()` are reflected in the backing array and vice versa.
 
 ---
 
@@ -859,63 +1085,85 @@ It throws:
 
 This:
 
-    int[] nums = {1, 2, 3};
+```java
+int[] nums = {1, 2, 3};
 
-    Arrays.asList(nums);
+List<int[]> list = Arrays.asList(nums);
+```
 
-does not produce:
+produces a list containing the entire primitive array as one element.
 
-    List<Integer>
+It does not produce:
 
-Instead, the primitive array is treated as a single argument.
+```text
+List<Integer>
+```
 
 For:
 
-    Integer[] nums = {1, 2, 3};
+```java
+Integer[] nums = {1, 2, 3};
 
-this works as expected:
+List<Integer> list = Arrays.asList(nums);
+```
 
-    List<Integer> list = Arrays.asList(nums);
+this works as expected.
 
 ---
 
-# 29. 🌊 Arrays.stream()
+# 29. 🌊 `Arrays.stream()`
 
 Creates a Stream from an array.
 
 Example:
 
-    int[] nums = {10, 20, 30};
+```java
+int[] nums = {10, 20, 30};
 
-    int sum = Arrays.stream(nums).sum();
+int sum = Arrays.stream(nums).sum();
+```
 
 Result:
 
-    60
+```text
+60
+```
 
 For:
 
-    int[]
+```text
+int[]
+```
 
 the result is an:
 
-    IntStream
+```text
+IntStream
+```
 
 For:
 
-    long[]
+```text
+long[]
+```
 
 the result is:
 
-    LongStream
+```text
+LongStream
+```
 
 For:
 
-    double[]
+```text
+double[]
+```
 
 the result is:
 
-    DoubleStream
+```text
+DoubleStream
+```
 
 ---
 
@@ -925,14 +1173,19 @@ This is one of the most important array interview questions.
 
 Example:
 
-    int[] a = {1, 2, 3};
-    int[] b = {1, 2, 3};
+```java
+int[] a = {1, 2, 3};
 
-    System.out.println(a == b);
+int[] b = {1, 2, 3};
+
+System.out.println(a == b);
+```
 
 Output:
 
-    false
+```text
+false
+```
 
 Why?
 
@@ -940,29 +1193,41 @@ Because they are different array objects.
 
 But:
 
-    System.out.println(Arrays.equals(a, b));
+```java
+System.out.println(Arrays.equals(a, b));
+```
 
 Output:
 
-    true
+```text
+true
+```
 
 Because their contents are equal.
 
-### Remember
+## Remember
 
-    ==
+```text
+==
+```
 
 checks:
 
-    Same object/reference?
+```text
+Same object/reference?
+```
 
 While:
 
-    Arrays.equals()
+```java
+Arrays.equals()
+```
 
 checks:
 
-    Same elements?
+```text
+Same elements?
+```
 
 ---
 
@@ -986,22 +1251,30 @@ checks:
 
 Array:
 
-    int[] arr = new int[5];
+```java
+int[] arr = new int[5];
+```
 
 ArrayList:
 
-    ArrayList<Integer> list = new ArrayList<>();
+```java
+ArrayList<Integer> list = new ArrayList<>();
 
-    list.add(10);
-    list.add(20);
+list.add(10);
+list.add(20);
+```
 
 Array:
 
-    arr.length
+```java
+arr.length;
+```
 
 ArrayList:
 
-    list.size()
+```java
+list.size();
+```
 
 ---
 
@@ -1023,6 +1296,8 @@ ArrayList:
 | `Arrays.equals()` | O(n) |
 | `Arrays.mismatch()` | O(n) worst case |
 
+> **Important:** A Java array itself has fixed size, so "insert at end with free space" is not an operation on the array in the same way it is for a dynamic array such as `ArrayList`. In a raw array, insertion generally means writing to an existing unused position or creating/copying into another array.
+
 ---
 
 # 33. 🚨 Common Interview Traps
@@ -1031,15 +1306,21 @@ ArrayList:
 
 Array:
 
-    arr.length
+```java
+arr.length;
+```
 
 String:
 
-    str.length()
+```java
+str.length();
+```
 
 ArrayList:
 
-    list.size()
+```java
+list.size();
+```
 
 ---
 
@@ -1047,11 +1328,15 @@ ArrayList:
 
 First element:
 
-    arr[0]
+```java
+arr[0];
+```
 
 Last element:
 
-    arr[arr.length - 1]
+```java
+arr[arr.length - 1];
+```
 
 ---
 
@@ -1059,19 +1344,27 @@ Last element:
 
 If:
 
-    int[] arr = new int[5];
+```java
+int[] arr = new int[5];
+```
 
 valid indexes are:
 
-    0, 1, 2, 3, 4
+```text
+0, 1, 2, 3, 4
+```
 
 This is invalid:
 
-    arr[5]
+```java
+arr[5];
+```
 
 It throws:
 
-    ArrayIndexOutOfBoundsException
+```text
+ArrayIndexOutOfBoundsException
+```
 
 ---
 
@@ -1079,21 +1372,25 @@ It throws:
 
 Example:
 
-    int[] arr = null;
+```java
+int[] arr = null;
 
-Trying:
-
-    arr.length
+System.out.println(arr.length);
+```
 
 causes:
 
-    NullPointerException
+```text
+NullPointerException
+```
 
 ---
 
 ## Trap 5 — Assignment Is Not Copy
 
-    int[] b = a;
+```java
+int[] b = a;
+```
 
 does not create a new array.
 
@@ -1103,11 +1400,15 @@ Both point to the same object.
 
 ## Trap 6 — `Arrays.equals()` vs `==`
 
-    ==
+```java
+==
+```
 
 checks reference identity.
 
-    Arrays.equals()
+```java
+Arrays.equals()
+```
 
 checks contents.
 
@@ -1115,11 +1416,13 @@ checks contents.
 
 ## Trap 7 — `toString()` vs `deepToString()`
 
-    toString()
-        → 1D
+```text
+toString()
+    → 1D
 
-    deepToString()
-        → nested
+deepToString()
+    → nested
+```
 
 ---
 
@@ -1137,11 +1440,15 @@ Do not blindly binary-search an unsorted array.
 
 ## Trap 10 — `Arrays.asList()` and primitive arrays
 
-    int[]
+```java
+int[]
+```
 
 does not become:
 
-    List<Integer>
+```text
+List<Integer>
+```
 
 through `Arrays.asList()`.
 
@@ -1163,7 +1470,9 @@ Normally, an array has a fixed component type.
 
 For example:
 
-    int[]
+```java
+int[]
+```
 
 stores `int` values.
 
@@ -1171,11 +1480,15 @@ But an array whose component type is a common superclass/interface can hold comp
 
 Example:
 
-    Object[] arr = {
-        10,
-        "Java",
-        3.14
-    };
+```java
+Object[] arr = {
+    10,
+    "Java",
+    3.14
+};
+```
+
+Here, boxing occurs for the primitive numeric literals before they are stored as `Object` references.
 
 ---
 
@@ -1195,7 +1508,9 @@ No.
 
 This is impossible:
 
-    arr.length = 10;
+```java
+arr.length = 10;
+```
 
 `length` is not assignable.
 
@@ -1207,7 +1522,9 @@ Yes.
 
 Example:
 
-    String[] names = new String[5];
+```java
+String[] names = new String[5];
+```
 
 ---
 
@@ -1217,17 +1534,21 @@ Yes.
 
 Example:
 
-    int[] nums = new int[5];
+```java
+int[] nums = new int[5];
+```
 
 ---
 
 ## Q7. Why is array access O(1)?
 
-Because the runtime can directly calculate the location of an element from the array's starting location and index.
+Because the runtime can directly locate an element using the array reference and index.
 
 Conceptually:
 
-    address = base + index × element-size
+```text
+address = base + index × element-size
+```
 
 The actual JVM representation is more complex, but the important DSA property is constant-time indexed access.
 
@@ -1237,17 +1558,23 @@ The actual JVM representation is more complex, but the important DSA property is
 
 Java throws:
 
-    ArrayIndexOutOfBoundsException
+```text
+ArrayIndexOutOfBoundsException
+```
 
 Example:
 
-    int[] arr = new int[3];
+```java
+int[] arr = new int[3];
 
-    arr[3];
+arr[3];
+```
 
 Valid indexes:
 
-    0, 1, 2
+```text
+0, 1, 2
+```
 
 ---
 
@@ -1255,13 +1582,17 @@ Valid indexes:
 
 Example:
 
-    int[] arr = null;
+```java
+int[] arr = null;
 
-    System.out.println(arr.length);
+System.out.println(arr.length);
+```
 
 Result:
 
-    NullPointerException
+```text
+NullPointerException
+```
 
 ---
 
@@ -1271,11 +1602,15 @@ Yes.
 
 Example:
 
-    int[] arr = new int[0];
+```java
+int[] arr = new int[0];
+```
 
 Its length is:
 
-    0
+```text
+0
+```
 
 But the reference itself is not null.
 
@@ -1287,401 +1622,656 @@ But the reference itself is not null.
 
 Approach:
 
-    Keep a variable max.
+```text
+Keep a variable max.
 
-    Traverse the array.
+Traverse the array.
 
-    If current element > max,
-    update max.
+If current element > max,
+update max.
+```
 
 Example:
 
-    int[] arr = {10, 5, 30, 20};
+```java
+int[] arr = {10, 5, 30, 20};
 
-    int max = arr[0];
+int max = arr[0];
 
-    for(int i = 1; i < arr.length; i++) {
-
-        if(arr[i] > max) {
-            max = arr[i];
-        }
+for (int i = 1; i < arr.length; i++) {
+    if (arr[i] > max) {
+        max = arr[i];
     }
+}
+
+System.out.println(max);
+```
 
 Result:
 
-    30
+```text
+30
+```
 
 Complexity:
 
-    Time  → O(n)
-    Space → O(1)
+```text
+Time  → O(n)
+Space → O(1)
+```
 
 ---
 
-# Q2. Find the Minimum Element
+## Q2. Find the Minimum Element
 
 Approach:
 
-    Start with first element.
+```text
+Start with first element.
 
-    Compare every other element.
+Compare every other element.
+```
 
 Example:
 
-    int[] arr = {10, 5, 30, 20};
+```java
+int[] arr = {10, 5, 30, 20};
 
-    int min = arr[0];
+int min = arr[0];
 
-    for(int i = 1; i < arr.length; i++) {
-
-        if(arr[i] < min) {
-            min = arr[i];
-        }
+for (int i = 1; i < arr.length; i++) {
+    if (arr[i] < min) {
+        min = arr[i];
     }
+}
+
+System.out.println(min);
+```
 
 Result:
 
-    5
+```text
+5
+```
 
 ---
 
-# Q3. Find Sum of Array
+## Q3. Find Sum of Array
 
 Example:
 
-    int[] arr = {10, 20, 30};
+```java
+int[] arr = {10, 20, 30};
 
-    int sum = 0;
+int sum = 0;
 
-    for(int i = 0; i < arr.length; i++) {
-        sum += arr[i];
-    }
+for (int i = 0; i < arr.length; i++) {
+    sum += arr[i];
+}
+
+System.out.println(sum);
+```
 
 Result:
 
-    60
+```text
+60
+```
 
 Complexity:
 
-    O(n)
+```text
+O(n)
+```
 
 ---
 
-# Q4. Reverse an Array
+## Q4. Reverse an Array
 
 Example:
 
-    int[] arr = {1, 2, 3, 4, 5};
+```java
+int[] arr = {1, 2, 3, 4, 5};
 
-Use two pointers:
+int left = 0;
+int right = arr.length - 1;
 
-    left = 0
-    right = arr.length - 1
+while (left < right) {
+    int temp = arr[left];
+    arr[left] = arr[right];
+    arr[right] = temp;
 
-Swap:
+    left++;
+    right--;
+}
 
-    arr[left]
-    arr[right]
-
-Then move:
-
-    left++
-    right--
+System.out.println(Arrays.toString(arr));
+```
 
 Result:
 
-    [5, 4, 3, 2, 1]
+```text
+[5, 4, 3, 2, 1]
+```
 
 Complexity:
 
-    Time  → O(n)
-    Space → O(1)
+```text
+Time  → O(n)
+Space → O(1)
+```
 
 ---
 
-# Q5. Linear Search
+## Q5. Linear Search
 
 Example:
 
-    int[] arr = {10, 20, 30, 40};
+```java
+int[] arr = {10, 20, 30, 40};
 
-    int target = 30;
+int target = 30;
 
-    for(int i = 0; i < arr.length; i++) {
-
-        if(arr[i] == target) {
-            System.out.println(i);
-            break;
-        }
+for (int i = 0; i < arr.length; i++) {
+    if (arr[i] == target) {
+        System.out.println(i);
+        break;
     }
+}
+```
 
 Result:
 
-    2
+```text
+2
+```
 
 Complexity:
 
-    O(n)
+```text
+O(n)
+```
 
 ---
 
-# Q6. Count Occurrences
+## Q6. Count Occurrences
 
 Example:
 
-    int[] arr = {1, 2, 2, 3, 2};
+```java
+int[] arr = {1, 2, 2, 3, 2};
 
-    int target = 2;
-    int count = 0;
+int target = 2;
+int count = 0;
 
-    for(int i = 0; i < arr.length; i++) {
-
-        if(arr[i] == target) {
-            count++;
-        }
+for (int i = 0; i < arr.length; i++) {
+    if (arr[i] == target) {
+        count++;
     }
+}
+
+System.out.println(count);
+```
 
 Result:
 
-    3
+```text
+3
+```
 
 ---
 
-# Q7. Check if Array Is Sorted
+## Q7. Check if Array Is Sorted
 
 Example:
 
-    int[] arr = {1, 2, 3, 4, 5};
+```java
+int[] arr = {1, 2, 3, 4, 5};
 
-Compare:
+boolean sorted = true;
 
-    arr[i] > arr[i + 1]
-
-If this happens for ascending order, the array is not sorted.
-
-Concept:
-
-    for(int i = 0; i < arr.length - 1; i++) {
-
-        if(arr[i] > arr[i + 1]) {
-            return false;
-        }
+for (int i = 0; i < arr.length - 1; i++) {
+    if (arr[i] > arr[i + 1]) {
+        sorted = false;
+        break;
     }
+}
 
-    return true;
+System.out.println(sorted);
+```
+
+If this happens for ascending order:
+
+```text
+arr[i] > arr[i + 1]
+```
+
+the array is not sorted.
 
 Complexity:
 
-    O(n)
+```text
+O(n)
+```
 
 ---
 
-# Q8. Find Second Largest Element
+## Q8. Find Second Largest Element
 
 A common approach is to maintain:
 
-    largest
-    secondLargest
+```text
+largest
+secondLargest
+```
 
 Example:
 
-    int[] arr = {10, 30, 20, 40};
+```java
+int[] arr = {10, 30, 20, 40};
 
-Concept:
+int largest = Integer.MIN_VALUE;
+int secondLargest = Integer.MIN_VALUE;
 
-    largest = Integer.MIN_VALUE;
-    secondLargest = Integer.MIN_VALUE;
+for (int num : arr) {
+    if (num > largest) {
+        secondLargest = largest;
+        largest = num;
+    } else if (num > secondLargest && num != largest) {
+        secondLargest = num;
+    }
+}
 
-Traverse the array and update both appropriately.
+System.out.println(secondLargest);
+```
 
 Expected result:
 
-    30
+```text
+30
+```
 
 Be careful with duplicate values and with the exact definition of "second largest" in the problem.
 
 ---
 
-# Q9. Remove Duplicates From Sorted Array
+## Q9. Remove Duplicates From Sorted Array
 
 This is a classic two-pointer problem.
 
 Example:
 
-    [1, 1, 2, 2, 3]
+```text
+[1, 1, 2, 2, 3]
+```
 
 Goal:
 
-    [1, 2, 3]
+```text
+[1, 2, 3]
+```
 
 Use a write pointer.
 
 General idea:
 
-    read pointer
-        ↓
-    scans array
+```text
+read pointer
+     ↓
+scans array
 
-    write pointer
-        ↓
-    places unique values
-
-This pattern appears frequently in array problems.
-
----
-
-# Q10. Move Zeroes to End
+write pointer
+     ↓
+places unique values
+```
 
 Example:
 
-    [0, 1, 0, 3, 12]
+```java
+int[] nums = {1, 1, 2, 2, 3};
+
+int write = 1;
+
+for (int read = 1; read < nums.length; read++) {
+    if (nums[read] != nums[read - 1]) {
+        nums[write] = nums[read];
+        write++;
+    }
+}
+```
+
+Here:
+
+```text
+write
+```
+
+represents the length of the unique portion.
+
+---
+
+## Q10. Move Zeroes to End
+
+Example:
+
+```text
+[0, 1, 0, 3, 12]
+```
 
 Goal:
 
-    [1, 3, 12, 0, 0]
+```text
+[1, 3, 12, 0, 0]
+```
 
 Common approach:
 
-    Two pointers
+```text
+Two pointers
 
-Keep track of where the next non-zero value should be placed.
+Keep track of where the next non-zero
+value should be placed.
+```
+
+Example:
+
+```java
+int[] nums = {0, 1, 0, 3, 12};
+
+int write = 0;
+
+for (int read = 0; read < nums.length; read++) {
+    if (nums[read] != 0) {
+        int temp = nums[write];
+        nums[write] = nums[read];
+        nums[read] = temp;
+
+        write++;
+    }
+}
+```
 
 ---
 
-# Q11. Find Missing Number
+## Q11. Find Missing Number
 
 Given:
 
-    [0, 1, 3]
+```text
+[0, 1, 3]
+```
 
 Numbers should be:
 
-    0, 1, 2, 3
+```text
+0, 1, 2, 3
+```
 
 Missing:
 
-    2
+```text
+2
+```
 
 Possible approaches:
 
-    Sum formula
-    XOR
+```text
+Sum formula
+XOR
+```
 
 XOR is especially useful because:
 
-    x ^ x = 0
+```text
+x ^ x = 0
+```
 
 and:
 
-    x ^ 0 = x
+```text
+x ^ 0 = x
+```
+
+Example:
+
+```java
+int[] nums = {0, 1, 3};
+
+int xor = nums.length;
+
+for (int i = 0; i < nums.length; i++) {
+    xor ^= i;
+    xor ^= nums[i];
+}
+
+System.out.println(xor);
+```
+
+Result:
+
+```text
+2
+```
 
 ---
 
-# Q12. Find Single Number
+## Q12. Find Single Number
 
 Classic problem:
 
-    [4, 1, 2, 1, 2]
+```text
+[4, 1, 2, 1, 2]
+```
 
 Every number appears twice except one.
 
 Use XOR:
 
-    result = 0;
+```java
+int[] nums = {4, 1, 2, 1, 2};
 
-    for(int num : nums) {
-        result = result ^ num;
-    }
+int result = 0;
+
+for (int num : nums) {
+    result = result ^ num;
+}
+
+System.out.println(result);
+```
 
 Why?
 
 Because:
 
-    x ^ x = 0
+```text
+x ^ x = 0
+```
 
 Therefore pairs cancel.
 
 Remaining value:
 
-    4
+```text
+4
+```
 
 ---
 
-# Q13. Majority Element
+## Q13. Majority Element
 
 A majority element appears more than:
 
-    n / 2
+```text
+n / 2
+```
 
 times.
 
 A famous O(n) time and O(1) space solution is:
 
-    Boyer-Moore Voting Algorithm
+```text
+Boyer-Moore Voting Algorithm
+```
 
 Core idea:
 
-    candidate
-    count
+```text
+candidate
+count
+```
 
 If count becomes zero:
 
-    candidate = current element
+```text
+candidate = current element
+```
 
 If current equals candidate:
 
-    count++
+```text
+count++
+```
 
 Otherwise:
 
-    count--
-
----
-
-# Q14. Best Time to Buy and Sell Stock
-
-Given prices:
-
-    [7, 1, 5, 3, 6, 4]
-
-Maintain:
-
-    minimum price seen so far
-
-and:
-
-    maximum profit
-
-At every element:
-
-    profit = currentPrice - minimumPrice
-
-Then update maximum profit.
-
-Complexity:
-
-    Time  → O(n)
-    Space → O(1)
-
----
-
-# Q15. Rotate Array
+```text
+count--
+```
 
 Example:
 
-    [1, 2, 3, 4, 5]
+```java
+int[] nums = {2, 2, 1, 1, 1, 2, 2};
+
+int candidate = 0;
+int count = 0;
+
+for (int num : nums) {
+    if (count == 0) {
+        candidate = num;
+    }
+
+    if (num == candidate) {
+        count++;
+    } else {
+        count--;
+    }
+}
+
+System.out.println(candidate);
+```
+
+> If the problem does not guarantee that a majority element exists, verify the candidate with a second pass.
+
+---
+
+## Q14. Best Time to Buy and Sell Stock
+
+Given prices:
+
+```text
+[7, 1, 5, 3, 6, 4]
+```
+
+Maintain:
+
+```text
+minimum price seen so far
+```
+
+and:
+
+```text
+maximum profit
+```
+
+At every element:
+
+```text
+profit = currentPrice - minimumPrice
+```
+
+Then update maximum profit.
+
+Example:
+
+```java
+int[] prices = {7, 1, 5, 3, 6, 4};
+
+int minPrice = prices[0];
+int maxProfit = 0;
+
+for (int i = 1; i < prices.length; i++) {
+    minPrice = Math.min(minPrice, prices[i]);
+
+    int profit = prices[i] - minPrice;
+
+    maxProfit = Math.max(maxProfit, profit);
+}
+
+System.out.println(maxProfit);
+```
+
+Complexity:
+
+```text
+Time  → O(n)
+Space → O(1)
+```
+
+---
+
+## Q15. Rotate Array
+
+Example:
+
+```text
+[1, 2, 3, 4, 5]
+```
 
 Rotate right by 2:
 
-    [4, 5, 1, 2, 3]
+```text
+[4, 5, 1, 2, 3]
+```
 
 Common optimal approach:
 
-    Reverse entire array
-    Reverse first k elements
-    Reverse remaining elements
+```text
+Reverse entire array
 
-This is a classic array manipulation pattern.
+Reverse first k elements
+
+Reverse remaining elements
+```
+
+Example:
+
+```java
+int[] nums = {1, 2, 3, 4, 5};
+
+int k = 2;
+k %= nums.length;
+
+reverse(nums, 0, nums.length - 1);
+reverse(nums, 0, k - 1);
+reverse(nums, k, nums.length - 1);
+```
+
+Helper method:
+
+```java
+static void reverse(int[] nums, int left, int right) {
+    while (left < right) {
+        int temp = nums[left];
+        nums[left] = nums[right];
+        nums[right] = temp;
+
+        left++;
+        right--;
+    }
+}
+```
 
 ---
 
@@ -1697,7 +2287,11 @@ Arrays are the foundation for many DSA patterns.
 
 Basic:
 
-    for(int i = 0; i < arr.length; i++)
+```java
+for (int i = 0; i < arr.length; i++) {
+    // process arr[i]
+}
+```
 
 Use when:
 
@@ -1712,8 +2306,10 @@ Use when:
 
 Example:
 
-    left = 0
-    right = arr.length - 1
+```java
+int left = 0;
+int right = arr.length - 1;
+```
 
 Useful for:
 
@@ -1744,11 +2340,12 @@ Create cumulative sums.
 
 Example:
 
-    arr = [2, 4, 3]
+```text
+arr = [2, 4, 3]
 
 Prefix:
-
-    [2, 6, 9]
+[2, 6, 9]
+```
 
 Useful for:
 
@@ -1756,14 +2353,30 @@ Useful for:
 - Subarray calculations
 - Query problems
 
+Example:
+
+```java
+int[] arr = {2, 4, 3};
+
+int[] prefix = new int[arr.length];
+
+prefix[0] = arr[0];
+
+for (int i = 1; i < arr.length; i++) {
+    prefix[i] = prefix[i - 1] + arr[i];
+}
+```
+
 ---
 
 ## Pattern 5 — Hashing
 
 Use:
 
-    HashMap
-    HashSet
+```text
+HashMap
+HashSet
+```
 
 Useful for:
 
@@ -1780,7 +2393,9 @@ Sorting can simplify many problems.
 
 Example:
 
-    Arrays.sort(arr);
+```java
+Arrays.sort(arr);
+```
 
 After sorting, problems involving:
 
@@ -1795,13 +2410,34 @@ may become easier.
 
 ## Pattern 7 — Binary Search
 
-Used when the search space has an appropriate ordering/monotonic property.
+Used when the search space has an appropriate ordering or monotonic property.
 
 Basic array version:
 
-    Arrays.binarySearch()
+```java
+Arrays.binarySearch(arr, target);
+```
 
 But in DSA, you should also learn to implement binary search manually.
+
+Example:
+
+```java
+int left = 0;
+int right = arr.length - 1;
+
+while (left <= right) {
+    int mid = left + (right - left) / 2;
+
+    if (arr[mid] == target) {
+        return mid;
+    } else if (arr[mid] < target) {
+        left = mid + 1;
+    } else {
+        right = mid - 1;
+    }
+}
+```
 
 ---
 
@@ -1811,19 +2447,43 @@ Used to find maximum subarray sum.
 
 Example:
 
-    [-2,1,-3,4,-1,2,1,-5,4]
+```text
+[-2,1,-3,4,-1,2,1,-5,4]
+```
 
 Maximum subarray:
 
-    [4,-1,2,1]
+```text
+[4,-1,2,1]
+```
 
 Sum:
 
-    6
+```text
+6
+```
 
 Typical complexity:
 
-    O(n)
+```text
+O(n)
+```
+
+Example:
+
+```java
+int[] nums = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+
+int currentSum = nums[0];
+int maxSum = nums[0];
+
+for (int i = 1; i < nums.length; i++) {
+    currentSum = Math.max(nums[i], currentSum + nums[i]);
+    maxSum = Math.max(maxSum, currentSum);
+}
+
+System.out.println(maxSum);
+```
 
 ---
 
@@ -1837,154 +2497,241 @@ Typical complexity:
 
 ## Declaration
 
-    int[] arr;
+```java
+int[] arr;
+```
 
 ## Creation
 
-    int[] arr = new int[5];
+```java
+int[] arr = new int[5];
+```
 
 ## Initialization
 
-    int[] arr = {1, 2, 3};
+```java
+int[] arr = {1, 2, 3};
+```
 
 ## Access
 
-    arr[0]
+```java
+arr[0];
+```
 
 ## Update
 
-    arr[0] = 100;
+```java
+arr[0] = 100;
+```
 
 ## Length
 
-    arr.length
+```java
+arr.length;
+```
 
 ## Last Element
 
-    arr[arr.length - 1]
+```java
+arr[arr.length - 1];
+```
 
 ## Loop
 
-    for(int i = 0; i < arr.length; i++) {
-        System.out.println(arr[i]);
-    }
+```java
+for (int i = 0; i < arr.length; i++) {
+    System.out.println(arr[i]);
+}
+```
 
 ## Enhanced For Loop
 
-    for(int num : arr) {
-        System.out.println(num);
-    }
+```java
+for (int num : arr) {
+    System.out.println(num);
+}
+```
 
 ---
 
 ## Arrays Utility
 
-    Arrays.toString(arr)
+```java
+Arrays.toString(arr);
 
-    Arrays.deepToString(arr)
+Arrays.deepToString(arr);
 
-    Arrays.sort(arr)
+Arrays.sort(arr);
 
-    Arrays.binarySearch(arr, target)
+Arrays.binarySearch(arr, target);
 
-    Arrays.copyOf(arr, length)
+Arrays.copyOf(arr, length);
 
-    Arrays.copyOfRange(arr, from, to)
+Arrays.copyOfRange(arr, from, to);
 
-    Arrays.fill(arr, value)
+Arrays.fill(arr, value);
 
-    Arrays.equals(a, b)
+Arrays.equals(a, b);
 
-    Arrays.deepEquals(a, b)
+Arrays.deepEquals(a, b);
 
-    Arrays.asList(objectArray)
+Arrays.asList(objectArray);
 
-    Arrays.stream(arr)
+Arrays.stream(arr);
+```
 
 ---
 
 # 39. ✅ Final Revision Checklist
 
-Before considering the Arrays chapter complete, make sure you can answer all of these without looking at your notes:
+Before considering the Arrays chapter complete, make sure you can answer all of these without looking at your notes.
 
 ## Fundamentals
 
-    [ ] What is an array?
-    [ ] Why are arrays used?
-    [ ] How do you declare an array?
-    [ ] How do you create an array?
-    [ ] How do you initialize an array?
-    [ ] Why does indexing start from 0?
-    [ ] What is arr.length?
-    [ ] Is array length fixed?
-    [ ] Can an array store primitives?
-    [ ] Can an array store objects?
-    [ ] Are arrays objects in Java?
+```text
+[ ] What is an array?
+
+[ ] Why are arrays used?
+
+[ ] How do you declare an array?
+
+[ ] How do you create an array?
+
+[ ] How do you initialize an array?
+
+[ ] Why does indexing start from 0?
+
+[ ] What is arr.length?
+
+[ ] Is array length fixed?
+
+[ ] Can an array store primitives?
+
+[ ] Can an array store objects?
+
+[ ] Are arrays objects in Java?
+```
 
 ## Memory
 
-    [ ] Where is the array object created?
-    [ ] What does the array variable store?
-    [ ] What happens when two references point to one array?
-    [ ] What is shallow copying?
-    [ ] How are object arrays different from primitive arrays?
+```text
+[ ] Where is the array object created?
+
+[ ] What does the array variable store?
+
+[ ] What happens when two references point to one array?
+
+[ ] What is shallow copying?
+
+[ ] How are object arrays different from primitive arrays?
+```
 
 ## Multidimensional
 
-    [ ] What is a 2D array?
-    [ ] What is an array of arrays?
-    [ ] What is a jagged array?
-    [ ] Can rows have different lengths?
+```text
+[ ] What is a 2D array?
+
+[ ] What is an array of arrays?
+
+[ ] What is a jagged array?
+
+[ ] Can rows have different lengths?
+```
 
 ## Arrays Class
 
-    [ ] What is java.util.Arrays?
-    [ ] Why are its methods static?
-    [ ] Arrays.toString()
-    [ ] Arrays.deepToString()
-    [ ] Arrays.sort()
-    [ ] Arrays.binarySearch()
-    [ ] Arrays.copyOf()
-    [ ] Arrays.copyOfRange()
-    [ ] Arrays.fill()
-    [ ] Arrays.equals()
-    [ ] Arrays.deepEquals()
-    [ ] Arrays.asList()
-    [ ] Arrays.stream()
+```text
+[ ] What is java.util.Arrays?
+
+[ ] Why are its methods static?
+
+[ ] Arrays.toString()
+
+[ ] Arrays.deepToString()
+
+[ ] Arrays.sort()
+
+[ ] Arrays.binarySearch()
+
+[ ] Arrays.copyOf()
+
+[ ] Arrays.copyOfRange()
+
+[ ] Arrays.fill()
+
+[ ] Arrays.equals()
+
+[ ] Arrays.deepEquals()
+
+[ ] Arrays.asList()
+
+[ ] Arrays.stream()
+```
 
 ## Interview Traps
 
-    [ ] arr.length vs str.length()
-    [ ] arr == other vs Arrays.equals()
-    [ ] toString vs deepToString
-    [ ] equals vs deepEquals
-    [ ] assignment vs copying
-    [ ] primitive array + Arrays.asList()
-    [ ] binarySearch on unsorted data
-    [ ] array index out of bounds
-    [ ] null array vs empty array
+```text
+[ ] arr.length vs str.length()
+
+[ ] arr == other vs Arrays.equals()
+
+[ ] toString vs deepToString
+
+[ ] equals vs deepEquals
+
+[ ] assignment vs copying
+
+[ ] primitive array + Arrays.asList()
+
+[ ] binarySearch on unsorted data
+
+[ ] array index out of bounds
+
+[ ] null array vs empty array
+```
 
 ## DSA
 
-    [ ] Linear search
-    [ ] Maximum
-    [ ] Minimum
-    [ ] Reverse array
-    [ ] Frequency
-    [ ] Second largest
-    [ ] Sorted check
-    [ ] Remove duplicates
-    [ ] Move zeroes
-    [ ] Missing number
-    [ ] Single number
-    [ ] Majority element
-    [ ] Best time to buy and sell stock
-    [ ] Rotate array
-    [ ] Two pointers
-    [ ] Sliding window
-    [ ] Prefix sum
-    [ ] Binary search
-    [ ] Kadane's algorithm
+```text
+[ ] Linear search
+
+[ ] Maximum
+
+[ ] Minimum
+
+[ ] Reverse array
+
+[ ] Frequency
+
+[ ] Second largest
+
+[ ] Sorted check
+
+[ ] Remove duplicates
+
+[ ] Move zeroes
+
+[ ] Missing number
+
+[ ] Single number
+
+[ ] Majority element
+
+[ ] Best time to buy and sell stock
+
+[ ] Rotate array
+
+[ ] Two pointers
+
+[ ] Sliding window
+
+[ ] Prefix sum
+
+[ ] Binary search
+
+[ ] Kadane's algorithm
+```
 
 ---
 
@@ -1994,66 +2741,72 @@ When you see an array problem, don't immediately start coding.
 
 First ask:
 
-    1. Is the array sorted?
+```text
+1. Is the array sorted?
 
-    2. Do I need to find something?
+2. Do I need to find something?
 
-    3. Do I need frequency?
+3. Do I need frequency?
 
-    4. Can I use two pointers?
+4. Can I use two pointers?
 
-    5. Can I use a sliding window?
+5. Can I use a sliding window?
 
-    6. Can sorting simplify the problem?
+6. Can sorting simplify the problem?
 
-    7. Can hashing give O(1) average lookup?
+7. Can hashing give O(1) average lookup?
 
-    8. Can prefix sum help?
+8. Can prefix sum help?
 
-    9. Can binary search help?
+9. Can binary search help?
 
-    10. Can I solve it in O(n) instead of O(n²)?
+10. Can I solve it in O(n) instead of O(n²)?
+```
 
 ---
 
 # 🧠 ARRAY INTERVIEW FORMULA
 
-    ARRAY PROBLEM
-          │
-          ├── Need simple traversal?
-          │       └── O(n)
-          │
-          ├── Sorted?
-          │       ├── Binary Search
-          │       └── Two Pointers
-          │
-          ├── Need frequency?
-          │       └── HashMap / HashSet
-          │
-          ├── Continuous subarray?
-          │       └── Sliding Window / Prefix Sum
-          │
-          ├── Pair problem?
-          │       └── Hashing / Two Pointers
-          │
-          ├── Maximum subarray?
-          │       └── Kadane
-          │
-          └── Need rearrangement?
-                  └── Two Pointers / In-place techniques
+```text
+ARRAY PROBLEM
+      │
+      ├── Need simple traversal?
+      │       └── O(n)
+      │
+      ├── Sorted?
+      │       ├── Binary Search
+      │       └── Two Pointers
+      │
+      ├── Need frequency?
+      │       └── HashMap / HashSet
+      │
+      ├── Continuous subarray?
+      │       └── Sliding Window / Prefix Sum
+      │
+      ├── Pair problem?
+      │       └── Hashing / Two Pointers
+      │
+      ├── Maximum subarray?
+      │       └── Kadane
+      │
+      └── Need rearrangement?
+              └── Two Pointers / In-place techniques
+```
 
 ---
 
 # 🚀 ARRAY FOLDER COMPLETE
 
-    05-Arrays/
-    │
-    ├── 01-Array-Introduction.md
-    ├── 02-One-Dimensional-Array.md
-    ├── 03-Multidimensional-Array.md
-    ├── 04-Array-Memory.md
-    ├── 05-Arrays-Class.md
-    └── 06-Array-Interview-Questions.md  ← YOU ARE HERE
+```text
+05-Arrays/
+│
+├── 01-Array-Introduction.md
+├── 02-One-Dimensional-Array.md
+├── 03-Multidimensional-Array.md
+├── 04-Array-Memory.md
+├── 05-Arrays-Class.md
+└── 06-Array-Interview-Questions.md  ← YOU ARE HERE
+```
 
 ---
 

@@ -1,6 +1,6 @@
 # 🧰 Arrays Class in Java
 
-> **`Arrays` is a utility class from `java.util` that provides static methods for performing common operations on arrays such as sorting, searching, copying, comparing, filling, and converting arrays into readable strings.**
+> **`Arrays` is a utility class from `java.util` that provides static methods for performing common operations on arrays such as sorting, searching, copying, comparing, filling, hashing, and converting arrays into readable or other useful forms.**
 
 ---
 
@@ -49,29 +49,33 @@
 
 Java provides a utility class called:
 
-    java.util.Arrays
+`java.util.Arrays`
 
 It contains many useful `static` methods for manipulating arrays.
 
-Example:
+## Example
 
-    import java.util.Arrays;
+```java
+import java.util.Arrays;
 
-    public class Main {
+public class Main {
 
-        public static void main(String[] args) {
+    public static void main(String[] args) {
 
-            int[] arr = {5, 2, 8, 1, 3};
+        int[] arr = {5, 2, 8, 1, 3};
 
-            Arrays.sort(arr);
+        Arrays.sort(arr);
 
-            System.out.println(Arrays.toString(arr));
-        }
+        System.out.println(Arrays.toString(arr));
     }
+}
+```
 
-Output:
+### Output
 
-    [1, 2, 3, 5, 8]
+```text
+[1, 2, 3, 5, 8]
+```
 
 Instead of manually implementing common operations, we can use the methods provided by `Arrays`.
 
@@ -83,7 +87,9 @@ A Java array itself provides only a small set of direct functionality.
 
 For example:
 
-    arr.length
+```java
+arr.length
+```
 
 gives the number of elements.
 
@@ -96,6 +102,7 @@ But if we want to:
 - Fill an array
 - Print array contents
 - Convert an array into a Stream
+- Calculate content-based hash codes
 
 we can use the `Arrays` class.
 
@@ -112,10 +119,12 @@ we can use the `Arrays` class.
 | Compare 1D arrays | `Arrays.equals()` |
 | Compare nested arrays | `Arrays.deepEquals()` |
 | Lexicographical comparison | `Arrays.compare()` |
+| Unsigned comparison | `Arrays.compareUnsigned()` |
 | Find first mismatch | `Arrays.mismatch()` |
 | Convert object array to List | `Arrays.asList()` |
 | Create Stream | `Arrays.stream()` |
 | Generate hash | `Arrays.hashCode()` |
+| Generate deep hash | `Arrays.deepHashCode()` |
 
 ---
 
@@ -123,19 +132,27 @@ we can use the `Arrays` class.
 
 `Arrays` belongs to:
 
-    java.util
+```java
+java.util
+```
 
 Therefore:
 
-    import java.util.Arrays;
+```java
+import java.util.Arrays;
+```
 
 Then we can use:
 
-    Arrays.sort(arr);
+```java
+Arrays.sort(arr);
+```
 
 Alternative:
 
-    import java.util.*;
+```java
+import java.util.*;
+```
 
 This also imports `Arrays`.
 
@@ -149,25 +166,33 @@ Its commonly used methods are `static`.
 
 Therefore, we call them using the class name:
 
-    Arrays.sort(arr);
+```java
+Arrays.sort(arr);
+```
 
-We normally do NOT create an `Arrays` object.
+We normally do **not** create an `Arrays` object.
 
-Think:
+### Mental Model
 
-    Arrays
-       ↓
-    Utility Class
-       ↓
-    Static Methods
-       ↓
-    ClassName.method()
+```text
+Arrays
+   ↓
+Utility Class
+   ↓
+Static Methods
+   ↓
+ClassName.method()
+```
 
-Example:
+Examples:
 
-    Arrays.sort(arr);
-    Arrays.fill(arr, 5);
-    Arrays.equals(a, b);
+```java
+Arrays.sort(arr);
+
+Arrays.fill(arr, 5);
+
+Arrays.equals(a, b);
+```
 
 ---
 
@@ -175,181 +200,214 @@ Example:
 
 The most important `Arrays` methods for Core Java and interviews are:
 
-    Arrays.toString()
-    Arrays.deepToString()
+```java
+Arrays.toString()
 
-    Arrays.sort()
-    Arrays.parallelSort()
+Arrays.deepToString()
 
-    Arrays.binarySearch()
+Arrays.sort()
 
-    Arrays.copyOf()
-    Arrays.copyOfRange()
+Arrays.parallelSort()
 
-    Arrays.fill()
+Arrays.binarySearch()
 
-    Arrays.equals()
-    Arrays.deepEquals()
+Arrays.copyOf()
 
-    Arrays.compare()
-    Arrays.compareUnsigned()
+Arrays.copyOfRange()
 
-    Arrays.mismatch()
+Arrays.fill()
 
-    Arrays.asList()
+Arrays.equals()
 
-    Arrays.stream()
+Arrays.deepEquals()
 
-    Arrays.hashCode()
-    Arrays.deepHashCode()
+Arrays.compare()
+
+Arrays.compareUnsigned()
+
+Arrays.mismatch()
+
+Arrays.asList()
+
+Arrays.stream()
+
+Arrays.hashCode()
+
+Arrays.deepHashCode()
+```
 
 ---
 
-# 6. 🖨️ Arrays.toString()
+# 6. 🖨️ `Arrays.toString()`
 
 `Arrays.toString()` returns a readable string representation of a one-dimensional array.
 
-Example:
+## Example
 
-    int[] arr = {10, 20, 30};
+```java
+int[] arr = {10, 20, 30};
 
-    System.out.println(Arrays.toString(arr));
+System.out.println(Arrays.toString(arr));
+```
 
-Output:
+### Output
 
-    [10, 20, 30]
-
----
+```text
+[10, 20, 30]
+```
 
 ## Why Do We Need It?
 
 If we directly print an array:
 
-    int[] arr = {10, 20, 30};
+```java
+int[] arr = {10, 20, 30};
 
-    System.out.println(arr);
+System.out.println(arr);
+```
 
 we do not normally get:
 
-    [10, 20, 30]
+```text
+[10, 20, 30]
+```
 
 Instead, we may get something similar to:
 
-    [I@5acf9800
-
-The exact output is implementation-dependent, but it represents the array object's default object-style string representation.
+```text
+[I@5acf9800
+```
 
 `Arrays.toString()` gives us a readable representation of the elements.
 
----
-
 ## Syntax
 
-    Arrays.toString(array);
-
----
+```java
+Arrays.toString(array);
+```
 
 ## Example
 
-    int[] nums = {5, 10, 15};
+```java
+int[] nums = {5, 10, 15};
 
-    String result = Arrays.toString(nums);
+String result = Arrays.toString(nums);
 
-    System.out.println(result);
+System.out.println(result);
+```
 
-Output:
+### Output
 
-    [5, 10, 15]
+```text
+[5, 10, 15]
+```
 
----
+## Primitive Arrays
 
-## Works With Primitive Arrays
+`Arrays.toString()` has overloads for primitive array types such as:
 
-It has overloads for primitive array types such as:
-
-    byte[]
-    short[]
-    int[]
-    long[]
-    float[]
-    double[]
-    char[]
-    boolean[]
+- `byte[]`
+- `short[]`
+- `int[]`
+- `long[]`
+- `float[]`
+- `double[]`
+- `char[]`
+- `boolean[]`
 
 Example:
 
-    char[] chars = {'J', 'a', 'v', 'a'};
+```java
+char[] chars = {'J', 'a', 'v', 'a'};
 
-    System.out.println(Arrays.toString(chars));
+System.out.println(Arrays.toString(chars));
+```
 
-Output:
+### Output
 
-    [J, a, v, a]
+```text
+[J, a, v, a]
+```
 
 ---
 
-# 7. 🌳 Arrays.deepToString()
+# 7. 🌳 `Arrays.deepToString()`
 
 `Arrays.deepToString()` is useful for arrays containing nested arrays.
 
-Most commonly, we use it with multidimensional arrays.
+It is commonly used with multidimensional arrays.
 
-Example:
+## Example
 
-    int[][] arr = {
-        {1, 2, 3},
-        {4, 5, 6}
-    };
+```java
+int[][] arr = {
+    {1, 2, 3},
+    {4, 5, 6}
+};
 
-    System.out.println(Arrays.deepToString(arr));
+System.out.println(Arrays.deepToString(arr));
+```
 
-Output:
+### Output
 
-    [[1, 2, 3], [4, 5, 6]]
-
----
+```text
+[[1, 2, 3], [4, 5, 6]]
+```
 
 ## `toString()` vs `deepToString()`
 
 For a 1D array:
 
-    int[] arr = {1, 2, 3};
+```java
+int[] arr = {1, 2, 3};
 
-    Arrays.toString(arr);
+Arrays.toString(arr);
+```
 
 For a nested array:
 
-    int[][] arr = {
-        {1, 2},
-        {3, 4}
-    };
+```java
+int[][] arr = {
+    {1, 2},
+    {3, 4}
+};
 
-    Arrays.deepToString(arr);
+Arrays.deepToString(arr);
+```
 
-### Memory Trick
+### 🧠 Memory Trick
 
-    1D array       → toString()
-    Nested arrays  → deepToString()
+```text
+1D array
+    ↓
+toString()
+
+Nested arrays
+    ↓
+deepToString()
+```
 
 ---
 
-# 8. 🔃 Arrays.sort()
+# 8. 🔃 `Arrays.sort()`
 
 `Arrays.sort()` sorts an array in ascending order.
 
-Example:
+## Example
 
-    int[] arr = {5, 2, 8, 1, 3};
+```java
+int[] arr = {5, 2, 8, 1, 3};
 
-    Arrays.sort(arr);
+Arrays.sort(arr);
 
-    System.out.println(Arrays.toString(arr));
+System.out.println(Arrays.toString(arr));
+```
 
-Output:
+### Output
 
-    [1, 2, 3, 5, 8]
-
----
+```text
+[1, 2, 3, 5, 8]
+```
 
 ## Important
 
@@ -357,31 +415,37 @@ Output:
 
 Example:
 
-    int[] arr = {5, 2, 8};
+```java
+int[] arr = {5, 2, 8};
 
-    Arrays.sort(arr);
+Arrays.sort(arr);
+```
 
 After sorting:
 
-    arr = [2, 5, 8]
+```text
+[2, 5, 8]
+```
 
-It does not normally create a separate sorted array for you.
-
----
+It sorts the existing array rather than returning a separate sorted array.
 
 ## Sorting String Array
 
 For objects such as strings, natural ordering is used when applicable.
 
-Example:
+```java
+String[] names = {"Charlie", "Alice", "Bob"};
 
-    String[] names = {"Charlie", "Alice", "Bob"};
+Arrays.sort(names);
 
-    Arrays.sort(names);
+System.out.println(Arrays.toString(names));
+```
 
-Result:
+### Output
 
-    [Alice, Bob, Charlie]
+```text
+[Alice, Bob, Charlie]
+```
 
 ---
 
@@ -389,91 +453,117 @@ Result:
 
 We can sort only a specific portion of an array.
 
-Syntax:
+## Syntax
 
-    Arrays.sort(array, fromIndex, toIndex);
+```java
+Arrays.sort(array, fromIndex, toIndex);
+```
 
 Important:
 
-    fromIndex → inclusive
-    toIndex   → exclusive
+```text
+fromIndex → inclusive
+toIndex   → exclusive
+```
 
-Example:
+## Example
 
-    int[] arr = {9, 7, 5, 3, 1};
+```java
+int[] arr = {9, 7, 5, 3, 1};
 
-    Arrays.sort(arr, 1, 4);
+Arrays.sort(arr, 1, 4);
+
+System.out.println(Arrays.toString(arr));
+```
 
 Indexes:
 
-    Index:  0   1   2   3   4
-    Value:  9   7   5   3   1
+```text
+Index:  0   1   2   3   4
+Value:  9   7   5   3   1
+```
 
 The selected range is:
 
-    index 1
-    index 2
-    index 3
+```text
+index 1
+index 2
+index 3
+```
 
 So:
 
-    7, 5, 3
+```text
+7, 5, 3
+```
 
 gets sorted.
 
-Result:
+### Result
 
-    [9, 3, 5, 7, 1]
+```text
+[9, 3, 5, 7, 1]
+```
 
 ---
 
-# 10. ⚡ Arrays.parallelSort()
+# 10. ⚡ `Arrays.parallelSort()`
 
 Java also provides:
 
-    Arrays.parallelSort()
+```java
+Arrays.parallelSort();
+```
 
 It is designed to use parallelism for sorting when beneficial.
 
-Example:
+## Example
 
-    int[] arr = {5, 2, 8, 1, 3};
+```java
+int[] arr = {5, 2, 8, 1, 3};
 
-    Arrays.parallelSort(arr);
+Arrays.parallelSort(arr);
 
-    System.out.println(Arrays.toString(arr));
+System.out.println(Arrays.toString(arr));
+```
 
-Output:
+### Output
 
-    [1, 2, 3, 5, 8]
+```text
+[1, 2, 3, 5, 8]
+```
 
 For normal DSA problems, `Arrays.sort()` is generally the method you will use most often.
 
 ---
 
-# 11. 🔎 Arrays.binarySearch()
+# 11. 🔎 `Arrays.binarySearch()`
 
 `Arrays.binarySearch()` searches for an element in a sorted array.
 
-Example:
+## Example
 
-    int[] arr = {10, 20, 30, 40, 50};
+```java
+int[] arr = {10, 20, 30, 40, 50};
 
-    int index = Arrays.binarySearch(arr, 30);
+int index = Arrays.binarySearch(arr, 30);
 
-    System.out.println(index);
+System.out.println(index);
+```
 
-Output:
+### Output
 
-    2
+```text
+2
+```
 
 Because:
 
-    Index:  0   1   2   3   4
-    Value: 10  20  30  40  50
-                    ↑
-
----
+```text
+Index:  0   1   2   3   4
+Value: 10  20  30  40  50
+                ↑
+```
 
 ## ⚠️ Array Should Be Sorted
 
@@ -481,344 +571,430 @@ Before using binary search, the array should be sorted according to the required
 
 Correct:
 
-    int[] arr = {10, 20, 30, 40, 50};
+```java
+int[] arr = {10, 20, 30, 40, 50};
 
-    Arrays.binarySearch(arr, 30);
+Arrays.binarySearch(arr, 30);
+```
 
-Do NOT assume binary search works correctly on an arbitrary unsorted array.
-
----
+Do not assume binary search works correctly on an arbitrary unsorted array.
 
 ## If Element Is Found
 
 A non-negative index is returned.
 
-Example:
-
-    Arrays.binarySearch(arr, 30);
+```java
+Arrays.binarySearch(arr, 30);
+```
 
 Result:
 
-    2
-
----
+```text
+2
+```
 
 ## If Element Is Not Found
 
 A negative value is returned.
 
-The exact value follows the API's insertion-point convention.
+The exact value follows the API's insertion-point convention:
+
+```text
+-(insertion point) - 1
+```
 
 For interview memory:
 
-    Found      → non-negative index
-    Not found  → negative value
+```text
+Found
+   ↓
+non-negative index
 
----
+Not found
+   ↓
+negative value
+```
 
 ## Complexity
 
-Binary search:
-
-    O(log n)
+```text
+O(log n)
+```
 
 ---
 
-# 12. 📋 Arrays.copyOf()
+# 12. 📋 `Arrays.copyOf()`
 
 `Arrays.copyOf()` creates a new array containing elements from the original array.
 
-Example:
+## Example
 
-    int[] arr = {10, 20, 30};
+```java
+int[] arr = {10, 20, 30};
 
-    int[] copy = Arrays.copyOf(arr, arr.length);
+int[] copy = Arrays.copyOf(arr, arr.length);
 
-    System.out.println(Arrays.toString(copy));
+System.out.println(Arrays.toString(copy));
+```
 
-Output:
+### Output
 
-    [10, 20, 30]
+```text
+[10, 20, 30]
+```
 
 Conceptually:
 
-    arr  ─────► [10, 20, 30]
+```text
+arr  ─────► [10, 20, 30]
 
-    copy ─────► [10, 20, 30]
+copy ─────► [10, 20, 30]
+```
 
 These are different array objects.
 
 Therefore:
 
-    arr == copy
+```java
+System.out.println(arr == copy);
+```
 
-returns:
+### Output
 
-    false
-
----
+```text
+false
+```
 
 ## Copy With Larger Size
 
-    int[] arr = {10, 20, 30};
+```java
+int[] arr = {10, 20, 30};
 
-    int[] copy = Arrays.copyOf(arr, 5);
+int[] copy = Arrays.copyOf(arr, 5);
 
-Result:
+System.out.println(Arrays.toString(copy));
+```
 
-    [10, 20, 30, 0, 0]
+### Output
+
+```text
+[10, 20, 30, 0, 0]
+```
 
 The additional positions receive the default value of the component type.
 
----
-
 ## Copy With Smaller Size
 
-    int[] arr = {10, 20, 30, 40, 50};
+```java
+int[] arr = {10, 20, 30, 40, 50};
 
-    int[] copy = Arrays.copyOf(arr, 3);
+int[] copy = Arrays.copyOf(arr, 3);
 
-Result:
+System.out.println(Arrays.toString(copy));
+```
 
-    [10, 20, 30]
+### Output
+
+```text
+[10, 20, 30]
+```
 
 ---
 
-# 13. ✂️ Arrays.copyOfRange()
+# 13. ✂️ `Arrays.copyOfRange()`
 
 `copyOfRange()` copies a specific range.
 
-Syntax:
+## Syntax
 
-    Arrays.copyOfRange(array, from, to);
+```java
+Arrays.copyOfRange(array, from, to);
+```
 
 Again:
 
-    from → inclusive
-    to   → exclusive
+```text
+from → inclusive
+to   → exclusive
+```
 
-Example:
+## Example
 
-    int[] arr = {10, 20, 30, 40, 50};
+```java
+int[] arr = {10, 20, 30, 40, 50};
 
-    int[] copy = Arrays.copyOfRange(arr, 1, 4);
+int[] copy = Arrays.copyOfRange(arr, 1, 4);
 
-Result:
+System.out.println(Arrays.toString(copy));
+```
 
-    [20, 30, 40]
+### Output
+
+```text
+[20, 30, 40]
+```
 
 Because:
 
-    index 1 → included
-    index 2 → included
-    index 3 → included
-    index 4 → excluded
+```text
+index 1 → included
+index 2 → included
+index 3 → included
+index 4 → excluded
+```
 
----
+### Visual
 
-## Visual
-
-    Index:  0   1   2   3   4
-    Value: 10  20  30  40  50
-                └──────────┘
-                1 to 4
+```text
+Index:  0   1   2   3   4
+Value: 10  20  30  40  50
+            └──────────┘
+               1 to 4
+```
 
 Remember:
 
-    from = included
-    to   = excluded
+```text
+from = included
+to   = excluded
+```
 
 ---
 
-# 14. 🪣 Arrays.fill()
+# 14. 🪣 `Arrays.fill()`
 
 `Arrays.fill()` fills an entire array with a specified value.
 
-Example:
+## Example
 
-    int[] arr = new int[5];
+```java
+int[] arr = new int[5];
 
-    Arrays.fill(arr, 7);
+Arrays.fill(arr, 7);
 
-    System.out.println(Arrays.toString(arr));
+System.out.println(Arrays.toString(arr));
+```
 
-Output:
+### Output
 
-    [7, 7, 7, 7, 7]
-
----
+```text
+[7, 7, 7, 7, 7]
+```
 
 ## Fill a Range
 
-Syntax:
+### Syntax
 
-    Arrays.fill(array, fromIndex, toIndex, value);
+```java
+Arrays.fill(array, fromIndex, toIndex, value);
+```
 
-Example:
+## Example
 
-    int[] arr = {1, 2, 3, 4, 5};
+```java
+int[] arr = {1, 2, 3, 4, 5};
 
-    Arrays.fill(arr, 1, 4, 100);
+Arrays.fill(arr, 1, 4, 100);
 
-Result:
+System.out.println(Arrays.toString(arr));
+```
 
-    [1, 100, 100, 100, 5]
+### Result
+
+```text
+[1, 100, 100, 100, 5]
+```
 
 Because:
 
-    1 → included
-    4 → excluded
+```text
+1 → included
+4 → excluded
+```
 
 ---
 
-# 15. ⚖️ Arrays.equals()
+# 15. ⚖️ `Arrays.equals()`
 
 `Arrays.equals()` compares two one-dimensional arrays element by element.
 
-Example:
+## Example
 
-    int[] a = {1, 2, 3};
-    int[] b = {1, 2, 3};
+```java
+int[] a = {1, 2, 3};
 
-    System.out.println(Arrays.equals(a, b));
+int[] b = {1, 2, 3};
 
-Output:
+System.out.println(Arrays.equals(a, b));
+```
 
-    true
+### Output
 
----
+```text
+true
+```
 
 ## Why Not `==`?
 
 Consider:
 
-    int[] a = {1, 2, 3};
-    int[] b = {1, 2, 3};
+```java
+int[] a = {1, 2, 3};
 
-    System.out.println(a == b);
+int[] b = {1, 2, 3};
 
-Output:
+System.out.println(a == b);
+```
 
-    false
+### Output
+
+```text
+false
+```
 
 Because `a` and `b` refer to different array objects.
 
 But:
 
-    Arrays.equals(a, b)
+```java
+Arrays.equals(a, b);
+```
 
 compares their elements.
 
 Therefore:
 
-    a == b
+```text
+a == b
 
-asks:
-
-    "Are these the same object?"
+↓
+"Are these the same object?"
+```
 
 while:
 
-    Arrays.equals(a, b)
+```text
+Arrays.equals(a, b)
 
-asks:
-
-    "Do these arrays contain equal elements in the same order?"
+↓
+"Do these arrays contain equal elements in the same order?"
+```
 
 ---
 
-# 16. 🌳 Arrays.deepEquals()
+# 16. 🌳 `Arrays.deepEquals()`
 
 `Arrays.deepEquals()` compares nested arrays recursively.
 
-Example:
+## Example
 
-    int[][] a = {
-        {1, 2},
-        {3, 4}
-    };
+```java
+int[][] a = {
+    {1, 2},
+    {3, 4}
+};
 
-    int[][] b = {
-        {1, 2},
-        {3, 4}
-    };
+int[][] b = {
+    {1, 2},
+    {3, 4}
+};
 
-    System.out.println(Arrays.deepEquals(a, b));
+System.out.println(Arrays.deepEquals(a, b));
+```
 
-Output:
+### Output
 
-    true
-
----
+```text
+true
+```
 
 ## `equals()` vs `deepEquals()`
 
 For normal 1D arrays:
 
-    Arrays.equals(a, b);
+```java
+Arrays.equals(a, b);
+```
 
 For nested arrays:
 
-    Arrays.deepEquals(a, b);
+```java
+Arrays.deepEquals(a, b);
+```
 
-### Memory Trick
+### 🧠 Memory Trick
 
-    1D      → equals()
-    Nested  → deepEquals()
+```text
+1D
+ ↓
+equals()
+
+Nested
+ ↓
+deepEquals()
+```
 
 ---
 
-# 17. 🆚 Arrays.compare()
+# 17. 🆚 `Arrays.compare()`
 
 `Arrays.compare()` performs a lexicographical comparison.
 
-Example:
+## Example
 
-    int[] a = {1, 2, 3};
-    int[] b = {1, 2, 3};
+```java
+int[] a = {1, 2, 3};
 
-    System.out.println(Arrays.compare(a, b));
+int[] b = {1, 2, 3};
 
-Output:
+System.out.println(Arrays.compare(a, b));
+```
 
-    0
+### Output
 
-Meaning:
+```text
+0
+```
 
-    Arrays are equal according to lexicographical comparison.
-
----
+Meaning the arrays are equal according to lexicographical comparison.
 
 ## Return Value
 
 Generally:
 
-    0
-    ↓
-    Arrays are equal
+```text
+0
+↓
+Arrays are equal
 
-    Negative
-    ↓
-    First array is lexicographically smaller
+Negative
+↓
+First array is lexicographically smaller
 
-    Positive
-    ↓
-    First array is lexicographically greater
+Positive
+↓
+First array is lexicographically greater
+```
 
-Example:
+## Example
 
-    int[] a = {1, 2};
-    int[] b = {1, 3};
+```java
+int[] a = {1, 2};
 
-    Arrays.compare(a, b);
+int[] b = {1, 3};
+
+int result = Arrays.compare(a, b);
+
+System.out.println(result);
+```
 
 At the first different position:
 
-    2 < 3
+```text
+2 < 3
+```
 
 Therefore the result is negative.
-
----
 
 ## What Does Lexicographical Mean?
 
@@ -828,37 +1004,47 @@ Compare from left to right.
 
 Example:
 
-    [1, 2, 5]
-    [1, 3, 0]
+```text
+[1, 2, 5]
+[1, 3, 0]
+```
 
 First:
 
-    1 == 1
+```text
+1 == 1
+```
 
 Then:
 
-    2 < 3
+```text
+2 < 3
+```
 
 Therefore:
 
-    [1,2,5] < [1,3,0]
+```text
+[1, 2, 5] < [1, 3, 0]
+```
 
 ---
 
-# 18. 🔢 Arrays.compareUnsigned()
+# 18. 🔢 `Arrays.compareUnsigned()`
 
 For integral primitive arrays, Java also provides:
 
-    Arrays.compareUnsigned()
+```java
+Arrays.compareUnsigned();
+```
 
-It compares integer values as if they were unsigned.
+It compares integral values as if they were unsigned.
 
 This matters particularly for types such as:
 
-    byte
-    short
-    int
-    long
+- `byte`
+- `short`
+- `int`
+- `long`
 
 where Java's primitive integer types are normally signed.
 
@@ -866,143 +1052,195 @@ For normal beginner-level array problems, you will rarely need this method.
 
 But it is useful to know that `Arrays` provides both:
 
-    Arrays.compare()
+```java
+Arrays.compare();
+```
 
 and:
 
-    Arrays.compareUnsigned()
+```java
+Arrays.compareUnsigned();
+```
 
 ---
 
-# 19. 🔍 Arrays.mismatch()
+# 19. 🔍 `Arrays.mismatch()`
 
 `Arrays.mismatch()` finds the first index where two arrays differ.
 
-Example:
+## Example
 
-    int[] a = {10, 20, 30, 40};
-    int[] b = {10, 20, 99, 40};
+```java
+int[] a = {10, 20, 30, 40};
 
-    System.out.println(Arrays.mismatch(a, b));
+int[] b = {10, 20, 99, 40};
 
-Output:
+System.out.println(Arrays.mismatch(a, b));
+```
 
-    2
+### Output
+
+```text
+2
+```
 
 Because:
 
-    Index:  0    1    2    3
-    A:     10   20   30   40
-    B:     10   20   99   40
-                       ↑
-                    mismatch
+```text
+Index:  0    1    2    3
 
----
+A:     10   20   30   40
+B:     10   20   99   40
+                  ↑
+              mismatch
+```
 
 ## If Arrays Are Equal
 
-Example:
+```java
+int[] a = {1, 2, 3};
 
-    int[] a = {1, 2, 3};
-    int[] b = {1, 2, 3};
+int[] b = {1, 2, 3};
 
-    Arrays.mismatch(a, b);
+System.out.println(Arrays.mismatch(a, b));
+```
 
-returns:
+### Output
 
-    -1
+```text
+-1
+```
 
 Meaning:
 
-    No mismatch found.
+```text
+No mismatch found.
+```
 
 ---
 
-# 20. 📋 Arrays.asList()
+# 20. 📋 `Arrays.asList()`
 
-`Arrays.asList()` converts an array into a `List` view for reference-type arrays.
+`Arrays.asList()` creates a fixed-size `List` backed by an array for reference-type arrays.
 
-Example:
+## Example
 
-    String[] names = {"A", "B", "C"};
+```java
+import java.util.Arrays;
+import java.util.List;
 
-    List<String> list = Arrays.asList(names);
+String[] names = {"A", "B", "C"};
 
-Now:
+List<String> list = Arrays.asList(names);
 
-    list = [A, B, C]
+System.out.println(list);
+```
+
+### Output
+
+```text
+[A, B, C]
+```
 
 ---
 
-## Important Restriction
+## ⚠️ Important Restriction
 
 `Arrays.asList()` works with arrays of reference types.
 
 For example:
 
-    String[] names = {"A", "B", "C"};
+```java
+String[] names = {"A", "B", "C"};
 
-    List<String> list = Arrays.asList(names);
+List<String> list = Arrays.asList(names);
+```
 
 works as expected.
 
 But:
 
-    int[] nums = {1, 2, 3};
+```java
+int[] nums = {1, 2, 3};
 
-    Arrays.asList(nums);
+List<int[]> list = Arrays.asList(nums);
+```
 
-does NOT create:
+does **not** create:
 
-    List<Integer>
+```text
+List<Integer>
+```
 
-Instead, because `int[]` itself is one object, it is treated as a single argument to the varargs parameter.
+containing:
+
+```text
+1, 2, 3
+```
+
+Instead, the entire `int[]` is treated as one object because primitive arrays do not automatically become wrapper-object arrays.
 
 This is a famous interview trap.
 
----
-
-## Example
-
-    int[] nums = {1, 2, 3};
-
-    System.out.println(Arrays.asList(nums));
-
-This does not produce a normal `List<Integer>` containing three integers.
-
----
-
-## With Integer[]
+## With `Integer[]`
 
 Use:
 
-    Integer[] nums = {1, 2, 3};
+```java
+Integer[] nums = {1, 2, 3};
 
-    List<Integer> list = Arrays.asList(nums);
+List<Integer> list = Arrays.asList(nums);
 
-Now:
+System.out.println(list);
+```
 
-    [1, 2, 3]
+### Output
+
+```text
+[1, 2, 3]
+```
 
 ---
 
-## Is Arrays.asList() Mutable?
+## Is `Arrays.asList()` Mutable?
 
-The returned list is a fixed-size list backed by the array.
+The returned list is **fixed-size** and backed by the array.
 
-You can use:
+You can modify existing positions:
 
-    list.set(0, 100);
+```java
+String[] arr = {"A", "B", "C"};
 
-But operations that change the size, such as:
+List<String> list = Arrays.asList(arr);
 
-    list.add(100);
+list.set(0, "X");
+
+System.out.println(list);
+```
+
+### Output
+
+```text
+[X, B, C]
+```
+
+But operations that change the size are unsupported:
+
+```java
+list.add("D");
+```
 
 or:
 
-    list.remove(0);
+```java
+list.remove(0);
+```
 
-throw `UnsupportedOperationException`.
+These throw:
+
+```text
+UnsupportedOperationException
+```
 
 ---
 
@@ -1010,105 +1248,123 @@ throw `UnsupportedOperationException`.
 
 Example:
 
-    String[] arr = {"A", "B", "C"};
+```java
+String[] arr = {"A", "B", "C"};
 
-    List<String> list = Arrays.asList(arr);
+List<String> list = Arrays.asList(arr);
 
-    arr[0] = "X";
+arr[0] = "X";
 
-Now:
+System.out.println(list);
+```
 
-    list
+### Output
 
-also reflects:
+```text
+[X, B, C]
+```
 
-    [X, B, C]
-
-because the list is backed by the original array.
+The list reflects the change because it is backed by the original array.
 
 ---
 
-# 21. 🌊 Arrays.stream()
+# 21. 🌊 `Arrays.stream()`
 
 `Arrays.stream()` creates a Java Stream from an array.
 
-Example:
+## Primitive Array
 
-    int[] nums = {1, 2, 3, 4, 5};
+```java
+int[] nums = {1, 2, 3, 4, 5};
 
-    Arrays.stream(nums)
-          .forEach(System.out::println);
+Arrays.stream(nums)
+      .forEach(System.out::println);
+```
 
-Output:
+### Output
 
-    1
-    2
-    3
-    4
-    5
-
----
+```text
+1
+2
+3
+4
+5
+```
 
 ## Sum Example
 
-    int[] nums = {10, 20, 30};
+```java
+int[] nums = {10, 20, 30};
 
-    int sum = Arrays.stream(nums).sum();
+int sum = Arrays.stream(nums).sum();
 
-    System.out.println(sum);
+System.out.println(sum);
+```
 
-Output:
+### Output
 
-    60
-
----
+```text
+60
+```
 
 ## Important
 
 For primitive arrays:
 
-    int[]     → IntStream
-    long[]    → LongStream
-    double[]  → DoubleStream
+```text
+int[]    → IntStream
+long[]   → LongStream
+double[] → DoubleStream
+```
 
 For object arrays:
 
-    String[]  → Stream<String>
+```text
+String[] → Stream<String>
+```
 
 Example:
 
-    String[] names = {"A", "B", "C"};
+```java
+String[] names = {"A", "B", "C"};
 
-    Arrays.stream(names)
-          .forEach(System.out::println);
+Arrays.stream(names)
+      .forEach(System.out::println);
+```
 
 ---
 
-# 22. #️⃣ Arrays.hashCode()
+# 22. #️⃣ `Arrays.hashCode()`
 
 `Arrays.hashCode()` calculates a hash code based on the contents of a one-dimensional array.
 
-Example:
+## Example
 
-    int[] a = {1, 2, 3};
+```java
+int[] a = {1, 2, 3};
 
-    int hash = Arrays.hashCode(a);
+int hash = Arrays.hashCode(a);
+
+System.out.println(hash);
+```
 
 It considers the array elements when calculating the result.
 
 This is useful when implementing content-based hashing behavior.
 
----
-
 ## Important
 
 Do not confuse:
 
-    Arrays.hashCode(arr)
+```java
+Arrays.hashCode(arr);
+```
 
 with:
 
-    arr.hashCode()
+```java
+arr.hashCode();
+```
 
 For arrays, `arr.hashCode()` does not provide a content-based array hash in the same way.
 
@@ -1116,34 +1372,42 @@ For arrays, `arr.hashCode()` does not provide a content-based array hash in the 
 
 ---
 
-# 23. 🌳 Arrays.deepHashCode()
+# 23. 🌳 `Arrays.deepHashCode()`
 
 For nested arrays:
 
-    Arrays.deepHashCode()
+```java
+Arrays.deepHashCode();
+```
 
 can be used.
 
-Example:
+## Example
 
-    int[][] arr = {
-        {1, 2},
-        {3, 4}
-    };
+```java
+int[][] arr = {
+    {1, 2},
+    {3, 4}
+};
 
-    int hash = Arrays.deepHashCode(arr);
+int hash = Arrays.deepHashCode(arr);
+
+System.out.println(hash);
+```
 
 It recursively considers nested array contents.
 
-Memory trick:
+### Memory Trick
 
-    1D array
-        ↓
-    hashCode()
+```text
+1D array
+   ↓
+hashCode()
 
-    Nested array
-        ↓
-    deepHashCode()
+Nested array
+   ↓
+deepHashCode()
+```
 
 ---
 
@@ -1151,19 +1415,25 @@ Memory trick:
 
 `Arrays` methods also work with arrays containing objects.
 
-Example:
+## Example
 
-    String[] names = {
-        "Charlie",
-        "Alice",
-        "Bob"
-    };
+```java
+String[] names = {
+    "Charlie",
+    "Alice",
+    "Bob"
+};
 
-    Arrays.sort(names);
+Arrays.sort(names);
 
-Result:
+System.out.println(Arrays.toString(names));
+```
 
-    [Alice, Bob, Charlie]
+### Output
+
+```text
+[Alice, Bob, Charlie]
+```
 
 For objects, sorting depends on either:
 
@@ -1172,11 +1442,23 @@ For objects, sorting depends on either:
 
 Example:
 
-    Arrays.sort(names, Comparator.reverseOrder());
+```java
+String[] names = {
+    "Charlie",
+    "Alice",
+    "Bob"
+};
 
-Result:
+Arrays.sort(names, Comparator.reverseOrder());
 
-    [Charlie, Bob, Alice]
+System.out.println(Arrays.toString(names));
+```
+
+### Output
+
+```text
+[Charlie, Bob, Alice]
+```
 
 ---
 
@@ -1186,41 +1468,57 @@ There is an important distinction.
 
 ## Primitive Array
 
-    int[] nums = {1, 2, 3};
+```java
+int[] nums = {1, 2, 3};
+```
 
 Contains:
 
-    int values
-
----
+```text
+int values
+```
 
 ## Object Array
 
-    Integer[] nums = {1, 2, 3};
+```java
+Integer[] nums = {1, 2, 3};
+```
 
 Contains:
 
-    Integer references
+```text
+Integer references
+```
 
 This distinction becomes especially important with:
 
-    Arrays.asList()
+```java
+Arrays.asList()
+```
 
 For:
 
-    Integer[]
+```java
+Integer[]
+```
 
 you get:
 
-    List<Integer>
+```text
+List<Integer>
+```
 
 For:
 
-    int[]
+```java
+int[]
+```
 
 you do not get:
 
-    List<Integer>
+```text
+List<Integer>
+```
 
 ---
 
@@ -1228,46 +1526,56 @@ you do not get:
 
 Suppose we have:
 
-    int[] a = {1, 2, 3};
+```java
+int[] a = {1, 2, 3};
 
-    int[] b = Arrays.copyOf(a, a.length);
+int[] b = Arrays.copyOf(a, a.length);
+```
 
 For a primitive array, the values are copied into the new array.
 
 But for an object array:
 
-    Student[] a = {
-        student1,
-        student2
-    };
+```java
+Student[] a = {
+    student1,
+    student2
+};
 
-    Student[] b = Arrays.copyOf(a, a.length);
+Student[] b = Arrays.copyOf(a, a.length);
+```
 
 the new array contains copies of the references.
 
 Conceptually:
 
-    a ───────► [ref1][ref2]
-                 │     │
-                 ▼     ▼
-              Student Student
+```text
+a ───────► [ref1][ref2]
+              │     │
+              ▼     ▼
+           Student Student
 
-    b ───────► [ref1][ref2]
-                 │     │
-                 ▼     ▼
-              Student Student
+b ───────► [ref1][ref2]
+              │     │
+              ▼     ▼
+           Student Student
+```
 
 So:
 
-    a != b
+```java
+a != b
+```
 
 but:
 
-    a[0] == b[0]
+```java
+a[0] == b[0]
+```
 
-can be true.
+can be `true`.
 
-This is called a shallow copy.
+This is called a **shallow copy**.
 
 ---
 
@@ -1279,29 +1587,33 @@ Do not confuse these two.
 
 Example:
 
-    int[] arr = new int[5];
+```java
+int[] arr = new int[5];
+```
 
 An array is an object that stores multiple elements.
-
----
 
 ## Arrays Class
 
 Example:
 
-    Arrays.sort(arr);
+```java
+Arrays.sort(arr);
+```
 
 `Arrays` is a utility class containing static methods for operating on arrays.
 
 ### Simple Difference
 
-    Array
-      ↓
-    Stores data
+```text
+Array
+   ↓
+Stores data
 
-    Arrays
-      ↓
-    Provides utility operations
+Arrays
+   ↓
+Provides utility operations
+```
 
 ---
 
@@ -1309,41 +1621,53 @@ Example:
 
 Several `Arrays` methods use:
 
-    fromIndex
-    toIndex
+```text
+fromIndex
+toIndex
+```
 
 The rule is:
 
-    fromIndex → inclusive
-    toIndex   → exclusive
+```text
+fromIndex → inclusive
+toIndex   → exclusive
+```
 
 This appears in methods such as:
 
-    Arrays.sort()
-    Arrays.fill()
-    Arrays.copyOfRange()
+```java
+Arrays.sort(arr, 2, 5);
+
+Arrays.fill(arr, 2, 5, 100);
+
+Arrays.copyOfRange(arr, 2, 5);
+```
 
 Example:
 
-    Arrays.sort(arr, 2, 5);
+```java
+Arrays.sort(arr, 2, 5);
+```
 
 means:
 
-    index 2
-    index 3
-    index 4
+```text
+index 2
+index 3
+index 4
+```
 
 are included.
 
 Index `5` is excluded.
 
----
-
 ## 🧠 Memory Trick
 
 Think:
 
-    [from, to)
+```text
+[from, to)
+```
 
 This is the standard half-open range.
 
@@ -1351,7 +1675,7 @@ This is the standard half-open range.
 
 # 29. ⏱️ Time Complexity
 
-Exact implementation details can vary by Java version and overload, but the following are useful DSA-level expectations.
+Exact implementation details can vary by Java version, overload, and input characteristics, but the following are useful DSA-level expectations.
 
 | Operation | Typical Complexity |
 |---|---:|
@@ -1369,6 +1693,12 @@ Exact implementation details can vary by Java version and overload, but the foll
 | `Arrays.asList()` | O(1) view creation |
 | `Arrays.stream()` | O(1) stream creation |
 
+### Important Note
+
+For `Arrays.sort()`, the exact algorithm depends on the array type and Java implementation.
+
+Therefore, in interviews, avoid claiming that every overload uses exactly the same sorting algorithm.
+
 ---
 
 # 30. ⚠️ Common Mistakes
@@ -1377,13 +1707,17 @@ Exact implementation details can vary by Java version and overload, but the foll
 
 Wrong:
 
-    Arrays.sort(arr);
+```java
+Arrays.sort(arr);
+```
 
-without importing `Arrays` when no wildcard/import is otherwise available.
+when `Arrays` has not been imported.
 
 Correct:
 
-    import java.util.Arrays;
+```java
+import java.util.Arrays;
+```
 
 ---
 
@@ -1391,13 +1725,17 @@ Correct:
 
 Wrong:
 
-    a == b
+```java
+a == b
+```
 
 when you want element-wise comparison.
 
 Use:
 
-    Arrays.equals(a, b)
+```java
+Arrays.equals(a, b);
+```
 
 ---
 
@@ -1405,11 +1743,18 @@ Use:
 
 For:
 
-    int[][] arr
+```java
+int[][] arr = {
+    {1, 2},
+    {3, 4}
+};
+```
 
 prefer:
 
-    Arrays.deepToString(arr)
+```java
+Arrays.deepToString(arr);
+```
 
 ---
 
@@ -1417,7 +1762,9 @@ prefer:
 
 Do not blindly use:
 
-    Arrays.binarySearch(arr, target);
+```java
+Arrays.binarySearch(arr, target);
+```
 
 on an unsorted array.
 
@@ -1427,8 +1774,10 @@ on an unsorted array.
 
 Remember:
 
-    from → included
-    to   → excluded
+```text
+from → included
+to   → excluded
+```
 
 ---
 
@@ -1438,7 +1787,9 @@ It creates a new array object.
 
 Therefore:
 
-    original != copy
+```java
+original != copy
+```
 
 ---
 
@@ -1446,9 +1797,11 @@ Therefore:
 
 This:
 
-    int[] nums = {1, 2, 3};
+```java
+int[] nums = {1, 2, 3};
 
-    Arrays.asList(nums);
+Arrays.asList(nums);
+```
 
 does not create a `List<Integer>` containing three integers.
 
@@ -1460,131 +1813,193 @@ The returned list has fixed size.
 
 This fails:
 
-    list.add(10);
+```java
+list.add(10);
+```
 
 ---
 
 # 31. 🚨 Interview Traps
 
-### Trap 1
+## Trap 1
 
 What is the difference?
 
-    arr == copy
+```java
+arr == copy
+```
 
 vs
 
-    Arrays.equals(arr, copy)
+```java
+Arrays.equals(arr, copy)
+```
 
-Answer:
+### Answer
 
-    ==
+```text
+==
+↓
+Checks reference identity.
 
-checks whether the references point to the same array object.
-
-    Arrays.equals()
-
-checks element-by-element equality for one-dimensional arrays.
+Arrays.equals()
+↓
+Checks element-by-element equality for 1D arrays.
+```
 
 ---
 
-### Trap 2
+## Trap 2
 
 What is the difference?
 
-    Arrays.toString()
-    Arrays.deepToString()
+```java
+Arrays.toString()
+```
 
-Answer:
+and:
 
-    toString()
-        ↓
-    1D array
+```java
+Arrays.deepToString()
+```
 
-    deepToString()
-        ↓
-    nested arrays
+### Answer
+
+```text
+toString()
+    ↓
+1D array
+
+deepToString()
+    ↓
+Nested arrays
+```
 
 ---
 
-### Trap 3
+## Trap 3
 
 What is the difference?
 
-    Arrays.equals()
-    Arrays.deepEquals()
+```java
+Arrays.equals()
+```
 
-Answer:
+and:
 
-    equals()
-        ↓
-    normal 1D arrays
+```java
+Arrays.deepEquals()
+```
 
-    deepEquals()
-        ↓
-    nested arrays
+### Answer
+
+```text
+equals()
+    ↓
+1D arrays
+
+deepEquals()
+    ↓
+Nested arrays
+```
 
 ---
 
-### Trap 4
+## Trap 4
 
 What does this do?
 
-    int[] a = {1, 2, 3};
+```java
+int[] a = {1, 2, 3};
 
-    int[] b = Arrays.copyOf(a, a.length);
+int[] b = Arrays.copyOf(a, a.length);
+```
 
-Answer:
+### Answer
 
 It creates a separate array containing the same primitive values.
 
+Therefore:
+
+```java
+a != b
+```
+
 ---
 
-### Trap 5
+## Trap 5
 
 What does this do?
 
-    int[] a = {1, 2, 3};
+```java
+int[] a = {1, 2, 3};
 
-    int[] b = a;
+int[] b = a;
+```
 
-Answer:
+### Answer
 
 It copies the reference.
 
 Both variables point to the same array.
 
+```text
+a ──────┐
+        ↓
+      [1,2,3]
+        ↑
+b ──────┘
+```
+
+Therefore:
+
+```java
+a == b
+```
+
+is `true`.
+
 ---
 
-### Trap 6
+## Trap 6
 
 What happens here?
 
-    int[] nums = {1, 2, 3};
+```java
+int[] nums = {1, 2, 3};
 
-    Arrays.asList(nums);
+Arrays.asList(nums);
+```
 
-Answer:
+### Answer
 
 It does not produce a `List<Integer>` containing `1, 2, 3`.
 
-Because `int[]` is itself an object and primitive arrays do not become lists of wrapper objects through this call.
+The primitive array `int[]` is treated as one object argument to the varargs parameter.
 
 ---
 
-### Trap 7
+## Trap 7
 
 What does `Arrays.binarySearch()` return if the element is not found?
 
 A negative value based on the insertion point.
 
+The API convention is:
+
+```text
+-(insertion point) - 1
+```
+
 ---
 
-### Trap 8
+## Trap 8
 
 What does this mean?
 
-    Arrays.mismatch(a, b) == -1
+```java
+Arrays.mismatch(a, b) == -1
+```
 
 It means there is no mismatch; the arrays are equal over their compared contents.
 
@@ -1602,9 +2017,11 @@ It means there is no mismatch; the arrays are equal over their compared contents
 
 `Arrays` is a class.
 
-Example:
+Fully qualified name:
 
-    java.util.Arrays
+```java
+java.util.Arrays
+```
 
 ---
 
@@ -1614,7 +2031,9 @@ Because the commonly used methods are static.
 
 Example:
 
-    Arrays.sort(arr);
+```java
+Arrays.sort(arr);
+```
 
 ---
 
@@ -1634,11 +2053,13 @@ Because arrays are objects and their default string representation does not norm
 
 ## Q6. What is the difference between toString() and deepToString()?
 
-    toString()
-        → one-dimensional arrays
+```text
+toString()
+    → one-dimensional arrays
 
-    deepToString()
-        → nested arrays
+deepToString()
+    → nested arrays
+```
 
 ---
 
@@ -1662,7 +2083,9 @@ It searches a sorted array using binary search.
 
 Typical complexity:
 
-    O(log n)
+```text
+O(log n)
+```
 
 ---
 
@@ -1694,11 +2117,13 @@ It fills all or part of an array with a specified value.
 
 ## Q14. What is the difference between == and Arrays.equals()?
 
-    ==
-        → reference identity
+```text
+==
+    → reference identity
 
-    Arrays.equals()
-        → element-wise equality for 1D arrays
+Arrays.equals()
+    → element-wise equality for 1D arrays
+```
 
 ---
 
@@ -1720,13 +2145,15 @@ It returns the first index where two arrays differ.
 
 If there is no mismatch, it returns:
 
-    -1
+```text
+-1
+```
 
 ---
 
 ## Q18. What is Arrays.asList()?
 
-It creates a fixed-size List view backed by an array for reference-type arrays.
+It creates a fixed-size `List` view backed by an array for reference-type arrays.
 
 ---
 
@@ -1742,15 +2169,21 @@ It creates a Stream from an array.
 
 For example:
 
-    Arrays.stream(intArray)
+```java
+Arrays.stream(intArray);
+```
 
-produces an `IntStream`.
+produces an:
+
+```text
+IntStream
+```
 
 ---
 
 # 33. 🎤 30-Second Interview Answer
 
-> **`Arrays` is a utility class from `java.util` that provides static methods for common array operations. It can sort arrays using `sort()`, search sorted arrays using `binarySearch()`, copy arrays using `copyOf()` and `copyOfRange()`, fill arrays using `fill()`, compare arrays using `equals()` or `deepEquals()`, and create readable representations using `toString()` or `deepToString()`. It also provides methods such as `stream()`, `asList()`, `compare()`, and `mismatch()`.**
+> **`Arrays` is a utility class from `java.util` that provides static methods for common array operations. It can sort arrays using `sort()`, search sorted arrays using `binarySearch()`, copy arrays using `copyOf()` and `copyOfRange()`, fill arrays using `fill()`, compare arrays using `equals()` or `deepEquals()`, and create readable representations using `toString()` or `deepToString()`. It also provides methods such as `stream()`, `asList()`, `compare()`, `mismatch()`, and hashing methods.**
 
 ---
 
@@ -1771,7 +2204,7 @@ produces an `IntStream`.
 | `compare()` | Lexicographical comparison | Negative/0/positive |
 | `compareUnsigned()` | Unsigned comparison | Integral arrays |
 | `mismatch()` | First difference | `-1` means none |
-| `asList()` | Array → List view | Reference arrays |
+| `asList()` | Array → fixed-size List view | Reference arrays |
 | `stream()` | Array → Stream | Useful with Java 8+ |
 | `hashCode()` | Content-based hash | 1D |
 | `deepHashCode()` | Deep hash | Nested |
@@ -1782,47 +2215,55 @@ produces an `IntStream`.
 
 ## 🔥 Printing
 
-    toString()
-        ↓
-    1D
+```text
+toString()
+    ↓
+1D
 
-    deepToString()
-        ↓
-    Nested
+deepToString()
+    ↓
+Nested
+```
 
 ---
 
 ## 🔥 Comparing
 
-    equals()
-        ↓
-    1D
+```text
+equals()
+    ↓
+1D
 
-    deepEquals()
-        ↓
-    Nested
+deepEquals()
+    ↓
+Nested
+```
 
 ---
 
 ## 🔥 Copying
 
-    copyOf()
-        ↓
-    Copy with length
+```text
+copyOf()
+    ↓
+Copy with length
 
-    copyOfRange()
-        ↓
-    Copy selected range
+copyOfRange()
+    ↓
+Copy selected range
+```
 
 ---
 
 ## 🔥 Searching
 
-    binarySearch()
-        ↓
-    Sorted array
-        ↓
-    O(log n)
+```text
+binarySearch()
+    ↓
+Sorted array
+    ↓
+O(log n)
+```
 
 ---
 
@@ -1830,30 +2271,42 @@ produces an `IntStream`.
 
 Always remember:
 
-    [from, to)
+```text
+[from, to)
+```
 
 Meaning:
 
-    from → included
-    to   → excluded
+```text
+from → included
+to   → excluded
+```
 
 ---
 
 ## 🔥 Assignment vs Copy
 
-    b = a
+```java
+b = a;
+```
 
 means:
 
-    Same array
+```text
+Same array
+```
 
 while:
 
-    b = Arrays.copyOf(a, a.length)
+```java
+b = Arrays.copyOf(a, a.length);
+```
 
 means:
 
-    New array
+```text
+New array
+```
 
 ---
 
@@ -1861,59 +2314,91 @@ means:
 
 Before moving to the next topic, make sure you can explain:
 
-    [ ] What is java.util.Arrays?
-    [ ] Why is Arrays called a utility class?
-    [ ] Why are Arrays methods commonly static?
-    [ ] Arrays.toString()
-    [ ] Arrays.deepToString()
-    [ ] Arrays.sort()
-    [ ] Sorting a range
-    [ ] Arrays.parallelSort()
-    [ ] Arrays.binarySearch()
-    [ ] Why binary search requires sorted data
-    [ ] Arrays.copyOf()
-    [ ] Arrays.copyOfRange()
-    [ ] Arrays.fill()
-    [ ] Arrays.equals()
-    [ ] Arrays.deepEquals()
-    [ ] Arrays.compare()
-    [ ] Arrays.compareUnsigned()
-    [ ] Arrays.mismatch()
-    [ ] Arrays.asList()
-    [ ] Why Arrays.asList(int[]) is tricky
-    [ ] Arrays.stream()
-    [ ] Arrays.hashCode()
-    [ ] Arrays.deepHashCode()
-    [ ] Primitive vs object arrays
-    [ ] Shallow copying of object arrays
-    [ ] Arrays Class vs array object
-    [ ] Range is [from, to)
-    [ ] Important time complexities
+```text
+[ ] What is java.util.Arrays?
+
+[ ] Why is Arrays called a utility class?
+
+[ ] Why are Arrays methods commonly static?
+
+[ ] Arrays.toString()
+
+[ ] Arrays.deepToString()
+
+[ ] Arrays.sort()
+
+[ ] Sorting a range
+
+[ ] Arrays.parallelSort()
+
+[ ] Arrays.binarySearch()
+
+[ ] Why binary search requires sorted data
+
+[ ] Arrays.copyOf()
+
+[ ] Arrays.copyOfRange()
+
+[ ] Arrays.fill()
+
+[ ] Arrays.equals()
+
+[ ] Arrays.deepEquals()
+
+[ ] Arrays.compare()
+
+[ ] Arrays.compareUnsigned()
+
+[ ] Arrays.mismatch()
+
+[ ] Arrays.asList()
+
+[ ] Why Arrays.asList(int[]) is tricky
+
+[ ] Arrays.stream()
+
+[ ] Arrays.hashCode()
+
+[ ] Arrays.deepHashCode()
+
+[ ] Primitive vs object arrays
+
+[ ] Shallow copying of object arrays
+
+[ ] Arrays Class vs array object
+
+[ ] Range is [from, to)
+
+[ ] Important time complexities
+```
 
 ---
 
 # 🏆 MASTER MEMORY CARD
 
-    ┌──────────────────────────────────────────────────┐
-    │                 java.util.Arrays                 │
-    ├──────────────────────────────────────────────────┤
-    │ toString()        → Print 1D array               │
-    │ deepToString()    → Print nested array           │
-    │ sort()            → Sort array                   │
-    │ parallelSort()    → Parallel sorting             │
-    │ binarySearch()    → Search sorted array          │
-    │ copyOf()          → Copy with specified length   │
-    │ copyOfRange()     → Copy [from, to)              │
-    │ fill()            → Fill values                  │
-    │ equals()          → Compare 1D arrays            │
-    │ deepEquals()      → Compare nested arrays       │
-    │ compare()         → Lexicographical comparison   │
-    │ mismatch()        → First differing index       │
-    │ asList()          → Array → fixed-size List view │
-    │ stream()          → Array → Stream               │
-    │ hashCode()        → Content-based hash           │
-    │ deepHashCode()    → Deep content-based hash      │
-    └──────────────────────────────────────────────────┘
+```text
+┌──────────────────────────────────────────────────────┐
+│                  java.util.Arrays                    │
+├──────────────────────────────────────────────────────┤
+│ toString()        → Print 1D array                   │
+│ deepToString()    → Print nested array               │
+│ sort()            → Sort array                       │
+│ parallelSort()    → Parallel sorting                 │
+│ binarySearch()    → Search sorted array              │
+│ copyOf()          → Copy with specified length       │
+│ copyOfRange()     → Copy [from, to)                  │
+│ fill()            → Fill values                      │
+│ equals()          → Compare 1D arrays                │
+│ deepEquals()      → Compare nested arrays            │
+│ compare()         → Lexicographical comparison       │
+│ compareUnsigned() → Unsigned comparison              │
+│ mismatch()        → First differing index            │
+│ asList()          → Array → fixed-size List view     │
+│ stream()          → Array → Stream                   │
+│ hashCode()        → Content-based hash               │
+│ deepHashCode()    → Deep content-based hash         │
+└──────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -1925,17 +2410,21 @@ Before moving to the next topic, make sure you can explain:
 
 # 🔗 ARRAY FOLDER PROGRESS
 
-    05-Arrays/
-    │
-    ├── 01-Array-Introduction.md
-    ├── 02-One-Dimensional-Array.md
-    ├── 03-Multidimensional-Array.md
-    ├── 04-Array-Memory.md
-    ├── 05-Arrays-Class.md              ← YOU ARE HERE
-    └── 06-Array-Interview-Questions.md
+```text
+05-Arrays/
+│
+├── 01-Array-Introduction.md
+├── 02-One-Dimensional-Array.md
+├── 03-Multidimensional-Array.md
+├── 04-Array-Memory.md
+├── 05-Arrays-Class.md              ← YOU ARE HERE
+└── 06-Array-Interview-Questions.md
+```
 
-### 🚀 Next
+---
 
-    06-Array-Interview-Questions.md
+# 🚀 Next
 
-This will combine the important concepts from the complete Arrays folder into interview-focused questions with answers and explanations.
+`06-Array-Interview-Questions.md`
+
+This will combine the important concepts from the complete Arrays folder into interview-focused questions with answers, explanations, traps, DSA patterns, and problem-solving approaches.

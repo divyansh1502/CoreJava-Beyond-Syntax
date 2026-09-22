@@ -1,6 +1,7 @@
+````markdown
 # 🔢 One-Dimensional Array in Java
 
-> **A one-dimensional array is a linear collection of elements of the same declared component type, accessed using a single index.**
+> **A one-dimensional array is a fixed-size linear collection of elements of the same declared component type, accessed using a single zero-based index.**
 
 ---
 
@@ -18,7 +19,7 @@
 10. [Traversing an Array](#10--traversing-an-array)
 11. [Traditional for Loop](#11--traditional-for-loop)
 12. [Enhanced for Loop](#12--enhanced-for-loop)
-13. [Difference Between for and Enhanced for](#13--difference-between-for-and-enhanced-for)
+13. [for vs Enhanced for](#13--for-vs-enhanced-for)
 14. [Taking Array Input](#14--taking-array-input)
 15. [Printing an Array](#15--printing-an-array)
 16. [Finding Sum](#16--finding-sum)
@@ -34,43 +35,66 @@
 26. [Array Comparison](#26--array-comparison)
 27. [Array of Primitive Values](#27--array-of-primitive-values)
 28. [Array of References](#28--array-of-references)
-29. [Null and One-Dimensional Arrays](#29--null-and-one-dimensional-arrays)
+29. [Null and Empty Arrays](#29--null-and-empty-arrays)
 30. [Common Exceptions](#30--common-exceptions)
-31. [Time Complexity](#31--time-complexity)
-32. [Common Mistakes](#32--common-mistakes)
-33. [Interview Traps](#33--interview-traps)
-34. [Top 20 Interview Questions](#34--top-20-interview-questions)
-35. [Coding Problems](#35--coding-problems)
-36. [30-Second Interview Answer](#36--30-second-interview-answer)
-37. [Cheat Sheet](#37--cheat-sheet)
-38. [Memory Tricks](#38--memory-tricks)
-39. [Final Revision Checklist](#39--final-revision-checklist)
+31. [Array Memory Basics](#31--array-memory-basics)
+32. [Time Complexity](#32--time-complexity)
+33. [Common Mistakes](#33--common-mistakes)
+34. [Interview Traps](#34--interview-traps)
+35. [Top 20 Interview Questions](#35--top-20-interview-questions)
+36. [Coding Problems](#36--coding-problems)
+37. [DSA Patterns](#37--dsa-patterns)
+38. [30-Second Interview Answer](#38--30-second-interview-answer)
+39. [Cheat Sheet](#39--cheat-sheet)
+40. [Memory Tricks](#40--memory-tricks)
+41. [Final Revision Checklist](#41--final-revision-checklist)
 
 ---
 
 # 1. 🔹 What is a One-Dimensional Array?
 
-A **one-dimensional array** stores elements in a single linear sequence.
+A **one-dimensional array** is a linear data structure that stores multiple elements under a single array object.
+
+Each element is accessed using **one index**.
 
 Example:
 
-    int[] nums = {10, 20, 30, 40, 50};
+```java
+int[] nums = {10, 20, 30, 40, 50};
+```
 
-Visual representation:
+Conceptually:
 
-    Index:     0    1    2    3    4
-               ↓    ↓    ↓    ↓    ↓
-    Value:    10   20   30   40   50
+```text
+Index:    0    1    2    3    4
+          ↓    ↓    ↓    ↓    ↓
+Value:   10   20   30   40   50
+```
 
-Only **one index** is required to access an element.
+To access `30`:
 
-Example:
-
-    nums[2]
+```java
+System.out.println(nums[2]);
+```
 
 Output:
 
-    30
+```text
+30
+```
+
+### Key Properties
+
+- Linear structure
+- Zero-based indexing
+- Fixed length after creation
+- Stores elements of one declared component type
+- Supports duplicate values
+- Elements can be modified
+- Random access by index
+- Arrays are objects in Java
+- Can store primitives
+- Can store references to objects
 
 ---
 
@@ -78,236 +102,330 @@ Output:
 
 A one-dimensional array can be visualized as:
 
-    ┌────┬────┬────┬────┬────┐
-    │ 10 │ 20 │ 30 │ 40 │ 50 │
-    └────┴────┴────┴────┴────┘
-      0    1    2    3    4
-      ↑
-    index
+```text
+┌────┬────┬────┬────┬────┐
+│ 10 │ 20 │ 30 │ 40 │ 50 │
+└────┴────┴────┴────┴────┘
+  0    1    2    3    4
+  ↑                    ↑
+first                last
+index                index
+```
 
-Important:
+For an array of length `n`:
 
-    First index = 0
-    Last index = length - 1
+```text
+First index = 0
+Last index  = n - 1
+```
+
+Therefore:
+
+```text
+length = 5
+valid indexes = 0, 1, 2, 3, 4
+```
 
 ---
 
 # 3. 📝 Declaration
 
-The recommended syntax is:
+Declaration tells Java that a variable can refer to an array of a particular component type.
 
-    int[] arr;
+Recommended syntax:
 
-This declares a reference variable that can refer to an integer array.
+```java
+int[] arr;
+```
 
-Other valid forms:
+Another valid syntax:
 
-    int arr[];
+```java
+int arr[];
+```
 
-Both are valid.
+Both are legal Java.
 
-Recommended:
+However, this is generally preferred:
 
-    int[] arr;
+```java
+int[] arr;
+```
 
-because it makes the array type visually clear.
+because the array type is visually associated with `int`.
 
----
+### Different Array Types
 
-## Different Array Types
+```java
+int[] numbers;
 
-    int[] numbers;
+double[] prices;
 
-    double[] prices;
+char[] letters;
 
-    char[] letters;
+boolean[] flags;
 
-    boolean[] flags;
+String[] names;
+```
 
-    String[] names;
+At declaration time, no array object has been created yet.
 
 ---
 
 # 4. 🏗️ Creation
 
-Use the `new` keyword to create an array object.
+The `new` keyword creates the array object.
 
-Example:
+```java
+int[] arr = new int[5];
+```
 
-    int[] arr = new int[5];
+This creates an array capable of storing `5` integers.
 
-This creates an array containing five integer elements.
+Default contents:
 
-Initially:
+```text
+[0, 0, 0, 0, 0]
+```
 
-    [0, 0, 0, 0, 0]
+Valid indexes:
 
-Indexes:
+```text
+0  1  2  3  4
+```
 
-    0  1  2  3  4
+### Important
 
----
-
-## Important
-
-This:
-
-    new int[5]
+```java
+new int[5]
+```
 
 means:
 
-> Create an integer array capable of storing 5 elements.
+> Create an integer array with length 5.
 
-It does NOT mean:
+It does **not** mean indexes `1` through `5`.
 
-    indexes 1 to 5
+The indexes are:
 
-Instead:
-
-    indexes 0 to 4
+```text
+0 through 4
+```
 
 ---
 
 # 5. 🎯 Initialization
 
-You can initialize elements individually.
+After creating an array, individual elements can be assigned.
 
-    int[] arr = new int[5];
+```java
+int[] arr = new int[5];
 
-    arr[0] = 10;
-    arr[1] = 20;
-    arr[2] = 30;
-    arr[3] = 40;
-    arr[4] = 50;
+arr[0] = 10;
+arr[1] = 20;
+arr[2] = 30;
+arr[3] = 40;
+arr[4] = 50;
+```
 
 Final array:
 
-    [10, 20, 30, 40, 50]
+```text
+[10, 20, 30, 40, 50]
+```
 
----
+### Default Values
 
-## Array Literal
+When an array is created, its elements receive default values.
 
-You can also directly initialize:
+| Component Type | Default Value |
+|---|---|
+| `byte` | `0` |
+| `short` | `0` |
+| `int` | `0` |
+| `long` | `0L` |
+| `float` | `0.0f` |
+| `double` | `0.0d` |
+| `char` | `'\u0000'` |
+| `boolean` | `false` |
+| Reference type | `null` |
 
-    int[] arr = {10, 20, 30, 40, 50};
+Example:
 
-The compiler determines the length automatically.
+```java
+int[] numbers = new int[3];
 
-Therefore:
+System.out.println(numbers[0]);
+```
 
-    arr.length
+Output:
 
-is:
-
-    5
+```text
+0
+```
 
 ---
 
 # 6. 🧩 Declaration + Creation + Initialization
 
-These are separate concepts.
+These concepts can happen separately or together.
 
 ## Declaration
 
-    int[] arr;
+```java
+int[] arr;
+```
 
-Only the reference variable is declared.
-
----
+A reference variable is declared.
 
 ## Creation
 
-    arr = new int[5];
+```java
+arr = new int[5];
+```
 
 The array object is created.
 
----
-
 ## Initialization
 
-    arr[0] = 10;
-    arr[1] = 20;
+```java
+arr[0] = 10;
+arr[1] = 20;
+```
 
 Values are assigned.
 
----
+## Combined Initialization
 
-## Combined
+```java
+int[] arr = {10, 20, 30};
+```
 
-    int[] arr = {10, 20, 30};
+This creates and initializes the array.
 
-This performs declaration and initialization together, with the array object created as part of the array initializer expression.
+The length is inferred automatically:
+
+```text
+arr.length = 3
+```
+
+### Important Syntax Difference
+
+This is valid:
+
+```java
+int[] arr = {10, 20, 30};
+```
+
+But this is not valid:
+
+```java
+int[] arr;
+
+arr = {10, 20, 30};
+```
+
+When assigning an initializer after declaration, use `new`:
+
+```java
+int[] arr;
+
+arr = new int[]{10, 20, 30};
+```
 
 ---
 
 # 7. 🔢 Indexing
 
-Java uses **zero-based indexing**.
+Java arrays use **zero-based indexing**.
 
 Example:
 
-    int[] arr = {100, 200, 300, 400};
+```java
+int[] arr = {100, 200, 300, 400};
+```
 
-    Index:    0    1    2    3
-    Value:  100  200  300  400
+Representation:
+
+```text
+Index:   0    1    2    3
+Value: 100  200  300  400
+```
 
 Therefore:
 
-    arr[0] → 100
-    arr[1] → 200
-    arr[2] → 300
-    arr[3] → 400
+```java
+arr[0]
+```
 
----
+returns:
 
-## Formula
+```text
+100
+```
+
+And:
+
+```java
+arr[3]
+```
+
+returns:
+
+```text
+400
+```
+
+### Formula
 
 For an array of length `n`:
 
-    Minimum index = 0
-
-    Maximum index = n - 1
+```text
+Minimum index = 0
+Maximum index = n - 1
+```
 
 ---
 
 # 8. 👀 Accessing Elements
 
+Use the array variable followed by an index.
+
+```java
+int[] nums = {10, 20, 30};
+
+System.out.println(nums[0]);
+System.out.println(nums[2]);
+```
+
+Output:
+
+```text
+10
+30
+```
+
+### Accessing the Last Element
+
 Use:
 
-    arr[index]
+```java
+nums[nums.length - 1]
+```
 
 Example:
 
-    int[] nums = {10, 20, 30};
+```java
+int[] nums = {10, 20, 30, 40, 50};
 
-    System.out.println(nums[0]);
-
-Output:
-
-    10
-
-Another example:
-
-    System.out.println(nums[2]);
+System.out.println(nums[nums.length - 1]);
+```
 
 Output:
 
-    30
-
----
-
-## Accessing the Last Element
-
-Instead of:
-
-    nums[4]
-
-we can use:
-
-    nums[nums.length - 1]
-
-This is useful when the array length is unknown.
+```text
+50
+```
 
 ---
 
@@ -315,180 +433,222 @@ This is useful when the array length is unknown.
 
 Arrays are mutable.
 
-Example:
+An existing element can be replaced.
 
-    int[] nums = {10, 20, 30};
+```java
+int[] nums = {10, 20, 30};
 
-    nums[1] = 99;
+nums[1] = 99;
+```
 
 Now:
 
-    [10, 99, 30]
+```text
+[10, 99, 30]
+```
 
-The element at index `1` was replaced.
+The same array object has been modified.
 
----
+```java
+System.out.println(nums[1]);
+```
 
-## Important
+Output:
 
-This does not create a new array.
-
-The same array object is modified.
+```text
+99
+```
 
 ---
 
 # 10. 🔄 Traversing an Array
 
-Traversal means:
+Traversal means visiting array elements one by one.
 
-> Visiting each element of an array one by one.
+The two common approaches are:
 
-Example:
+1. Traditional `for` loop
+2. Enhanced `for` loop
 
-    int[] nums = {10, 20, 30, 40};
+Example array:
 
-Traversal:
+```java
+int[] nums = {10, 20, 30, 40};
+```
 
-    10
-    20
-    30
-    40
+Traversal produces:
 
-The most common ways are:
-
-    1. Traditional for loop
-    2. Enhanced for loop
+```text
+10
+20
+30
+40
+```
 
 ---
 
-# 11. 🔁 Traditional for Loop
+# 11. 🔁 Traditional `for` Loop
 
-The traditional loop gives you access to the index.
+The traditional `for` loop provides direct access to the index.
 
-    int[] nums = {10, 20, 30, 40};
+```java
+int[] nums = {10, 20, 30, 40};
 
-    for (int i = 0; i < nums.length; i++) {
-        System.out.println(nums[i]);
-    }
+for (int i = 0; i < nums.length; i++) {
+    System.out.println(nums[i]);
+}
+```
 
 Output:
 
-    10
-    20
-    30
-    40
+```text
+10
+20
+30
+40
+```
 
----
-
-## Why `i < nums.length`?
+### Why `i < nums.length`?
 
 Suppose:
 
-    nums.length = 4
+```text
+nums.length = 4
+```
 
 Valid indexes:
 
-    0
-    1
-    2
-    3
+```text
+0
+1
+2
+3
+```
 
-So:
+Therefore:
 
-    i < 4
+```text
+i < 4
+```
 
 allows:
 
-    0, 1, 2, 3
+```text
+0, 1, 2, 3
+```
 
 But:
 
-    i <= 4
+```text
+i <= 4
+```
 
-would eventually access:
+would eventually attempt:
 
-    nums[4]
+```text
+nums[4]
+```
 
 which is invalid.
 
 ---
 
-# 12. 🚀 Enhanced for Loop
+# 12. 🚀 Enhanced `for` Loop
 
-Also called:
-
-> for-each loop
+The enhanced `for` loop is also called the **for-each loop**.
 
 Syntax:
 
-    for (type variable : array) {
-        // body
-    }
+```java
+for (type variable : array) {
+    // body
+}
+```
 
 Example:
 
-    int[] nums = {10, 20, 30, 40};
+```java
+int[] nums = {10, 20, 30, 40};
 
-    for (int num : nums) {
-        System.out.println(num);
-    }
+for (int num : nums) {
+    System.out.println(num);
+}
+```
 
 Output:
 
-    10
-    20
-    30
-    40
+```text
+10
+20
+30
+40
+```
 
----
+### How to Read It
 
-## How to Read It
-
-    for (int num : nums)
+```java
+for (int num : nums)
+```
 
 means:
 
-> For every element of `nums`, place its value into `num`.
+> For every element in `nums`, assign its value to `num`.
 
 ---
 
-# 13. ⚔️ Difference Between for and Enhanced for
+# 13. ⚔️ `for` vs Enhanced `for`
 
 | Feature | Traditional `for` | Enhanced `for` |
 |---|---|---|
 | Index available | ✅ | ❌ |
-| Direct value available | Yes | Yes |
-| Easy traversal | Yes | Yes |
-| Update using index | ✅ | ❌ |
-| Simpler syntax | ❌ | ✅ |
-| Reverse traversal | Easy | Not directly |
-| Skip selected indexes | Easy | Less convenient |
+| Direct value available | ✅ | ✅ |
+| Easy traversal | ✅ | ✅ |
+| Index-based update | ✅ | ❌ |
+| Reverse traversal | ✅ | ❌ Directly |
+| Skip selected indexes | ✅ | Less convenient |
+| Syntax | More verbose | Simpler |
 
----
+### Use Traditional `for` When
 
-## When Should You Use Traditional `for`?
+You need the index.
 
-Use it when you need the index.
-
-Example:
-
-    for (int i = 0; i < arr.length; i++) {
-        if (arr[i] == target) {
-            System.out.println(i);
-        }
+```java
+for (int i = 0; i < arr.length; i++) {
+    if (arr[i] == target) {
+        System.out.println(i);
     }
+}
+```
 
----
+### Use Enhanced `for` When
 
-## When Should You Use Enhanced `for`?
+You only need the values.
 
-Use it when you only need the values.
+```java
+for (int value : arr) {
+    System.out.println(value);
+}
+```
 
-Example:
+### Important Trap
 
-    for (int value : arr) {
-        System.out.println(value);
-    }
+Changing the enhanced-for variable does not modify the primitive array element.
+
+```java
+int[] arr = {10, 20, 30};
+
+for (int value : arr) {
+    value = 100;
+}
+```
+
+The array is still:
+
+```text
+[10, 20, 30]
+```
+
+Because `value` receives a copy of each primitive value.
 
 ---
 
@@ -496,72 +656,86 @@ Example:
 
 Using `Scanner`:
 
-    Scanner sc = new Scanner(System.in);
+```java
+import java.util.Scanner;
 
-    int n = sc.nextInt();
+Scanner sc = new Scanner(System.in);
 
-    int[] arr = new int[n];
+int n = sc.nextInt();
 
-    for (int i = 0; i < arr.length; i++) {
-        arr[i] = sc.nextInt();
-    }
+int[] arr = new int[n];
 
-The user provides:
+for (int i = 0; i < arr.length; i++) {
+    arr[i] = sc.nextInt();
+}
+```
 
-    5
-    10 20 30 40 50
+For input:
 
-The array becomes:
+```text
+5
+10 20 30 40 50
+```
 
-    [10, 20, 30, 40, 50]
+The resulting array is:
 
----
+```text
+[10, 20, 30, 40, 50]
+```
 
-## Important Pattern
+### Important DSA Pattern
 
-Remember this pattern:
+Memorize this:
 
-    int n = sc.nextInt();
+```java
+int n = sc.nextInt();
 
-    int[] arr = new int[n];
+int[] arr = new int[n];
 
-    for (int i = 0; i < n; i++) {
-        arr[i] = sc.nextInt();
-    }
+for (int i = 0; i < n; i++) {
+    arr[i] = sc.nextInt();
+}
+```
 
-This pattern appears constantly in DSA.
+This pattern appears frequently in DSA problems.
 
 ---
 
 # 15. 🖨️ Printing an Array
 
-If you directly print an array:
+Directly printing an array does not print its contents.
 
-    int[] arr = {10, 20, 30};
+```java
+int[] arr = {10, 20, 30};
 
-    System.out.println(arr);
+System.out.println(arr);
+```
 
-you do NOT get:
+The output is generally a type/hash-style representation.
 
-    [10, 20, 30]
+For readable output, use `Arrays.toString()`:
 
-Instead, you generally get a type/hash-style representation.
+```java
+import java.util.Arrays;
 
-For readable output, use:
+int[] arr = {10, 20, 30};
 
-    Arrays.toString(arr)
-
-Example:
-
-    System.out.println(Arrays.toString(arr));
+System.out.println(Arrays.toString(arr));
+```
 
 Output:
 
-    [10, 20, 30]
+```text
+[10, 20, 30]
+```
 
-The `Arrays` class will be covered in detail in:
+`Arrays` is a utility class from `java.util`.
 
-    05-Arrays-Class.md
+Its methods will be covered in detail in:
+
+```text
+05-Arrays-Class.md
+```
 
 ---
 
@@ -569,38 +743,42 @@ The `Arrays` class will be covered in detail in:
 
 Example:
 
-    int[] arr = {10, 20, 30, 40};
+```java
+int[] arr = {10, 20, 30, 40};
 
-    int sum = 0;
+int sum = 0;
 
-    for (int i = 0; i < arr.length; i++) {
-        sum += arr[i];
-    }
+for (int i = 0; i < arr.length; i++) {
+    sum += arr[i];
+}
 
-    System.out.println(sum);
+System.out.println(sum);
+```
 
 Output:
 
-    100
+```text
+100
+```
 
----
+### Logic
 
-## Logic
+```text
+sum = 0
 
-Start:
+sum = 0 + 10
+sum = 10 + 20
+sum = 30 + 30
+sum = 60 + 40
 
-    sum = 0
+Final = 100
+```
 
-Then:
+Time complexity:
 
-    sum = 0 + 10
-    sum = 10 + 20
-    sum = 30 + 30
-    sum = 60 + 40
-
-Final:
-
-    100
+```text
+O(n)
+```
 
 ---
 
@@ -608,119 +786,126 @@ Final:
 
 ## Maximum
 
-    int[] arr = {10, 50, 20, 80, 30};
+```java
+int[] arr = {10, 50, 20, 80, 30};
 
-    int max = arr[0];
+int max = arr[0];
 
-    for (int i = 1; i < arr.length; i++) {
-        if (arr[i] > max) {
-            max = arr[i];
-        }
+for (int i = 1; i < arr.length; i++) {
+    if (arr[i] > max) {
+        max = arr[i];
     }
+}
 
-    System.out.println(max);
+System.out.println(max);
+```
 
 Output:
 
-    80
-
----
+```text
+80
+```
 
 ## Minimum
 
-    int[] arr = {10, 50, 20, 80, 30};
+```java
+int[] arr = {10, 50, 20, 80, 30};
 
-    int min = arr[0];
+int min = arr[0];
 
-    for (int i = 1; i < arr.length; i++) {
-        if (arr[i] < min) {
-            min = arr[i];
-        }
+for (int i = 1; i < arr.length; i++) {
+    if (arr[i] < min) {
+        min = arr[i];
     }
+}
 
-    System.out.println(min);
+System.out.println(min);
+```
 
 Output:
 
-    10
+```text
+10
+```
 
----
+### Why Start With `arr[0]`?
 
-## Why Start With `arr[0]`?
+Using:
 
-Because we need an actual element as the initial comparison value.
+```java
+int max = arr[0];
+```
 
-For maximum:
+is safer than assuming a value such as:
 
-    max = arr[0]
+```java
+int max = 0;
+```
 
-For minimum:
+because the array could contain only negative values.
 
-    min = arr[0]
+Example:
 
-This works correctly even when the array contains negative numbers.
+```text
+[-50, -20, -100]
+```
+
+Starting with `0` would produce the wrong maximum.
 
 ---
 
 # 18. 🔍 Searching
 
-Searching means checking whether a target value exists in the array.
+Searching means checking whether a target value exists in an array.
 
 Example:
 
-    int[] arr = {10, 20, 30, 40};
+```java
+int[] arr = {10, 20, 30, 40};
 
-    int target = 30;
+int target = 30;
+```
 
-We need to determine whether:
+We want to determine whether `30` exists.
 
-    30
-
-exists.
+For an unsorted array, a common approach is **linear search**.
 
 ---
 
 # 19. 🔎 Linear Search
 
-The simplest searching technique for an unsorted array is:
+Linear search checks elements sequentially.
 
-> Linear Search
+```java
+int[] arr = {10, 20, 30, 40};
 
-We check each element one by one.
+int target = 30;
 
-Example:
-
-    int[] arr = {10, 20, 30, 40};
-
-    int target = 30;
-
-    for (int i = 0; i < arr.length; i++) {
-
-        if (arr[i] == target) {
-            System.out.println("Found at index " + i);
-            break;
-        }
+for (int i = 0; i < arr.length; i++) {
+    if (arr[i] == target) {
+        System.out.println("Found at index " + i);
+        break;
     }
+}
+```
 
 Output:
 
-    Found at index 2
+```text
+Found at index 2
+```
 
----
+### Complexity
 
-## Linear Search Complexity
+| Case | Complexity |
+|---|---:|
+| Best | O(1) |
+| Average | O(n) |
+| Worst | O(n) |
 
-Best case:
+If the target is at index `0`, we find it immediately.
 
-    O(1)
-
-Worst case:
-
-    O(n)
-
-Average case:
-
-    O(n)
+If the target is absent or at the last index, we may inspect every element.
 
 ---
 
@@ -728,11 +913,16 @@ Average case:
 
 Suppose:
 
-    int[] a = {10, 20, 30};
+```java
+int[] a = {10, 20, 30};
+```
 
-We want another array containing the same values.
+There are two important concepts:
 
-There are different concepts of copying.
+1. Copying the reference
+2. Creating a separate array object
+
+These are fundamentally different.
 
 ---
 
@@ -740,31 +930,43 @@ There are different concepts of copying.
 
 ## Reference Copy
 
-    int[] a = {10, 20, 30};
+```java
+int[] a = {10, 20, 30};
 
-    int[] b = a;
+int[] b = a;
+```
 
-Now:
+Now both references point to the same array.
 
-    a ──────┐
-            ↓
-        [10,20,30]
-            ↑
-            └────── b
+Conceptually:
 
-Both references point to the same array object.
+```text
+a ───────┐
+         ↓
+     [10, 20, 30]
+         ↑
+b ───────┘
+```
 
-If:
+Therefore:
 
-    b[0] = 99;
+```java
+b[0] = 99;
 
-then:
+System.out.println(a[0]);
+```
 
-    a[0]
+Output:
 
-is also:
+```text
+99
+```
 
-    99
+### Why?
+
+Because no new array was created.
+
+Only the reference value was copied.
 
 ---
 
@@ -774,66 +976,81 @@ A separate array object can be created.
 
 Conceptually:
 
-    a → [10,20,30]
+```text
+a → [10, 20, 30]
 
-    b → [10,20,30]
+b → [10, 20, 30]
+```
 
-Now modifying `b` does not modify `a`.
+Now changes to `b` do not modify `a`.
 
-Different copying techniques include:
+Common copying mechanisms include:
 
-    Arrays.copyOf()
-    System.arraycopy()
-    clone()
+```java
+Arrays.copyOf()
+```
 
-These APIs are discussed in detail later.
+```java
+System.arraycopy()
+```
+
+```java
+clone()
+```
+
+These APIs are covered in detail later.
 
 ---
 
 # 22. 📤 Passing Array to a Method
 
-Arrays can be passed to methods.
+Arrays can be passed as method arguments.
 
-Example:
-
-    static void printArray(int[] arr) {
-
-        for (int value : arr) {
-            System.out.println(value);
-        }
+```java
+static void printArray(int[] arr) {
+    for (int value : arr) {
+        System.out.println(value);
     }
+}
+```
 
 Call:
 
-    int[] nums = {10, 20, 30};
+```java
+int[] nums = {10, 20, 30};
 
-    printArray(nums);
+printArray(nums);
+```
 
----
+### Important Java Concept
 
-## Important Concept
+Java is **always pass-by-value**.
 
-The array variable is passed by value, but the copied value is a reference to the same array object.
+When an array is passed to a method, the value copied is the **reference value**.
 
-Therefore, a method can modify the array elements.
+Therefore, both the caller and method parameter can refer to the same array object.
 
 Example:
 
-    static void change(int[] arr) {
-        arr[0] = 100;
-    }
+```java
+static void change(int[] arr) {
+    arr[0] = 100;
+}
 
-    int[] nums = {10, 20, 30};
+int[] nums = {10, 20, 30};
 
-    change(nums);
+change(nums);
 
-Now:
+System.out.println(nums[0]);
+```
 
-    nums[0]
+Output:
 
-is:
+```text
+100
+```
 
-    100
+The method modified the shared array object.
 
 ---
 
@@ -841,139 +1058,169 @@ is:
 
 A method can return an array.
 
-Example:
-
-    static int[] createArray() {
-
-        int[] arr = {10, 20, 30};
-
-        return arr;
-    }
+```java
+static int[] createArray() {
+    int[] arr = {10, 20, 30};
+    return arr;
+}
+```
 
 Calling:
 
-    int[] nums = createArray();
+```java
+int[] nums = createArray();
 
-Now:
+System.out.println(nums[0]);
+```
 
-    nums
+Output:
 
-refers to the returned array object.
+```text
+10
+```
 
----
+### Returning a New Array
 
-## Example — Return Squares
-
-    static int[] squares(int[] arr) {
-
-        int[] result = new int[arr.length];
-
-        for (int i = 0; i < arr.length; i++) {
-            result[i] = arr[i] * arr[i];
-        }
-
-        return result;
-    }
+```java
+static int[] createNumbers() {
+    return new int[]{10, 20, 30};
+}
+```
 
 ---
 
 # 24. 🔧 Arrays with Methods
 
-Arrays are commonly used with methods.
+Arrays are commonly used as method inputs and outputs.
 
 Example:
 
-    static int sum(int[] arr) {
+```java
+static int sum(int[] arr) {
+    int sum = 0;
 
-        int sum = 0;
-
-        for (int value : arr) {
-            sum += value;
-        }
-
-        return sum;
+    for (int value : arr) {
+        sum += value;
     }
+
+    return sum;
+}
+```
 
 Call:
 
-    int[] nums = {10, 20, 30};
+```java
+int[] nums = {10, 20, 30};
 
-    System.out.println(sum(nums));
+System.out.println(sum(nums));
+```
 
 Output:
 
-    60
+```text
+60
+```
+
+This style is very common in DSA.
 
 ---
 
 # 25. 🔗 Array Aliasing
 
-Aliasing occurs when multiple references refer to the same object.
+**Aliasing** occurs when multiple references point to the same object.
 
 Example:
 
-    int[] a = {10, 20, 30};
+```java
+int[] a = {10, 20, 30};
 
-    int[] b = a;
+int[] b = a;
+```
 
 Now:
 
-    a == b
+```java
+System.out.println(a == b);
+```
 
-is:
+Output:
 
-    true
+```text
+true
+```
 
-because both references point to the same array.
+Visual:
 
----
+```text
+a ─────┐
+       ↓
+   [10, 20, 30]
+       ↑
+b ─────┘
+```
 
-## Visual
+Changing through either reference changes the same array.
 
-    a ─────┐
-           ↓
-       [10,20,30]
-           ↑
-    b ─────┘
+```java
+b[1] = 99;
 
-Changing through either reference changes the same object.
+System.out.println(a[1]);
+```
+
+Output:
+
+```text
+99
+```
 
 ---
 
 # 26. ⚖️ Array Comparison
 
-Do not use:
-
-    arr1 == arr2
-
-to compare array contents.
-
-`==` checks whether both references point to the same array object.
+Do not use `==` to compare array contents.
 
 Example:
 
-    int[] a = {1, 2, 3};
-    int[] b = {1, 2, 3};
+```java
+int[] a = {1, 2, 3};
 
-    System.out.println(a == b);
+int[] b = {1, 2, 3};
+
+System.out.println(a == b);
+```
 
 Output:
 
-    false
+```text
+false
+```
 
-Even though contents are identical.
+Why?
 
----
+Because `==` compares reference identity for arrays.
+
+The two variables refer to different array objects.
 
 For content comparison, use:
 
-    Arrays.equals(a, b)
+```java
+import java.util.Arrays;
 
-which returns:
+System.out.println(Arrays.equals(a, b));
+```
 
-    true
+Output:
 
-The `Arrays` class is covered later.
+```text
+true
+```
+
+### Remember
+
+```text
+==                  → same array object?
+Arrays.equals()     → same one-dimensional contents?
+```
 
 ---
 
@@ -981,89 +1228,133 @@ The `Arrays` class is covered later.
 
 Example:
 
-    int[] numbers = {10, 20, 30};
+```java
+int[] numbers = {10, 20, 30};
+```
+
+The array's component type is `int`.
 
 Conceptually:
 
-    numbers
-       ↓
-    ┌────┬────┬────┐
-    │ 10 │ 20 │ 30 │
-    └────┴────┴────┘
+```text
+numbers
+   ↓
+┌────┬────┬────┐
+│ 10 │ 20 │ 30 │
+└────┴────┴────┘
+```
 
-The array contains integer values.
+The array stores primitive values.
+
+Other examples:
+
+```java
+double[] prices = {10.5, 20.5, 30.5};
+
+char[] letters = {'A', 'B', 'C'};
+
+boolean[] flags = {true, false, true};
+```
 
 ---
 
 # 28. 👥 Array of References
 
+Arrays can also contain references to objects.
+
 Example:
 
-    String[] names = new String[3];
+```java
+String[] names = new String[3];
+```
 
 Initially:
 
-    [null, null, null]
+```text
+[null, null, null]
+```
 
 Then:
 
-    names[0] = "Java";
-    names[1] = "Python";
-    names[2] = "C++";
+```java
+names[0] = "Java";
+names[1] = "Python";
+names[2] = "C++";
+```
 
 Conceptually:
 
-    names
-      ↓
-    ┌───────┬────────┬───────┐
-    │   ↓   │   ↓    │   ↓   │
-    └───┼───┴───┼────┴───┼───┘
-        ↓       ↓        ↓
-      "Java" "Python"  "C++"
+```text
+names
+  ↓
+┌────────┬────────┬────────┐
+│   ↓    │   ↓    │   ↓    │
+└───┼────┴───┼────┴───┼────┘
+    ↓        ↓        ↓
+ "Java"   "Python"   "C++"
+```
 
-The array contains references to String objects.
+The array's component type is `String`.
 
----
-
-# 29. 🚫 Null and One-Dimensional Arrays
-
-Example:
-
-    int[] arr = null;
-
-The reference doesn't point to an array object.
-
-This causes:
-
-    arr.length
-
-to throw:
-
-    NullPointerException
+The elements are references to `String` objects.
 
 ---
 
-## Empty Array vs Null Array
+# 29. 🚫 Null and Empty Arrays
 
 These are different:
 
-    int[] a = new int[0];
+```java
+int[] a = new int[0];
 
-and:
+int[] b = null;
+```
 
-    int[] b = null;
+## Empty Array
 
-### Empty array
+```java
+int[] a = new int[0];
+
+System.out.println(a.length);
+```
+
+Output:
+
+```text
+0
+```
 
 An array object exists.
 
-Length:
+It simply contains zero elements.
 
-    0
+## Null Reference
 
-### Null reference
+```java
+int[] b = null;
+```
 
-No array object is referenced.
+The variable does not refer to an array object.
+
+Therefore:
+
+```java
+System.out.println(b.length);
+```
+
+throws:
+
+```text
+NullPointerException
+```
+
+### Key Difference
+
+```text
+Empty array → object exists, length = 0
+
+null array  → no array object is referenced
+```
 
 ---
 
@@ -1073,11 +1364,20 @@ No array object is referenced.
 
 Example:
 
-    int[] arr = {10, 20};
+```java
+int[] arr = {10, 20};
 
-    System.out.println(arr[2]);
+System.out.println(arr[2]);
+```
 
-Invalid index.
+Valid indexes are:
+
+```text
+0
+1
+```
+
+Index `2` is invalid.
 
 ---
 
@@ -1085,147 +1385,278 @@ Invalid index.
 
 Example:
 
-    int[] arr = null;
+```java
+int[] arr = null;
 
-    System.out.println(arr.length);
+System.out.println(arr.length);
+```
 
-No array object exists.
+The reference is `null`.
 
 ---
 
 ## 3. ArrayStoreException
 
+This can occur with reference arrays when the runtime array type does not allow the value being stored.
+
 Example:
 
-    Object[] arr = new String[2];
+```java
+Object[] arr = new String[2];
 
-    arr[0] = 100;
+arr[0] = 100;
+```
 
-The runtime array type is String[].
+The runtime array object is actually a `String[]`.
+
+Therefore, storing an `Integer` causes:
+
+```text
+ArrayStoreException
+```
 
 ---
 
-# 31. ⏱️ Time Complexity
+# 31. 🧠 Array Memory Basics
+
+An array is an **object** in Java.
+
+For:
+
+```java
+int[] arr = new int[5];
+```
+
+conceptually:
+
+```text
+Stack/reference context
+        │
+        │ arr
+        ↓
+Heap
+┌──────────────────────┐
+│ Array Object         │
+│ length = 5           │
+│                      │
+│ [0][0][0][0][0]      │
+└──────────────────────┘
+```
+
+The exact JVM memory implementation is JVM-dependent, but conceptually:
+
+- The variable holds a reference.
+- The array object exists on the heap.
+- The array has a fixed length.
+- Elements are stored as the array's components.
+
+### Important
+
+Do not oversimplify this as:
+
+> "The reference is always on stack and the array is always on heap."
+
+JVM implementation details can vary, and optimized execution can change physical storage behavior.
+
+For interview fundamentals, remember:
+
+```text
+Array = object
+Array reference = points to array object
+Array length = fixed after creation
+```
+
+---
+
+# 32. ⏱️ Time Complexity
 
 | Operation | Complexity |
 |---|---:|
 | Access by index | O(1) |
 | Update by index | O(1) |
-| Traverse | O(n) |
+| Traversal | O(n) |
 | Linear search | O(n) |
-| Find max | O(n) |
-| Find min | O(n) |
+| Find maximum | O(n) |
+| Find minimum | O(n) |
 | Find sum | O(n) |
 | Reverse | O(n) |
 | Copy | O(n) |
 | Insert in middle | O(n) |
 | Delete from middle | O(n) |
 
+### Why Is Index Access O(1)?
+
+Given:
+
+```java
+arr[i]
+```
+
+the runtime can directly locate the component associated with index `i` without scanning all previous elements.
+
+Therefore:
+
+```text
+Access → O(1)
+```
+
 ---
 
-# 32. ⚠️ Common Mistakes
+# 33. ⚠️ Common Mistakes
 
-## ❌ Mistake 1
+## ❌ Mistake 1 — Using `<=`
 
-    for (int i = 0; i <= arr.length; i++)
+Wrong:
 
-Wrong.
+```java
+for (int i = 0; i <= arr.length; i++) {
+    System.out.println(arr[i]);
+}
+```
 
 Correct:
 
-    for (int i = 0; i < arr.length; i++)
+```java
+for (int i = 0; i < arr.length; i++) {
+    System.out.println(arr[i]);
+}
+```
 
 ---
 
-## ❌ Mistake 2
+## ❌ Mistake 2 — Calling `length()`
 
-Thinking:
+Wrong:
 
-    arr.length()
+```java
+arr.length();
+```
 
 Correct:
 
-    arr.length
+```java
+arr.length;
+```
+
+Remember:
+
+```text
+Array      → length
+String     → length()
+Collection → size()
+```
 
 ---
 
-## ❌ Mistake 3
+## ❌ Mistake 3 — Assuming Assignment Copies the Array
 
-Thinking:
+Wrong assumption:
 
-    int[] b = a;
+```java
+int[] b = a;
+```
 
-creates a new array.
+means:
 
-It does not.
+> Create a new array.
 
-It copies the reference.
+Actually:
+
+```text
+Copies the reference value.
+```
 
 ---
 
-## ❌ Mistake 4
+## ❌ Mistake 4 — Comparing Contents With `==`
 
-Using `==` to compare contents.
+Wrong for content comparison:
+
+```java
+a == b
+```
 
 Use:
 
-    Arrays.equals()
-
-for one-dimensional array content comparison.
-
----
-
-## ❌ Mistake 5
-
-Using:
-
-    arr[0]
-
-without checking whether the array has at least one element.
-
-An empty array has:
-
-    length = 0
-
-and no valid index.
+```java
+Arrays.equals(a, b)
+```
 
 ---
 
-# 33. 🚨 Interview Traps
+## ❌ Mistake 5 — Accessing an Empty Array
+
+```java
+int[] arr = new int[0];
+
+System.out.println(arr[0]);
+```
+
+There is no valid index.
+
+---
+
+## ❌ Mistake 6 — Assuming Array Size Is Dynamic
+
+After:
+
+```java
+int[] arr = new int[5];
+```
+
+the array length remains:
+
+```text
+5
+```
+
+You cannot resize that array directly.
+
+A new array must be created.
+
+---
+
+# 34. 🚨 Interview Traps
 
 ## Trap 1
 
-    int[] arr = new int[5];
+```java
+int[] arr = new int[5];
 
-What is:
-
-    arr.length?
+System.out.println(arr.length);
+```
 
 Answer:
 
-    5
+```text
+5
+```
 
 ---
 
 ## Trap 2
 
-What is the last index?
+What is the last valid index?
 
-Answer:
-
-    4
+```text
+arr.length - 1
+```
 
 ---
 
 ## Trap 3
 
-    int[] arr = new int[0];
+```java
+int[] arr = new int[0];
+```
 
-Does the array exist?
+Does an array object exist?
 
 Answer:
 
-    Yes.
+```text
+Yes.
+```
 
 It is an empty array.
 
@@ -1233,43 +1664,57 @@ It is an empty array.
 
 ## Trap 4
 
-    int[] arr = null;
+```java
+int[] arr = null;
+```
 
 Does an array object exist?
 
 Answer:
 
-    No object is referenced by arr.
+```text
+The reference does not refer to an array object.
+```
 
 ---
 
 ## Trap 5
 
-    int[] a = {1, 2, 3};
-    int[] b = a;
+```java
+int[] a = {1, 2, 3};
 
-    b[0] = 100;
+int[] b = a;
 
-What is:
+b[0] = 100;
 
-    a[0]?
+System.out.println(a[0]);
+```
 
 Answer:
 
-    100
+```text
+100
+```
+
+Both references refer to the same array.
 
 ---
 
 ## Trap 6
 
-    int[] a = {1, 2, 3};
-    int[] b = {1, 2, 3};
+```java
+int[] a = {1, 2, 3};
 
-    a == b
+int[] b = {1, 2, 3};
+
+System.out.println(a == b);
+```
 
 Answer:
 
-    false
+```text
+false
+```
 
 Different array objects.
 
@@ -1277,26 +1722,89 @@ Different array objects.
 
 ## Trap 7
 
-    int[] a = {1, 2, 3};
-    int[] b = a;
+```java
+int[] a = {1, 2, 3};
 
-    a == b
+int[] b = a;
+
+System.out.println(a == b);
+```
 
 Answer:
 
-    true
+```text
+true
+```
 
 Same array object.
 
 ---
 
-# 34. 🔥 Top 20 Interview Questions
+## Trap 8
+
+```java
+int[] arr = new int[5];
+```
+
+Number of elements:
+
+```text
+5
+```
+
+Number of valid indexes:
+
+```text
+5
+```
+
+Highest valid index:
+
+```text
+4
+```
+
+---
+
+## Trap 9
+
+```java
+int[] arr = {};
+```
+
+This is a valid empty array.
+
+Its length is:
+
+```text
+0
+```
+
+---
+
+## Trap 10
+
+```java
+int[] arr = null;
+
+System.out.println(arr.length);
+```
+
+Result:
+
+```text
+NullPointerException
+```
+
+---
+
+# 35. 🔥 Top 20 Interview Questions
 
 ## Q1. What is a one-dimensional array?
 
 **Answer:**
 
-A one-dimensional array is a linear collection of elements accessed using a single index.
+A one-dimensional array is a fixed-size array object whose elements are accessed using a single zero-based index.
 
 ---
 
@@ -1304,157 +1812,191 @@ A one-dimensional array is a linear collection of elements accessed using a sing
 
 **Answer:**
 
-Using zero-based indexing.
+Java uses zero-based indexing.
 
 ---
 
-## Q3. How do you find the length?
+## Q3. What is the first index?
 
 **Answer:**
 
-Using:
-
-    arr.length
+```text
+0
+```
 
 ---
 
-## Q4. Is length a method?
+## Q4. What is the last valid index?
 
 **Answer:**
 
-No. For arrays, `length` is a field.
+```text
+arr.length - 1
+```
 
 ---
 
-## Q5. What is the last valid index?
+## Q5. How do you find an array's length?
 
 **Answer:**
 
-    arr.length - 1
+Using the `length` field.
+
+```java
+arr.length
+```
 
 ---
 
-## Q6. How do you traverse an array?
-
-**Answer:**
-
-Using a traditional `for` loop or enhanced `for` loop.
-
----
-
-## Q7. Difference between for and enhanced for?
-
-**Answer:**
-
-Traditional `for` provides direct index control, while enhanced `for` is simpler for value-based traversal.
-
----
-
-## Q8. Can arrays be passed to methods?
-
-**Answer:**
-
-Yes.
-
----
-
-## Q9. Can methods return arrays?
-
-**Answer:**
-
-Yes.
-
----
-
-## Q10. What happens when an array is assigned to another variable?
-
-**Answer:**
-
-The reference is copied, not the array object.
-
----
-
-## Q11. What is aliasing?
-
-**Answer:**
-
-When multiple references point to the same array object.
-
----
-
-## Q12. How do you compare array contents?
-
-**Answer:**
-
-For one-dimensional arrays, use:
-
-    Arrays.equals()
-
----
-
-## Q13. What is the access complexity?
-
-**Answer:**
-
-Typically:
-
-    O(1)
-
----
-
-## Q14. What is linear search complexity?
-
-**Answer:**
-
-Worst case:
-
-    O(n)
-
----
-
-## Q15. Can an array have length zero?
-
-**Answer:**
-
-Yes.
-
-Example:
-
-    new int[0]
-
----
-
-## Q16. What happens when an invalid index is used?
-
-**Answer:**
-
-`ArrayIndexOutOfBoundsException`.
-
----
-
-## Q17. What happens when a null array reference is accessed?
-
-**Answer:**
-
-Usually `NullPointerException`.
-
----
-
-## Q18. Can an array store objects?
-
-**Answer:**
-
-Yes. It stores references to objects.
-
----
-
-## Q19. Can array size be changed?
+## Q6. Is `length` a method?
 
 **Answer:**
 
 No.
 
-A new array must be created.
+For arrays, `length` is a field.
+
+---
+
+## Q7. Can an array contain duplicate values?
+
+**Answer:**
+
+Yes.
+
+```java
+int[] arr = {10, 10, 20, 20};
+```
+
+---
+
+## Q8. Can an array size change after creation?
+
+**Answer:**
+
+No.
+
+An array has a fixed length after creation.
+
+---
+
+## Q9. Can arrays store objects?
+
+**Answer:**
+
+Yes.
+
+They store references to objects.
+
+---
+
+## Q10. Can arrays store primitives?
+
+**Answer:**
+
+Yes.
+
+For example:
+
+```java
+int[] numbers = {1, 2, 3};
+```
+
+---
+
+## Q11. What happens when an array is assigned to another variable?
+
+**Answer:**
+
+The reference value is copied.
+
+The array object is not automatically copied.
+
+---
+
+## Q12. What is array aliasing?
+
+**Answer:**
+
+Aliasing occurs when multiple references refer to the same array object.
+
+---
+
+## Q13. How do you compare one-dimensional array contents?
+
+**Answer:**
+
+Use:
+
+```java
+Arrays.equals(a, b)
+```
+
+---
+
+## Q14. What is the complexity of array access?
+
+**Answer:**
+
+Typically:
+
+```text
+O(1)
+```
+
+---
+
+## Q15. What is linear search complexity?
+
+**Answer:**
+
+Worst case:
+
+```text
+O(n)
+```
+
+---
+
+## Q16. Can an array have length zero?
+
+**Answer:**
+
+Yes.
+
+```java
+int[] arr = new int[0];
+```
+
+---
+
+## Q17. What happens when an invalid index is accessed?
+
+**Answer:**
+
+An `ArrayIndexOutOfBoundsException` is thrown.
+
+---
+
+## Q18. What happens when a null array reference is accessed?
+
+**Answer:**
+
+Usually a `NullPointerException` occurs.
+
+---
+
+## Q19. Can a method return an array?
+
+**Answer:**
+
+Yes.
+
+```java
+static int[] createArray() {
+    return new int[]{1, 2, 3};
+}
+```
 
 ---
 
@@ -1462,369 +2004,682 @@ A new array must be created.
 
 **Answer:**
 
-An empty array is a real array object with length `0`; `null` means the reference does not refer to an array object.
+An empty array is an actual array object with length `0`, while `null` means the reference does not refer to an array object.
 
 ---
 
-# 35. 💻 Coding Problems
+# 36. 💻 Coding Problems
 
 ## Problem 1 — Print All Elements
 
-    int[] arr = {10, 20, 30, 40};
+```java
+int[] arr = {10, 20, 30, 40};
 
-    for (int i = 0; i < arr.length; i++) {
-        System.out.println(arr[i]);
-    }
+for (int i = 0; i < arr.length; i++) {
+    System.out.println(arr[i]);
+}
+```
 
 ---
 
 ## Problem 2 — Find Sum
 
-    int[] arr = {10, 20, 30};
+```java
+int[] arr = {10, 20, 30};
 
-    int sum = 0;
+int sum = 0;
 
-    for (int value : arr) {
-        sum += value;
-    }
+for (int value : arr) {
+    sum += value;
+}
 
-    System.out.println(sum);
+System.out.println(sum);
+```
 
 Output:
 
-    60
+```text
+60
+```
 
 ---
 
 ## Problem 3 — Find Maximum
 
-    int[] arr = {10, 50, 20, 80, 30};
+```java
+int[] arr = {10, 50, 20, 80, 30};
 
-    int max = arr[0];
+int max = arr[0];
 
-    for (int i = 1; i < arr.length; i++) {
-
-        if (arr[i] > max) {
-            max = arr[i];
-        }
+for (int i = 1; i < arr.length; i++) {
+    if (arr[i] > max) {
+        max = arr[i];
     }
+}
 
-    System.out.println(max);
+System.out.println(max);
+```
 
 Output:
 
-    80
+```text
+80
+```
 
 ---
 
 ## Problem 4 — Find Minimum
 
-    int[] arr = {10, 50, 20, 80, 30};
+```java
+int[] arr = {10, 50, 20, 80, 30};
 
-    int min = arr[0];
+int min = arr[0];
 
-    for (int i = 1; i < arr.length; i++) {
-
-        if (arr[i] < min) {
-            min = arr[i];
-        }
+for (int i = 1; i < arr.length; i++) {
+    if (arr[i] < min) {
+        min = arr[i];
     }
+}
 
-    System.out.println(min);
+System.out.println(min);
+```
 
 Output:
 
-    10
+```text
+10
+```
 
 ---
 
 ## Problem 5 — Count Even Numbers
 
-    int[] arr = {10, 15, 20, 25, 30};
+```java
+int[] arr = {10, 15, 20, 25, 30};
 
-    int count = 0;
+int count = 0;
 
-    for (int value : arr) {
-
-        if (value % 2 == 0) {
-            count++;
-        }
+for (int value : arr) {
+    if (value % 2 == 0) {
+        count++;
     }
+}
 
-    System.out.println(count);
+System.out.println(count);
+```
 
 Output:
 
-    3
+```text
+3
+```
 
 ---
 
 ## Problem 6 — Linear Search
 
-    int[] arr = {10, 20, 30, 40};
+```java
+int[] arr = {10, 20, 30, 40};
 
-    int target = 30;
-    int index = -1;
+int target = 30;
 
-    for (int i = 0; i < arr.length; i++) {
+int index = -1;
 
-        if (arr[i] == target) {
-            index = i;
-            break;
-        }
+for (int i = 0; i < arr.length; i++) {
+    if (arr[i] == target) {
+        index = i;
+        break;
     }
+}
 
-    System.out.println(index);
+System.out.println(index);
+```
 
 Output:
 
-    2
+```text
+2
+```
 
 ---
 
 ## Problem 7 — Reverse an Array
 
-    int[] arr = {10, 20, 30, 40, 50};
+```java
+int[] arr = {10, 20, 30, 40, 50};
 
-    int left = 0;
-    int right = arr.length - 1;
+int left = 0;
+int right = arr.length - 1;
 
-    while (left < right) {
+while (left < right) {
+    int temp = arr[left];
 
-        int temp = arr[left];
+    arr[left] = arr[right];
+    arr[right] = temp;
 
-        arr[left] = arr[right];
-
-        arr[right] = temp;
-
-        left++;
-        right--;
-    }
+    left++;
+    right--;
+}
+```
 
 Final array:
 
-    [50, 40, 30, 20, 10]
+```text
+[50, 40, 30, 20, 10]
+```
+
+### DSA Pattern
+
+This uses the **two-pointer technique**.
+
+```text
+left  → 
+        [ ... ]
+              ← right
+```
 
 ---
 
-## Problem 8 — Count Occurrence of a Number
+## Problem 8 — Count Occurrences
 
-    int[] arr = {10, 20, 10, 30, 10};
+```java
+int[] arr = {10, 20, 10, 30, 10};
 
-    int target = 10;
+int target = 10;
 
-    int count = 0;
+int count = 0;
 
-    for (int value : arr) {
-
-        if (value == target) {
-            count++;
-        }
+for (int value : arr) {
+    if (value == target) {
+        count++;
     }
+}
 
-    System.out.println(count);
+System.out.println(count);
+```
 
 Output:
 
-    3
+```text
+3
+```
 
 ---
 
-# 36. 🎤 30-Second Interview Answer
+## Problem 9 — Find First Occurrence
 
-> **A one-dimensional array in Java is a fixed-size linear collection of elements accessed using a single zero-based index. It can store primitive values or references to objects. We use `arr.length` to get its length, and accessing or updating an element by index is typically O(1). Arrays can be traversed using traditional or enhanced for loops, but their size cannot be changed after creation.**
+```java
+int[] arr = {10, 20, 30, 20, 40};
+
+int target = 20;
+
+int index = -1;
+
+for (int i = 0; i < arr.length; i++) {
+    if (arr[i] == target) {
+        index = i;
+        break;
+    }
+}
+
+System.out.println(index);
+```
+
+Output:
+
+```text
+1
+```
 
 ---
 
-# 37. 🧾 Cheat Sheet
+## Problem 10 — Check If Array Is Sorted
+
+```java
+int[] arr = {10, 20, 30, 40, 50};
+
+boolean sorted = true;
+
+for (int i = 1; i < arr.length; i++) {
+    if (arr[i] < arr[i - 1]) {
+        sorted = false;
+        break;
+    }
+}
+
+System.out.println(sorted);
+```
+
+Output:
+
+```text
+true
+```
+
+---
+
+# 37. 🧠 DSA Patterns
+
+One-dimensional arrays are the foundation of many DSA patterns.
+
+## 1. Traversal
+
+Basic pattern:
+
+```java
+for (int i = 0; i < arr.length; i++) {
+    // process arr[i]
+}
+```
+
+Used for:
+
+- Sum
+- Count
+- Search
+- Maximum
+- Minimum
+- Frequency
+- Transformation
+
+---
+
+## 2. Two Pointers
+
+Typical structure:
+
+```java
+int left = 0;
+int right = arr.length - 1;
+
+while (left < right) {
+    // process arr[left] and arr[right]
+
+    left++;
+    right--;
+}
+```
+
+Used for:
+
+- Reverse array
+- Pair problems
+- Palindrome-style problems
+- Partitioning
+- Sorted-array problems
+
+---
+
+## 3. Running Variable
+
+Example:
+
+```java
+int max = arr[0];
+
+for (int i = 1; i < arr.length; i++) {
+    max = Math.max(max, arr[i]);
+}
+```
+
+Used for:
+
+- Maximum
+- Minimum
+- Running sum
+- Best/worst value
+
+---
+
+## 4. Search With Sentinel
+
+A common search pattern:
+
+```java
+int index = -1;
+
+for (int i = 0; i < arr.length; i++) {
+    if (arr[i] == target) {
+        index = i;
+        break;
+    }
+}
+```
+
+Meaning:
+
+```text
+-1 → not found
+0+ → found index
+```
+
+---
+
+## 5. Prefix Sum
+
+A common DSA technique:
+
+```java
+int[] arr = {2, 4, 6, 8};
+
+int[] prefix = new int[arr.length];
+
+prefix[0] = arr[0];
+
+for (int i = 1; i < arr.length; i++) {
+    prefix[i] = prefix[i - 1] + arr[i];
+}
+```
+
+Result:
+
+```text
+arr    = [2, 4, 6, 8]
+
+prefix = [2, 6, 12, 20]
+```
+
+Prefix sums can reduce repeated range-sum calculations.
+
+---
+
+# 38. 🎤 30-Second Interview Answer
+
+> **A one-dimensional array in Java is a fixed-size array object whose elements are accessed using a single zero-based index. It can store primitive values or references to objects. Its length is accessed using the `length` field and cannot be changed after creation. Accessing or updating an element by index is typically O(1), while traversal and linear search take O(n). Arrays are commonly used as the foundation for many DSA techniques such as traversal, two pointers, prefix sums, and searching.**
+
+---
+
+# 39. 🧾 Cheat Sheet
 
 ## Declaration
 
-    int[] arr;
+```java
+int[] arr;
+```
 
 ## Creation
 
-    arr = new int[5];
+```java
+arr = new int[5];
+```
 
 ## Initialization
 
-    int[] arr = {10, 20, 30};
+```java
+int[] arr = {10, 20, 30};
+```
 
 ## Access
 
-    arr[index]
+```java
+arr[index]
+```
 
 ## Update
 
-    arr[index] = value;
+```java
+arr[index] = value;
+```
 
 ## Length
 
-    arr.length
+```java
+arr.length
+```
 
 ## First Element
 
-    arr[0]
+```java
+arr[0]
+```
 
 ## Last Element
 
-    arr[arr.length - 1]
+```java
+arr[arr.length - 1]
+```
 
-## Traverse
+## Traditional Traversal
 
-    for (int i = 0; i < arr.length; i++)
+```java
+for (int i = 0; i < arr.length; i++) {
+    System.out.println(arr[i]);
+}
+```
 
-## Enhanced Traverse
+## Enhanced Traversal
 
-    for (int value : arr)
+```java
+for (int value : arr) {
+    System.out.println(value);
+}
+```
+
+## Linear Search
+
+```java
+for (int i = 0; i < arr.length; i++) {
+    if (arr[i] == target) {
+        return i;
+    }
+}
+```
+
+## Array Content Comparison
+
+```java
+Arrays.equals(a, b);
+```
+
+## Array Printing
+
+```java
+Arrays.toString(arr);
+```
 
 ---
 
-# 38. 🧠 Memory Tricks
+# 40. 🧠 Memory Tricks
 
-## 🔥 Trick 1
-
-For an array:
-
-    Length = n
-    First index = 0
-    Last index = n - 1
-
----
-
-## 🔥 Trick 2
+## 🔥 Trick 1 — Index Formula
 
 Remember:
 
-    Array → length
-    String → length()
-    Collection → size()
+```text
+Length = n
+First index = 0
+Last index = n - 1
+```
 
 ---
 
-## 🔥 Trick 3
+## 🔥 Trick 2 — Array vs String vs Collection
 
-For loops:
-
-    i < arr.length
-
-Never normally:
-
-    i <= arr.length
+```text
+Array      → length
+String     → length()
+Collection → size()
+```
 
 ---
 
-## 🔥 Trick 4
+## 🔥 Trick 3 — Loop Boundary
 
-Reference assignment:
+Remember:
 
-    b = a
+```java
+i < arr.length
+```
+
+not normally:
+
+```java
+i <= arr.length
+```
+
+---
+
+## 🔥 Trick 4 — Assignment
+
+Remember:
+
+```java
+b = a;
+```
 
 means:
 
-    Same object
+```text
+Reference copied
+```
 
 not:
 
-    New copy
+```text
+Array copied
+```
 
 ---
 
-## 🔥 Trick 5
+## 🔥 Trick 5 — Search
 
-For maximum/minimum:
-
-    max = arr[0]
-    min = arr[0]
-
-Then compare remaining elements.
-
----
-
-## 🔥 Trick 6
-
-Searching:
-
-    Unsorted array
-         ↓
-    Linear Search
-         ↓
-    O(n)
+```text
+Unsorted array
+      ↓
+Linear Search
+      ↓
+O(n)
+```
 
 ---
 
-# 39. ✅ Final Revision Checklist
+## 🔥 Trick 6 — Access
+
+```text
+Known index
+    ↓
+arr[index]
+    ↓
+O(1)
+```
+
+---
+
+## 🔥 Trick 7 — Reverse
+
+```text
+left  →       ←  right
+```
+
+Move both pointers toward the center.
+
+---
+
+# 41. ✅ Final Revision Checklist
 
 Before moving forward, make sure you can explain:
 
-    [ ] What is a one-dimensional array?
-    [ ] How to declare it?
-    [ ] How to create it?
-    [ ] How to initialize it?
-    [ ] What is zero-based indexing?
-    [ ] What is the last index?
-    [ ] How to access an element?
-    [ ] How to update an element?
-    [ ] How to traverse?
-    [ ] Traditional for loop
-    [ ] Enhanced for loop
-    [ ] Difference between both
-    [ ] How to take input
-    [ ] How to calculate sum
-    [ ] How to find max/min
-    [ ] What is linear search?
-    [ ] How to pass an array to a method
-    [ ] How to return an array
-    [ ] What is array aliasing?
-    [ ] Reference copy vs actual copy
-    [ ] How to compare arrays
-    [ ] Empty array vs null
-    [ ] ArrayIndexOutOfBoundsException
-    [ ] ArrayStoreException
-    [ ] NullPointerException
-    [ ] Array access complexity
+```text
+[ ] What is a one-dimensional array?
+[ ] How to declare an array?
+[ ] How to create an array?
+[ ] How to initialize an array?
+[ ] What is zero-based indexing?
+[ ] What is the first index?
+[ ] What is the last index?
+[ ] How to access an element?
+[ ] How to update an element?
+[ ] What is arr.length?
+[ ] Difference between length and length()
+[ ] Traditional for loop
+[ ] Enhanced for loop
+[ ] Difference between both
+[ ] How to take array input
+[ ] How to print an array
+[ ] How to calculate sum
+[ ] How to find maximum
+[ ] How to find minimum
+[ ] What is linear search?
+[ ] Reference copy vs actual copy
+[ ] What is array aliasing?
+[ ] How arrays are passed to methods
+[ ] How arrays are returned from methods
+[ ] Array of primitives
+[ ] Array of references
+[ ] Empty array vs null
+[ ] ArrayIndexOutOfBoundsException
+[ ] NullPointerException
+[ ] ArrayStoreException
+[ ] Array access complexity
+[ ] Two-pointer pattern
+[ ] Prefix-sum pattern
+```
 
 ---
 
 # 🏆 MASTER MEMORY CARD
 
-    ┌──────────────────────────────────────────────┐
-    │          ONE-DIMENSIONAL ARRAY               │
-    ├──────────────────────────────────────────────┤
-    │ Linear structure                             │
-    │ One index                                    │
-    │ Zero-based                                   │
-    │ Fixed size                                   │
-    │ arr.length                                   │
-    │ Access → O(1)                                │
-    │ Search → O(n)                                │
-    │ Allows duplicates                            │
-    │ Mutable elements                             │
-    │ Can contain primitives                       │
-    │ Can contain object references                │
-    └──────────────────────────────────────────────┘
+```text
+┌──────────────────────────────────────────────┐
+│          ONE-DIMENSIONAL ARRAY               │
+├──────────────────────────────────────────────┤
+│ Linear structure                             │
+│ Single index                                 │
+│ Zero-based indexing                          │
+│ Fixed length                                 │
+│ Array is an object                           │
+│ arr.length                                   │
+│ Access → O(1)                                │
+│ Update → O(1)                                │
+│ Search → O(n)                                │
+│ Traverse → O(n)                              │
+│ Allows duplicates                            │
+│ Mutable elements                             │
+│ Can contain primitive values                 │
+│ Can contain object references                │
+│ Supports two-pointer problems                │
+│ Supports prefix-sum problems                 │
+└──────────────────────────────────────────────┘
+```
 
 ---
 
 # ⭐ ONE-LINE INTERVIEW DEFINITION
 
-> **A one-dimensional array is a fixed-size linear object in Java whose elements are accessed using a single zero-based index.**
+> **A one-dimensional array is a fixed-size array object in Java whose elements are accessed using a single zero-based index.**
 
 ---
 
 # 🔗 NEXT TOPIC
 
-    05-Arrays/
-    │
-    ├── 01-Array-Introduction.md
-    ├── 02-One-Dimensional-Array.md       ← YOU ARE HERE
-    ├── 03-Multidimensional-Array.md
-    ├── 04-Array-Memory.md
-    ├── 05-Arrays-Class.md
-    └── 06-Array-Interview-Questions.md
+```text
+05-Arrays/
+
+│
+├── 01-Array-Introduction.md
+├── 02-One-Dimensional-Array.md      ← YOU ARE HERE
+├── 03-Multidimensional-Array.md
+├── 04-Array-Memory.md
+├── 05-Arrays-Class.md
+└── 06-Array-Interview-Questions.md
+```
 
 ### Next:
 
 > **03 — Multidimensional Array**
 
-We will cover 2D arrays, matrices, rows and columns, nested arrays, jagged arrays, memory structure, traversal, input, output, and interview traps.
+We will cover:
+
+- 2D arrays
+- Matrices
+- Rows and columns
+- Nested arrays
+- Jagged arrays
+- Memory structure
+- Traversal
+- Input and output
+- Common mistakes
+- Interview traps
+- DSA patterns
+- Coding problems
+````
