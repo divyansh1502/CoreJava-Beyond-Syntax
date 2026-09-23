@@ -7,47 +7,26 @@
 # 📌 Table of Contents
 
 1. [What is Immutability?](#1--what-is-immutability)
-
 2. [What Does String Immutability Mean?](#2--what-does-string-immutability-mean)
-
 3. [Simple Example](#3--simple-example)
-
 4. [Mutation vs Reassignment](#4--mutation-vs-reassignment)
-
 5. [How String Modification Actually Works](#5--how-string-modification-actually-works)
-
 6. [Memory Visualization](#6--memory-visualization)
-
 7. [Why is String Immutable?](#7--why-is-string-immutable)
-
 8. [String Pool and Immutability](#8--string-pool-and-immutability)
-
 9. [Immutability and Security](#9--immutability-and-security)
-
 10. [Immutability and HashMap](#10--immutability-and-hashmap)
-
 11. [Immutability and Thread Safety](#11--immutability-and-thread-safety)
-
 12. [String and hashCode()](#12--string-and-hashcode)
-
 13. [Why is String final?](#13--why-is-string-final)
-
 14. [String vs StringBuilder](#14--string-vs-stringbuilder)
-
 15. [Common String Operations](#15--common-string-operations)
-
 16. [Common Mistakes](#16--common-mistakes)
-
 17. [Interview Traps](#17--interview-traps)
-
 18. [Top 20 Interview Questions](#18--top-20-interview-questions)
-
 19. [30-Second Interview Answer](#19--30-second-interview-answer)
-
 20. [Cheat Sheet](#20--cheat-sheet)
-
 21. [Memory Tricks](#21--memory-tricks)
-
 22. [Next Topic](#22--next-topic)
 
 ---
@@ -60,17 +39,18 @@
 
 For example, imagine an object:
 
+```text
 Object
-
-       |
-
-       ↓
-
+   |
+   ↓
 State = "Java"
+```
 
 If the object is immutable, its state cannot become:
 
-    "Python"
+```text
+"Python"
+```
 
 through modification of that same object.
 
@@ -78,19 +58,15 @@ Instead, another object is created.
 
 ### Simple Idea
 
-    Immutable Object
-
-          |
-
-          ↓
-
-    Created once
-
-          |
-
-          ↓
-
-    State cannot change
+```text
+Immutable Object
+       |
+       ↓
+   Created once
+       |
+       ↓
+ State cannot change
+```
 
 ---
 
@@ -102,31 +78,35 @@ String immutability means:
 
 Example:
 
+```java
 String s = "Java";
+```
 
 The String object contains:
 
-    Java
+```text
+Java
+```
 
 We cannot modify that same String object into:
 
-    Python
+```text
+Python
+```
 
 Instead, if we perform an operation that produces a different value, Java returns another String.
 
 ### Important
 
-    Original String
+```text
+Original String
+      ↓
+   unchanged
 
-          ↓
-
-       unchanged
-
-    New String
-
-          ↓
-
-new result
+New String
+      ↓
+   new result
+```
 
 ---
 
@@ -134,21 +114,27 @@ new result
 
 Consider:
 
+```java
 String s = "Java";
 
 s.concat(" Programming");
 
 System.out.println(s);
+```
 
 Output:
 
-    Java
+```text
+Java
+```
 
 Why?
 
 Because:
 
+```java
 s.concat(" Programming")
+```
 
 does not modify the original String.
 
@@ -156,47 +142,51 @@ It returns another String.
 
 Conceptually:
 
-    "Java"
+```text
+"Java"
 
-       +
+   +
 
-    " Programming"
+" Programming"
 
-       |
+       |
+       ↓
 
-       ↓
-
-    "Java Programming"
+"Java Programming"
+```
 
 But we did not store the returned value anywhere.
 
 Therefore:
 
-    s → "Java"
-
----
+```text
+s → "Java"
+```
 
 ## ✅ Correct Way
 
+```java
 String s = "Java";
 
 s = s.concat(" Programming");
 
 System.out.println(s);
+```
 
 Output:
 
-    Java Programming
+```text
+Java Programming
+```
 
 Now:
 
-    s
-
-    |
-
-    ↓
-
-    "Java Programming"
+```text
+s
+|
+↓
+"Java Programming"
+```
 
 The original String `"Java"` was not modified.
 
@@ -216,23 +206,24 @@ Mutation means:
 
 Conceptually:
 
+```text
 Object
-
-       |
-
-       ↓
-
-    State changes
+   |
+   ↓
+State changes
+```
 
 Example:
 
+```text
 Object state:
 
-    "Java"
+"Java"
 
-    ↓ mutation
+  ↓ mutation
 
-    "Python"
+"Python"
+```
 
 For an immutable String, this is not allowed.
 
@@ -246,29 +237,29 @@ Reassignment means:
 
 Example:
 
+```java
 String s = "Java";
 
 s = "Python";
+```
 
 Before:
 
-    s
-
-    |
-
-    ↓
-
-    "Java"
+```text
+s
+|
+↓
+"Java"
+```
 
 After:
 
-    s
-
-    |
-
-    ↓
-
-    "Python"
+```text
+s
+|
+↓
+"Python"
+```
 
 The `"Java"` object was NOT changed.
 
@@ -278,29 +269,31 @@ The reference `s` simply points to another object.
 
 ## ⭐ Important Difference
 
-    Mutation
+```text
+Mutation
+   ↓
+Changes existing object
 
-    ↓
-
-    Changes existing object
-
-    Reassignment
-
-    ↓
-
-    Changes reference
+Reassignment
+   ↓
+Changes reference
+```
 
 Therefore:
 
+```java
 String s = "Java";
 
 s = "Python";
+```
 
 is:
 
-    ❌ Mutation
+```text
+❌ Mutation
 
-    ✅ Reassignment
+✅ Reassignment
+```
 
 ---
 
@@ -308,47 +301,53 @@ is:
 
 Consider:
 
+```java
 String s = "Java";
 
 s = s.concat(" World");
+```
 
 Let's understand what happens.
 
 ## Step 1 — Create String
 
+```java
 String s = "Java";
+```
 
 Conceptually:
 
-    s
-
-    |
-
-    ↓
-
-    "Java"
+```text
+s
+|
+↓
+"Java"
+```
 
 ---
 
 ## Step 2 — Call concat()
 
+```java
 s.concat(" World");
+```
 
 Conceptually:
 
-    "Java" + " World"
-
-             |
-
-             ↓
-
-       "Java World"
+```text
+"Java" + " World"
+        |
+        ↓
+   "Java World"
+```
 
 A new String is produced.
 
 The original:
 
-    "Java"
+```text
+"Java"
+```
 
 remains unchanged.
 
@@ -356,21 +355,24 @@ remains unchanged.
 
 ## Step 3 — Assignment
 
+```java
 s = s.concat(" World");
+```
 
 Now:
 
-    s
-
-    |
-
-    ↓
-
-    "Java World"
+```text
+s
+|
+↓
+"Java World"
+```
 
 The old String:
 
-    "Java"
+```text
+"Java"
+```
 
 was not modified.
 
@@ -380,45 +382,41 @@ was not modified.
 
 Consider:
 
+```java
 String s = "Java";
+```
 
 Initially:
 
-    ┌──────────────┐
-
-    │    "Java"    │
-
-    └──────────────┘
-
-           ↑
-
-           |
-
-           s
+```text
+┌──────────────┐
+│    "Java"    │
+└──────────────┘
+       ↑
+       |
+       s
+```
 
 Now:
 
+```java
 s = s.concat(" Programming");
+```
 
 A new String is produced:
 
-    ┌──────────────┐
+```text
+┌──────────────┐
+│    "Java"    │
+└──────────────┘
 
-    │    "Java"    │
-
-    └──────────────┘
-
-    ┌─────────────────────┐
-
-    │ "Java Programming"  │
-
-    └─────────────────────┘
-
-             ↑
-
-             |
-
-             s
+┌─────────────────────┐
+│ "Java Programming"  │
+└─────────────────────┘
+          ↑
+          |
+          s
+```
 
 The original `"Java"` String was not modified.
 
@@ -431,21 +429,13 @@ String immutability provides several important benefits.
 The major reasons are:
 
 | Reason | Benefit |
-
 |---|---|
-
 | String Pool | Safe sharing |
-
 | Security | Values cannot be changed after creation |
-
 | Hashing | Stable hash code |
-
 | Thread Sharing | Safe to share immutable state |
-
 | Predictability | String value remains stable |
-
 | Performance | Enables certain JVM/string optimizations |
-
 | Collection Keys | Suitable for HashMap/HashSet keys |
 
 Let's understand these one by one.
@@ -458,21 +448,21 @@ String Pool allows multiple references to share the same String object.
 
 Example:
 
+```java
 String s1 = "Java";
-
 String s2 = "Java";
+```
 
 Conceptually:
 
+```text
 String Pool
 
-        "Java"
-
-        /   \
-
-       /     \
-
-     s1       s2
+        "Java"
+        /    \
+       /      \
+     s1        s2
+```
 
 Both references can point to the same object.
 
@@ -480,11 +470,15 @@ Now imagine String were mutable.
 
 Suppose:
 
-    s1 changes "Java" → "Python"
+```text
+s1 changes "Java" → "Python"
+```
 
 Then `s2` could unexpectedly see:
 
-    Python
+```text
+Python
+```
 
 That would be dangerous.
 
@@ -492,19 +486,22 @@ But String is immutable.
 
 Therefore:
 
+```java
 s1 = "Python";
+```
 
 does not modify `"Java"`.
 
 Instead:
 
+```text
 String Pool
 
-    "Java"          "Python"
+    "Java"          "Python"
 
-       ↑                ↑
-
-       s2               s1
+       ↑                ↑
+       s2               s1
+```
 
 This makes String Pool sharing safe.
 
@@ -514,29 +511,32 @@ This makes String Pool sharing safe.
 
 Strings are commonly used for important values such as:
 
-    File paths
-
-    URLs
-
-    Class names
-
-    Database URLs
-
-    Configuration values
-
-    Authentication-related information
+```text
+File paths
+URLs
+Class names
+Database URLs
+Configuration values
+Authentication-related information
+```
 
 Suppose a value is validated:
 
+```java
 String path = "/safe/file.txt";
+```
 
 A security check validates:
 
-    /safe/file.txt
+```text
+/safe/file.txt
+```
 
 If the String could later be modified into:
 
-    /secret/file.txt
+```text
+/secret/file.txt
+```
 
 the validation could become unreliable.
 
@@ -556,53 +556,56 @@ String immutability helps make security-sensitive values more predictable and re
 
 String is frequently used as a key in:
 
+```text
 HashMap
-
 HashSet
-
-    ConcurrentHashMap
+ConcurrentHashMap
+```
 
 Example:
 
-Map\<String, Integer> map = new HashMap<>();
+```java
+Map<String, Integer> map = new HashMap<>();
 
 String key = "Java";
 
 map.put(key, 100);
 
 System.out.println(map.get(key));
+```
 
 Output:
 
-    100
+```text
+100
+```
 
 Hash-based collections depend on:
 
+```text
 hashCode()
-
 equals()
+```
 
 Conceptually:
 
-    "Java"
-
-       |
-
-       ↓
-
+```text
+"Java"
+   |
+   ↓
 hashCode()
-
-       |
-
-       ↓
-
-    Bucket
+   |
+   ↓
+ Bucket
+```
 
 Now imagine the String could be modified after insertion.
 
 For example:
 
-    "Java" → "Python"
+```text
+"Java" → "Python"
+```
 
 Its hash code could change.
 
@@ -612,19 +615,15 @@ That would create problems during lookup.
 
 Because String is immutable:
 
+```text
 String content
-
-         ↓
-
-    remains stable
-
-         ↓
-
-    hashCode remains stable
-
-         ↓
-
-    safe as HashMap key
+       ↓
+remains stable
+       ↓
+hashCode remains stable
+       ↓
+safe as HashMap key
+```
 
 ---
 
@@ -634,17 +633,18 @@ Immutable objects are easier to safely share between threads.
 
 Example:
 
+```java
 String s = "Java";
+```
 
 Suppose three threads access it:
 
-                "Java"
-
-               /  |  \
-
-              /   |   \
-
-            T1    T2    T3
+```text
+              "Java"
+              /  |  \
+             /   |   \
+           T1    T2    T3
+```
 
 All threads can safely read the String.
 
@@ -658,7 +658,9 @@ Therefore, there is no race condition involving modification of that String's in
 
 Do NOT say:
 
-    "String is thread-safe because it uses synchronization."
+```text
+"String is thread-safe because it uses synchronization."
+```
 
 That is incorrect.
 
@@ -672,11 +674,15 @@ String immutability does not automatically make every program involving Strings 
 
 For example:
 
-String[] arr
+```java
+String[] arr;
+```
 
 or:
 
-List\<String>
+```java
+List<String> list;
+```
 
 may still be mutable.
 
@@ -688,12 +694,15 @@ The String objects themselves are immutable, but surrounding objects may not be.
 
 String overrides:
 
+```text
 hashCode()
+```
 
 The hash code is based on its contents.
 
 Example:
 
+```java
 String a = "Java";
 
 String b = "Java";
@@ -701,24 +710,21 @@ String b = "Java";
 System.out.println(a.hashCode());
 
 System.out.println(b.hashCode());
+```
 
 Both Strings have the same content, so their hash codes are equal.
 
 Conceptually:
 
-    "Java"
-
-       |
-
-       ↓
-
+```text
+"Java"
+   |
+   ↓
 hashCode()
-
-       |
-
-       ↓
-
-    Stable hash value
+   |
+   ↓
+Stable hash value
+```
 
 Because the String cannot change, its content-based hash code remains stable.
 
@@ -732,7 +738,9 @@ String is declared as a final class.
 
 Conceptually:
 
+```java
 public final class String
+```
 
 `final` means:
 
@@ -744,29 +752,25 @@ Because Java wants to maintain the behavior and guarantees associated with Strin
 
 If arbitrary subclasses could change important behavior, assumptions around:
 
-    Immutability
-
+```text
+Immutability
 equals()
-
 hashCode()
-
-    Security
-
-    Sharing
+Security
+Sharing
+```
 
 could become more difficult to guarantee.
 
 Therefore:
 
+```text
 final
-
-      +
-
-    immutable
-
-      +
-
-    controlled implementation
+  +
+immutable
+  +
+controlled implementation
+```
 
 helps make String reliable.
 
@@ -782,13 +786,13 @@ If you frequently modify text, String may not be the most efficient choice.
 
 Example:
 
+```java
 String result = "";
 
-for(int i = 0; i < 1000; i++) {
-
-result = result + i;
-
-    }
+for (int i = 0; i < 1000; i++) {
+    result = result + i;
+}
+```
 
 Because String is immutable, repeated concatenation can create many intermediate String objects.
 
@@ -796,30 +800,23 @@ For repeated modifications, `StringBuilder` is generally preferred.
 
 Example:
 
+```java
 StringBuilder sb = new StringBuilder();
 
-for(int i = 0; i < 1000; i++) {
-
-sb.append(i);
-
-    }
+for (int i = 0; i < 1000; i++) {
+    sb.append(i);
+}
+```
 
 ### Comparison
 
 | Feature | String | StringBuilder |
-
 |---|---|---|
-
 | Mutable | ❌ No | ✅ Yes |
-
 | Immutable | ✅ Yes | ❌ No |
-
 | Modification | Produces another String | Modifies builder |
-
 | Best for | Fixed/mostly fixed text | Frequent modifications |
-
 | Thread-safe due to immutability | Easy to share | Not inherently thread-safe |
-
 | Repeated concatenation | Can be inefficient | Generally better |
 
 ---
@@ -834,6 +831,7 @@ Instead, they return another String.
 
 ## `concat()`
 
+```java
 String s = "Java";
 
 String result = s.concat(" World");
@@ -841,17 +839,20 @@ String result = s.concat(" World");
 System.out.println(s);
 
 System.out.println(result);
+```
 
 Output:
 
-    Java
-
-    Java World
+```text
+Java
+Java World
+```
 
 ---
 
 ## `toUpperCase()`
 
+```java
 String s = "java";
 
 String result = s.toUpperCase();
@@ -859,17 +860,20 @@ String result = s.toUpperCase();
 System.out.println(s);
 
 System.out.println(result);
+```
 
 Output:
 
-    java
-
-    JAVA
+```text
+java
+JAVA
+```
 
 ---
 
 ## `toLowerCase()`
 
+```java
 String s = "JAVA";
 
 String result = s.toLowerCase();
@@ -877,17 +881,20 @@ String result = s.toLowerCase();
 System.out.println(s);
 
 System.out.println(result);
+```
 
 Output:
 
-    JAVA
-
-    java
+```text
+JAVA
+java
+```
 
 ---
 
 ## `replace()`
 
+```java
 String s = "Java";
 
 String result = s.replace('a', 'o');
@@ -895,17 +902,20 @@ String result = s.replace('a', 'o');
 System.out.println(s);
 
 System.out.println(result);
+```
 
 Output:
 
-    Java
-
-    Jovo
+```text
+Java
+Jovo
+```
 
 ---
 
 ## `substring()`
 
+```java
 String s = "Java Programming";
 
 String result = s.substring(5);
@@ -913,12 +923,14 @@ String result = s.substring(5);
 System.out.println(s);
 
 System.out.println(result);
+```
 
 Output:
 
-    Java Programming
-
-    Programming
+```text
+Java Programming
+Programming
+```
 
 ---
 
@@ -926,15 +938,19 @@ Output:
 
 ## ❌ Mistake 1 — Thinking concat() modifies String
 
+```java
 String s = "Java";
 
 s.concat(" World");
 
 System.out.println(s);
+```
 
 Output:
 
-    Java
+```text
+Java
+```
 
 Why?
 
@@ -944,9 +960,11 @@ Because the returned String was ignored.
 
 ## ❌ Mistake 2 — Thinking reassignment is mutation
 
+```java
 String s = "Java";
 
 s = "Python";
+```
 
 This does NOT modify `"Java"`.
 
@@ -966,13 +984,17 @@ Immutability makes sharing safe.
 
 Repeated concatenation:
 
+```java
 result = result + value;
+```
 
 can create many intermediate Strings.
 
 For heavy modification, consider:
 
+```text
 StringBuilder
+```
 
 ---
 
@@ -980,13 +1002,17 @@ StringBuilder
 
 This:
 
+```java
 String s = "Java";
+```
 
 does not mean `s` cannot change.
 
 You can do:
 
+```java
 s = "Python";
+```
 
 The reference is not final.
 
@@ -998,15 +1024,19 @@ The String object itself is immutable.
 
 ## Trap 1
 
+```java
 String s = "Java";
 
 s.concat(" World");
 
 System.out.println(s);
+```
 
 Output:
 
-    Java
+```text
+Java
+```
 
 Reason:
 
@@ -1016,15 +1046,19 @@ Reason:
 
 ## Trap 2
 
+```java
 String s = "Java";
 
 s = s.concat(" World");
 
 System.out.println(s);
+```
 
 Output:
 
-    Java World
+```text
+Java World
+```
 
 Reason:
 
@@ -1034,41 +1068,53 @@ The returned String was assigned to `s`.
 
 ## Trap 3
 
+```java
 String s = "Java";
 
 s.toUpperCase();
 
 System.out.println(s);
+```
 
 Output:
 
-    Java
+```text
+Java
+```
 
 ---
 
 ## Trap 4
 
+```java
 String s = "Java";
 
 s = s.toUpperCase();
 
 System.out.println(s);
+```
 
 Output:
 
-    JAVA
+```text
+JAVA
+```
 
 ---
 
 ## Trap 5
 
+```java
 String s = "Java";
 
 System.out.println(s == "Java");
+```
 
 Output:
 
-    true
+```text
+true
+```
 
 This is related to String Pooling.
 
@@ -1078,15 +1124,19 @@ It is NOT because `==` compares String contents.
 
 ## Trap 6
 
+```java
 String a = new String("Java");
 
 String b = new String("Java");
 
 System.out.println(a == b);
+```
 
 Output:
 
-    false
+```text
+false
+```
 
 The two references point to different String objects.
 
@@ -1120,9 +1170,11 @@ The original String is not modified. A new String is returned when the operation
 
 ## Q4. Is this mutation?
 
+```java
 String s = "Java";
 
 s = "Python";
+```
 
 **Answer:**
 
@@ -1136,9 +1188,11 @@ The reference `s` now points to another String.
 
 ## Q5. What happens here?
 
+```java
 String s = "Java";
 
 s.concat(" World");
+```
 
 **Answer:**
 
@@ -1148,7 +1202,9 @@ A result String is produced, but its reference is ignored. Therefore `s` still r
 
 ## Q6. How do you store the result?
 
+```java
 s = s.concat(" World");
+```
 
 Now `s` points to the new String.
 
@@ -1204,9 +1260,11 @@ String objects are immutable, but a normal String reference can be reassigned.
 
 Example:
 
+```java
 String s = "Java";
 
 s = "Python";
+```
 
 ---
 
@@ -1222,13 +1280,17 @@ Immutable means the object's state cannot be changed.
 
 Example:
 
+```java
 final String s = "Java";
+```
 
 Here the reference cannot be reassigned and the String object is immutable.
 
 But:
 
+```java
 String s = "Java";
+```
 
 allows reassignment even though the String object is immutable.
 
@@ -1282,7 +1344,9 @@ Normal Java APIs cannot modify String contents. Privileged or low-level mechanis
 
 For normal Java development:
 
+```text
 String = immutable
+```
 
 ---
 
@@ -1300,17 +1364,19 @@ String's content remains stable, so its content-based hash code remains stable. 
 
 The major benefits are:
 
-    1. Safe String Pool sharing
+```text
+1. Safe String Pool sharing
 
-    2. Better security properties
+2. Better security properties
 
-    3. Stable hash codes
+3. Stable hash codes
 
-    4. Easy thread sharing
+4. Easy thread sharing
 
-    5. Predictable behavior
+5. Predictable behavior
 
-    6. Safe use as collection keys
+6. Safe use as collection keys
+```
 
 ---
 
@@ -1323,33 +1389,19 @@ The major benefits are:
 # 20. 🧾 Cheat Sheet
 
 | Concept | Key Point |
-
 |---|---|
-
 | Immutable | Object state cannot change |
-
 | String | Immutable |
-
 | `concat()` | Returns another String |
-
 | `replace()` | Returns another String |
-
 | `substring()` | Returns another String |
-
 | `toUpperCase()` | Returns another String |
-
 | Reassignment | Changes reference |
-
 | Mutation | Changes object state |
-
 | String Pool | Safe sharing because String is immutable |
-
 | HashMap Key | Stable content/hashCode |
-
 | Thread Sharing | Easy because String state cannot change |
-
 | `String` | Final class |
-
 | Frequent Modification | Prefer StringBuilder |
 
 ---
@@ -1360,39 +1412,41 @@ The major benefits are:
 
 String immutability gives you:
 
-    I → Immutable
-
-    S → Safe Sharing
-
-    H → Hash Stability
+```text
+I → Immutable
+S → Safe Sharing
+H → Hash Stability
+```
 
 ---
 
 ## 🔥 Remember Mutation vs Reassignment
 
-    Mutation
+```text
+Mutation
+   ↓
+Change object
 
-       ↓
-
-    Change object
-
-    Reassignment
-
-       ↓
-
-    Change reference
+Reassignment
+   ↓
+Change reference
+```
 
 Example:
 
+```java
 String s = "Java";
 
 s = "Python";
+```
 
 Remember:
 
-    Reference changed
+```text
+Reference changed
 
 Object did not
+```
 
 ---
 
@@ -1400,7 +1454,9 @@ Object did not
 
 When you see:
 
+```java
 s.someStringMethod();
+```
 
 ask yourself:
 
@@ -1408,17 +1464,15 @@ ask yourself:
 
 For String transformation methods:
 
-    Original String
+```text
+Original String
+       ↓
+   unchanged
 
-         ↓
-
-      unchanged
-
-    Returned String
-
-         ↓
-
-      transformed result
+Returned String
+       ↓
+ transformed result
+```
 
 ---
 
@@ -1426,71 +1480,45 @@ For String transformation methods:
 
 Our String playlist:
 
-    04-Strings/
-
-    │
-
-    ├── 01-String-Introduction.md
-
-    │
-
-    ├── 02-String-Pool.md
-
-    │
-
-    ├── 03-String-Immutability.md     ← YOU ARE HERE
-
-    │
-
-    ├── 04-String-Methods.md
-
-    │
-
-    ├── 05-StringBuilder.md
-
-    │
-
-    ├── 06-StringBuffer.md
-
-    │
-
-    ├── 07-String-vs-StringBuilder-vs-StringBuffer.md
-
-    │
-
-    └── 08-String-Interview-Questions.md
+```text
+04-Strings/
+│
+├── 01-String-Introduction.md
+│
+├── 02-String-Pool.md
+│
+├── 03-String-Immutability.md     ← YOU ARE HERE
+│
+├── 04-String-Methods.md
+│
+├── 05-StringBuilder.md
+│
+├── 06-StringBuffer.md
+│
+├── 07-String-vs-StringBuilder-vs-StringBuffer.md
+│
+└── 08-String-Interview-Questions.md
+```
 
 ### Learning Flow
 
+```text
 String Introduction
-
-            ↓
-
+          ↓
 String Pool
-
-            ↓
-
+          ↓
 String Immutability
-
-            ↓
-
+          ↓
 String Methods
-
-            ↓
-
+          ↓
 StringBuilder
-
-            ↓
-
+          ↓
 StringBuffer
-
-            ↓
-
+          ↓
 String vs Builder vs Buffer
-
-            ↓
-
-    Interview Questions
+          ↓
+   Interview Questions
+```
 
 ---
 
@@ -1498,29 +1526,31 @@ String vs Builder vs Buffer
 
 Before moving to the next topic, remember these 12 points:
 
-    1. String objects are immutable.
+```text
+1. String objects are immutable.
 
-    2. Immutable means the object's state cannot be changed.
+2. Immutable means the object's state cannot be changed.
 
-    3. String methods return new Strings when a changed result is required.
+3. String methods return new Strings when a changed result is required.
 
-    4. Reassigning a reference is not mutation.
+4. Reassigning a reference is not mutation.
 
-    5. String Pool relies on immutability for safe sharing.
+5. String Pool relies on immutability for safe sharing.
 
-    6. Immutability gives Strings stable content.
+6. Immutability gives Strings stable content.
 
-    7. Stable content means stable content-based hashCode.
+7. Stable content means stable content-based hashCode.
 
-    8. String is suitable as a HashMap key.
+8. String is suitable as a HashMap key.
 
-    9. Immutable Strings are easy to safely share between threads.
+9. Immutable Strings are easy to safely share between threads.
 
-    10. String is final and cannot be subclassed.
+10. String is final and cannot be subclassed.
 
-    11. Repeated String modification can create intermediate objects.
+11. Repeated String modification can create intermediate objects.
 
-    12. StringBuilder is generally preferred for frequent modifications.
+12. StringBuilder is generally preferred for frequent modifications.
+```
 
 ---
 
