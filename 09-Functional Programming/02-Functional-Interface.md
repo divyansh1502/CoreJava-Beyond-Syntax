@@ -1,46 +1,45 @@
 ````md
 # 🔗 Functional Interface in Java
 
-> A **Functional Interface** is an interface that contains exactly **one abstract method**, making it suitable as the target type for lambda expressions and method references.
+> A **Functional Interface** is an interface that contains exactly one abstract method, making it the target type for lambda expressions and method references.
 
 ---
 
 # 📚 Table of Contents
 
-> **Functional Interface** is the foundation that allows Java to represent behavior using lambda expressions and method references.
-
-- [1. What is a Functional Interface?](#-1-what-is-a-functional-interface) — Definition and core concept.
-- [2. Why Functional Interfaces?](#-2-why-functional-interfaces) — Why Java needs functional interfaces.
-- [3. Basic Syntax](#-3-basic-syntax) — How to declare a functional interface.
-- [4. Single Abstract Method](#-4-single-abstract-method) — Understanding the SAM rule.
-- [5. `@FunctionalInterface` Annotation](#-5-functionalinterface-annotation) — Compile-time verification of the functional interface contract.
-- [6. Functional Interface with Lambda](#-6-functional-interface-with-lambda) — Using lambdas with custom functional interfaces.
-- [7. Functional Interface with Method Reference](#-7-functional-interface-with-method-reference) — Using method references.
-- [8. Default Methods](#-8-default-methods) — Why default methods do not break the functional interface rule.
-- [9. Static Methods](#-9-static-methods) — Static interface methods and functional interfaces.
-- [10. Object Class Methods](#-10-object-class-methods) — Why Object methods do not count as abstract methods.
-- [11. Built-in Functional Interfaces](#-11-built-in-functional-interfaces) — `Predicate`, `Function`, `Consumer`, `Supplier`, and more.
-- [12. Predicate](#-12-predicate) — Functional interface for boolean-valued conditions.
-- [13. Function](#-13-function) — Functional interface for transforming one value into another.
-- [14. Consumer](#-14-consumer) — Functional interface for consuming a value.
-- [15. Supplier](#-15-supplier) — Functional interface for supplying a value.
-- [16. UnaryOperator](#-16-unaryoperator) — Same input and output type transformation.
-- [17. BinaryOperator](#-17-binaryoperator) — Combining two values of the same type.
-- [18. BiPredicate](#-18-bipredicate) — Predicate accepting two arguments.
-- [19. BiFunction](#-19-bifunction) — Function accepting two arguments.
-- [20. BiConsumer](#-20-biconsumer) — Consumer accepting two arguments.
-- [21. Primitive Functional Interfaces](#-21-primitive-functional-interfaces) — Avoiding boxing with primitive-specialized interfaces.
-- [22. Functional Interface Hierarchy](#-22-functional-interface-hierarchy) — Understanding the relationships between built-in interfaces.
-- [23. Internal Working](#-23-internal-working) — How functional interfaces participate in lambda execution.
-- [24. Functional Interface vs Normal Interface](#-24-functional-interface-vs-normal-interface) — Key differences.
-- [25. Functional Interface vs Abstract Class](#-25-functional-interface-vs-abstract-class) — Comparing both abstraction mechanisms.
-- [26. Advantages](#-26-advantages) — Benefits of functional interfaces.
-- [27. Common Mistakes](#-27-common-mistakes) — Frequently made mistakes.
-- [28. Interview Traps](#-28-interview-traps) — Important interview edge cases.
-- [29. 30-Second Interview Answer](#-29-30-second-interview-answer) — Interview-ready explanation.
-- [30. Cheat Sheet](#-30-cheat-sheet) — Quick revision.
-- [31. Top Interview Questions](#-31-top-interview-questions) — Important interview questions.
-- [32. DSA Connection](#-32-dsa-connection) — Functional interfaces in DSA and problem solving.
+- [1. What is a Functional Interface?](#-1-what-is-a-functional-interface)
+- [2. Why Functional Interfaces?](#-2-why-functional-interfaces)
+- [3. Single Abstract Method (SAM)](#-3-single-abstract-method-sam)
+- [4. Basic Syntax](#-4-basic-syntax)
+- [5. `@FunctionalInterface` Annotation](#-5-functionalinterface-annotation)
+- [6. Functional Interface with Lambda](#-6-functional-interface-with-lambda)
+- [7. Functional Interface with Method Reference](#-7-functional-interface-with-method-reference)
+- [8. Default Methods](#-8-default-methods)
+- [9. Static Methods](#-9-static-methods)
+- [10. Private Methods](#-10-private-methods)
+- [11. Object Class Methods](#-11-object-class-methods)
+- [12. Built-in Functional Interfaces](#-12-built-in-functional-interfaces)
+- [13. Predicate](#-13-predicate)
+- [14. Function](#-14-function)
+- [15. Consumer](#-15-consumer)
+- [16. Supplier](#-16-supplier)
+- [17. UnaryOperator](#-17-unaryoperator)
+- [18. BinaryOperator](#-18-binaryoperator)
+- [19. BiPredicate](#-19-bipredicate)
+- [20. BiFunction](#-20-bifunction)
+- [21. BiConsumer](#-21-biconsumer)
+- [22. Primitive Functional Interfaces](#-22-primitive-functional-interfaces)
+- [23. Functional Interface Hierarchy](#-23-functional-interface-hierarchy)
+- [24. Internal Working](#-24-internal-working)
+- [25. Functional Interface vs Normal Interface](#-25-functional-interface-vs-normal-interface)
+- [26. Functional Interface vs Abstract Class](#-26-functional-interface-vs-abstract-class)
+- [27. Advantages](#-27-advantages)
+- [28. Common Mistakes](#-28-common-mistakes)
+- [29. Interview Traps](#-29-interview-traps)
+- [30. 30-Second Interview Answer](#-30-30-second-interview-answer)
+- [31. Cheat Sheet](#-31-cheat-sheet)
+- [32. Top Interview Questions](#-32-top-interview-questions)
+- [33. DSA Connection](#-33-dsa-connection)
 
 ---
 
@@ -62,9 +61,9 @@ interface Calculator {
 }
 ````
 
-The interface has only one abstract method:
+The interface contains only one abstract method:
 
-```java
+```text
 calculate()
 ```
 
@@ -76,7 +75,7 @@ Therefore, it is a functional interface.
 
 Lambda expressions need a **target type**.
 
-Java uses functional interfaces as the target type of lambdas.
+Java uses functional interfaces as the target type of lambda expressions.
 
 Example:
 
@@ -88,63 +87,28 @@ interface Calculator {
 }
 ```
 
-Now we can provide the implementation using a lambda:
+Now we can provide its implementation using a lambda:
 
 ```java
 Calculator addition =
         (a, b) -> a + b;
 ```
 
-Here:
+Relationship:
 
 ```text
-Lambda
-  ↓
-Calculator
-  ↓
-calculate(int, int)
+Lambda Expression
+        ↓
+Functional Interface
+        ↓
+Single Abstract Method
 ```
 
-The functional interface tells Java:
-
-> "This lambda represents an implementation of this one abstract method."
+The functional interface tells Java what method the lambda is implementing.
 
 ---
 
-# 📝 3. Basic Syntax
-
-A functional interface can be declared like this:
-
-```java
-@FunctionalInterface
-interface MyInterface {
-
-    void execute();
-}
-```
-
-Then:
-
-```java
-MyInterface obj =
-        () -> System.out.println("Executing");
-```
-
-Calling:
-
-```java
-obj.execute();
-```
-
-Output:
-
-```text
-Executing
-```
-
----
-
-# 🔢 4. Single Abstract Method
+# 3. Single Abstract Method (SAM)
 
 The most important rule is:
 
@@ -160,7 +124,7 @@ interface Printer {
 }
 ```
 
-Also valid:
+Another valid example:
 
 ```java
 @FunctionalInterface
@@ -193,15 +157,48 @@ Therefore, it cannot be a functional interface.
 
 ---
 
+# 📝 4. Basic Syntax
+
+A functional interface can be declared like this:
+
+```java
+@FunctionalInterface
+interface MyInterface {
+
+    void execute();
+}
+```
+
+A lambda can implement it:
+
+```java
+MyInterface obj =
+        () -> System.out.println("Executing");
+```
+
+Calling the method:
+
+```java
+obj.execute();
+```
+
+Output:
+
+```text
+Executing
+```
+
+---
+
 # 🏷️ 5. `@FunctionalInterface` Annotation
 
-Java provides:
+Java provides the:
 
 ```java
 @FunctionalInterface
 ```
 
-to explicitly declare the developer's intention.
+annotation to explicitly indicate that an interface is intended to be a functional interface.
 
 Example:
 
@@ -213,19 +210,11 @@ interface Greeting {
 }
 ```
 
-The annotation is not what makes an interface functional.
+### Important
 
-Instead:
+`@FunctionalInterface` is **not mandatory**.
 
-> The **single abstract method rule** makes it functional.
-
-The annotation asks the compiler to verify that rule.
-
----
-
-## Without `@FunctionalInterface`
-
-This can still be a valid functional interface:
+This is also a valid functional interface:
 
 ```java
 interface Greeting {
@@ -234,19 +223,7 @@ interface Greeting {
 }
 ```
 
-The annotation is optional.
-
----
-
-## With `@FunctionalInterface`
-
-```java
-@FunctionalInterface
-interface Greeting {
-
-    void greet();
-}
-```
+The annotation simply tells the compiler to verify the functional-interface contract.
 
 If another abstract method is added:
 
@@ -260,7 +237,7 @@ interface Greeting {
 }
 ```
 
-The compiler reports an error because the interface no longer satisfies the functional-interface contract.
+The compiler reports an error.
 
 ---
 
@@ -276,14 +253,14 @@ interface Calculator {
 }
 ```
 
-Lambda:
+Lambda implementation:
 
 ```java
 Calculator addition =
         (a, b) -> a + b;
 ```
 
-Calling:
+Calling the method:
 
 ```java
 int result = addition.calculate(10, 20);
@@ -319,7 +296,7 @@ interface Printer {
 }
 ```
 
-Suppose we have:
+Class:
 
 ```java
 class MessagePrinter {
@@ -330,14 +307,14 @@ class MessagePrinter {
 }
 ```
 
-We can use:
+Method reference:
 
 ```java
 Printer printer =
         MessagePrinter::printMessage;
 ```
 
-Then:
+Calling:
 
 ```java
 printer.print("Hello Java");
@@ -349,11 +326,9 @@ Output:
 Hello Java
 ```
 
-The method reference provides the implementation of the functional interface method.
-
 ---
 
-# 🧩 8. Default Methods
+# ⚙️ 8. Default Methods
 
 A functional interface can contain **default methods**.
 
@@ -375,14 +350,12 @@ This is still a functional interface.
 
 Why?
 
-Because:
-
 ```text
-calculate() → abstract
+calculate()    → abstract
 printMessage() → default
 ```
 
-Only `calculate()` is abstract.
+Only one method is abstract.
 
 Therefore:
 
@@ -392,9 +365,9 @@ Abstract methods = 1
 
 ---
 
-# ⚙️ 9. Static Methods
+# ⚡ 9. Static Methods
 
-A functional interface can also contain static methods.
+A functional interface can contain static methods.
 
 Example:
 
@@ -410,11 +383,7 @@ interface Calculator {
 }
 ```
 
-This is valid.
-
-Static methods do not count as abstract methods.
-
-They belong to the interface itself.
+This is valid because static methods are not abstract instance methods.
 
 Calling:
 
@@ -424,9 +393,33 @@ Calculator.info();
 
 ---
 
-# 🧬 10. Object Class Methods
+# 🔐 10. Private Methods
 
-A very important interview point:
+A functional interface can also contain private methods.
+
+Example:
+
+```java
+@FunctionalInterface
+interface Calculator {
+
+    int calculate(int a, int b);
+
+    private void helper() {
+        System.out.println("Helper");
+    }
+}
+```
+
+Private interface methods do not count as abstract methods.
+
+Therefore, the interface remains functional.
+
+---
+
+# 🧬 11. Object Class Methods
+
+Important interview point:
 
 > Methods that correspond to public methods of `java.lang.Object` do not count toward the single abstract method requirement.
 
@@ -442,44 +435,44 @@ interface Example {
 }
 ```
 
-This can still be considered a functional interface because:
+This can still be a functional interface.
+
+Why?
 
 ```text
 execute() → abstract method
 equals()  → corresponds to Object.equals()
 ```
 
-The `equals()` declaration does not create another independent abstract-method requirement for the functional interface contract.
-
-This is an important interview edge case.
+The `equals()` declaration does not create an additional independent abstract-method requirement.
 
 ---
 
-# ☕ 11. Built-in Functional Interfaces
+# ☕ 12. Built-in Functional Interfaces
 
-Java provides many functional interfaces in:
+Java provides many ready-made functional interfaces in:
 
 ```text
 java.util.function
 ```
 
-Important ones include:
+Important interfaces:
 
-| Interface           | Purpose                    |
-| ------------------- | -------------------------- |
-| `Predicate<T>`      | Tests a condition          |
-| `Function<T,R>`     | Converts T into R          |
-| `Consumer<T>`       | Consumes T                 |
-| `Supplier<T>`       | Supplies T                 |
-| `UnaryOperator<T>`  | T → T                      |
-| `BinaryOperator<T>` | T + T → T                  |
-| `BiPredicate<T,U>`  | Tests two values           |
-| `BiFunction<T,U,R>` | Converts two values into R |
-| `BiConsumer<T,U>`   | Consumes two values        |
+| Interface           | Input | Output  |
+| ------------------- | ----- | ------- |
+| `Predicate<T>`      | T     | boolean |
+| `Function<T,R>`     | T     | R       |
+| `Consumer<T>`       | T     | void    |
+| `Supplier<T>`       | None  | T       |
+| `UnaryOperator<T>`  | T     | T       |
+| `BinaryOperator<T>` | T, T  | T       |
+| `BiPredicate<T,U>`  | T, U  | boolean |
+| `BiFunction<T,U,R>` | T, U  | R       |
+| `BiConsumer<T,U>`   | T, U  | void    |
 
 ---
 
-# 🔍 12. Predicate
+# 🔍 13. Predicate
 
 `Predicate<T>` represents a condition.
 
@@ -510,15 +503,15 @@ true
 
 ### Memory Trick
 
-> **Predicate → Problem/condition → boolean**
-
 ```text
+Predicate
+
 T → boolean
 ```
 
 ---
 
-# 🔄 13. Function
+# 🔄 14. Function
 
 `Function<T, R>` represents a transformation.
 
@@ -549,15 +542,15 @@ Output:
 
 ### Memory Trick
 
-> **Function → converts one value into another**
-
 ```text
+Function
+
 T → R
 ```
 
 ---
 
-# 📤 14. Consumer
+# 📤 15. Consumer
 
 `Consumer<T>` represents an operation that consumes a value.
 
@@ -588,15 +581,15 @@ Hello
 
 ### Memory Trick
 
-> **Consumer → consumes → returns nothing**
-
 ```text
+Consumer
+
 T → void
 ```
 
 ---
 
-# 📥 15. Supplier
+# 📥 16. Supplier
 
 `Supplier<T>` represents something that supplies a value.
 
@@ -621,21 +614,17 @@ System.out.println(randomValue.get());
 
 ### Memory Trick
 
-> **Supplier → supplies → takes nothing**
-
 ```text
+Supplier
+
 () → T
 ```
 
 ---
 
-# 🔁 16. UnaryOperator
+# 🔁 17. UnaryOperator
 
-`UnaryOperator<T>` represents an operation where:
-
-```text
-Input type = Output type
-```
+`UnaryOperator<T>` represents an operation where the input and output have the same type.
 
 It extends:
 
@@ -665,16 +654,16 @@ Output:
 ### Memory Trick
 
 ```text
-UnaryOperator<T>
+UnaryOperator
 
 T → T
 ```
 
 ---
 
-# ➕ 17. BinaryOperator
+# ➕ 18. BinaryOperator
 
-`BinaryOperator<T>` represents an operation that accepts two values of the same type and returns the same type.
+`BinaryOperator<T>` accepts two values of the same type and returns the same type.
 
 It extends:
 
@@ -704,14 +693,14 @@ Output:
 ### Memory Trick
 
 ```text
-BinaryOperator<T>
+BinaryOperator
 
 T + T → T
 ```
 
 ---
 
-# 🔍 18. BiPredicate
+# 🔍 19. BiPredicate
 
 `BiPredicate<T, U>` accepts two values and returns a boolean.
 
@@ -743,14 +732,16 @@ true
 ### Memory Trick
 
 ```text
+BiPredicate
+
 T + U → boolean
 ```
 
 ---
 
-# 🔄 19. BiFunction
+# 🔄 20. BiFunction
 
-`BiFunction<T, U, R>` accepts two values and produces a result.
+`BiFunction<T, U, R>` accepts two values and returns a result.
 
 Its abstract method is:
 
@@ -780,12 +771,14 @@ Output:
 ### Memory Trick
 
 ```text
+BiFunction
+
 T + U → R
 ```
 
 ---
 
-# 📤 20. BiConsumer
+# 📤 21. BiConsumer
 
 `BiConsumer<T, U>` accepts two values and returns nothing.
 
@@ -818,14 +811,16 @@ Java 30
 ### Memory Trick
 
 ```text
+BiConsumer
+
 T + U → void
 ```
 
 ---
 
-# ⚡ 21. Primitive Functional Interfaces
+# ⚡ 22. Primitive Functional Interfaces
 
-Generic functional interfaces work with wrapper types.
+Generic functional interfaces normally work with wrapper types.
 
 Example:
 
@@ -836,17 +831,17 @@ Function<Integer, Integer> square =
 
 Here `Integer` is used instead of primitive `int`.
 
-This can involve **boxing and unboxing**.
+This can involve boxing and unboxing.
 
-Java provides primitive-specialized interfaces to reduce unnecessary boxing.
+Java provides primitive-specialized interfaces to avoid unnecessary boxing in many cases.
 
 ### Important Interfaces
 
-| Primitive Type | Common Interfaces                                                                                    |
-| -------------- | ---------------------------------------------------------------------------------------------------- |
-| `int`          | `IntPredicate`, `IntFunction`, `IntConsumer`, `IntSupplier`, `IntUnaryOperator`, `IntBinaryOperator` |
-| `long`         | `LongPredicate`, `LongFunction`, `LongConsumer`, `LongSupplier`, etc.                                |
-| `double`       | `DoublePredicate`, `DoubleFunction`, `DoubleConsumer`, `DoubleSupplier`, etc.                        |
+| Primitive | Functional Interfaces                                                                                                  |
+| --------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `int`     | `IntPredicate`, `IntFunction`, `IntConsumer`, `IntSupplier`, `IntUnaryOperator`, `IntBinaryOperator`                   |
+| `long`    | `LongPredicate`, `LongFunction`, `LongConsumer`, `LongSupplier`, `LongUnaryOperator`, `LongBinaryOperator`             |
+| `double`  | `DoublePredicate`, `DoubleFunction`, `DoubleConsumer`, `DoubleSupplier`, `DoubleUnaryOperator`, `DoubleBinaryOperator` |
 
 Example:
 
@@ -855,27 +850,28 @@ IntPredicate isEven =
         number -> number % 2 == 0;
 ```
 
-No `Integer` wrapper is required for the predicate's input.
+Here the predicate works directly with primitive `int`.
 
 ---
 
-# 🧬 22. Functional Interface Hierarchy
+# 🧬 23. Functional Interface Hierarchy
 
 Important relationships:
 
 ```text
-Function<T,R>
-│
-└── UnaryOperator<T>
+Function<T, R>
         │
-        └── T → T
+        └── UnaryOperator<T>
+                │
+                └── T → T
+```
 
-
-BiFunction<T,U,R>
-│
-└── BinaryOperator<T>
+```text
+BiFunction<T, U, R>
         │
-        └── T + T → T
+        └── BinaryOperator<T>
+                │
+                └── T + T → T
 ```
 
 Other important functional interfaces:
@@ -890,7 +886,7 @@ BiConsumer<T,U>
 
 ---
 
-# ⚙️ 23. Internal Working
+# ⚙️ 24. Internal Working
 
 Consider:
 
@@ -913,16 +909,16 @@ Conceptually:
 
 ```text
 Lambda Expression
-       ↓
+        ↓
 Target Type
-       ↓
+        ↓
 Calculator
-       ↓
+        ↓
 Single Abstract Method
-       ↓
+        ↓
 calculate(int, int)
-       ↓
-Lambda implementation
+        ↓
+Lambda Implementation
 ```
 
 At the bytecode/runtime level, Java commonly uses:
@@ -931,25 +927,25 @@ At the bytecode/runtime level, Java commonly uses:
 invokedynamic
 ```
 
-and the JVM's lambda metafactory mechanisms to create the required implementation.
+along with the JVM's lambda metafactory mechanism.
 
-### Important Point
+Important point:
 
-The compiler does not simply convert every lambda into an anonymous inner class.
+> A lambda is not simply compiled into an anonymous inner class.
 
-This distinction is frequently asked in interviews.
+The runtime implementation mechanism is different.
 
 ---
 
-# 🆚 24. Functional Interface vs Normal Interface
+# 🆚 25. Functional Interface vs Normal Interface
 
-| Functional Interface                      | Normal Interface                   |
-| ----------------------------------------- | ---------------------------------- |
-| Exactly one abstract method               | Can have multiple abstract methods |
-| Designed for lambda expressions           | Not necessarily lambda-compatible  |
-| Can use `@FunctionalInterface`            | Annotation not applicable          |
-| Represents one primary behavior           | Can represent multiple behaviors   |
-| Commonly used with functional programming | General-purpose abstraction        |
+| Functional Interface                    | Normal Interface                                 |
+| --------------------------------------- | ------------------------------------------------ |
+| Exactly one abstract method             | Can have multiple abstract methods               |
+| Designed for lambda expressions         | Not necessarily lambda-compatible                |
+| Can use `@FunctionalInterface`          | Cannot use it if multiple abstract methods exist |
+| Represents one primary behavior         | Can represent multiple behaviors                 |
+| Commonly used in functional programming | General-purpose abstraction                      |
 
 Example:
 
@@ -978,19 +974,19 @@ interface Vehicle {
 
 ---
 
-# 🆚 25. Functional Interface vs Abstract Class
+# 🆚 26. Functional Interface vs Abstract Class
 
-| Functional Interface                              | Abstract Class                     |
-| ------------------------------------------------- | ---------------------------------- |
-| Interface                                         | Class                              |
-| One abstract method                               | Can have multiple abstract methods |
-| Supports lambda target typing                     | Cannot directly be a lambda target |
-| Multiple inheritance of interfaces possible       | Single class inheritance           |
-| No instance fields in the traditional class sense | Can contain instance fields        |
-| Can contain default/static methods                | Can contain concrete methods       |
-| Used heavily for behavior                         | Used for shared state + behavior   |
+| Functional Interface                       | Abstract Class                       |
+| ------------------------------------------ | ------------------------------------ |
+| Interface                                  | Class                                |
+| Exactly one abstract method                | Can have multiple abstract methods   |
+| Can be a lambda target                     | Cannot directly be a lambda target   |
+| Supports multiple interface inheritance    | A class can extend only one class    |
+| No instance state like a class             | Can contain instance fields          |
+| Can contain default/static/private methods | Can contain concrete methods         |
+| Primarily useful for behavior              | Useful for shared state and behavior |
 
-Example functional interface:
+Example:
 
 ```java
 @FunctionalInterface
@@ -1007,25 +1003,11 @@ Operation addition =
         (a, b) -> a + b;
 ```
 
-An abstract class cannot be used this way:
-
-```java
-abstract class Operation {
-
-    abstract int execute(int a, int b);
-}
-```
-
-This is invalid:
-
-```java
-Operation addition =
-        (a, b) -> a + b;
-```
+An abstract class cannot be used directly as a lambda target.
 
 ---
 
-# ⚡ 26. Advantages
+# ⚡ 27. Advantages
 
 ### 1. Enables Lambda Expressions
 
@@ -1041,33 +1023,35 @@ Methods can accept behavior as parameters.
 
 ### 4. Supports Composition
 
-Functional interfaces can be combined and chained.
+Functional operations can be combined and chained.
 
-### 5. Enables Functional-Style Programming
+### 5. Enables Functional Programming
 
-They form the foundation for Java's functional programming features.
+They form the foundation of Java's functional programming features.
 
 ---
 
-# ❌ 27. Common Mistakes
+# ❌ 28. Common Mistakes
 
-## Mistake 1: Thinking `@FunctionalInterface` Makes an Interface Functional
+### Mistake 1: Thinking `@FunctionalInterface` Makes an Interface Functional
 
-Wrong:
+Incorrect:
 
-> "An interface becomes functional because we add the annotation."
+> An interface becomes functional because we add the annotation.
 
 Correct:
 
-> The interface must satisfy the **single abstract method** rule. The annotation only tells the compiler to verify that rule.
+> The interface must satisfy the **single abstract method** rule.
+
+The annotation only allows the compiler to verify the rule.
 
 ---
 
-## Mistake 2: Counting Default Methods
+### Mistake 2: Counting Default Methods
 
 Default methods are not abstract.
 
-Therefore:
+Therefore this is valid:
 
 ```java
 @FunctionalInterface
@@ -1081,11 +1065,9 @@ interface Example {
 }
 ```
 
-is valid.
-
 ---
 
-## Mistake 3: Counting Static Methods
+### Mistake 3: Counting Static Methods
 
 Static methods are not abstract instance methods.
 
@@ -1093,19 +1075,26 @@ Therefore they do not break the functional-interface contract.
 
 ---
 
-## Mistake 4: Thinking Every Interface Can Be a Lambda Target
+### Mistake 4: Thinking Every Interface Can Be a Lambda Target
 
 No.
 
-A lambda requires a compatible functional interface target type.
+A lambda requires a compatible functional-interface target type.
 
 ---
 
-# 🧨 28. Interview Traps
+### Mistake 5: Confusing `Function` and `Consumer`
 
-### Trap 1
+```text
+Function  → returns a value
+Consumer  → returns nothing
+```
 
-**Can a functional interface have more than one method?**
+---
+
+# 🧨 29. Interview Traps
+
+### Trap 1: Can a functional interface have more than one method?
 
 Yes, but it can have only **one abstract method**.
 
@@ -1113,13 +1102,12 @@ It may also contain:
 
 * Default methods
 * Static methods
-* Object methods
+* Private methods
+* Methods corresponding to public methods of `Object`
 
 ---
 
-### Trap 2
-
-**Can a functional interface extend another interface?**
+### Trap 2: Can a functional interface extend another interface?
 
 Yes.
 
@@ -1142,11 +1130,9 @@ interface Child extends Parent {
 
 ---
 
-### Trap 3
+### Trap 3: Can a functional interface extend two interfaces?
 
-**Can a functional interface extend two interfaces?**
-
-Potentially yes, provided the resulting interface still has exactly one abstract method.
+Yes, provided the resulting interface still has exactly one abstract method.
 
 Example:
 
@@ -1171,19 +1157,15 @@ The inherited methods have the same signature and represent one abstract method 
 
 ---
 
-### Trap 4
-
-**Can an interface contain private methods and remain functional?**
+### Trap 4: Can an interface contain private methods and remain functional?
 
 Yes.
 
-Private interface methods are not abstract methods and therefore do not violate the functional-interface rule.
+Private interface methods are not abstract methods.
 
 ---
 
-### Trap 5
-
-**Can an abstract class be a functional interface?**
+### Trap 5: Can an abstract class be a functional interface?
 
 No.
 
@@ -1191,13 +1173,13 @@ A functional interface must be an interface.
 
 ---
 
-# 🧠 29. 30-Second Interview Answer
+# 🧠 30. 30-Second Interview Answer
 
-> **A functional interface is an interface that contains exactly one abstract method, also called a SAM interface. It provides the target type for lambda expressions and method references. Java provides the `@FunctionalInterface` annotation to allow the compiler to verify this rule. A functional interface can still contain default, static, private methods, and methods corresponding to public methods of `Object`, because these do not create additional abstract-method requirements.**
+> **A functional interface is an interface that contains exactly one abstract method, also called a SAM interface. It provides the target type for lambda expressions and method references. The `@FunctionalInterface` annotation is optional and allows the compiler to verify the contract. A functional interface can still contain default, static, and private methods, and methods corresponding to public methods of `Object`, because these do not create additional abstract-method requirements.**
 
 ---
 
-# 📌 30. Cheat Sheet
+# 📌 31. Cheat Sheet
 
 ```text
 Functional Interface
@@ -1220,7 +1202,7 @@ Functional Interface
                 └── Do not break SAM rule
 ```
 
-### Built-in Interfaces
+### Built-in Functional Interfaces
 
 ```text
 Predicate<T>
@@ -1253,7 +1235,7 @@ BiConsumer<T,U>
 
 ---
 
-# 🧠 31. Top Interview Questions
+# 🎯 32. Top Interview Questions
 
 ### Q1. What is a functional interface?
 
@@ -1265,7 +1247,7 @@ An interface containing exactly one abstract method.
 
 ### Q3. Is `@FunctionalInterface` mandatory?
 
-No. It is optional but recommended because the compiler can verify the contract.
+No. It is optional but recommended.
 
 ### Q4. Can a functional interface have default methods?
 
@@ -1297,7 +1279,7 @@ A lambda expression provides an implementation for the single abstract method of
 
 ### Q11. What is `Predicate<T>`?
 
-A functional interface that takes a value and returns a boolean.
+A functional interface that accepts a value and returns a boolean.
 
 ```text
 T → boolean
@@ -1335,7 +1317,7 @@ A functional interface that takes no input and supplies a value.
 T → R
 ```
 
-`UnaryOperator<T>` requires the same type:
+`UnaryOperator<T>` requires the same input and output type:
 
 ```text
 T → T
@@ -1343,7 +1325,7 @@ T → T
 
 ---
 
-# 🧩 32. DSA Connection
+# 🧩 33. DSA Connection
 
 Functional interfaces are useful in DSA because they allow **algorithmic behavior to be passed as an argument**.
 
@@ -1386,7 +1368,7 @@ Predicate
 Custom behavior
 ```
 
-The algorithm itself does not need to know the exact condition.
+The algorithm does not need to know the exact filtering condition.
 
 ---
 
@@ -1459,7 +1441,7 @@ Consumer<T>
 
 Whenever you see:
 
-> "Generate/provide a value."
+> "Generate or provide a value."
 
 Think:
 
