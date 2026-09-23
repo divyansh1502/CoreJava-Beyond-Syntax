@@ -45,25 +45,27 @@
 
 Java provides three important classes for working with character data:
 
-    String
-    StringBuilder
-    StringBuffer
+- `String`
+- `StringBuilder`
+- `StringBuffer`
 
 All three can represent sequences of characters, but they are designed for different situations.
 
 The biggest differences are:
 
-    String
-        ↓
-    Immutable
+```text
+String
+    ↓
+Immutable
 
-    StringBuilder
-        ↓
-    Mutable + Not Synchronized
+StringBuilder
+    ↓
+Mutable + Not Synchronized
 
-    StringBuffer
-        ↓
-    Mutable + Synchronized
+StringBuffer
+    ↓
+Mutable + Synchronized
+```
 
 ---
 
@@ -71,31 +73,35 @@ The biggest differences are:
 
 Think of them like this:
 
-    ┌────────────────────────────────────────────┐
-    │                TEXT DATA                  │
-    └────────────────────────────────────────────┘
-                     │
-          ┌──────────┼──────────┐
-          ↓          ↓          ↓
-       String   StringBuilder  StringBuffer
-          │          │          │
-     Immutable    Mutable      Mutable
-                     │          │
-                Not Sync.    Synchronized
+```text
+┌────────────────────────────────────────────┐
+│                TEXT DATA                   │
+└────────────────────────────────────────────┘
+                    │
+         ┌──────────┼──────────┐
+         ↓          ↓          ↓
+      String   StringBuilder  StringBuffer
+         │          │          │
+     Immutable   Mutable      Mutable
+                    │          │
+               Not Sync.   Synchronized
+```
 
-### Easy Memory Trick
+## Easy Memory Trick
 
-    String
-       ↓
-    Can't modify the object
+```text
+String
+    ↓
+Can't modify the object
 
-    StringBuilder
-       ↓
-    Can modify the object
+StringBuilder
+    ↓
+Can modify the object
 
-    StringBuffer
-       ↓
-    Can modify + synchronized methods
+StringBuffer
+    ↓
+Can modify + synchronized methods
+```
 
 ---
 
@@ -103,11 +109,15 @@ Think of them like this:
 
 `String` is a class from:
 
-    java.lang
+```text
+java.lang
+```
 
 Example:
 
-    String name = "Java";
+```java
+String name = "Java";
+```
 
 The most important property of String is:
 
@@ -119,15 +129,19 @@ Once a String object is created, its contents cannot be changed.
 
 ## Example
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    s = s + " Programming";
+s = s + " Programming";
 
-    System.out.println(s);
+System.out.println(s);
+```
 
 Output:
 
-    Java Programming
+```text
+Java Programming
+```
 
 It may look as if `"Java"` was modified.
 
@@ -135,20 +149,23 @@ But that is not what happened.
 
 Conceptually:
 
-    Before:
+```text
+Before:
 
-    s
-    │
-    ↓
-    "Java"
+s
+│
+↓
+"Java"
+```
 
+After:
 
-    After:
-
-    s
-    │
-    ↓
-    "Java Programming"
+```text
+s
+│
+↓
+"Java Programming"
+```
 
 A new String object is created for the concatenated result.
 
@@ -162,19 +179,25 @@ The original `"Java"` object remains unchanged.
 
 It is also part of:
 
-    java.lang
+```text
+java.lang
+```
 
 Example:
 
-    StringBuilder sb = new StringBuilder("Java");
+```java
+StringBuilder sb = new StringBuilder("Java");
 
-    sb.append(" Programming");
+sb.append(" Programming");
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    Java Programming
+```text
+Java Programming
+```
 
 Here the same StringBuilder object is modified.
 
@@ -184,10 +207,12 @@ Here the same StringBuilder object is modified.
 
 Suppose we repeatedly modify text:
 
-    append()
-    append()
-    append()
-    append()
+```text
+append()
+append()
+append()
+append()
+```
 
 Using String can create multiple intermediate String objects.
 
@@ -197,19 +222,23 @@ StringBuilder is designed for this type of repeated modification.
 
 ## Example
 
-    StringBuilder sb = new StringBuilder();
+```java
+StringBuilder sb = new StringBuilder();
 
-    sb.append("Java");
-    sb.append(" ");
-    sb.append("Backend");
-    sb.append(" ");
-    sb.append("Developer");
+sb.append("Java");
+sb.append(" ");
+sb.append("Backend");
+sb.append(" ");
+sb.append("Developer");
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    Java Backend Developer
+```text
+Java Backend Developer
+```
 
 ---
 
@@ -219,19 +248,25 @@ Output:
 
 It belongs to:
 
-    java.lang
+```text
+java.lang
+```
 
 Example:
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.append(" Programming");
+sb.append(" Programming");
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    Java Programming
+```text
+Java Programming
+```
 
 The major difference from StringBuilder is:
 
@@ -239,11 +274,13 @@ The major difference from StringBuilder is:
 
 Therefore:
 
-    StringBuffer
-        ↓
-    Mutable
-        +
-    Synchronized
+```text
+StringBuffer
+    ↓
+Mutable
+    +
+Synchronized
+```
 
 ---
 
@@ -259,11 +296,15 @@ Mutable means:
 
 ## String
 
-    String s = "Java";
+```java
+String s = "Java";
+```
 
 String is:
 
-    Immutable
+```text
+Immutable
+```
 
 Its existing object's content cannot be modified.
 
@@ -271,42 +312,52 @@ Its existing object's content cannot be modified.
 
 ## StringBuilder
 
-    StringBuilder sb = new StringBuilder("Java");
+```java
+StringBuilder sb = new StringBuilder("Java");
 
-    sb.append(" Developer");
+sb.append(" Developer");
+```
 
 The same object can be modified.
 
 Therefore:
 
-    StringBuilder → Mutable
+```text
+StringBuilder → Mutable
+```
 
 ---
 
 ## StringBuffer
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.append(" Developer");
+sb.append(" Developer");
+```
 
 The same object can be modified.
 
 Therefore:
 
-    StringBuffer → Mutable
+```text
+StringBuffer → Mutable
+```
 
 ---
 
 ## Summary
 
-    String
-        → Immutable
+```text
+String
+    → Immutable
 
-    StringBuilder
-        → Mutable
+StringBuilder
+    → Mutable
 
-    StringBuffer
-        → Mutable
+StringBuffer
+    → Mutable
+```
 
 ---
 
@@ -330,7 +381,9 @@ This makes immutable String objects naturally safe to share in many situations.
 
 StringBuilder is:
 
-    Not synchronized
+```text
+Not synchronized
+```
 
 Therefore, it should not be treated as thread-safe for concurrent modification of the same instance.
 
@@ -348,16 +401,18 @@ Therefore, individual operations on a shared StringBuffer instance are synchroni
 
 ## Simple Comparison
 
-    String
-        → Immutable
+```text
+String
+    → Immutable
 
-    StringBuilder
-        → Mutable
-        → Not synchronized
+StringBuilder
+    → Mutable
+    → Not synchronized
 
-    StringBuffer
-        → Mutable
-        → Synchronized
+StringBuffer
+    → Mutable
+    → Synchronized
+```
 
 ---
 
@@ -369,18 +424,18 @@ StringBuffer provides synchronized methods.
 
 Conceptually:
 
-    Thread 1
-       │
-       ↓
-    ┌──────────────┐
-    │ StringBuffer │
-    │      🔒      │
-    └──────────────┘
-       ↑
-       │
-    Thread 2
-
-When synchronized methods are involved, access to the same object is coordinated through locking.
+```text
+Thread 1
+    │
+    ↓
+┌──────────────┐
+│ StringBuffer │
+│      🔒      │
+└──────────────┘
+    ↑
+    │
+Thread 2
+```
 
 ---
 
@@ -388,15 +443,17 @@ When synchronized methods are involved, access to the same object is coordinated
 
 Do NOT say:
 
-    "StringBuffer makes every multi-step operation atomic."
+> "StringBuffer makes every multi-step operation atomic."
 
 That is incorrect.
 
 For example:
 
-    if (sb.length() > 0) {
-        sb.deleteCharAt(0);
-    }
+```java
+if (sb.length() > 0) {
+    sb.deleteCharAt(0);
+}
+```
 
 The two method calls together are not automatically one atomic operation.
 
@@ -408,9 +465,11 @@ Synchronization of individual methods does not automatically make an entire sequ
 
 In general:
 
-    StringBuilder
-        ↓
-    Faster than StringBuffer
+```text
+StringBuilder
+    ↓
+Faster than StringBuffer
+```
 
 Why?
 
@@ -420,13 +479,15 @@ Synchronization introduces additional overhead.
 
 Therefore:
 
-    Single-threaded / synchronization not required
-                ↓
-          StringBuilder
+```text
+Single-threaded / synchronization not required
+            ↓
+      StringBuilder
 
-    Synchronized mutable operations required
-                ↓
-          StringBuffer
+Synchronized mutable operations required
+            ↓
+       StringBuffer
+```
 
 ---
 
@@ -434,7 +495,7 @@ Therefore:
 
 Do not say:
 
-    "StringBuilder is always faster."
+> "StringBuilder is always faster."
 
 Better interview answer:
 
@@ -452,11 +513,13 @@ Repeated modification can create new String objects.
 
 Example:
 
-    String s = "";
+```java
+String s = "";
 
-    s = s + "Java";
-    s = s + " ";
-    s = s + "Developer";
+s = s + "Java";
+s = s + " ";
+s = s + "Developer";
+```
 
 Conceptually, multiple String objects can be involved.
 
@@ -468,10 +531,12 @@ A mutable internal buffer is used.
 
 Example:
 
-    StringBuilder sb = new StringBuilder();
+```java
+StringBuilder sb = new StringBuilder();
 
-    sb.append("Java");
-    sb.append(" Developer");
+sb.append("Java");
+sb.append(" Developer");
+```
 
 The existing builder can grow and modify its internal character storage.
 
@@ -491,19 +556,23 @@ String literals can be stored in the String Pool.
 
 Example:
 
-    String s1 = "Java";
-    String s2 = "Java";
+```java
+String s1 = "Java";
+String s2 = "Java";
+```
 
 Both can refer to the same pooled String object.
 
 Conceptually:
 
-    s1 ─────┐
-            ↓
-        "Java"
-        String Pool
-            ↑
-    s2 ─────┘
+```text
+s1 ─────┐
+        ↓
+      "Java"
+    String Pool
+        ↑
+s2 ─────┘
+```
 
 ---
 
@@ -513,9 +582,10 @@ They are objects created using constructors.
 
 Example:
 
-    StringBuilder sb = new StringBuilder("Java");
-
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuilder builder = new StringBuilder("Java");
+StringBuffer buffer = new StringBuffer("Java");
+```
 
 The String argument `"Java"` may come from the String Pool, but the StringBuilder/StringBuffer object itself is a separate mutable object.
 
@@ -527,23 +597,23 @@ StringBuilder and StringBuffer provide many similar methods.
 
 Important ones include:
 
-    append()
-    insert()
-    replace()
-    delete()
-    deleteCharAt()
-    reverse()
-    charAt()
-    setCharAt()
-    length()
-    capacity()
-    substring()
-    indexOf()
-    lastIndexOf()
-    setLength()
-    ensureCapacity()
-    trimToSize()
-    toString()
+- `append()`
+- `insert()`
+- `replace()`
+- `delete()`
+- `deleteCharAt()`
+- `reverse()`
+- `charAt()`
+- `setCharAt()`
+- `length()`
+- `capacity()`
+- `substring()`
+- `indexOf()`
+- `lastIndexOf()`
+- `setLength()`
+- `ensureCapacity()`
+- `trimToSize()`
+- `toString()`
 
 ---
 
@@ -551,23 +621,23 @@ Important ones include:
 
 Important String methods include:
 
-    length()
-    charAt()
-    substring()
-    indexOf()
-    lastIndexOf()
-    equals()
-    equalsIgnoreCase()
-    startsWith()
-    endsWith()
-    contains()
-    replace()
-    replaceAll()
-    split()
-    trim()
-    strip()
-    toLowerCase()
-    toUpperCase()
+- `length()`
+- `charAt()`
+- `substring()`
+- `indexOf()`
+- `lastIndexOf()`
+- `equals()`
+- `equalsIgnoreCase()`
+- `startsWith()`
+- `endsWith()`
+- `contains()`
+- `replace()`
+- `replaceAll()`
+- `split()`
+- `trim()`
+- `strip()`
+- `toLowerCase()`
+- `toUpperCase()`
 
 But String modification methods do not modify the original String.
 
@@ -583,38 +653,46 @@ String does not have an `append()` method.
 
 You can concatenate:
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    s = s + " Developer";
+s = s + " Developer";
+```
 
 ---
 
 ## StringBuilder
 
-    StringBuilder sb = new StringBuilder("Java");
+```java
+StringBuilder sb = new StringBuilder("Java");
 
-    sb.append(" Developer");
+sb.append(" Developer");
+```
 
 ---
 
 ## StringBuffer
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.append(" Developer");
+sb.append(" Developer");
+```
 
 ---
 
 ## Comparison
 
-    String
-        → + or concat()
+```text
+String
+    → + or concat()
 
-    StringBuilder
-        → append()
+StringBuilder
+    → append()
 
-    StringBuffer
-        → append()
+StringBuffer
+    → append()
+```
 
 ---
 
@@ -622,19 +700,25 @@ You can concatenate:
 
 Suppose we want:
 
-    Java
+```text
+Java
+```
 
 to become:
 
-    Kava
+```text
+Kava
+```
 
 ---
 
 ## String
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    s = "Kava";
+s = "Kava";
+```
 
 A new String value is assigned.
 
@@ -644,13 +728,17 @@ The original String object was not modified.
 
 ## StringBuilder
 
-    StringBuilder sb = new StringBuilder("Java");
+```java
+StringBuilder sb = new StringBuilder("Java");
 
-    sb.setCharAt(0, 'K');
+sb.setCharAt(0, 'K');
+```
 
 Result:
 
-    Kava
+```text
+Kava
+```
 
 The same mutable object is modified.
 
@@ -658,13 +746,17 @@ The same mutable object is modified.
 
 ## StringBuffer
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.setCharAt(0, 'K');
+sb.setCharAt(0, 'K');
+```
 
 Result:
 
-    Kava
+```text
+Kava
+```
 
 Again, the mutable object is modified.
 
@@ -674,33 +766,41 @@ Again, the mutable object is modified.
 
 ## String → StringBuilder
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    StringBuilder sb = new StringBuilder(s);
+StringBuilder sb = new StringBuilder(s);
+```
 
 ---
 
 ## String → StringBuffer
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    StringBuffer sb = new StringBuffer(s);
+StringBuffer sb = new StringBuffer(s);
+```
 
 ---
 
 ## StringBuilder → String
 
-    StringBuilder sb = new StringBuilder("Java");
+```java
+StringBuilder sb = new StringBuilder("Java");
 
-    String s = sb.toString();
+String s = sb.toString();
+```
 
 ---
 
 ## StringBuffer → String
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    String s = sb.toString();
+String s = sb.toString();
+```
 
 ---
 
@@ -710,9 +810,11 @@ There is no direct conversion method specifically required.
 
 You can use:
 
-    StringBuilder builder = new StringBuilder("Java");
+```java
+StringBuilder builder = new StringBuilder("Java");
 
-    StringBuffer buffer = new StringBuffer(builder.toString());
+StringBuffer buffer = new StringBuffer(builder.toString());
+```
 
 ---
 
@@ -720,9 +822,11 @@ You can use:
 
 Similarly:
 
-    StringBuffer buffer = new StringBuffer("Java");
+```java
+StringBuffer buffer = new StringBuffer("Java");
 
-    StringBuilder builder = new StringBuilder(buffer.toString());
+StringBuilder builder = new StringBuilder(buffer.toString());
+```
 
 ---
 
@@ -738,21 +842,25 @@ Use String when:
 
 Examples:
 
-    String name = "Divyansh";
-    String email = "user@example.com";
-    String country = "India";
+```java
+String name = "Divyansh";
+String email = "user@example.com";
+String country = "India";
+```
 
 ---
 
 ## Typical Examples
 
-    User's name
-    Email address
-    Country
-    Status
-    URL
-    Configuration value
-    Constant text
+```text
+User's name
+Email address
+Country
+Status
+URL
+Configuration value
+Constant text
+```
 
 ---
 
@@ -767,18 +875,22 @@ Use StringBuilder when:
 
 Example:
 
-    StringBuilder sb = new StringBuilder();
+```java
+StringBuilder sb = new StringBuilder();
 
-    for (int i = 1; i <= 5; i++) {
-        sb.append(i);
-        sb.append(" ");
-    }
+for (int i = 1; i <= 5; i++) {
+    sb.append(i);
+    sb.append(" ");
+}
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    1 2 3 4 5
+```text
+1 2 3 4 5
+```
 
 ---
 
@@ -786,13 +898,15 @@ Output:
 
 Generating a large String:
 
-    StringBuilder result = new StringBuilder();
+```java
+StringBuilder result = new StringBuilder();
 
-    for (int i = 0; i < 1000; i++) {
-        result.append(i);
-    }
+for (int i = 0; i < 1000; i++) {
+    result.append(i);
+}
 
-    String output = result.toString();
+String output = result.toString();
+```
 
 This is a common pattern.
 
@@ -808,9 +922,11 @@ Use StringBuffer when:
 
 Example:
 
-    StringBuffer buffer = new StringBuffer();
+```java
+StringBuffer buffer = new StringBuffer();
 
-    buffer.append("Data");
+buffer.append("Data");
+```
 
 The key reason to choose it over StringBuilder is synchronization.
 
@@ -833,11 +949,15 @@ First determine:
 
 ## Example 1 — User Name
 
-    String name = "Divyansh";
+```java
+String name = "Divyansh";
+```
 
 Best fit:
 
-    String
+```text
+String
+```
 
 Because a name is generally treated as a value rather than something repeatedly modified character-by-character.
 
@@ -845,15 +965,19 @@ Because a name is generally treated as a value rather than something repeatedly 
 
 ## Example 2 — Building a Large Message
 
-    StringBuilder message = new StringBuilder();
+```java
+StringBuilder message = new StringBuilder();
 
-    message.append("Hello ");
-    message.append("Divyansh");
-    message.append("!");
+message.append("Hello ");
+message.append("Divyansh");
+message.append("!");
+```
 
 Best fit:
 
-    StringBuilder
+```text
+StringBuilder
+```
 
 ---
 
@@ -863,7 +987,11 @@ Suppose multiple threads need to perform synchronized operations on the same mut
 
 A possible choice is:
 
-    StringBuffer
+```java
+StringBuffer buffer = new StringBuffer();
+
+buffer.append("Data");
+```
 
 The exact concurrency design should still be considered.
 
@@ -873,21 +1001,25 @@ The exact concurrency design should still be considered.
 
 Consider:
 
-    String result = "";
+```java
+String result = "";
 
-    for (int i = 0; i < 1000; i++) {
-        result += i;
-    }
+for (int i = 0; i < 1000; i++) {
+    result += i;
+}
+```
 
 Repeated concatenation may involve creating many intermediate String objects.
 
 A mutable builder is generally more suitable:
 
-    StringBuilder result = new StringBuilder();
+```java
+StringBuilder result = new StringBuilder();
 
-    for (int i = 0; i < 1000; i++) {
-        result.append(i);
-    }
+for (int i = 0; i < 1000; i++) {
+    result.append(i);
+}
+```
 
 This avoids repeatedly creating a new immutable String for every modification step.
 
@@ -909,22 +1041,24 @@ For explicit repeated construction, StringBuilder is the standard choice.
 
 Use this simple decision process:
 
-    Do I need text?
-          │
-          ↓
-    Is frequent modification required?
-          │
-       ┌──┴──┐
-      NO     YES
-      │       │
-      ↓       ↓
-    String   Is synchronization required?
-                 │
-              ┌──┴──┐
-             NO     YES
-             │       │
-             ↓       ↓
-       StringBuilder StringBuffer
+```text
+Do I need text?
+      │
+      ↓
+Is frequent modification required?
+      │
+   ┌──┴──┐
+  NO    YES
+   │      │
+   ↓      ↓
+ String   Is synchronization required?
+              │
+           ┌──┴──┐
+          NO    YES
+          │      │
+          ↓      ↓
+   StringBuilder StringBuffer
+```
 
 ---
 
@@ -1013,7 +1147,9 @@ Wrong.
 
 Correct:
 
-    StringBuilder → Mutable
+```text
+StringBuilder → Mutable
+```
 
 ---
 
@@ -1025,7 +1161,9 @@ Wrong.
 
 Correct:
 
-    StringBuffer → Mutable
+```text
+StringBuffer → Mutable
+```
 
 ---
 
@@ -1037,7 +1175,9 @@ Wrong.
 
 Correct:
 
-    StringBuilder → Not synchronized
+```text
+StringBuilder → Not synchronized
+```
 
 ---
 
@@ -1049,7 +1189,9 @@ Wrong.
 
 Correct:
 
-    StringBuilder is generally faster when synchronization is unnecessary.
+```text
+StringBuilder is generally faster when synchronization is unnecessary.
+```
 
 ---
 
@@ -1061,7 +1203,9 @@ Wrong.
 
 Correct:
 
-    String is a class.
+```text
+String is a class.
+```
 
 ---
 
@@ -1089,15 +1233,19 @@ Individual synchronized methods do not automatically make a sequence of calls at
 
 ## Trap 1
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    s.concat(" Developer");
+s.concat(" Developer");
 
-    System.out.println(s);
+System.out.println(s);
+```
 
 Output:
 
-    Java
+```text
+Java
+```
 
 Why?
 
@@ -1107,15 +1255,19 @@ Because String is immutable and the returned String was ignored.
 
 ## Trap 2
 
-    StringBuilder sb = new StringBuilder("Java");
+```java
+StringBuilder sb = new StringBuilder("Java");
 
-    sb.append(" Developer");
+sb.append(" Developer");
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    Java Developer
+```text
+Java Developer
+```
 
 Why?
 
@@ -1125,15 +1277,19 @@ Because StringBuilder is mutable.
 
 ## Trap 3
 
-    StringBuffer sb = new StringBuffer("Java");
+```java
+StringBuffer sb = new StringBuffer("Java");
 
-    sb.append(" Developer");
+sb.append(" Developer");
 
-    System.out.println(sb);
+System.out.println(sb);
+```
 
 Output:
 
-    Java Developer
+```text
+Java Developer
+```
 
 Why?
 
@@ -1145,7 +1301,9 @@ Because StringBuffer is mutable.
 
 Which one is synchronized?
 
-    StringBuffer
+```text
+StringBuffer
+```
 
 ---
 
@@ -1153,7 +1311,9 @@ Which one is synchronized?
 
 Which one is generally preferred for repeated modification in a single-threaded context?
 
-    StringBuilder
+```text
+StringBuilder
+```
 
 ---
 
@@ -1161,7 +1321,9 @@ Which one is generally preferred for repeated modification in a single-threaded 
 
 Which one is immutable?
 
-    String
+```text
+String
+```
 
 ---
 
@@ -1169,7 +1331,9 @@ Which one is immutable?
 
 Which one generally has the lowest synchronization overhead?
 
-    StringBuilder
+```text
+StringBuilder
+```
 
 It has no method synchronization.
 
@@ -1309,7 +1473,11 @@ Yes.
 
 Use:
 
-    toString()
+```java
+StringBuilder sb = new StringBuilder("Java");
+
+String s = sb.toString();
+```
 
 ---
 
@@ -1321,7 +1489,11 @@ Yes.
 
 Use:
 
-    toString()
+```java
+StringBuffer sb = new StringBuffer("Java");
+
+String s = sb.toString();
+```
 
 ---
 
@@ -1333,9 +1505,11 @@ Yes.
 
 Example:
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    StringBuilder sb = new StringBuilder(s);
+StringBuilder sb = new StringBuilder(s);
+```
 
 ---
 
@@ -1347,9 +1521,11 @@ Yes.
 
 Example:
 
-    String s = "Java";
+```java
+String s = "Java";
 
-    StringBuffer sb = new StringBuffer(s);
+StringBuffer sb = new StringBuffer(s);
+```
 
 ---
 
@@ -1401,14 +1577,16 @@ The compiler/runtime can optimize some concatenation expressions. However, for e
 
 **Answer:**
 
-    String
-        → Immutable
+```text
+String
+    → Immutable
 
-    StringBuilder
-        → Mutable + Fast + Not synchronized
+StringBuilder
+    → Mutable + Fast + Not synchronized
 
-    StringBuffer
-        → Mutable + Synchronized
+StringBuffer
+    → Mutable + Synchronized
+```
 
 ---
 
@@ -1426,32 +1604,34 @@ The compiler/runtime can optimize some concatenation expressions. However, for e
 
 # 29. 🧾 Cheat Sheet
 
-    ┌─────────────────────────────────────────────────────┐
-    │                    STRING                           │
-    ├─────────────────────────────────────────────────────┤
-    │ Immutable                                          │
-    │ String Pool                                         │
-    │ Safe to share because contents cannot change       │
-    │ Good for fixed text                                 │
-    └─────────────────────────────────────────────────────┘
+```text
+┌─────────────────────────────────────────────────────┐
+│                    STRING                            │
+├─────────────────────────────────────────────────────┤
+│ Immutable                                           │
+│ String Pool                                         │
+│ Safe to share because contents cannot change        │
+│ Good for fixed text                                 │
+└─────────────────────────────────────────────────────┘
 
-    ┌─────────────────────────────────────────────────────┐
-    │                 STRINGBUILDER                       │
-    ├─────────────────────────────────────────────────────┤
-    │ Mutable                                             │
-    │ Not synchronized                                    │
-    │ Generally faster than StringBuffer                 │
-    │ Good for repeated string construction              │
-    └─────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────┐
+│                 STRINGBUILDER                       │
+├─────────────────────────────────────────────────────┤
+│ Mutable                                             │
+│ Not synchronized                                    │
+│ Generally faster than StringBuffer                  │
+│ Good for repeated string construction               │
+└─────────────────────────────────────────────────────┘
 
-    ┌─────────────────────────────────────────────────────┐
-    │                 STRINGBUFFER                        │
-    ├─────────────────────────────────────────────────────┤
-    │ Mutable                                             │
-    │ Synchronized methods                                │
-    │ Synchronization overhead                            │
-    │ Useful for synchronized mutable operations         │
-    └─────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────┐
+│                  STRINGBUFFER                       │
+├─────────────────────────────────────────────────────┤
+│ Mutable                                             │
+│ Synchronized methods                                │
+│ Synchronization overhead                            │
+│ Useful for synchronized mutable operations          │
+└─────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -1459,17 +1639,19 @@ The compiler/runtime can optimize some concatenation expressions. However, for e
 
 ## 🔥 Trick 1 — I / M / M
 
-    String
-        → I
-        → Immutable
+```text
+String
+    → I
+    → Immutable
 
-    StringBuilder
-        → M
-        → Mutable
+StringBuilder
+    → M
+    → Mutable
 
-    StringBuffer
-        → M
-        → Mutable
+StringBuffer
+    → M
+    → Mutable
+```
 
 ---
 
@@ -1477,47 +1659,51 @@ The compiler/runtime can optimize some concatenation expressions. However, for e
 
 Think:
 
-    Builder
-        ↓
-    Build quickly
-        ↓
-    No synchronization
+```text
+Builder
+    ↓
+Build quickly
+    ↓
+No synchronization
 
-    Buffer
-        ↓
-    Shared mutable buffer
-        ↓
-    Synchronization
+Buffer
+    ↓
+Shared mutable buffer
+    ↓
+Synchronization
+```
 
 ---
 
 ## 🔥 Trick 3 — One-Line Formula
 
-Remember:
+```text
+String = Immutable
 
-    String = Immutable
+StringBuilder = Mutable + Fast + No Sync
 
-    StringBuilder = Mutable + Fast + No Sync
-
-    StringBuffer = Mutable + Sync
+StringBuffer = Mutable + Sync
+```
 
 ---
 
 ## 🔥 Trick 4 — Modification
 
-    String
-        ↓
-    New object/result
+```text
+String
+    ↓
+New object/result
 
-    StringBuilder
-        ↓
-    Modify existing mutable object
+StringBuilder
+    ↓
+Modify existing mutable object
 
-    StringBuffer
-        ↓
-    Modify existing mutable object
+StringBuffer
+    ↓
+Modify existing mutable object
     +
-    Synchronization
+Synchronization
+```
 
 ---
 
@@ -1525,26 +1711,26 @@ Remember:
 
 Before moving to the next topic, you should be able to explain:
 
-    ✅ What is String?
-    ✅ What is StringBuilder?
-    ✅ What is StringBuffer?
-    ✅ Which one is immutable?
-    ✅ Which ones are mutable?
-    ✅ Which one is synchronized?
-    ✅ Why is StringBuilder generally faster?
-    ✅ Why does StringBuffer have synchronization overhead?
-    ✅ When should String be used?
-    ✅ When should StringBuilder be used?
-    ✅ When should StringBuffer be used?
-    ✅ What is the String Pool?
-    ✅ Why aren't StringBuilder objects in the String Pool?
-    ✅ How do you convert StringBuilder to String?
-    ✅ How do you convert StringBuffer to String?
-    ✅ What does thread-safe mean?
-    ✅ Does synchronized mean every sequence of operations is atomic?
-    ✅ Why is String useful as a HashMap key?
-    ✅ What happens during repeated String modification?
-    ✅ Why is StringBuilder commonly used inside loops?
+- ✅ What is String?
+- ✅ What is StringBuilder?
+- ✅ What is StringBuffer?
+- ✅ Which one is immutable?
+- ✅ Which ones are mutable?
+- ✅ Which one is synchronized?
+- ✅ Why is StringBuilder generally faster?
+- ✅ Why does StringBuffer have synchronization overhead?
+- ✅ When should String be used?
+- ✅ When should StringBuilder be used?
+- ✅ When should StringBuffer be used?
+- ✅ What is the String Pool?
+- ✅ Why aren't StringBuilder objects in the String Pool?
+- ✅ How do you convert StringBuilder to String?
+- ✅ How do you convert StringBuffer to String?
+- ✅ What does thread-safe mean?
+- ✅ Does synchronized mean every sequence of operations is atomic?
+- ✅ Why is String useful as a HashMap key?
+- ✅ What happens during repeated String modification?
+- ✅ Why is StringBuilder commonly used inside loops?
 
 ---
 
@@ -1571,66 +1757,72 @@ Before moving to the next topic, you should be able to explain:
 
 String playlist:
 
-    04-Strings/
-    │
-    ├── 01-String-Introduction.md
-    ├── 02-String-Pool.md
-    ├── 03-String-Immutability.md
-    ├── 04-String-Methods.md
-    ├── 05-StringBuilder.md
-    ├── 06-StringBuffer.md
-    ├── 07-String-vs-StringBuilder-vs-StringBuffer.md  ← YOU ARE HERE
-    └── 08-String-Interview-Questions.md
+```text
+04-Strings/
+│
+├── 01-String-Introduction.md
+├── 02-String-Pool.md
+├── 03-String-Immutability.md
+├── 04-String-Methods.md
+├── 05-StringBuilder.md
+├── 06-StringBuffer.md
+├── 07-String-vs-StringBuilder-vs-StringBuffer.md  ← YOU ARE HERE
+└── 08-String-Interview-Questions.md
+```
 
 ### Learning Flow
 
-    String Introduction
-            ↓
-    String Pool
-            ↓
-    String Immutability
-            ↓
-    String Methods
-            ↓
-    StringBuilder
-            ↓
-    StringBuffer
-            ↓
-    String vs StringBuilder vs StringBuffer
-            ↓
-    Interview Questions
+```text
+String Introduction
+        ↓
+String Pool
+        ↓
+String Immutability
+        ↓
+String Methods
+        ↓
+StringBuilder
+        ↓
+StringBuffer
+        ↓
+String vs StringBuilder vs StringBuffer
+        ↓
+Interview Questions
+```
 
 ---
 
 # 🏆 FINAL MEMORY CARD
 
-    ┌──────────────────────────────────────┐
-    │              STRING                  │
-    │                                      │
-    │        IMMUTABLE                     │
-    │        String Pool                   │
-    │        Fixed Text                    │
-    └──────────────────────────────────────┘
+```text
+┌──────────────────────────────────────┐
+│              STRING                  │
+│                                      │
+│          IMMUTABLE                   │
+│          String Pool                 │
+│          Fixed Text                  │
+└──────────────────────────────────────┘
 
-                    VS
+                  VS
 
-    ┌──────────────────────────────────────┐
-    │          STRINGBUILDER               │
-    │                                      │
-    │        MUTABLE                       │
-    │        NOT SYNCHRONIZED              │
-    │        GENERALLY FASTER              │
-    └──────────────────────────────────────┘
+┌──────────────────────────────────────┐
+│          STRINGBUILDER               │
+│                                      │
+│          MUTABLE                     │
+│          NOT SYNCHRONIZED            │
+│          GENERALLY FASTER            │
+└──────────────────────────────────────┘
 
-                    VS
+                  VS
 
-    ┌──────────────────────────────────────┐
-    │           STRINGBUFFER               │
-    │                                      │
-    │        MUTABLE                       │
-    │        SYNCHRONIZED                  │
-    │        MORE OVERHEAD                 │
-    └──────────────────────────────────────┘
+┌──────────────────────────────────────┐
+│           STRINGBUFFER               │
+│                                      │
+│          MUTABLE                     │
+│          SYNCHRONIZED                │
+│          MORE OVERHEAD               │
+└──────────────────────────────────────┘
+```
 
 > 💡 **Remember:**
 >
