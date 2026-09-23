@@ -1,4 +1,4 @@
-````md
+
 # 🔗 Functional Interface in Java
 
 > A **Functional Interface** is an interface that contains exactly one abstract method, making it the target type for lambda expressions and method references.
@@ -59,7 +59,7 @@ interface Calculator {
 
     int calculate(int a, int b);
 }
-````
+```
 
 The interface contains only one abstract method:
 
