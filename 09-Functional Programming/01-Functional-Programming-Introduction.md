@@ -1,4 +1,4 @@
-````md
+
 # 🚀 Functional Programming in Java
 
 > **Functional Programming (FP)** is a programming paradigm where computation is expressed primarily through functions, with emphasis on behavior as data, immutability, declarative code, and minimizing side effects.
