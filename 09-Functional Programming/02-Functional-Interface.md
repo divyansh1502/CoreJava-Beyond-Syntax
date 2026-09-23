@@ -57,7 +57,7 @@ interface Calculator {
 
     int calculate(int a, int b);
 }
-````
+```
 
 The interface contains only one abstract method:
 

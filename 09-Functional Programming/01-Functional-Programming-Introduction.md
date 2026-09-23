@@ -80,7 +80,7 @@ for (Integer number : numbers) {
         evenNumbers.add(number);
     }
 }
-````
+```
 
 The programmer explicitly controls:
 
