@@ -1,220 +1,1093 @@
 # 04 — Thread Class
 
-> **`Thread` is a Java class that represents a thread of execution and provides methods for creating, starting, inspecting, and controlling threads.**
+> **`Thread` is a Java class used to create, control, and manage threads of execution.**
 
 ---
 
 ## 📌 Table of Contents
 
 1. [Introduction](#-introduction)
-2. [Package](#-package)
-3. [Thread Class Hierarchy](#-thread-class-hierarchy)
-4. [Creating a Thread Object](#-creating-a-thread-object)
-5. [Thread Constructors](#-thread-constructors)
-6. [Thread with Runnable](#-thread-with-runnable)
-7. [Important Thread Methods](#-important-thread-methods)
-8. [start()](#-start)
-9. [run()](#-run)
+2. [What is a Thread?](#-what-is-a-thread)
+3. [Thread Class](#-thread-class)
+4. [Creating a Thread by Extending Thread](#-creating-a-thread-by-extending-thread)
+5. [run() Method](#-run-method)
+6. [start() Method](#-start-method)
+7. [start() vs run()](#-start-vs-run)
+8. [Thread Name](#-thread-name)
+9. [Thread ID](#-thread-id)
 10. [currentThread()](#-currentthread)
-11. [getName()](#-getname)
-12. [setName()](#-setname)
-13. [getId()](#-getid)
-14. [getPriority()](#-getpriority)
-15. [setPriority()](#-setpriority)
-16. [getState()](#-getstate)
-17. [isAlive()](#-isalive)
-18. [interrupt()](#-interrupt)
-19. [isInterrupted()](#-isinterrupted)
-20. [sleep()](#-sleep)
-21. [join()](#-join)
-22. [Thread Priority](#-thread-priority)
-23. [Daemon Threads](#-daemon-threads)
-24. [setDaemon()](#-setdaemon)
-25. [Multiple Threads](#-multiple-threads)
-26. [Thread Naming](#-thread-naming)
-27. [Internal Working](#-internal-working)
-28. [Thread Lifecycle Connection](#-thread-lifecycle-connection)
-29. [Common Mistakes](#-common-mistakes)
-30. [Interview Traps](#-interview-traps)
-31. [DSA / Problem-Solving Relevance](#-dsa--problem-solving-relevance)
-32. [30-Second Interview Answer](#-30-second-interview-answer)
-33. [Cheat Sheet](#-cheat-sheet)
-34. [Top 10 Interview Questions](#-top-10-interview-questions)
+11. [isAlive()](#-isalive)
+12. [join()](#-join)
+13. [sleep()](#-sleep)
+14. [interrupt()](#-interrupt)
+15. [Thread Priority](#-thread-priority)
+16. [Daemon Thread](#-daemon-thread)
+17. [setDaemon()](#-setdaemon)
+18. [Thread State](#-thread-state)
+19. [Important Thread Methods](#-important-thread-methods)
+20. [Common Mistakes](#-common-mistakes)
+21. [Interview Traps](#-interview-traps)
+22. [DSA / Problem-Solving Relevance](#-dsa--problem-solving-relevance)
+23. [30-Second Interview Answer](#-30-second-interview-answer)
+24. [Cheat Sheet](#-cheat-sheet)
+25. [Top 10 Interview Questions](#-top-10-interview-questions)
 
 ---
 
 # 🔹 Introduction
 
-`Thread` is a class in Java used to represent a thread of execution.
+Java provides the `Thread` class for creating and controlling threads.
 
-It provides functionality for:
+The class belongs to:
 
-- Creating threads
-- Starting threads
-- Naming threads
-- Checking thread state
-- Checking whether a thread is alive
-- Setting thread priority
-- Interrupting threads
-- Waiting for another thread
-- Working with daemon threads
+```java
+java.lang.Thread
+```
+
+Since `java.lang` is automatically imported, we normally write:
+
+```java
+Thread t = new Thread();
+```
+
+A thread represents an independent path of execution inside a process.
+
+A Java application can have multiple threads running concurrently.
+
+---
+
+# 🔹 What is a Thread?
+
+A **thread** is a lightweight unit of execution inside a process.
+
+For example:
+
+```text
+Process
+   |
+   |--- Thread 1
+   |
+   |--- Thread 2
+   |
+   |--- Thread 3
+```
+
+Every Java application starts with a thread that executes the `main()` method.
 
 Example:
 
-    Thread thread = new Thread();
+```java
+public class Main {
 
-Creating the object does **not** start the thread.
+    public static void main(String[] args) {
 
-We need:
+        System.out.println("Main thread");
+    }
+}
+```
 
-    thread.start();
-
-to start it.
-
----
-
-# 🔹 Package
-
-`Thread` belongs to:
-
-    java.lang
-
-`java.lang` is automatically imported by Java.
-
-Therefore, we do not need:
-
-    import java.lang.Thread;
-
-We can directly write:
-
-    Thread thread = new Thread();
+The thread executing `main()` is commonly called the **main thread**.
 
 ---
 
-# 🔹 Thread Class Hierarchy
+# 🔹 Thread Class
 
-The simplified hierarchy is:
+The fully qualified name of the class is:
 
-    Object
-       ↓
-    Thread
+```java
+java.lang.Thread
+```
 
-`Thread` extends `Object`.
+The `Thread` class is part of the Java standard library.
 
-`Thread` also implements `Runnable`.
+It implements:
+
+```java
+Runnable
+```
 
 Conceptually:
 
-    Object
-       ↓
-    Thread
-       ↘
-       Runnable
+```text
+Thread
+   |
+   implements
+   |
+Runnable
+```
 
-The important idea is:
+The `Thread` class provides methods for:
 
-- `Runnable` represents a task.
-- `Thread` represents the execution mechanism.
+- Starting threads
+- Waiting for threads
+- Sleeping
+- Interrupting threads
+- Checking thread state
+- Getting thread ID
+- Setting thread name
+- Setting thread priority
+- Creating daemon threads
 
 ---
 
-# 🔹 Creating a Thread Object
+# 🔹 Creating a Thread by Extending Thread
 
-The simplest form is:
-
-    Thread thread = new Thread();
-
-At this point, the thread object exists but has not started.
-
-Its state is:
-
-    NEW
+One way to create a thread is by extending the `Thread` class.
 
 Example:
 
-    class Main {
+```java
+class MyThread extends Thread {
 
-        public static void main(String[] args) {
+    @Override
+    public void run() {
 
-            Thread thread = new Thread();
-
-            System.out.println(thread.getState());
-        }
+        System.out.println("Thread is running");
     }
+}
+```
+
+Then create and start it:
+
+```java
+class Main {
+
+    public static void main(String[] args) {
+
+        MyThread t = new MyThread();
+
+        t.start();
+    }
+}
+```
 
 Output:
 
-    NEW
+```text
+Thread is running
+```
+
+Here:
+
+```java
+MyThread t = new MyThread();
+```
+
+creates a `MyThread` object.
+
+Then:
+
+```java
+t.start();
+```
+
+requests that the JVM start a new thread of execution.
 
 ---
 
-# 🔹 Thread Constructors
+# 🔹 Internal Flow
 
-The `Thread` class provides several constructors.
+The basic flow is:
 
-## 1. Thread()
+```text
+new MyThread()
+       ↓
+Thread object created
+       ↓
+start()
+       ↓
+New thread begins execution
+       ↓
+run()
+       ↓
+Task executes
+       ↓
+Thread terminates
+```
 
-Creates a thread without a target task.
+Important:
 
-    Thread thread = new Thread();
+> `start()` starts a new thread of execution. `run()` contains the task that the thread executes.
 
 ---
 
-## 2. Thread(Runnable target)
+# 🔹 run() Method
 
-Creates a thread associated with a `Runnable`.
+The `run()` method contains the code that the thread executes.
 
-    Runnable task = () -> {
+Example:
+
+```java
+class MyThread extends Thread {
+
+    @Override
+    public void run() {
+
         System.out.println("Task is running");
-    };
+    }
+}
+```
 
-    Thread thread = new Thread(task);
+The method is inherited from `Thread`.
 
----
+Its basic signature is:
 
-## 3. Thread(String name)
+```java
+public void run()
+```
 
-Creates a thread with a specified name.
-
-    Thread thread = new Thread("Worker-1");
-
----
-
-## 4. Thread(Runnable target, String name)
-
-Creates a thread with both a task and a name.
-
-    Runnable task = () -> {
-        System.out.println("Task is running");
-    };
-
-    Thread thread = new Thread(task, "Worker-1");
+We override it to define the work performed by our thread.
 
 ---
 
-# 🔹 Thread with Runnable
+# 🔹 start() Method
 
-A common pattern is:
+The `start()` method is used to start a new thread.
 
-    Runnable task = () -> {
-        System.out.println("Task is running");
-    };
+Example:
 
-    Thread thread = new Thread(task);
+```java
+class MyThread extends Thread {
 
-    thread.start();
+    @Override
+    public void run() {
 
-The relationship is:
+        System.out.println("Running in another thread");
+    }
+}
 
-    Runnable
-       ↓
-    Task
-       ↓
-    Thread
-       ↓
-    start()
-       ↓
-    Execution
+class Main {
+
+    public static void main(String[] args) {
+
+        MyThread thread = new MyThread();
+
+        thread.start();
+    }
+}
+```
+
+Conceptually:
+
+```text
+start()
+   ↓
+new thread is started
+   ↓
+run()
+   ↓
+task executes
+```
+
+---
+
+# 🔹 start() vs run()
+
+This is one of the most important Thread interview concepts.
+
+### Calling `start()`
+
+```java
+Thread t = new MyThread();
+
+t.start();
+```
+
+`start()` asks the JVM to start a new thread.
+
+The new thread eventually invokes:
+
+```java
+run();
+```
+
+---
+
+### Calling `run()` directly
+
+```java
+Thread t = new MyThread();
+
+t.run();
+```
+
+This does **not** start a new thread.
+
+It is simply a normal method call executed by the thread that called it.
+
+Comparison:
+
+```text
+t.start()
+
+Main Thread
+     |
+     +----> starts MyThread
+                  |
+                  +----> run()
+```
+
+Whereas:
+
+```text
+t.run()
+
+Main Thread
+     |
+     +----> run()
+```
+
+### Memory Trick
+
+> **`start()` = start a thread**
+
+> **`run()` = execute the task**
+
+---
+
+# 🔹 Can start() Be Called Twice?
+
+No.
+
+A thread can be started only once.
+
+Example:
+
+```java
+MyThread t = new MyThread();
+
+t.start();
+t.start();
+```
+
+This causes:
+
+```text
+java.lang.IllegalThreadStateException
+```
+
+The same `Thread` object cannot be restarted after it has already been started.
+
+If another thread is required, create another `Thread` object.
+
+Example:
+
+```java
+MyThread t1 = new MyThread();
+MyThread t2 = new MyThread();
+
+t1.start();
+t2.start();
+```
+
+---
+
+# 🔹 Thread Name
+
+Every thread has a name.
+
+We can set the name using:
+
+```java
+setName()
+```
+
+Example:
+
+```java
+class Main {
+
+    public static void main(String[] args) {
+
+        Thread t = new Thread();
+
+        t.setName("Worker-Thread");
+
+        System.out.println(t.getName());
+    }
+}
+```
+
+Output:
+
+```text
+Worker-Thread
+```
+
+---
+
+# 🔹 Getting Thread Name
+
+Use:
+
+```java
+getName()
+```
+
+Example:
+
+```java
+class MyThread extends Thread {
+
+    @Override
+    public void run() {
+
+        System.out.println(Thread.currentThread().getName());
+    }
+}
+
+class Main {
+
+    public static void main(String[] args) {
+
+        MyThread t = new MyThread();
+
+        t.setName("Backend-Worker");
+
+        t.start();
+    }
+}
+```
+
+Possible output:
+
+```text
+Backend-Worker
+```
+
+---
+
+# 🔹 Thread ID
+
+Every thread has an ID.
+
+Use:
+
+```java
+getId()
+```
+
+Example:
+
+```java
+class Main {
+
+    public static void main(String[] args) {
+
+        Thread t = Thread.currentThread();
+
+        System.out.println(t.getId());
+    }
+}
+```
+
+The ID is a unique identifier for the thread during its lifetime.
+
+---
+
+# 🔹 currentThread()
+
+`currentThread()` returns the thread that is currently executing the code.
+
+Example:
+
+```java
+class Main {
+
+    public static void main(String[] args) {
+
+        Thread t = Thread.currentThread();
+
+        System.out.println(t.getName());
+    }
+}
+```
+
+Usually the output is:
+
+```text
+main
+```
+
+because the `main()` method is initially executed by the main thread.
+
+---
+
+# 🔹 currentThread() with Custom Thread
+
+Example:
+
+```java
+class MyThread extends Thread {
+
+    @Override
+    public void run() {
+
+        Thread current = Thread.currentThread();
+
+        System.out.println(current.getName());
+    }
+}
+
+class Main {
+
+    public static void main(String[] args) {
+
+        MyThread t = new MyThread();
+
+        t.setName("Worker");
+
+        t.start();
+    }
+}
+```
+
+Output:
+
+```text
+Worker
+```
+
+Important:
+
+```java
+Thread.currentThread()
+```
+
+means:
+
+> Give me the `Thread` object representing the thread currently executing this code.
+
+---
+
+# 🔹 isAlive()
+
+The `isAlive()` method checks whether a thread has been started and has not yet terminated.
+
+It returns:
+
+```java
+boolean
+```
+
+Example:
+
+```java
+class MyThread extends Thread {
+
+    @Override
+    public void run() {
+
+        System.out.println("Running...");
+    }
+}
+
+class Main {
+
+    public static void main(String[] args) {
+
+        MyThread t = new MyThread();
+
+        System.out.println(t.isAlive());
+
+        t.start();
+
+        System.out.println(t.isAlive());
+    }
+}
+```
+
+Before `start()`:
+
+```text
+false
+```
+
+After starting, it may be:
+
+```text
+true
+```
+
+if the thread is still running when checked.
+
+After the thread terminates:
+
+```text
+false
+```
+
+---
+
+# 🔹 join()
+
+`join()` makes the current thread wait for another thread to terminate.
+
+Example:
+
+```java
+class MyThread extends Thread {
+
+    @Override
+    public void run() {
+
+        for(int i = 1; i <= 5; i++) {
+
+            System.out.println(i);
+        }
+    }
+}
+
+class Main {
+
+    public static void main(String[] args)
+            throws InterruptedException {
+
+        MyThread t = new MyThread();
+
+        t.start();
+
+        t.join();
+
+        System.out.println("Main thread continues");
+    }
+}
+```
+
+Flow:
+
+```text
+Main Thread
+    |
+    +---- start MyThread
+    |
+    +---- join()
+             |
+             ↓
+        waits for MyThread
+             |
+             ↓
+        MyThread finishes
+             |
+             ↓
+        Main continues
+```
+
+---
+
+# 🔹 sleep()
+
+`Thread.sleep()` pauses the currently executing thread for a specified duration.
+
+Example:
+
+```java
+class Main {
+
+    public static void main(String[] args)
+            throws InterruptedException {
+
+        System.out.println("Start");
+
+        Thread.sleep(2000);
+
+        System.out.println("End");
+    }
+}
+```
+
+The thread pauses for approximately:
+
+```text
+2000 milliseconds
+```
+
+which is:
+
+```text
+2 seconds
+```
+
+Important:
+
+> `sleep()` pauses the current thread.
+
+---
+
+# 🔹 sleep() Does Not Release a Monitor
+
+If a thread is inside a synchronized block and calls `sleep()`, it does not release the intrinsic monitor merely because it is sleeping.
+
+Example:
+
+```java
+synchronized(lock) {
+
+    Thread.sleep(2000);
+}
+```
+
+Conceptually:
+
+```text
+Acquire lock
+     ↓
+sleep()
+     ↓
+Still owns lock
+     ↓
+Wake up
+     ↓
+Continue
+     ↓
+Release lock
+```
+
+This is an important interview point.
+
+---
+
+# 🔹 interrupt()
+
+`interrupt()` is used to request interruption of a thread.
+
+It does not forcibly kill the thread.
+
+Example:
+
+```java
+class MyThread extends Thread {
+
+    @Override
+    public void run() {
+
+        try {
+
+            Thread.sleep(5000);
+
+        } catch(InterruptedException e) {
+
+            System.out.println("Thread was interrupted");
+        }
+    }
+}
+
+class Main {
+
+    public static void main(String[] args) {
+
+        MyThread t = new MyThread();
+
+        t.start();
+
+        t.interrupt();
+    }
+}
+```
+
+If the thread is sleeping, the sleep can be interrupted and an `InterruptedException` can be thrown.
+
+---
+
+# 🔹 Important Point About interrupt()
+
+`interrupt()` does not mean:
+
+```text
+KILL THREAD
+```
+
+It means:
+
+```text
+REQUEST INTERRUPTION
+```
+
+The thread should respond appropriately to the interruption.
+
+---
+
+# 🔹 Thread Priority
+
+Java threads have a priority value.
+
+The valid range is:
+
+```text
+1 → MIN_PRIORITY
+5 → NORM_PRIORITY
+10 → MAX_PRIORITY
+```
+
+Constants:
+
+```java
+Thread.MIN_PRIORITY
+Thread.NORM_PRIORITY
+Thread.MAX_PRIORITY
+```
+
+Example:
+
+```java
+class Main {
+
+    public static void main(String[] args) {
+
+        Thread t = new Thread();
+
+        t.setPriority(Thread.MAX_PRIORITY);
+
+        System.out.println(t.getPriority());
+    }
+}
+```
+
+Output:
+
+```text
+10
+```
+
+---
+
+# 🔹 Important Priority Point
+
+Thread priority is a scheduling hint.
+
+It does **not** guarantee that a higher-priority thread will always execute first.
+
+Do not write logic that depends on a specific scheduling order based solely on priority.
+
+---
+
+# 🔹 Daemon Thread
+
+A daemon thread is a background thread that does not keep the JVM alive by itself after all non-daemon threads have terminated.
+
+Example:
+
+```java
+class Worker extends Thread {
+
+    @Override
+    public void run() {
+
+        while(true) {
+
+            System.out.println("Background task");
+        }
+    }
+}
+
+class Main {
+
+    public static void main(String[] args) {
+
+        Worker worker = new Worker();
+
+        worker.setDaemon(true);
+
+        worker.start();
+
+        System.out.println("Main finished");
+    }
+}
+```
+
+Once the main thread and all other non-daemon threads finish, the JVM can terminate even if the daemon thread is still running.
+
+---
+
+# 🔹 setDaemon()
+
+Use:
+
+```java
+setDaemon(true)
+```
+
+to mark a thread as daemon.
+
+Example:
+
+```java
+Thread t = new Thread();
+
+t.setDaemon(true);
+
+t.start();
+```
+
+Important:
+
+> `setDaemon(true)` must be called before the thread is started.
+
+Calling it after `start()` causes:
+
+```text
+IllegalThreadStateException
+```
+
+Example:
+
+```java
+Thread t = new Thread();
+
+t.start();
+
+t.setDaemon(true);
+```
+
+This is invalid.
+
+---
+
+# 🔹 Thread State
+
+A thread has a lifecycle represented by:
+
+```java
+Thread.State
+```
+
+The major states are:
+
+```text
+NEW
+RUNNABLE
+BLOCKED
+WAITING
+TIMED_WAITING
+TERMINATED
+```
+
+---
+
+## NEW
+
+The thread object has been created but `start()` has not been called.
+
+Example:
+
+```java
+Thread t = new Thread();
+```
+
+State:
+
+```text
+NEW
+```
+
+---
+
+## RUNNABLE
+
+The thread has been started and is eligible to run.
+
+Example:
+
+```java
+t.start();
+```
+
+The JVM scheduler determines when it actually executes.
+
+---
+
+## BLOCKED
+
+A thread is waiting to acquire an intrinsic monitor lock.
+
+Example:
+
+```java
+synchronized(lock) {
+
+    // critical section
+}
+```
+
+If another thread owns `lock`, the waiting thread can enter the `BLOCKED` state while waiting for that monitor.
+
+---
+
+## WAITING
+
+A thread waits indefinitely for another thread or event.
+
+Examples include certain uses of:
+
+```java
+join()
+```
+
+and:
+
+```java
+wait()
+```
+
+---
+
+## TIMED_WAITING
+
+A thread waits for a specified amount of time.
+
+Examples:
+
+```java
+Thread.sleep(1000);
+```
+
+and timed versions of waiting methods.
+
+---
+
+## TERMINATED
+
+The thread has completed execution.
+
+Example:
+
+```text
+run()
+  ↓
+task completes
+  ↓
+TERMINATED
+```
+
+---
+
+# 🔹 Getting Thread State
+
+Use:
+
+```java
+getState()
+```
+
+Example:
+
+```java
+class Main {
+
+    public static void main(String[] args) {
+
+        Thread t = new Thread();
+
+        System.out.println(t.getState());
+
+        t.start();
+
+        System.out.println(t.getState());
+    }
+}
+```
+
+The exact state observed after `start()` can depend on timing.
 
 ---
 
@@ -222,965 +1095,127 @@ The relationship is:
 
 | Method | Purpose |
 |---|---|
-| `start()` | Starts a new thread of execution |
-| `run()` | Contains the task logic |
-| `currentThread()` | Returns the currently executing thread |
-| `getName()` | Returns thread name |
-| `setName()` | Changes thread name |
-| `getId()` | Returns thread ID |
-| `getPriority()` | Returns thread priority |
-| `setPriority()` | Changes thread priority |
-| `getState()` | Returns current thread state |
-| `isAlive()` | Checks whether thread is alive |
+| `start()` | Starts a new thread |
+| `run()` | Contains thread task |
+| `currentThread()` | Returns currently executing thread |
+| `getName()` | Gets thread name |
+| `setName()` | Sets thread name |
+| `getId()` | Gets thread ID |
+| `isAlive()` | Checks whether thread has not terminated |
+| `join()` | Waits for another thread to terminate |
+| `sleep()` | Pauses current thread |
 | `interrupt()` | Requests interruption |
 | `isInterrupted()` | Checks interruption status |
-| `sleep()` | Makes current thread sleep |
-| `join()` | Waits for another thread to finish |
-| `setDaemon()` | Marks a thread as daemon |
-| `isDaemon()` | Checks whether thread is daemon |
-
----
-
-# 🔹 `start()`
-
-`start()` starts a new thread of execution.
-
-Example:
-
-    class MyThread extends Thread {
-
-        @Override
-        public void run() {
-            System.out.println("Worker thread");
-        }
-    }
-
-    class Main {
-
-        public static void main(String[] args) {
-
-            MyThread thread = new MyThread();
-
-            thread.start();
-        }
-    }
-
-Important:
-
-    thread.start();
-
-is different from:
-
-    thread.run();
-
-`start()` causes the JVM to arrange for the thread to execute independently.
-
----
-
-# 🔹 `run()`
-
-`run()` contains the work that the thread performs.
-
-Example:
-
-    class MyThread extends Thread {
-
-        @Override
-        public void run() {
-            System.out.println("Doing work");
-        }
-    }
-
-The `run()` method can also be called directly.
-
-But:
-
-    thread.run();
-
-does **not** create a new thread.
-
-It behaves like a normal method call.
-
----
-
-# 🔹 `start()` vs `run()`
-
-| `start()` | `run()` |
-|---|---|
-| Starts a new thread | Normal method call |
-| Creates a separate execution path | Executes on current thread |
-| JVM handles thread scheduling | No new thread is created |
-| Can be called only once on a thread object | Can be directly called multiple times |
-
-Memory trick:
-
-    start() → START a new thread
-
-    run() → RUN the task
-
----
-
-# 🔹 `currentThread()`
-
-`currentThread()` is a static method of `Thread`.
-
-It returns the thread that is currently executing the code.
-
-Example:
-
-    class Main {
-
-        public static void main(String[] args) {
-
-            Thread thread = Thread.currentThread();
-
-            System.out.println(thread);
-        }
-    }
-
-The main method normally executes inside the:
-
-    main
-
-thread.
-
----
-
-# 🔹 `currentThread().getName()`
-
-We can combine:
-
-    Thread.currentThread()
-
-with:
-
-    getName()
-
-Example:
-
-    class Main {
-
-        public static void main(String[] args) {
-
-            System.out.println(
-                Thread.currentThread().getName()
-            );
-        }
-    }
-
-Typical output:
-
-    main
-
-Here:
-
-    currentThread()
-
-returns the current `Thread` object.
-
-Then:
-
-    getName()
-
-returns its name.
-
----
-
-# 🔹 `getName()`
-
-`getName()` returns the name of a thread.
-
-Example:
-
-    Thread thread = new Thread();
-
-    System.out.println(thread.getName());
-
-A newly created thread receives a default name if one is not provided.
-
----
-
-# 🔹 `setName()`
-
-`setName()` changes the thread name.
-
-Example:
-
-    Thread thread = new Thread();
-
-    thread.setName("Worker-1");
-
-    System.out.println(thread.getName());
-
-Output:
-
-    Worker-1
-
-This is useful when debugging multithreaded applications.
-
----
-
-# 🔹 Creating a Named Thread
-
-Instead of setting the name separately:
-
-    Thread thread = new Thread("Worker-1");
-
-Then:
-
-    System.out.println(thread.getName());
-
-Output:
-
-    Worker-1
-
----
-
-# 🔹 `getId()`
-
-`getId()` returns the identifier of a thread.
-
-Example:
-
-    Thread thread = new Thread();
-
-    System.out.println(thread.getId());
-
-The ID is assigned by the JVM and is useful for identifying threads.
-
-Modern Java also provides:
-
-    thread.threadId();
-
-for obtaining the thread ID.
-
----
-
-# 🔹 `getPriority()`
-
-Every thread has a priority.
-
-We can retrieve it using:
-
-    getPriority()
-
-Example:
-
-    Thread thread = new Thread();
-
-    System.out.println(thread.getPriority());
-
-The default priority is normally:
-
-    5
-
-which corresponds to:
-
-    Thread.NORM_PRIORITY
-
----
-
-# 🔹 Thread Priority Constants
-
-Java provides three commonly used priority constants:
-
-    Thread.MIN_PRIORITY
-    Thread.NORM_PRIORITY
-    Thread.MAX_PRIORITY
-
-Their values are:
-
-    MIN_PRIORITY  = 1
-    NORM_PRIORITY = 5
-    MAX_PRIORITY  = 10
-
-Example:
-
-    System.out.println(Thread.MIN_PRIORITY);
-    System.out.println(Thread.NORM_PRIORITY);
-    System.out.println(Thread.MAX_PRIORITY);
-
-Output:
-
-    1
-    5
-    10
-
----
-
-# 🔹 `setPriority()`
-
-We can request a different thread priority.
-
-Example:
-
-    Thread thread = new Thread();
-
-    thread.setPriority(Thread.MAX_PRIORITY);
-
-    System.out.println(thread.getPriority());
-
-Output:
-
-    10
-
-Important:
-
-Thread priority is a scheduling hint.
-
-It does not guarantee that a higher-priority thread will always execute first.
-
----
-
-# 🔹 `getState()`
-
-`getState()` returns the current state of a thread.
-
-Example:
-
-    Thread thread = new Thread();
-
-    System.out.println(thread.getState());
-
-Output:
-
-    NEW
-
-Possible Java thread states are:
-
-    NEW
-    RUNNABLE
-    BLOCKED
-    WAITING
-    TIMED_WAITING
-    TERMINATED
-
-These states are represented by:
-
-    Thread.State
-
----
-
-# 🔹 `Thread.State`
-
-`Thread.State` is an enum inside `Thread`.
-
-Example:
-
-    Thread.State state = thread.getState();
-
-    System.out.println(state);
-
-The possible values are:
-
-    NEW
-    RUNNABLE
-    BLOCKED
-    WAITING
-    TIMED_WAITING
-    TERMINATED
-
----
-
-# 🔹 `isAlive()`
-
-`isAlive()` checks whether a thread has been started and has not yet terminated.
-
-Example:
-
-    Thread thread = new Thread(() -> {
-        System.out.println("Running");
-    });
-
-    System.out.println(thread.isAlive());
-
-    thread.start();
-
-    System.out.println(thread.isAlive());
-
-The first result is:
-
-    false
-
-After `start()`, the thread may be alive while it is executing.
-
-After completion:
-
-    false
-
----
-
-# 🔹 `interrupt()`
-
-`interrupt()` is used to request that a thread be interrupted.
-
-Example:
-
-    Thread thread = new Thread(() -> {
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            System.out.println("Thread interrupted");
-        }
-    });
-
-    thread.start();
-
-    thread.interrupt();
-
-Important:
-
-`interrupt()` does not forcibly kill a thread.
-
-It is a cooperative mechanism for requesting interruption.
-
----
-
-# 🔹 `isInterrupted()`
-
-`isInterrupted()` checks the interruption status of a thread.
-
-Example:
-
-    Thread thread = new Thread(() -> {
-
-        System.out.println(
-            Thread.currentThread().isInterrupted()
-        );
-    });
-
-    thread.start();
-
-The method returns a boolean:
-
-    true
-
-or:
-
-    false
-
-Important distinction:
-
-    isInterrupted()
-
-checks the interruption status without clearing it.
-
----
-
-# 🔹 `sleep()`
-
-`sleep()` pauses the currently executing thread for a specified amount of time.
-
-Example:
-
-    try {
-        Thread.sleep(1000);
-    } catch (InterruptedException e) {
-        System.out.println("Interrupted");
-    }
-
-The value is in milliseconds.
-
-Therefore:
-
-    1000 milliseconds = 1 second
-
-Example:
-
-    Thread.sleep(2000);
-
-means approximately:
-
-    2 seconds
-
-Important:
-
-`sleep()` is a static method.
-
-It affects the currently executing thread.
-
----
-
-# 🔹 `join()`
-
-`join()` causes the current thread to wait for another thread to finish.
-
-Example:
-
-    Thread thread = new Thread(() -> {
-
-        for (int i = 1; i <= 5; i++) {
-            System.out.println(i);
-        }
-    });
-
-    thread.start();
-
-    try {
-        thread.join();
-    } catch (InterruptedException e) {
-        System.out.println("Interrupted");
-    }
-
-    System.out.println("Main continues");
-
-Conceptually:
-
-    Main Thread
-        |
-        | start Worker
-        ↓
-    Worker Thread
-        |
-        | executes
-        ↓
-    finishes
-        |
-        ↓
-    Main continues
-
-Without `join()`, the main thread does not have to wait for the worker to finish.
-
----
-
-# 🔹 Thread Priority
-
-Thread priority is represented by an integer from:
-
-    1 → 10
-
-where:
-
-    1 = minimum priority
-    5 = normal priority
-    10 = maximum priority
-
-Example:
-
-    Thread thread = new Thread();
-
-    thread.setPriority(8);
-
-    System.out.println(thread.getPriority());
-
-Output:
-
-    8
-
-But priority should not be used as a guarantee of execution order.
-
----
-
-# 🔹 Daemon Threads
-
-A daemon thread is a background thread that does not normally keep the JVM alive after all user threads have finished.
-
-Example:
-
-    Thread thread = new Thread(() -> {
-
-        while (true) {
-            System.out.println("Background work");
-        }
-    });
-
-    thread.setDaemon(true);
-
-    thread.start();
-
-The important method is:
-
-    setDaemon(true)
-
----
-
-# 🔹 `setDaemon()`
-
-`setDaemon(true)` marks a thread as a daemon thread.
-
-Example:
-
-    Thread thread = new Thread(() -> {
-        System.out.println("Background task");
-    });
-
-    thread.setDaemon(true);
-
-    thread.start();
-
-Important:
-
-`setDaemon(true)` must be called before the thread is started.
-
-Wrong:
-
-    thread.start();
-
-    thread.setDaemon(true);
-
-This causes:
-
-    IllegalThreadStateException
-
----
-
-# 🔹 `isDaemon()`
-
-We can check whether a thread is a daemon thread.
-
-Example:
-
-    Thread thread = new Thread();
-
-    thread.setDaemon(true);
-
-    System.out.println(thread.isDaemon());
-
-Output:
-
-    true
-
----
-
-# 🔹 Multiple Threads
-
-We can create multiple threads using the `Thread` class.
-
-Example:
-
-    Thread thread1 = new Thread(() -> {
-        System.out.println("Thread 1");
-    });
-
-    Thread thread2 = new Thread(() -> {
-        System.out.println("Thread 2");
-    });
-
-    Thread thread3 = new Thread(() -> {
-        System.out.println("Thread 3");
-    });
-
-    thread1.start();
-    thread2.start();
-    thread3.start();
-
-The output order is not guaranteed.
-
-Possible output:
-
-    Thread 1
-    Thread 3
-    Thread 2
-
-Another execution might produce:
-
-    Thread 2
-    Thread 1
-    Thread 3
-
-Never assume a specific order without synchronization or coordination.
-
----
-
-# 🔹 Thread Naming
-
-Naming threads is extremely useful for debugging.
-
-Example:
-
-    Thread thread = new Thread(() -> {
-
-        System.out.println(
-            Thread.currentThread().getName()
-        );
-
-    }, "Database-Worker");
-
-    thread.start();
-
-Possible output:
-
-    Database-Worker
-
----
-
-# 🔹 Complete Example
-
-    class Main {
-
-        public static void main(String[] args) {
-
-            Thread worker = new Thread(() -> {
-
-                System.out.println(
-                    "Running: "
-                    + Thread.currentThread().getName()
-                );
-
-            }, "Worker-1");
-
-            System.out.println("State: " + worker.getState());
-
-            worker.start();
-
-            System.out.println(
-                "Name: " + worker.getName()
-            );
-
-            System.out.println(
-                "Priority: " + worker.getPriority()
-            );
-        }
-    }
-
-Possible output:
-
-    State: NEW
-    Name: Worker-1
-    Priority: 5
-    Running: Worker-1
-
-The exact order of the last lines can vary because thread scheduling is not deterministic.
-
----
-
-# 🔹 Internal Working
-
-Consider:
-
-    Runnable task = () -> {
-        System.out.println("Working");
-    };
-
-    Thread thread = new Thread(task);
-
-    thread.start();
-
-Conceptually:
-
-    1. Runnable task is created
-              ↓
-    2. Thread object is created
-              ↓
-    3. Thread is in NEW state
-              ↓
-    4. start() is called
-              ↓
-    5. Thread becomes eligible for execution
-              ↓
-    6. Scheduler gives it CPU execution time
-              ↓
-    7. run() executes
-              ↓
-    8. Task completes
-              ↓
-    9. Thread becomes TERMINATED
-
----
-
-# 🔹 Thread Object vs Actual Thread Execution
-
-This distinction is important.
-
-When we write:
-
-    Thread thread = new Thread();
-
-we create a Java object representing a thread.
-
-But it has not started execution yet.
-
-Only after:
-
-    thread.start();
-
-does the thread become eligible for execution.
-
-Therefore:
-
-    new Thread()
-        ↓
-    Thread object created
-
-and:
-
-    start()
-        ↓
-    execution begins
-
-are two different operations.
-
----
-
-# 🔹 Thread Lifecycle Connection
-
-The `Thread` class directly connects to the thread lifecycle.
-
-Example:
-
-    Thread thread = new Thread();
-
-Initial state:
-
-    NEW
-
-Then:
-
-    thread.start();
-
-The thread becomes:
-
-    RUNNABLE
-
-During its lifetime it may enter:
-
-    BLOCKED
-    WAITING
-    TIMED_WAITING
-
-After completing:
-
-    TERMINATED
-
-Conceptually:
-
-    NEW
-     ↓
-    start()
-     ↓
-    RUNNABLE
-     ↓
-    execution
-     ↓
-    TERMINATED
+| `getPriority()` | Gets priority |
+| `setPriority()` | Sets priority |
+| `getState()` | Gets thread state |
+| `setDaemon()` | Marks thread as daemon |
+| `isDaemon()` | Checks daemon status |
 
 ---
 
 # 🔹 Common Mistakes
 
-## ❌ Mistake 1 — Calling `run()` instead of `start()`
+## ❌ Mistake 1 — Calling run() instead of start()
 
 Wrong when you want a new thread:
 
-    thread.run();
+```java
+t.run();
+```
 
 Correct:
 
-    thread.start();
+```java
+t.start();
+```
 
 ---
 
-## ❌ Mistake 2 — Starting a thread twice
+## ❌ Mistake 2 — Starting the same thread twice
 
 Wrong:
 
-    thread.start();
-    thread.start();
+```java
+Thread t = new Thread();
 
-This causes:
+t.start();
+t.start();
+```
 
-    IllegalThreadStateException
+This throws:
 
-A `Thread` object can be started only once.
+```text
+IllegalThreadStateException
+```
 
 ---
 
-## ❌ Mistake 3 — Setting daemon after starting
+## ❌ Mistake 3 — Setting daemon after start()
 
 Wrong:
 
-    thread.start();
-    thread.setDaemon(true);
+```java
+Thread t = new Thread();
 
-Correct:
+t.start();
 
-    thread.setDaemon(true);
-    thread.start();
+t.setDaemon(true);
+```
 
----
-
-## ❌ Mistake 4 — Assuming priority guarantees execution order
-
-Wrong assumption:
-
-    Higher priority
-        ↓
-    Always executes first
-
-Thread priority is not a guarantee of execution order.
+Daemon status must be set before starting the thread.
 
 ---
 
-## ❌ Mistake 5 — Assuming `sleep()` stops the whole application
+## ❌ Mistake 4 — Assuming thread priority guarantees execution order
 
-`sleep()` pauses the currently executing thread.
-
-It does not pause every thread in the JVM.
+Priority is not a guarantee of execution order.
 
 ---
 
-## ❌ Mistake 6 — Assuming `interrupt()` kills a thread
+## ❌ Mistake 5 — Thinking interrupt() kills a thread
 
-`interrupt()` does not forcibly terminate a thread.
+It does not forcibly terminate the thread.
 
-It communicates an interruption request.
+It is a cooperative interruption mechanism.
 
 ---
 
 # 🔹 Interview Traps
 
-### Trap 1: Where is `Thread` located?
+### 1. What is the difference between start() and run()?
 
-    java.lang.Thread
+`start()` starts a new thread of execution.
 
----
+`run()` is the method containing the task.
 
-### Trap 2: What is the default priority?
-
-Normally:
-
-    Thread.NORM_PRIORITY
-
-which is:
-
-    5
+Calling `run()` directly is just a normal method call.
 
 ---
 
-### Trap 3: Can a thread be started twice?
+### 2. Can we call start() twice?
 
 No.
 
-It throws:
-
-    IllegalThreadStateException
+It causes `IllegalThreadStateException`.
 
 ---
 
-### Trap 4: What does `currentThread()` return?
-
-It returns the `Thread` object representing the thread currently executing the code.
-
----
-
-### Trap 5: Is `sleep()` static?
-
-Yes.
-
-It is a static method of `Thread`.
-
----
-
-### Trap 6: Does `sleep()` release locks?
+### 3. Does sleep() create a new thread?
 
 No.
 
-Sleeping does not release an intrinsic monitor lock held by the thread.
+It pauses the currently executing thread.
 
 ---
 
-### Trap 7: Does `interrupt()` kill a thread?
+### 4. Does sleep() release a synchronized lock?
+
+No.
+
+---
+
+### 5. Does interrupt() terminate a thread?
 
 No.
 
@@ -1188,277 +1223,414 @@ It requests interruption.
 
 ---
 
-### Trap 8: What is `Thread.State`?
+### 6. Can a daemon thread keep the JVM alive?
 
-It is an enum representing the state of a thread.
+No.
 
-Possible values:
+The JVM can terminate when all non-daemon threads have finished.
 
-    NEW
-    RUNNABLE
-    BLOCKED
-    WAITING
-    TIMED_WAITING
-    TERMINATED
+---
+
+### 7. Can setDaemon() be called after start()?
+
+No.
+
+It must be called before the thread is started.
+
+---
+
+### 8. What does currentThread() return?
+
+It returns the `Thread` object representing the thread currently executing the code.
 
 ---
 
 # 🔹 DSA / Problem-Solving Relevance
 
-The `Thread` class itself is not a DSA pattern.
+The `Thread` class is useful when understanding concurrent DSA problems such as:
 
-However, understanding `Thread` becomes important when solving concurrency-based problems.
-
-Examples include:
-
-- Producer-Consumer
-- Thread-safe counters
+- Producer-consumer
 - Concurrent queues
-- Alternate printing
-- Ordered execution
-- Resource sharing
-- Synchronization problems
+- Shared counters
+- Parallel searching
+- Parallel processing
+- Concurrent data structures
+- Multithreaded sorting
 
-The basic mental model is:
+A useful mental model is:
 
-    Task
-      ↓
-    Runnable
-      ↓
-    Thread
-      ↓
-    start()
-      ↓
-    Concurrent execution
+```text
+Problem
+   ↓
+Can work be divided?
+   ↓
+Independent tasks?
+   ↓
+Create threads
+   ↓
+Execute concurrently
+   ↓
+Coordinate results
+```
+
+However, simply creating more threads does not automatically make an algorithm faster.
+
+Thread creation, scheduling, synchronization, communication, and hardware limits all affect performance.
 
 ---
 
 # 🔹 30-Second Interview Answer
 
-> `Thread` is a class in `java.lang` that represents a thread of execution. It provides methods such as `start()`, `run()`, `sleep()`, `join()`, `interrupt()`, `getState()`, `getName()`, and `setPriority()`. We can create a thread directly or provide a `Runnable` task to its constructor. Calling `start()` begins a new execution path, while calling `run()` directly is just a normal method call. A thread moves through states such as NEW, RUNNABLE, WAITING, and finally TERMINATED.
+> `Thread` is a class in `java.lang` used to create and manage threads in Java. We can create a thread by extending `Thread` and overriding its `run()` method, then call `start()` to begin a new thread of execution. The class also provides methods such as `sleep()`, `join()`, `interrupt()`, `getName()`, `getState()`, and `setDaemon()`. An important distinction is that calling `run()` directly does not create a new thread, while `start()` does.
 
 ---
 
 # 🔹 Cheat Sheet
 
-| Method | Type | Purpose |
-|---|---|---|
-| `start()` | Instance | Starts thread execution |
-| `run()` | Instance | Contains/executes task logic |
-| `currentThread()` | Static | Returns current thread |
-| `getName()` | Instance | Gets thread name |
-| `setName()` | Instance | Sets thread name |
-| `getId()` | Instance | Gets thread ID |
-| `threadId()` | Instance | Gets thread ID in modern Java |
-| `getPriority()` | Instance | Gets priority |
-| `setPriority()` | Instance | Sets priority |
-| `getState()` | Instance | Gets thread state |
-| `isAlive()` | Instance | Checks whether thread is alive |
-| `interrupt()` | Instance | Requests interruption |
-| `isInterrupted()` | Instance | Checks interruption status |
-| `sleep()` | Static | Pauses current thread |
-| `join()` | Instance | Waits for another thread |
-| `setDaemon()` | Instance | Marks thread as daemon |
-| `isDaemon()` | Instance | Checks daemon status |
+## Create Thread
+
+```java
+class MyThread extends Thread {
+
+    @Override
+    public void run() {
+
+        System.out.println("Running");
+    }
+}
+```
 
 ---
 
-# 🔥 Important Constants
+## Start Thread
 
-    Thread.MIN_PRIORITY
-    → 1
+```java
+MyThread t = new MyThread();
 
-    Thread.NORM_PRIORITY
-    → 5
+t.start();
+```
 
-    Thread.MAX_PRIORITY
-    → 10
+---
 
-Thread states:
+## Current Thread
 
-    Thread.State.NEW
-    Thread.State.RUNNABLE
-    Thread.State.BLOCKED
-    Thread.State.WAITING
-    Thread.State.TIMED_WAITING
-    Thread.State.TERMINATED
+```java
+Thread current = Thread.currentThread();
+```
+
+---
+
+## Thread Name
+
+```java
+t.setName("Worker");
+
+System.out.println(t.getName());
+```
+
+---
+
+## Thread ID
+
+```java
+System.out.println(t.getId());
+```
+
+---
+
+## Check Alive
+
+```java
+System.out.println(t.isAlive());
+```
+
+---
+
+## Wait for Thread
+
+```java
+t.join();
+```
+
+---
+
+## Sleep
+
+```java
+Thread.sleep(1000);
+```
+
+---
+
+## Interrupt
+
+```java
+t.interrupt();
+```
+
+---
+
+## Priority
+
+```java
+t.setPriority(Thread.MAX_PRIORITY);
+```
+
+---
+
+## Daemon
+
+```java
+t.setDaemon(true);
+
+t.start();
+```
+
+---
+
+## State
+
+```java
+System.out.println(t.getState());
+```
 
 ---
 
 # 🧠 Memory Tricks
 
-### Thread Creation
+### `start()`
 
-    new Thread()
-        ↓
-    start()
-        ↓
-    run()
+> **Start = New Thread**
 
-### Task vs Thread
+### `run()`
 
-    Runnable = WHAT to do
+> **Run = Task**
 
-    Thread = execution mechanism
+### `sleep()`
 
-### Important Difference
+> **Sleep = Pause Current Thread**
 
-    start()
-    → new thread
+### `join()`
 
-    run()
-    → normal method call
+> **Join = Wait for Another Thread**
 
-### Thread Information
+### `interrupt()`
 
-    getName()
-    getId()
-    getPriority()
-    getState()
+> **Interrupt = Request It to Stop Waiting/Blocking or Respond to Interruption**
 
-### Thread Control
+### `currentThread()`
 
-    start()
-    sleep()
-    join()
-    interrupt()
+> **Current = Who is Running Me?**
+
+### `isAlive()`
+
+> **Alive = Started but Not Yet Terminated**
+
+### `setDaemon(true)`
+
+> **Background Thread**
 
 ---
 
 # 🔥 Top 10 Interview Questions
 
-## 1. What is the `Thread` class?
+## 1. What is the Thread class?
 
-`Thread` is a class in `java.lang` that represents a thread of execution and provides methods for managing and inspecting threads.
-
----
-
-## 2. What is the difference between `start()` and `run()`?
-
-`start()` initiates a new thread of execution.
-
-Calling `run()` directly executes the method on the current thread and does not create a new thread.
+`Thread` is a Java class in `java.lang` used to create and manage threads.
 
 ---
 
-## 3. Can `start()` be called twice?
+## 2. How do you create a thread by extending Thread?
+
+Override `run()` in a subclass and call `start()` on its object.
+
+```java
+class MyThread extends Thread {
+
+    @Override
+    public void run() {
+        System.out.println("Running");
+    }
+}
+
+class Main {
+
+    public static void main(String[] args) {
+
+        MyThread t = new MyThread();
+
+        t.start();
+    }
+}
+```
+
+---
+
+## 3. What is the difference between start() and run()?
+
+```text
+start()
+   ↓
+Starts a new thread
+   ↓
+run()
+```
+
+Whereas:
+
+```text
+run()
+   ↓
+Normal method call
+```
+
+---
+
+## 4. Can start() be called twice?
 
 No.
 
-Calling `start()` more than once on the same thread object throws:
-
-    IllegalThreadStateException
+Calling it twice on the same `Thread` object throws `IllegalThreadStateException`.
 
 ---
 
-## 4. What does `Thread.currentThread()` do?
+## 5. What does currentThread() do?
 
-It returns the `Thread` object representing the thread currently executing the code.
-
-Example:
-
-    Thread current = Thread.currentThread();
+It returns the `Thread` object representing the currently executing thread.
 
 ---
 
-## 5. What does `getName()` do?
+## 6. What does join() do?
 
-It returns the name of the thread.
-
-Example:
-
-    String name = thread.getName();
+It causes the current thread to wait until the target thread terminates.
 
 ---
 
-## 6. What does `getState()` return?
+## 7. What does sleep() do?
 
-It returns the current state of the thread as a `Thread.State` enum value.
-
----
-
-## 7. What is the default thread priority?
-
-The normal priority is:
-
-    Thread.NORM_PRIORITY
-
-which has the value:
-
-    5
+It pauses the currently executing thread for a specified amount of time.
 
 ---
 
-## 8. Does higher thread priority guarantee earlier execution?
+## 8. Does sleep() release a lock?
 
 No.
 
-Priority is a scheduling hint and should not be treated as a strict execution-order guarantee.
+If the thread owns an intrinsic monitor, sleeping does not release that monitor.
 
 ---
 
-## 9. What does `interrupt()` do?
+## 9. What is a daemon thread?
 
-It requests that a thread be interrupted.
-
-It does not forcibly kill the thread.
+A daemon thread is a background thread that does not by itself prevent the JVM from terminating after all non-daemon threads have finished.
 
 ---
 
-## 10. What is a daemon thread?
+## 10. What is the difference between Thread and Runnable?
 
-A daemon thread is a background thread that does not normally prevent the JVM from shutting down once all non-daemon threads have finished.
+`Thread` represents the thread itself and provides thread-control functionality.
+
+`Runnable` represents a task that can be executed by a thread.
+
+Example:
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Task running");
+};
+
+Thread t = new Thread(task);
+
+t.start();
+```
+
+Using `Runnable` separates:
+
+```text
+Task
+  ↓
+Runnable
+
+Thread
+  ↓
+Executes task
+```
+
+This is generally more flexible than extending `Thread`, especially because Java classes can extend only one class.
 
 ---
 
 # 🎯 Final Summary
 
-The `Thread` class is one of the fundamental classes for understanding Java multithreading.
+The most important concepts from `Thread` are:
 
-The most important concepts are:
+```text
+Thread
+  |
+  +── start()
+  |      ↓
+  |   starts new thread
+  |
+  +── run()
+  |      ↓
+  |   contains task
+  |
+  +── sleep()
+  |      ↓
+  |   pauses current thread
+  |
+  +── join()
+  |      ↓
+  |   waits for another thread
+  |
+  +── interrupt()
+  |      ↓
+  |   requests interruption
+  |
+  +── currentThread()
+  |      ↓
+  |   returns current thread
+  |
+  +── getState()
+  |      ↓
+  |   returns thread state
+  |
+  +── setDaemon()
+         ↓
+      marks daemon thread
+```
 
-    Thread
-       ↓
-    represents execution
+### ⭐ Most Important Interview Points
 
-    Runnable
-       ↓
-    represents task
+```text
+start() ≠ run()
 
-    start()
-       ↓
-    starts new execution
+start()
+→ starts a new thread
 
-    run()
-       ↓
-    contains task logic
+run()
+→ normal method if called directly
 
-    currentThread()
-       ↓
-    gets current thread
+sleep()
+→ pauses current thread
+→ does NOT release monitor
 
-    getName()
-       ↓
-    gets thread name
+join()
+→ waits for another thread
 
-    getState()
-       ↓
-    gets thread state
+interrupt()
+→ requests interruption
+→ does NOT forcibly kill thread
 
-    sleep()
-       ↓
-    pauses current thread
+start() twice
+→ IllegalThreadStateException
 
-    join()
-       ↓
-    waits for another thread
+setDaemon(true)
+→ must be called before start()
 
-    interrupt()
-       ↓
-    requests interruption
+Thread.currentThread()
+→ returns currently executing thread
+```
 
-    setDaemon()
-       ↓
-    marks thread as daemon
-
-> **Core rule: Create the task → create the Thread → call `start()` → JVM schedules the execution.**
+> **Core idea: `Thread` gives Java the basic API to create, start, inspect, coordinate, and control threads.**

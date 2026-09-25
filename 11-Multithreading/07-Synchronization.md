@@ -1,164 +1,307 @@
 # 07 — Synchronization
 
-> **Synchronization is a mechanism used to control access to shared resources when multiple threads execute concurrently.**
+> **Synchronization controls access to shared resources so that multiple threads can safely work with shared mutable data.**
 
 ---
 
 ## 📌 Table of Contents
 
 1. [Introduction](#-introduction)
-2. [Why Synchronization is Needed](#-why-synchronization-is-needed)
+2. [Why Synchronization?](#-why-synchronization)
 3. [Shared Resource](#-shared-resource)
 4. [Race Condition](#-race-condition)
-5. [synchronized Keyword](#-synchronized-keyword)
-6. [Synchronized Method](#-synchronized-method)
-7. [Synchronized Block](#-synchronized-block)
-8. [Object Lock](#-object-lock)
-9. [Intrinsic Lock / Monitor](#-intrinsic-lock--monitor)
-10. [How synchronized Works](#-how-synchronized-works)
-11. [Example Without Synchronization](#-example-without-synchronization)
-12. [Example With Synchronization](#-example-with-synchronization)
-13. [Synchronized Instance Method](#-synchronized-instance-method)
-14. [Synchronized Static Method](#-synchronized-static-method)
-15. [Instance Lock vs Class Lock](#-instance-lock-vs-class-lock)
-16. [Synchronized Block](#-synchronized-block-1)
-17. [this as Lock](#-this-as-lock)
-18. [Custom Lock Object](#-custom-lock-object)
-19. [Synchronized Method vs Block](#-synchronized-method-vs-block)
-20. [Reentrant Synchronization](#-reentrant-synchronization)
-21. [What Happens When a Thread Cannot Get the Lock](#-what-happens-when-a-thread-cannot-get-the-lock)
-22. [sleep() and synchronized](#-sleep-and-synchronized)
-23. [Synchronization and Atomicity](#-synchronization-and-atomicity)
-24. [Advantages](#-advantages)
-25. [Disadvantages](#-disadvantages)
-26. [Common Mistakes](#-common-mistakes)
-27. [Interview Traps](#-interview-traps)
-28. [DSA / Problem-Solving Relevance](#-dsa--problem-solving-relevance)
-29. [30-Second Interview Answer](#-30-second-interview-answer)
-30. [Cheat Sheet](#-cheat-sheet)
-31. [Top 10 Interview Questions](#-top-10-interview-questions)
+5. [Critical Section](#-critical-section)
+6. [What is Synchronization?](#-what-is-synchronization)
+7. [synchronized Keyword](#-synchronized-keyword)
+8. [Synchronized Instance Method](#-synchronized-instance-method)
+9. [Synchronized Block](#-synchronized-block)
+10. [Object Monitor / Intrinsic Lock](#-object-monitor--intrinsic-lock)
+11. [How synchronized Works Internally](#-how-synchronized-works-internally)
+12. [Same Object Lock](#-same-object-lock)
+13. [Different Object Locks](#-different-object-locks)
+14. [Static Synchronization](#-static-synchronization)
+15. [Class-Level Lock](#-class-level-lock)
+16. [Instance vs Static Synchronization](#-instance-vs-static-synchronization)
+17. [Synchronized Method vs Block](#-synchronized-method-vs-block)
+18. [Reentrant Synchronization](#-reentrant-synchronization)
+19. [Synchronization and sleep()](#-synchronization-and-sleep)
+20. [Synchronization and join()](#-synchronization-and-join)
+21. [Synchronization and Memory Visibility](#-synchronization-and-memory-visibility)
+22. [Advantages](#-advantages)
+23. [Disadvantages](#-disadvantages)
+24. [Common Mistakes](#-common-mistakes)
+25. [Interview Traps](#-interview-traps)
+26. [DSA / Problem-Solving Relevance](#-dsa--problem-solving-relevance)
+27. [30-Second Interview Answer](#-30-second-interview-answer)
+28. [Cheat Sheet](#-cheat-sheet)
+29. [Top 10 Interview Questions](#-top-10-interview-questions)
 
 ---
 
 # 🔹 Introduction
 
-When multiple threads access the same resource at the same time, unexpected results can occur.
+When multiple threads access the same mutable data, problems can occur.
 
 Example:
 
-    Thread 1 → balance = 1000
-    Thread 2 → balance = 1000
+```text
+Thread 1
+   |
+   ↓
+Shared Resource
+   ↑
+   |
+Thread 2
+```
 
-Both threads try to withdraw money simultaneously.
+If both threads modify the shared data at the same time, the final result may become incorrect.
 
-Without proper synchronization, both threads may read the same old value before either thread updates it.
+Java provides the:
 
-This can cause incorrect results.
+```java
+synchronized
+```
 
-Synchronization helps control this access.
+keyword to coordinate access to critical sections.
+
+The main goals of synchronization are:
+
+- Prevent race conditions
+- Provide mutual exclusion
+- Maintain consistency of shared data
+- Provide important memory-visibility guarantees
 
 ---
 
-# 🔹 Why Synchronization is Needed
+# 🔹 Why Synchronization?
 
-Consider:
+Consider a simple counter:
+
+```java
+class Counter {
 
     int count = 0;
 
-Two threads execute:
+    void increment() {
 
-    count++;
+        count++;
+    }
+}
+```
 
-At first glance:
+Now suppose two threads execute:
 
-    count++
+```java
+count++;
+```
 
-looks like one operation.
+at the same time.
 
-Internally, it involves multiple steps:
+It looks like one operation, but conceptually it involves multiple steps:
 
-    READ count
-        ↓
-    ADD 1
-        ↓
-    WRITE count
+```text
+Read count
+    ↓
+Add 1
+    ↓
+Write count
+```
 
 Suppose:
 
-    count = 0
+```text
+Initial count = 0
+```
 
-Two threads can interleave their operations:
+Thread 1:
 
-    Thread 1 → READ 0
-    Thread 2 → READ 0
-    Thread 1 → WRITE 1
-    Thread 2 → WRITE 1
+```text
+Read 0
+```
 
-Expected:
+Thread 2:
 
-    2
+```text
+Read 0
+```
 
-Actual:
+Thread 1:
 
-    1
+```text
+Write 1
+```
 
-This is a classic race condition.
+Thread 2:
+
+```text
+Write 1
+```
+
+Final result:
+
+```text
+1
+```
+
+But we expected:
+
+```text
+2
+```
+
+This is a classic race-condition scenario.
 
 ---
 
 # 🔹 Shared Resource
 
-A shared resource is data or an object that can be accessed by multiple threads.
+A **shared resource** is data or an object that can be accessed by multiple threads.
 
 Examples:
 
-- Shared counter
+- Counter
 - Bank account
-- Shared collection
+- Array
+- Collection
 - File
-- Database connection
-- Common object
-- Shared variable
+- Database record
+- Object fields
 
 Example:
 
-    class Counter {
+```java
+class Counter {
 
-        int count = 0;
+    int count = 0;
+}
+```
 
-        void increment() {
-            count++;
-        }
-    }
+Suppose multiple threads use the same object:
 
-If multiple threads use the same `Counter` object, `count` becomes shared state.
+```java
+Counter counter = new Counter();
+
+Thread t1 = new Thread(() -> counter.count++);
+Thread t2 = new Thread(() -> counter.count++);
+```
+
+Both threads access:
+
+```java
+counter.count
+```
+
+Therefore, `count` is shared mutable state.
 
 ---
 
 # 🔹 Race Condition
 
-A race condition occurs when the result depends on the timing or ordering of concurrent operations.
+A **race condition** occurs when multiple threads access shared data concurrently and the final result depends on the timing or ordering of their operations.
 
 Example:
 
-    class Counter {
+```java
+class Counter {
 
-        int count = 0;
+    int count = 0;
 
-        void increment() {
-            count++;
-        }
+    void increment() {
+
+        count++;
     }
+}
+```
 
-Multiple threads:
+Now:
 
-    Thread 1 → increment()
-    Thread 2 → increment()
-    Thread 3 → increment()
+```java
+Counter counter = new Counter();
 
-The final result may be less than expected.
+Thread t1 = new Thread(counter::increment);
+Thread t2 = new Thread(counter::increment);
 
-Synchronization can prevent multiple threads from simultaneously executing a critical section protected by the same lock.
+t1.start();
+t2.start();
+```
+
+Both threads modify the same variable.
+
+The operation:
+
+```java
+count++;
+```
+
+is not guaranteed to behave as one indivisible operation.
+
+---
+
+# 🔹 Critical Section
+
+A **critical section** is a part of code that accesses shared mutable state and needs controlled access.
+
+Example:
+
+```java
+void increment() {
+
+    count++;
+}
+```
+
+The critical section is:
+
+```java
+count++;
+```
+
+Conceptually:
+
+```text
+Thread 1 ─────┐
+              ↓
+          Critical
+           Section
+              ↓
+Thread 2 ─────┘
+```
+
+We can protect the critical section using synchronization.
+
+---
+
+# 🔹 What is Synchronization?
+
+Synchronization is a mechanism that controls access to shared resources when multiple threads are executing concurrently.
+
+The basic idea is:
+
+```text
+Multiple Threads
+       ↓
+Shared Resource
+       ↓
+Synchronization
+       ↓
+Controlled Access
+```
+
+For a synchronized critical section:
+
+```text
+Thread 1 → enters
+             ↓
+        Critical Section
+             ↓
+         exits
+
+Thread 2 → waits
+             ↓
+        enters later
+```
+
+This provides **mutual exclusion**.
 
 ---
 
@@ -166,9 +309,11 @@ Synchronization can prevent multiple threads from simultaneously executing a cri
 
 Java provides the:
 
-    synchronized
+```java
+synchronized
+```
 
-keyword for synchronization.
+keyword.
 
 It can be used with:
 
@@ -176,689 +321,836 @@ It can be used with:
 - Static methods
 - Blocks
 
-Its main purpose is to provide mutual exclusion around synchronized code using an intrinsic monitor.
-
----
-
-# 🔹 Synchronized Method
-
-Syntax:
-
-    synchronized void method() {
-        // critical section
-    }
-
 Example:
 
-    class Counter {
+```java
+synchronized void increment() {
 
-        private int count = 0;
+    count++;
+}
+```
 
-        synchronized void increment() {
-            count++;
-        }
+Or:
 
-        int getCount() {
-            return count;
-        }
-    }
+```java
+synchronized(this) {
 
-If multiple threads call `increment()` on the same `Counter` object, only one thread at a time can enter that synchronized instance method for that object.
+    count++;
+}
+```
 
----
-
-# 🔹 Synchronized Block
-
-Instead of synchronizing the entire method, we can synchronize only a specific section.
-
-Syntax:
-
-    synchronized(lockObject) {
-        // critical section
-    }
-
-Example:
-
-    class Counter {
-
-        private int count = 0;
-
-        void increment() {
-
-            synchronized(this) {
-                count++;
-            }
-        }
-    }
-
-Only the critical section is protected.
-
----
-
-# 🔹 Object Lock
-
-Every Java object has an associated intrinsic monitor.
-
-A synchronized instance method uses the monitor associated with the object.
-
-Example:
-
-    Counter counter = new Counter();
-
-    synchronized(counter) {
-        // protected code
-    }
-
-Here:
-
-    counter
-
-is the object whose monitor is used.
-
-A thread must acquire that monitor before entering the synchronized block.
-
----
-
-# 🔹 Intrinsic Lock / Monitor
-
-The terms:
-
-    intrinsic lock
-
-and:
-
-    monitor
-
-are closely related to Java's built-in synchronization mechanism.
-
-Conceptually, an object has a monitor that can be acquired by one thread at a time.
-
-Example:
-
-    synchronized(obj) {
-        // critical section
-    }
-
-Flow:
-
-    Thread
-       ↓
-    requests obj monitor
-       ↓
-    monitor available?
-       ↓
-      YES
-       ↓
-    enters synchronized block
-       ↓
-    executes code
-       ↓
-    exits block
-       ↓
-    monitor released
-
-If another thread tries to acquire the same monitor while it is held, that thread cannot enter the protected region until the monitor becomes available.
-
----
-
-# 🔹 How synchronized Works
-
-Consider:
-
-    synchronized(lock) {
-        // critical section
-    }
-
-Conceptually:
-
-    Thread 1
-       ↓
-    acquire lock
-       ↓
-    execute critical section
-       ↓
-    release lock
-
-At the same time:
-
-    Thread 2
-       ↓
-    tries to acquire same lock
-       ↓
-    cannot enter yet
-       ↓
-    waits
-       ↓
-    lock released
-       ↓
-    acquires lock
-       ↓
-    executes
-
-This provides mutual exclusion for code protected by that same monitor.
-
----
-
-# 🔹 Example Without Synchronization
-
-    class Counter {
-
-        int count = 0;
-
-        void increment() {
-            count++;
-        }
-    }
-
-    class Main {
-
-        public static void main(String[] args)
-                throws InterruptedException {
-
-            Counter counter = new Counter();
-
-            Thread t1 = new Thread(() -> {
-
-                for(int i = 0; i < 1000; i++) {
-                    counter.increment();
-                }
-            });
-
-            Thread t2 = new Thread(() -> {
-
-                for(int i = 0; i < 1000; i++) {
-                    counter.increment();
-                }
-            });
-
-            t1.start();
-            t2.start();
-
-            t1.join();
-            t2.join();
-
-            System.out.println(counter.count);
-        }
-    }
-
-Expected:
-
-    2000
-
-But without synchronization, the result may be less than:
-
-    2000
-
-because `count++` is not an atomic operation.
-
----
-
-# 🔹 Example With Synchronization
-
-    class Counter {
-
-        int count = 0;
-
-        synchronized void increment() {
-            count++;
-        }
-    }
-
-Now:
-
-    Thread 1
-        ↓
-    acquire Counter lock
-        ↓
-    increment
-        ↓
-    release lock
-
-    Thread 2
-        ↓
-    acquire Counter lock
-        ↓
-    increment
-        ↓
-    release lock
-
-After both threads finish, the expected result is:
-
-    2000
+The exact lock used depends on where synchronization is applied.
 
 ---
 
 # 🔹 Synchronized Instance Method
 
-Example:
+A method can be declared:
 
-    class Counter {
-
-        private int count;
-
-        synchronized void increment() {
-            count++;
-        }
-    }
-
-This is effectively associated with:
-
-    synchronized(this) {
-        count++;
-    }
-
-for an instance method.
-
-The lock is associated with the current object.
-
----
-
-# 🔹 Important: Same Object vs Different Objects
-
-Consider:
-
-    Counter c1 = new Counter();
-    Counter c2 = new Counter();
-
-Thread 1:
-
-    c1.increment();
-
-Thread 2:
-
-    c2.increment();
-
-Even if `increment()` is synchronized, the two calls use different object monitors:
-
-    c1 → Lock A
-
-    c2 → Lock B
-
-Therefore, they do not block each other merely because the method is synchronized.
-
-This is a very important interview concept.
-
----
-
-# 🔹 Synchronized Static Method
-
-A static synchronized method uses the monitor associated with the class object.
+```java
+synchronized
+```
 
 Example:
 
-    class Counter {
+```java
+class Counter {
 
-        static int count = 0;
-
-        static synchronized void increment() {
-            count++;
-        }
-    }
-
-Conceptually, it is associated with:
-
-    synchronized(Counter.class) {
-        count++;
-    }
-
-The lock is on the class object, not on an individual instance.
-
----
-
-# 🔹 Instance Lock vs Class Lock
-
-### Instance synchronized method
+    private int count = 0;
 
     synchronized void increment() {
-        // ...
+
+        count++;
     }
+}
+```
 
-Uses:
-
-    this
-
-object's monitor.
+Now only one thread at a time can execute this synchronized method on the **same object**.
 
 ---
 
-### Static synchronized method
+# 🔹 Example
 
-    static synchronized void increment() {
-        // ...
+```java
+class Counter {
+
+    private int count = 0;
+
+    synchronized void increment() {
+
+        count++;
     }
 
-Uses:
+    int getCount() {
 
-    ClassName.class
-
-monitor.
-
-Example:
-
-    synchronized(Counter.class) {
-        // ...
+        return count;
     }
+}
+```
 
-Memory trick:
+Create one shared object:
 
-    synchronized instance method
-        ↓
-    object lock
+```java
+class Main {
 
-    static synchronized method
-        ↓
-    class lock
+    public static void main(String[] args)
+            throws InterruptedException {
+
+        Counter counter = new Counter();
+
+        Thread t1 = new Thread(() -> {
+
+            for(int i = 0; i < 1000; i++) {
+
+                counter.increment();
+            }
+        });
+
+        Thread t2 = new Thread(() -> {
+
+            for(int i = 0; i < 1000; i++) {
+
+                counter.increment();
+            }
+        });
+
+        t1.start();
+        t2.start();
+
+        t1.join();
+        t2.join();
+
+        System.out.println(counter.getCount());
+    }
+}
+```
+
+Expected result:
+
+```text
+2000
+```
+
+The exact scheduling of the threads is not important for the final count because access to `increment()` is synchronized.
+
+---
+
+# 🔹 How Synchronized Instance Method Works
+
+For:
+
+```java
+synchronized void increment() {
+
+    count++;
+}
+```
+
+the lock is associated with the current object.
+
+Conceptually:
+
+```text
+Counter object
+      ↓
+Intrinsic lock
+      ↓
+increment()
+```
+
+If:
+
+```java
+Counter counter = new Counter();
+```
+
+then a synchronized instance method on `counter` uses the lock associated with that object.
 
 ---
 
 # 🔹 Synchronized Block
 
-A synchronized block gives more control.
+Instead of synchronizing an entire method, we can synchronize only a particular section.
+
+Syntax:
+
+```java
+synchronized(lockObject) {
+
+    // critical section
+}
+```
 
 Example:
 
-    class Counter {
+```java
+class Counter {
 
-        private int count = 0;
+    private int count = 0;
 
-        void increment() {
-
-            synchronized(this) {
-                count++;
-            }
-        }
-    }
-
-Only the code inside the block requires the lock.
-
-This can be preferable when the rest of the method does not need synchronization.
-
----
-
-# 🔹 Why Synchronized Block Can Be Better
-
-Consider:
-
-    void process() {
-
-        performLongCalculation();
+    void increment() {
 
         synchronized(this) {
-            updateSharedData();
-        }
 
-        performAnotherOperation();
+            count++;
+        }
     }
+}
+```
 
 Only:
 
-    updateSharedData();
+```java
+count++;
+```
 
-needs protection.
-
-The lock is held for a smaller portion of the method.
-
-This can reduce unnecessary contention.
-
-However, whether it improves performance depends on the actual workload.
+is protected.
 
 ---
 
-# 🔹 `this` as Lock
+# 🔹 Why Use a Synchronized Block?
 
-Inside an instance method:
+Suppose a method contains a lot of code:
+
+```java
+void process() {
+
+    // non-critical work
+
+    // more non-critical work
+
+    // shared data access
+
+    // more non-critical work
+}
+```
+
+We may only need synchronization around the shared resource.
+
+Instead of:
+
+```java
+synchronized void process() {
+
+    // everything is locked
+}
+```
+
+we can use:
+
+```java
+void process() {
+
+    // non-critical work
 
     synchronized(this) {
-        // protected section
+
+        // critical section
     }
 
-uses the current object as the monitor.
+    // more non-critical work
+}
+```
 
-Example:
-
-    class BankAccount {
-
-        private int balance = 1000;
-
-        void withdraw(int amount) {
-
-            synchronized(this) {
-                if(balance >= amount) {
-                    balance -= amount;
-                }
-            }
-        }
-    }
-
-Here:
-
-    this
-
-represents the current `BankAccount` object.
+This can reduce the amount of code that must execute while holding the lock.
 
 ---
 
-# 🔹 Custom Lock Object
+# 🔹 Object Monitor / Intrinsic Lock
 
-It is often better to use a private lock object when you do not want external code to synchronize on your object's public identity.
+Every Java object can be associated with an **intrinsic lock**, also called a **monitor**.
+
+When a thread enters:
+
+```java
+synchronized(object) {
+
+    // critical section
+}
+```
+
+it attempts to acquire that object's monitor.
+
+Conceptually:
+
+```text
+Object
+  |
+  ↓
+Intrinsic Lock / Monitor
+  |
+  ↓
+Thread acquires lock
+  |
+  ↓
+Enters synchronized block
+```
+
+When the thread exits the synchronized block, the monitor is released.
+
+---
+
+# 🔹 How synchronized Works Internally
+
+Consider:
+
+```java
+synchronized(lock) {
+
+    count++;
+}
+```
+
+Conceptually:
+
+```text
+Thread
+   ↓
+Try to acquire lock
+   ↓
+Is lock available?
+   |
+   +---- YES ----→ Acquire lock
+   |                  ↓
+   |             Execute code
+   |                  ↓
+   |              Release lock
+   |
+   +---- NO ----→ Wait until available
+```
+
+Only one thread can own a particular intrinsic lock at a time.
+
+---
+
+# 🔹 Same Object Lock
+
+Consider:
+
+```java
+class Counter {
+
+    synchronized void increment() {
+
+        System.out.println("Increment");
+    }
+
+    synchronized void decrement() {
+
+        System.out.println("Decrement");
+    }
+}
+```
+
+Suppose:
+
+```java
+Counter counter = new Counter();
+
+Thread t1 = new Thread(counter::increment);
+Thread t2 = new Thread(counter::decrement);
+```
+
+Both methods synchronize on the same `counter` object.
+
+Therefore:
+
+```text
+counter
+   |
+   ↓
+one intrinsic lock
+   |
+   +---- increment()
+   |
+   +---- decrement()
+```
+
+If one thread owns the lock, another thread must wait before entering another synchronized instance method on the same object.
+
+---
+
+# 🔹 Different Object Locks
+
+Now consider:
+
+```java
+Counter c1 = new Counter();
+Counter c2 = new Counter();
+```
+
+These are two different objects.
+
+Therefore:
+
+```text
+c1 → Lock 1
+
+c2 → Lock 2
+```
+
+A synchronized instance method on `c1` does not use the same intrinsic lock as a synchronized instance method on `c2`.
 
 Example:
 
-    class Counter {
+```java
+Counter c1 = new Counter();
+Counter c2 = new Counter();
 
-        private final Object lock = new Object();
+Thread t1 = new Thread(c1::increment);
+Thread t2 = new Thread(c2::increment);
 
-        private int count = 0;
+t1.start();
+t2.start();
+```
 
-        void increment() {
+The two threads can potentially execute their synchronized methods concurrently because they are locking different objects.
 
-            synchronized(lock) {
-                count++;
-            }
-        }
+---
+
+# 🔹 Static Synchronization
+
+A static method can also be synchronized.
+
+Example:
+
+```java
+class Counter {
+
+    private static int count = 0;
+
+    static synchronized void increment() {
+
+        count++;
+    }
+}
+```
+
+Here the lock is associated with the `Class` object rather than an individual instance.
+
+Conceptually:
+
+```text
+Counter.class
+     ↓
+Class-level lock
+     ↓
+static synchronized method
+```
+
+---
+
+# 🔹 Class-Level Lock
+
+For a static synchronized method:
+
+```java
+static synchronized void increment() {
+
+    count++;
+}
+```
+
+the lock is effectively associated with:
+
+```java
+Counter.class
+```
+
+Conceptually similar to:
+
+```java
+static void increment() {
+
+    synchronized(Counter.class) {
+
+        count++;
+    }
+}
+```
+
+This is the important distinction:
+
+```text
+synchronized instance method
+→ object-level lock
+
+static synchronized method
+→ class-level lock
+```
+
+---
+
+# 🔹 Instance vs Static Synchronization
+
+| Instance Synchronization | Static Synchronization |
+|---|---|
+| Locks an object | Locks the class object |
+| `synchronized void method()` | `static synchronized void method()` |
+| Different instances have different locks | Same class-level lock |
+| Object-specific | Class-specific |
+
+Example:
+
+```java
+class Example {
+
+    synchronized void instanceMethod() {
+
+        System.out.println("Instance");
     }
 
-Here:
+    static synchronized void staticMethod() {
 
-    lock
+        System.out.println("Static");
+    }
+}
+```
 
-is the monitor used for synchronization.
+Conceptually:
 
-Because it is private, outside code cannot normally acquire the same lock through that reference.
+```text
+instanceMethod()
+       ↓
+this object lock
+
+
+staticMethod()
+       ↓
+Example.class lock
+```
 
 ---
 
 # 🔹 Synchronized Method vs Block
 
-| Feature | Synchronized Method | Synchronized Block |
-|---|---|---|
-| Scope | Entire method | Selected section |
-| Lock control | Less control | More control |
-| Syntax | Simple | More explicit |
-| Useful when | Whole method needs protection | Only part needs protection |
-| Lock object | Implicit | Explicit |
+## Synchronized Method
 
-Example method:
+```java
+synchronized void increment() {
 
-    synchronized void update() {
-        // entire method
+    count++;
+}
+```
+
+The entire method is synchronized.
+
+---
+
+## Synchronized Block
+
+```java
+void increment() {
+
+    synchronized(this) {
+
+        count++;
     }
+}
+```
 
-Example block:
+Only the block is synchronized.
 
-    void update() {
+---
 
-        // non-critical work
+## Main Difference
 
-        synchronized(this) {
-            // critical work
+```text
+Method
+→ larger synchronization scope
+
+Block
+→ smaller synchronization scope
+```
+
+A synchronized block also lets you explicitly choose the lock object.
+
+Example:
+
+```java
+synchronized(lock) {
+
+    count++;
+}
+```
+
+---
+
+# 🔹 Custom Lock Object
+
+You do not always have to synchronize on `this`.
+
+Example:
+
+```java
+class Counter {
+
+    private int count = 0;
+
+    private final Object lock = new Object();
+
+    void increment() {
+
+        synchronized(lock) {
+
+            count++;
         }
     }
+}
+```
+
+Here:
+
+```text
+lock object
+    ↓
+protects count
+```
+
+This can be useful when you want to control exactly which operations share the same lock.
+
+---
+
+# 🔹 Why Use a Private Lock?
+
+A private lock:
+
+```java
+private final Object lock = new Object();
+```
+
+cannot normally be accessed directly by outside code.
+
+Therefore, external code cannot intentionally synchronize on that same object.
+
+Example:
+
+```java
+class Counter {
+
+    private final Object lock = new Object();
+
+    private int count;
+
+    void increment() {
+
+        synchronized(lock) {
+
+            count++;
+        }
+    }
+}
+```
+
+This is often preferable to synchronizing on publicly accessible objects.
 
 ---
 
 # 🔹 Reentrant Synchronization
 
-Java's intrinsic locks are reentrant.
+Java's intrinsic locks are **reentrant**.
 
-This means:
+Reentrant means:
 
-> A thread that already owns a monitor can acquire the same monitor again.
+> A thread that already owns a lock can acquire the same lock again.
 
 Example:
 
-    class Demo {
+```java
+class Example {
 
-        synchronized void method1() {
-            method2();
-        }
+    synchronized void method1() {
 
-        synchronized void method2() {
-            System.out.println("Inside method2");
-        }
+        method2();
     }
 
-If the same thread calls:
+    synchronized void method2() {
 
-    method1()
+        System.out.println("Inside method2");
+    }
+}
+```
 
-then it already owns the object's monitor.
+Suppose a thread enters:
 
-When it calls:
+```java
+method1()
+```
 
-    method2()
+It acquires the object's lock.
 
-it can acquire the same monitor again.
+Then:
 
-The JVM tracks the reentrant ownership.
+```java
+method1()
+    ↓
+method2()
+```
+
+The same thread enters another synchronized method using the same object lock.
+
+This is allowed because the lock is reentrant.
 
 Conceptually:
 
-    Thread
-       ↓
-    acquire lock
-       ↓
-    method1()
-       ↓
-    method2()
-       ↓
-    same thread acquires same lock again
-       ↓
-    allowed
+```text
+Thread owns lock
+      ↓
+Calls another synchronized method
+      ↓
+Same thread requests same lock
+      ↓
+Allowed
+```
 
 ---
 
-# 🔹 What Happens When a Thread Cannot Get the Lock
-
-Suppose:
-
-    synchronized(lock) {
-        // critical section
-    }
-
-Thread 1 acquires the lock.
-
-Thread 2 tries to acquire the same lock.
-
-Thread 2 cannot enter the synchronized block while Thread 1 owns the monitor.
-
-Conceptually:
-
-    Thread 1
-       ↓
-    LOCK
-       ↓
-    CRITICAL SECTION
-
-    Thread 2
-       ↓
-    REQUEST SAME LOCK
-       ↓
-    WAIT/BLOCK
-
-When Thread 1 exits the synchronized region:
-
-    Thread 1
-       ↓
-    RELEASE LOCK
-
-Thread 2 can then compete to acquire the monitor.
-
----
-
-# 🔹 sleep() and synchronized
-
-Consider:
-
-    synchronized(lock) {
-
-        Thread.sleep(5000);
-
-    }
-
-The thread sleeps while still holding the intrinsic monitor associated with `lock`.
+# 🔹 Synchronization and sleep()
 
 Important:
 
-    sleep()
-        ↓
-    does NOT release monitor
-
-Therefore, another thread trying to enter:
-
-    synchronized(lock)
-
-cannot acquire that same monitor while it is held.
-
----
-
-# 🔹 Synchronization and Atomicity
-
-Synchronization can make a compound operation effectively atomic with respect to other threads using the same synchronization protocol.
+> `Thread.sleep()` does not release an intrinsic monitor lock.
 
 Example:
 
-    synchronized void increment() {
-        count++;
+```java
+class Example {
+
+    synchronized void work() {
+
+        try {
+
+            Thread.sleep(3000);
+
+        } catch(InterruptedException e) {
+
+            Thread.currentThread().interrupt();
+        }
     }
+}
+```
 
-Without synchronization:
+While the thread sleeps:
 
-    READ
-      ↓
-    MODIFY
-      ↓
-    WRITE
-
-can interleave between threads.
-
-With synchronization:
-
-    acquire lock
+```text
+Thread owns lock
        ↓
-    READ
+sleep()
        ↓
-    MODIFY
+Thread pauses
        ↓
-    WRITE
-       ↓
-    release lock
+Lock remains held
+```
 
-Other synchronized threads using the same monitor cannot enter the protected section simultaneously.
+Another thread cannot acquire that same lock merely because the first thread is sleeping.
 
 ---
 
-# 🔹 Synchronization and Visibility
+# 🔹 Synchronization and join()
 
-Synchronization also provides memory-visibility guarantees between threads that synchronize using the same monitor.
+`join()` makes the current thread wait for another thread.
 
-When a thread exits a synchronized block, its actions before the unlock become visible to a thread that subsequently acquires the same monitor.
+Example:
 
-Therefore synchronization helps with both:
+```java
+class Main {
 
-    Mutual Exclusion
-          +
-    Visibility
+    public static void main(String[] args)
+            throws InterruptedException {
+
+        Thread worker = new Thread(() -> {
+
+            System.out.println("Worker running");
+        });
+
+        worker.start();
+
+        worker.join();
+
+        System.out.println("Worker finished");
+    }
+}
+```
+
+`join()` itself is not a synchronization mechanism for protecting shared data.
+
+It is primarily used for thread coordination.
+
+However, joining a thread also establishes an important memory-visibility relationship: actions performed by a thread happen-before another thread successfully returns from `join()` on it.
+
+---
+
+# 🔹 Synchronization and Memory Visibility
+
+Synchronization is not only about preventing two threads from entering a critical section simultaneously.
+
+It also provides **memory visibility guarantees**.
+
+Suppose:
+
+```java
+class SharedData {
+
+    int value = 0;
+
+    synchronized void write() {
+
+        value = 100;
+    }
+
+    synchronized int read() {
+
+        return value;
+    }
+}
+```
+
+When one thread performs the synchronized write and another later acquires the same monitor and performs the synchronized read, the synchronization establishes a happens-before relationship between those actions.
+
+Conceptually:
+
+```text
+Thread 1
+   |
+   | synchronized write
+   ↓
+value = 100
+   |
+   ↓
+release lock
+   |
+   ↓
+acquire lock
+   |
+   ↓
+Thread 2
+   |
+   | synchronized read
+   ↓
+sees value = 100
+```
+
+This is one reason synchronization is important for thread safety.
+
+---
+
+# 🔹 Happens-Before
+
+The Java Memory Model defines ordering relationships called **happens-before**.
+
+For synchronized blocks/methods using the same monitor:
+
+```text
+Unlock
+  ↓
+happens-before
+  ↓
+subsequent lock of same monitor
+```
+
+This means actions before releasing the monitor become visible to a thread that subsequently acquires that same monitor.
+
+This topic becomes especially important when studying the **Java Memory Model (JMM)**.
 
 ---
 
@@ -866,320 +1158,544 @@ Therefore synchronization helps with both:
 
 ### 1. Prevents race conditions
 
-Proper synchronization can prevent conflicting concurrent updates.
+Synchronization can protect critical sections from simultaneous access.
+
+---
 
 ### 2. Provides mutual exclusion
 
-Only one thread can hold a particular intrinsic monitor at a time.
+Only one thread at a time can hold a particular intrinsic lock.
 
-### 3. Provides visibility guarantees
+---
+
+### 3. Provides memory visibility
 
 Synchronization establishes important happens-before relationships.
 
-### 4. Built into Java
+---
 
-No external library is required for intrinsic synchronization.
+### 4. Simple built-in mechanism
 
-### 5. Simple for basic cases
+Java provides synchronization directly through:
 
-The `synchronized` keyword is straightforward for many synchronization requirements.
+```java
+synchronized
+```
+
+No external library is required.
+
+---
+
+### 5. Reentrant
+
+The same thread can acquire the same intrinsic lock multiple times.
 
 ---
 
 # 🔹 Disadvantages
 
-### 1. Thread contention
+### 1. Performance overhead
 
-Multiple threads may compete for the same lock.
+Lock acquisition and release have overhead.
+
+---
 
 ### 2. Reduced concurrency
 
-Only one thread can execute a particular synchronized critical section protected by the same monitor at a time.
+If too much code is synchronized, threads may spend significant time waiting.
 
-### 3. Possible deadlock
+---
 
-Poor lock design can result in deadlocks.
+### 3. Possible deadlocks
 
-### 4. Performance overhead
+Poorly designed locking can result in deadlocks.
 
-Lock acquisition and contention can introduce overhead.
+Example concept:
 
-### 5. Large critical sections
+```text
+Thread 1
+  ↓
+Lock A
+  ↓
+waits for B
 
-Holding a lock for too long can unnecessarily block other threads.
+Thread 2
+  ↓
+Lock B
+  ↓
+waits for A
+```
+
+Both can become stuck.
+
+Deadlock is covered in the next related topic.
+
+---
+
+### 4. Lock contention
+
+Many threads competing for the same lock can reduce throughput.
+
+```text
+Thread 1 ──┐
+Thread 2 ──┤
+Thread 3 ──┼──→ Same Lock
+Thread 4 ──┤
+Thread 5 ──┘
+```
+
+Only one can own the lock at a time.
+
+---
+
+### 5. Over-synchronization
+
+Synchronizing code that does not need synchronization can unnecessarily reduce concurrency.
 
 ---
 
 # 🔹 Common Mistakes
 
-## ❌ Mistake 1 — Synchronizing different objects
+## ❌ Mistake 1 — Thinking synchronized makes everything thread-safe
+
+Synchronization only protects the code and shared state covered by the synchronization strategy.
 
 Example:
 
-    synchronized(new Object()) {
+```java
+class Counter {
+
+    int count;
+
+    synchronized void increment() {
+
         count++;
     }
 
-This creates a new object each time.
+    void reset() {
 
-Different threads may therefore synchronize on different monitors.
+        count = 0;
+    }
+}
+```
 
-Synchronization is effective only when threads use the same lock for the shared resource.
+`increment()` is synchronized, but `reset()` is not.
+
+So the overall class may still require careful analysis.
 
 ---
 
-## ❌ Mistake 2 — Synchronizing only one side
+# 🔹 Mistake 2 — Using different locks accidentally
 
-Suppose:
+Consider:
 
-    synchronized(lock) {
-        count++;
+```java
+class Counter {
+
+    private final Object lock1 = new Object();
+    private final Object lock2 = new Object();
+
+    void increment() {
+
+        synchronized(lock1) {
+
+            // ...
+        }
     }
 
-but another thread directly accesses:
+    void decrement() {
 
-    count++;
+        synchronized(lock2) {
 
-The second operation does not automatically become synchronized.
+            // ...
+        }
+    }
+}
+```
 
-All accesses that need coordination must follow a consistent synchronization strategy.
+These are different locks.
 
----
-
-## ❌ Mistake 3 — Assuming synchronized makes everything thread-safe
-
-Synchronization protects the code associated with a particular lock.
-
-It does not automatically make every field, method, or object in a class thread-safe.
+Therefore, synchronization between them is not automatically established.
 
 ---
 
-## ❌ Mistake 4 — Using a huge synchronized block
+# 🔹 Mistake 3 — Thinking sleep() releases lock
+
+It does not.
+
+```java
+synchronized(lock) {
+
+    Thread.sleep(5000);
+}
+```
+
+The lock remains held while the thread sleeps.
+
+---
+
+# 🔹 Mistake 4 — Synchronizing on a changing object
+
+Avoid designs where the object used as a lock can be replaced.
+
+For example:
+
+```java
+Object lock = new Object();
+```
+
+and later:
+
+```java
+lock = new Object();
+```
+
+Different threads may end up synchronizing on different objects.
+
+A dedicated lock is commonly declared:
+
+```java
+private final Object lock = new Object();
+```
+
+---
+
+# 🔹 Mistake 5 — Synchronizing on public objects
 
 Example:
 
-    synchronized(this) {
+```java
+synchronized("LOCK") {
 
-        doVeryLongOperation();
+    // ...
+}
+```
 
-        doAnotherLongOperation();
+Using publicly accessible objects as locks can create unintended lock contention.
 
-        updateSharedData();
-    }
+Prefer a private lock when appropriate:
 
-If only:
-
-    updateSharedData();
-
-requires synchronization, the lock is being held unnecessarily long.
-
----
-
-## ❌ Mistake 5 — Confusing synchronization with parallel execution
-
-Synchronization does not make threads execute in parallel.
-
-It controls access to protected critical sections.
+```java
+private final Object lock = new Object();
+```
 
 ---
 
 # 🔹 Interview Traps
 
-### Trap 1: Can two threads execute the same synchronized instance method simultaneously?
+### Q1. What is synchronization?
 
-Not on the **same object monitor**.
-
-If both calls target the same object, only one can hold that object's monitor at a time.
+It is a mechanism for controlling concurrent access to shared resources and maintaining thread safety.
 
 ---
 
-### Trap 2: Can two synchronized methods execute simultaneously?
+### Q2. What does synchronized do?
 
-It depends on their locks.
-
-For the same object:
-
-    synchronized method A
-    synchronized method B
-
-both use the same instance monitor, so they cannot execute concurrently on that object.
+It provides mutual exclusion around the synchronized region and establishes relevant memory-visibility guarantees.
 
 ---
 
-### Trap 3: Can synchronized methods on different objects execute simultaneously?
+### Q3. What lock does a synchronized instance method use?
 
-Yes.
-
-Different objects have different intrinsic monitors.
+The intrinsic lock associated with the current object (`this`).
 
 ---
 
-### Trap 4: Does synchronized guarantee ordering?
+### Q4. What lock does a static synchronized method use?
+
+The intrinsic lock associated with the class object.
+
+For example:
+
+```java
+Example.class
+```
+
+---
+
+### Q5. Can two threads execute a synchronized method simultaneously?
+
+It depends on the lock.
+
+For the same object and the same intrinsic lock:
+
+```text
+No
+```
+
+For different objects:
+
+```text
+Yes, potentially
+```
+
+---
+
+### Q6. Does synchronized guarantee ordering?
 
 No.
 
-It provides mutual exclusion and memory-visibility guarantees, but does not guarantee a particular scheduling order among waiting threads.
+Synchronization provides mutual exclusion and memory-visibility guarantees, but it does not mean threads execute in a predetermined order.
 
 ---
 
-### Trap 5: Does sleep() release a synchronized lock?
+### Q7. Does sleep() release a synchronized lock?
 
 No.
 
 ---
 
-### Trap 6: Is synchronized reentrant?
+### Q8. Are synchronized locks reentrant?
 
 Yes.
 
-The thread that owns a monitor can acquire it again.
+Java's intrinsic monitors are reentrant.
 
 ---
 
-### Trap 7: What lock does a static synchronized method use?
+### Q9. Can synchronized be used with a block?
 
-The monitor associated with the class object.
+Yes.
 
-Example:
+```java
+synchronized(lock) {
 
-    Counter.class
+    // critical section
+}
+```
 
 ---
 
-### Trap 8: What lock does an instance synchronized method use?
+### Q10. Can static methods be synchronized?
 
-The monitor associated with the current object.
+Yes.
 
-Conceptually:
+```java
+static synchronized void method() {
 
-    this
+}
+```
 
 ---
 
 # 🔹 DSA / Problem-Solving Relevance
 
-Synchronization becomes important when DSA operations are performed concurrently.
+Synchronization is not a DSA pattern itself, but it becomes important when DSA structures are shared between threads.
 
 Examples:
 
 - Shared counters
 - Concurrent queues
 - Producer-consumer problems
-- Shared caches
-- Concurrent data structures
-- Parallel algorithms
 - Thread-safe collections
+- Parallel processing
+- Shared caches
+- Concurrent graph processing
 
-Example concept:
+Example conceptual problem:
 
-    Thread 1 ──┐
-               ├──> Shared Counter
-    Thread 2 ──┘
+```text
+Multiple threads
+       ↓
+Shared Queue
+       ↓
+Thread-safe access
+       ↓
+Synchronization
+```
 
-Without synchronization:
+The key question in a concurrent problem is:
 
-    Race Condition
+> **Which data is shared, and which operations must be atomic with respect to other threads?**
 
-With proper synchronization:
+---
 
-    Thread 1 → Lock → Update → Unlock
-    Thread 2 → Lock → Update → Unlock
+# 🔹 Problem-Solving Mindset
+
+When analyzing a multithreaded problem, ask:
+
+```text
+1. What data is shared?
+        ↓
+2. Is it mutable?
+        ↓
+3. Can multiple threads access it?
+        ↓
+4. Is an operation made of multiple steps?
+        ↓
+5. Can operations interleave?
+        ↓
+6. What needs protection?
+        ↓
+7. What lock should protect it?
+```
+
+This thought process is more important than simply adding `synchronized` everywhere.
 
 ---
 
 # 🔹 30-Second Interview Answer
 
-> Synchronization in Java is a mechanism for controlling concurrent access to shared resources. The `synchronized` keyword provides mutual exclusion using an object's intrinsic monitor and also provides memory-visibility guarantees. A synchronized instance method locks the current object, while a static synchronized method locks the class object. Synchronization helps prevent race conditions, but excessive synchronization can cause contention and reduce concurrency.
+> Synchronization in Java is a mechanism used to safely coordinate access to shared mutable resources between multiple threads. The `synchronized` keyword provides mutual exclusion for a particular intrinsic lock and also establishes important memory-visibility guarantees. It can be applied to instance methods, static methods, or blocks. Instance synchronized methods use the object's monitor, while static synchronized methods use the class object's monitor.
 
 ---
 
 # 🔹 Cheat Sheet
 
-## `synchronized` method
+## Synchronized Instance Method
 
-    synchronized void increment() {
-        count++;
-    }
+```java
+synchronized void increment() {
 
-Means:
-
-    lock current object
-        ↓
-    execute method
-        ↓
-    release lock
-
----
-
-## `synchronized` block
-
-    synchronized(lock) {
-        count++;
-    }
-
-Means:
-
-    acquire lock
-        ↓
-    execute block
-        ↓
-    release lock
-
----
-
-## Instance synchronized method
-
-    synchronized void method()
+    count++;
+}
+```
 
 Lock:
 
-    this
+```text
+this
+```
 
 ---
 
-## Static synchronized method
+## Synchronized Block
 
-    static synchronized void method()
+```java
+synchronized(lock) {
+
+    count++;
+}
+```
 
 Lock:
 
-    ClassName.class
+```text
+lock object
+```
 
 ---
 
-## Key Properties
+## Static Synchronized Method
 
-    synchronized
-        ↓
-    Mutual Exclusion
-        +
-    Visibility
-        +
-    Reentrant
+```java
+static synchronized void increment() {
+
+    count++;
+}
+```
+
+Lock:
+
+```text
+Class object
+```
+
+Example:
+
+```java
+Counter.class
+```
+
+---
+
+## Static Synchronized Block
+
+```java
+static void increment() {
+
+    synchronized(Counter.class) {
+
+        count++;
+    }
+}
+```
+
+---
+
+# 🔹 Quick Comparison
+
+| Type | Lock |
+|---|---|
+| `synchronized` instance method | `this` |
+| `synchronized(this)` | Current object |
+| `synchronized(lock)` | `lock` object |
+| `static synchronized` method | Class object |
+| `synchronized(ClassName.class)` | Class object |
+
+---
+
+# 🔹 Synchronization Flow
+
+```text
+Thread
+   ↓
+Requests Lock
+   ↓
+Is Lock Available?
+   |
+   +---- YES ----→ Acquire Lock
+   |                  ↓
+   |             Critical Section
+   |                  ↓
+   |              Release Lock
+   |
+   +---- NO ----→ Wait
+                      ↓
+                 Lock Available
+                      ↓
+                 Acquire Lock
+```
 
 ---
 
 # 🧠 Memory Tricks
 
-### Synchronization
+### `synchronized`
 
-> **One lock → One thread at a time**
+> **One lock → controlled access**
 
 ### Instance method
 
 > **Object lock**
 
+```text
+synchronized method
+        ↓
+      this
+```
+
 ### Static method
 
 > **Class lock**
 
+```text
+static synchronized
+        ↓
+    ClassName.class
+```
+
+### Block
+
+> **Choose the lock**
+
+```java
+synchronized(lock) {
+
+}
+```
+
 ### sleep()
 
-> **Does NOT release monitor**
+> **Pause but keep lock**
 
-### Reentrant
-
-> **Same thread can acquire the same lock again**
+```text
+sleep()
+   ↓
+Thread pauses
+   ↓
+Lock remains held
+```
 
 ---
 
@@ -1187,59 +1703,53 @@ Lock:
 
 ## 1. What is synchronization?
 
-Synchronization is a mechanism for controlling concurrent access to shared resources.
+Synchronization controls concurrent access to shared resources and helps maintain thread safety.
 
 ---
 
-## 2. Why is synchronization required?
+## 2. Why is synchronization needed?
 
-To prevent race conditions and provide appropriate memory-visibility guarantees when threads access shared mutable state.
-
----
-
-## 3. What does `synchronized` do?
-
-It uses an intrinsic monitor to provide mutual exclusion around synchronized code and establishes memory-visibility guarantees.
+Because multiple threads accessing shared mutable data can cause race conditions and inconsistent results.
 
 ---
 
-## 4. What lock does a synchronized instance method use?
+## 3. What is a race condition?
 
-The monitor associated with the current object.
-
-Conceptually:
-
-    this
+A race condition occurs when the result depends on the timing or ordering of concurrent operations on shared data.
 
 ---
 
-## 5. What lock does a static synchronized method use?
+## 4. What is a critical section?
 
-The monitor associated with the class object.
-
-Example:
-
-    Counter.class
+A critical section is code that accesses shared mutable state and needs controlled concurrent access.
 
 ---
 
-## 6. What is a synchronized block?
+## 5. What lock does a synchronized instance method use?
 
-A block of code protected by a specified monitor.
+The intrinsic lock associated with the current object:
 
-Example:
-
-    synchronized(lock) {
-        // critical section
-    }
+```java
+this
+```
 
 ---
 
-## 7. Can two threads execute synchronized methods simultaneously?
+## 6. What lock does a static synchronized method use?
 
-On the same object and same intrinsic monitor, they cannot simultaneously execute synchronized instance methods.
+The intrinsic lock associated with the class object:
 
-Different objects can have different monitors.
+```java
+ClassName.class
+```
+
+---
+
+## 7. What is the difference between synchronized method and block?
+
+A synchronized method protects the entire method.
+
+A synchronized block protects only a selected section and allows you to specify the lock object.
 
 ---
 
@@ -1247,7 +1757,7 @@ Different objects can have different monitors.
 
 No.
 
-A thread sleeping while holding an intrinsic monitor continues to hold that monitor.
+The thread continues to own the intrinsic lock while sleeping.
 
 ---
 
@@ -1255,58 +1765,96 @@ A thread sleeping while holding an intrinsic monitor continues to hold that moni
 
 Yes.
 
-The same thread can acquire the same intrinsic monitor multiple times.
+A thread that already owns an intrinsic lock can acquire the same lock again.
 
 ---
 
-## 10. What are the disadvantages of synchronization?
+## 10. Does synchronized guarantee execution order?
 
-Potential disadvantages include:
+No.
 
-- Lock contention
-- Reduced concurrency
-- Performance overhead
-- Deadlock risk with poor locking design
-- Longer waiting times
+It controls access to the protected region but does not guarantee which thread gets the lock first or a fixed execution order.
 
 ---
 
 # 🎯 Final Summary
 
-The core idea of synchronization is:
+```text
+                 SYNCHRONIZATION
+                       |
+                       ↓
+              Shared Mutable Data
+                       |
+                       ↓
+                Multiple Threads
+                       |
+                       ↓
+               synchronized
+                       |
+             +---------+---------+
+             |                   |
+             ↓                   ↓
+       Mutual Exclusion    Memory Visibility
+             |
+             ↓
+       Critical Section
+```
 
-    Shared Resource
-          ↓
-    Multiple Threads
-          ↓
-    Concurrent Access
-          ↓
-    Race Condition
-          ↓
-    synchronized
-          ↓
-    One thread at a time
-          ↓
-    Safer shared-state access
+### ⭐ Most Important Concepts
 
-Remember:
+```text
+Race Condition
+      ↓
+Problem caused by concurrent access
 
-    synchronized method
-        ↓
-    locks object/class
+Critical Section
+      ↓
+Code accessing shared mutable state
 
-    synchronized block
-        ↓
-    locks specified object
+synchronized
+      ↓
+Controls access to critical section
 
-    sleep()
-        ↓
-    does NOT release monitor
+Instance synchronized
+      ↓
+Object-level lock
 
-    synchronized
-        ↓
-    mutual exclusion + visibility
+Static synchronized
+      ↓
+Class-level lock
 
-    synchronized locks
-        ↓
-    are reentrant
+Synchronized block
+      ↓
+Explicitly choose lock
+
+Intrinsic Lock / Monitor
+      ↓
+Lock associated with an object
+
+Reentrant
+      ↓
+Same thread can acquire same lock again
+```
+
+### ⭐ Most Important Code
+
+```java
+class Counter {
+
+    private int count = 0;
+
+    synchronized void increment() {
+
+        count++;
+    }
+
+    int getCount() {
+
+        return count;
+    }
+}
+```
+
+### ⭐ One-Line Interview Memory
+
+> **Synchronization protects shared mutable data by controlling which thread can enter a critical section at a time, while also providing important memory-visibility guarantees.**

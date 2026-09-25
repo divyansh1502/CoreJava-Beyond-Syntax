@@ -1,6 +1,6 @@
 # 05 — Runnable
 
-> **`Runnable` is a functional interface that represents a task that can be executed by a thread.**
+> **`Runnable` represents a task that can be executed by a thread.**
 
 ---
 
@@ -9,1102 +9,1448 @@
 1. [Introduction](#-introduction)
 2. [What is Runnable?](#-what-is-runnable)
 3. [Runnable Interface](#-runnable-interface)
-4. [run() Method](#-run-method)
-5. [Creating a Runnable](#-creating-a-runnable)
-6. [Runnable with Thread](#-runnable-with-thread)
-7. [Lambda Expression with Runnable](#-lambda-expression-with-runnable)
-8. [Runnable vs Thread](#-runnable-vs-thread)
-9. [Multiple Tasks with Runnable](#-multiple-tasks-with-runnable)
-10. [Passing Runnable to Thread](#-passing-runnable-to-thread)
-11. [Anonymous Runnable](#-anonymous-runnable)
-12. [Runnable and Functional Interface](#-runnable-and-functional-interface)
-13. [Runnable with Thread Name](#-runnable-with-thread-name)
-14. [Runnable and `start()`](#-runnable-and-start)
-15. [Runnable and `run()`](#-runnable-and-run)
-16. [Internal Working](#-internal-working)
-17. [Why Prefer Runnable?](#-why-prefer-runnable)
-18. [Common Mistakes](#-common-mistakes)
-19. [Interview Traps](#-interview-traps)
-20. [DSA / Problem-Solving Relevance](#-dsa--problem-solving-relevance)
-21. [30-Second Interview Answer](#-30-second-interview-answer)
-22. [Cheat Sheet](#-cheat-sheet)
-23. [Top 10 Interview Questions](#-top-10-interview-questions)
+4. [Why Runnable?](#-why-runnable)
+5. [Implementing Runnable](#-implementing-runnable)
+6. [Starting a Runnable](#-starting-a-runnable)
+7. [Runnable vs Thread](#-runnable-vs-thread)
+8. [Runnable with Lambda](#-runnable-with-lambda)
+9. [Multiple Threads with One Runnable](#-multiple-threads-with-one-runnable)
+10. [Runnable and Shared Data](#-runnable-and-shared-data)
+11. [Runnable as a Functional Interface](#-runnable-as-a-functional-interface)
+12. [run() Method](#-run-method)
+13. [Thread Constructor with Runnable](#-thread-constructor-with-runnable)
+14. [Runnable Internal Working](#-runnable-internal-working)
+15. [Common Mistakes](#-common-mistakes)
+16. [Interview Traps](#-interview-traps)
+17. [DSA / Problem-Solving Relevance](#-dsa--problem-solving-relevance)
+18. [30-Second Interview Answer](#-30-second-interview-answer)
+19. [Cheat Sheet](#-cheat-sheet)
+20. [Top 10 Interview Questions](#-top-10-interview-questions)
 
 ---
 
 # 🔹 Introduction
 
-`Runnable` is an interface in Java used to represent a task that can be executed by a thread.
+Java provides the `Runnable` interface to represent a task that can be executed by a thread.
 
 It belongs to:
 
-    java.lang
+```java
+java.lang.Runnable
+```
 
-Therefore, no explicit import is required.
+Because `java.lang` is automatically imported, we can directly use:
+
+```java
+Runnable
+```
 
 The basic idea is:
 
-    Runnable
-        ↓
-    represents a task
+```text
+Runnable
+   ↓
+Represents a task
 
-    Thread
-        ↓
-    executes the task
+Thread
+   ↓
+Executes the task
+```
+
+This separation between the **task** and the **thread executing the task** is one of the important concepts in Java concurrency.
 
 ---
 
 # 🔹 What is Runnable?
 
-`Runnable` is an interface with one main abstract method:
+`Runnable` is an interface that represents a task that can be executed.
 
-    run()
+Its main abstract method is:
 
-Its purpose is to define **what a thread should do**.
+```java
+void run();
+```
+
+A class can implement `Runnable` and define its task inside `run()`.
 
 Example:
 
-    Runnable task = () -> {
+```java
+class MyTask implements Runnable {
+
+    @Override
+    public void run() {
+
         System.out.println("Task is running");
-    };
+    }
+}
+```
 
 Here:
 
-    Runnable
-        ↓
-    task
+```text
+MyTask
+   ↓
+implements Runnable
+   ↓
+defines run()
+```
 
-The task itself does not automatically execute.
+But remember:
 
-It needs a thread:
+> A `Runnable` object itself is **not a thread**.
 
-    Thread thread = new Thread(task);
+It represents the **task**.
 
-Then:
-
-    thread.start();
+A `Thread` can execute that task.
 
 ---
 
 # 🔹 Runnable Interface
 
-Conceptually, the interface looks like:
+The basic structure is:
 
-    @FunctionalInterface
-    public interface Runnable {
+```java
+@FunctionalInterface
+public interface Runnable {
 
-        void run();
-    }
+    void run();
+}
+```
 
 The important method is:
 
-    void run();
+```java
+run()
+```
 
-Because `Runnable` has one abstract method, it is a **functional interface**.
+Because `Runnable` has only one abstract method, it is a **functional interface**.
 
----
-
-# 🔹 `run()` Method
-
-`run()` contains the actual task logic.
-
-Example:
-
-    Runnable task = new Runnable() {
-
-        @Override
-        public void run() {
-            System.out.println("Task is running");
-        }
-    };
-
-The code inside `run()` represents the work that the thread should perform.
+Therefore, it can be used with lambda expressions.
 
 ---
 
-# 🔹 Creating a Runnable
+# 🔹 Why Runnable?
 
-There are several ways to create a `Runnable`.
+Suppose we create a thread by extending `Thread`:
 
-## 1. Using a class
+```java
+class MyThread extends Thread {
 
-    class MyTask implements Runnable {
+    @Override
+    public void run() {
 
-        @Override
-        public void run() {
-            System.out.println("Task is running");
-        }
+        System.out.println("Running");
     }
+}
+```
 
-Then:
+The limitation is that Java supports **single inheritance**.
 
-    MyTask task = new MyTask();
+A class can extend only one class.
 
----
+For example:
 
-## 2. Using Anonymous Class
+```java
+class MyClass extends SomeClass {
 
-    Runnable task = new Runnable() {
+}
+```
 
-        @Override
-        public void run() {
-            System.out.println("Task is running");
-        }
-    };
+It cannot extend another class at the same time:
 
----
+```java
+// Not valid Java
 
-## 3. Using Lambda
+class MyClass extends SomeClass, Thread {
 
-Because `Runnable` is a functional interface:
+}
+```
 
-    Runnable task = () -> {
-        System.out.println("Task is running");
-    };
+Therefore, if your class already extends another class, it cannot extend `Thread`.
 
-The lambda approach is the most concise.
+`Runnable` solves this problem because it is an interface.
 
----
-
-# 🔹 Runnable with Thread
-
-Creating a `Runnable` alone does not create a new thread.
+A class can extend one class and implement multiple interfaces.
 
 Example:
 
-    Runnable task = () -> {
-        System.out.println("Task is running");
-    };
+```java
+class MyClass extends SomeClass implements Runnable {
 
-Now create a `Thread`:
+    @Override
+    public void run() {
 
-    Thread thread = new Thread(task);
+        System.out.println("Task running");
+    }
+}
+```
 
-Finally:
-
-    thread.start();
-
-Complete:
-
-    Runnable task = () -> {
-        System.out.println("Task is running");
-    };
-
-    Thread thread = new Thread(task);
-
-    thread.start();
-
-The relationship is:
-
-    Runnable
-        ↓
-    task
-        ↓
-    Thread
-        ↓
-    start()
-        ↓
-    run()
-        ↓
-    execution
+This is one of the major reasons `Runnable` is preferred when you want to represent a task independently from the thread.
 
 ---
 
-# 🔹 Lambda Expression with Runnable
+# 🔹 Implementing Runnable
 
-Since `Runnable` has only one abstract method, we can use a lambda.
+The basic syntax is:
 
-Traditional approach:
+```java
+class MyTask implements Runnable {
 
-    Runnable task = new Runnable() {
+    @Override
+    public void run() {
 
-        @Override
-        public void run() {
-            System.out.println("Hello");
-        }
-    };
+        System.out.println("Task is running");
+    }
+}
+```
 
-Lambda approach:
+Then create the task:
 
-    Runnable task = () -> {
-        System.out.println("Hello");
-    };
+```java
+MyTask task = new MyTask();
+```
 
-Both represent the same task.
+At this point:
 
-The lambda is simply more concise.
+```text
+task exists
+```
+
+but:
+
+```text
+No new thread has started
+```
+
+because `Runnable` is only the task definition.
+
+---
+
+# 🔹 Starting a Runnable
+
+To execute a `Runnable`, pass it to a `Thread`.
+
+Example:
+
+```java
+class MyTask implements Runnable {
+
+    @Override
+    public void run() {
+
+        System.out.println("Task is running");
+    }
+}
+
+class Main {
+
+    public static void main(String[] args) {
+
+        MyTask task = new MyTask();
+
+        Thread thread = new Thread(task);
+
+        thread.start();
+    }
+}
+```
+
+Flow:
+
+```text
+MyTask object
+     ↓
+Runnable
+     ↓
+passed to Thread
+     ↓
+thread.start()
+     ↓
+new thread
+     ↓
+run()
+```
+
+---
+
+# 🔹 Important Difference
+
+This:
+
+```java
+Runnable task = new MyTask();
+```
+
+does **not** create a new thread.
+
+This:
+
+```java
+Thread thread = new Thread(task);
+```
+
+creates a `Thread` object associated with the task.
+
+And this:
+
+```java
+thread.start();
+```
+
+starts the new thread.
 
 ---
 
 # 🔹 Runnable vs Thread
 
-This is one of the most important concepts.
+## Using Thread
 
-| Runnable | Thread |
-|---|---|
-| Interface | Class |
-| Represents a task | Represents a thread of execution |
-| Defines `run()` | Provides thread-control methods |
-| Does not itself start a thread | Can start a thread using `start()` |
-| Can be implemented by a class | Can be extended by a class |
-| Allows the class to extend another class | Java allows only single class inheritance |
+```java
+class MyThread extends Thread {
 
-Conceptually:
+    @Override
+    public void run() {
 
-    Runnable
-        ↓
-    WHAT to do
+        System.out.println("Running");
+    }
+}
 
-    Thread
-        ↓
-    HOW/WHERE execution happens
+class Main {
 
-Memory trick:
+    public static void main(String[] args) {
 
-> **Runnable = task**
+        MyThread t = new MyThread();
 
-> **Thread = execution**
-
----
-
-# 🔹 Multiple Tasks with Runnable
-
-We can create multiple independent tasks.
-
-    Runnable task1 = () -> {
-        System.out.println("Task 1");
-    };
-
-    Runnable task2 = () -> {
-        System.out.println("Task 2");
-    };
-
-Create threads for them:
-
-    Thread thread1 = new Thread(task1);
-    Thread thread2 = new Thread(task2);
-
-Start them:
-
-    thread1.start();
-    thread2.start();
-
-Possible output:
-
-    Task 1
-    Task 2
-
-or:
-
-    Task 2
-    Task 1
-
-The exact order is not guaranteed.
-
----
-
-# 🔹 Passing Runnable to Thread
-
-The `Thread` class provides a constructor that accepts a `Runnable`.
-
-Example:
-
-    Runnable task = () -> {
-        System.out.println("Working...");
-    };
-
-    Thread thread = new Thread(task);
+        t.start();
+    }
+}
+```
 
 Here:
 
-    task
-
-is the `Runnable`.
-
-And:
-
-    thread
-
-is the `Thread`.
-
-When:
-
-    thread.start();
-
-is called, the thread eventually executes:
-
-    task.run();
-
-Conceptually:
-
-    thread.start()
-          ↓
-    Thread starts execution
-          ↓
-    Runnable.run()
-          ↓
-    task executes
+```text
+MyThread
+   ↓
+is-a Thread
+   ↓
+contains task
+```
 
 ---
 
-# 🔹 Anonymous Runnable
+## Using Runnable
 
-Before lambda expressions, an anonymous class was commonly used.
+```java
+class MyTask implements Runnable {
 
-Example:
+    @Override
+    public void run() {
 
-    Thread thread = new Thread(
-        new Runnable() {
+        System.out.println("Running");
+    }
+}
 
-            @Override
-            public void run() {
-                System.out.println("Running...");
-            }
-        }
-    );
+class Main {
 
-    thread.start();
+    public static void main(String[] args) {
 
-This works because `Thread` accepts a `Runnable`.
+        MyTask task = new MyTask();
+
+        Thread t = new Thread(task);
+
+        t.start();
+    }
+}
+```
+
+Here:
+
+```text
+MyTask
+   ↓
+is-a Runnable
+   ↓
+represents task
+
+Thread
+   ↓
+executes task
+```
+
+---
+
+# 🔹 Main Difference
+
+| `Thread` | `Runnable` |
+|---|---|
+| Class | Interface |
+| Represents a thread | Represents a task |
+| Extend `Thread` | Implement `Runnable` |
+| Uses inheritance | Uses interface implementation |
+| Cannot extend another class at the same time | Can extend another class |
+| Task and thread are more tightly coupled | Task and thread are separated |
 
 ---
 
 # 🔹 Runnable with Lambda
 
-Modern Java usually makes this much shorter:
+Because `Runnable` is a functional interface, we can use a lambda expression.
 
-    Thread thread = new Thread(() -> {
-        System.out.println("Running...");
-    });
+Instead of:
 
-    thread.start();
+```java
+class MyTask implements Runnable {
 
-The lambda:
+    @Override
+    public void run() {
 
-    () -> {
-        System.out.println("Running...");
+        System.out.println("Task running");
     }
+}
+```
 
-is treated as a `Runnable`.
+we can write:
 
----
+```java
+Runnable task = () -> {
 
-# 🔹 Runnable and Functional Interface
+    System.out.println("Task running");
+};
+```
 
-`Runnable` is a functional interface because it has exactly one abstract method:
+Then:
 
-    run()
+```java
+Thread thread = new Thread(task);
 
-Therefore this is valid:
+thread.start();
+```
 
-    Runnable task = () -> {
-        System.out.println("Hello");
-    };
+Complete example:
 
-The `@FunctionalInterface` annotation is associated with the interface definition.
+```java
+class Main {
 
-Conceptually:
+    public static void main(String[] args) {
 
-    @FunctionalInterface
-    interface Runnable {
+        Runnable task = () -> {
 
-        void run();
+            System.out.println("Task running");
+        };
+
+        Thread thread = new Thread(task);
+
+        thread.start();
     }
+}
+```
+
+This is very common in modern Java.
 
 ---
 
-# 🔹 Runnable with Thread Name
+# 🔹 Multiple Threads with One Runnable
 
-We can provide a name while creating the thread.
-
-    Runnable task = () -> {
-        System.out.println(
-            Thread.currentThread().getName()
-        );
-    };
-
-    Thread thread = new Thread(task, "Worker-1");
-
-    thread.start();
-
-Possible output:
-
-    Worker-1
-
-Here:
-
-    Runnable
-        ↓
-    defines the work
-
-    Thread
-        ↓
-    gives execution context
-
-    "Worker-1"
-        ↓
-    thread name
-
----
-
-# 🔹 Runnable and `start()`
-
-This is important:
-
-    Runnable task = () -> {
-        System.out.println("Hello");
-    };
-
-    Thread thread = new Thread(task);
-
-Creating the `Runnable` does not execute it.
-
-Creating the `Thread` does not execute it either.
-
-Execution starts when:
-
-    thread.start();
-
-is called.
-
----
-
-# 🔹 Runnable and `run()`
-
-We can directly call:
-
-    task.run();
+The same `Runnable` object can be passed to multiple threads.
 
 Example:
 
-    Runnable task = () -> {
-        System.out.println("Hello");
-    };
-
-    task.run();
-
-This executes the task directly on the current thread.
-
-It does **not** create a new thread.
-
-Compare:
-
-    task.run();
-
-with:
-
-    new Thread(task).start();
-
-The first is a normal method call.
-
-The second starts a separate thread.
-
----
-
-# 🔥 `run()` vs `start()`
-
-### Direct `run()`
-
-    Runnable task = () -> {
-        System.out.println(
-            Thread.currentThread().getName()
-        );
-    };
-
-    task.run();
-
-The task executes on the current thread.
-
----
-
-### Using `start()`
-
-    Runnable task = () -> {
-        System.out.println(
-            Thread.currentThread().getName()
-        );
-    };
-
-    Thread thread = new Thread(task);
-
-    thread.start();
-
-The task executes through a separate thread.
-
----
-
-# 🔹 Internal Working
-
-Consider:
-
-    Runnable task = () -> {
-        System.out.println("Working");
-    };
-
-    Thread thread = new Thread(task);
-
-    thread.start();
-
-Conceptually:
-
-    Runnable object
-          ↓
-    contains task logic
-          ↓
-    Thread receives Runnable
-          ↓
-    start()
-          ↓
-    JVM schedules thread
-          ↓
-    Thread executes
-          ↓
-    Runnable.run()
-          ↓
-    task completes
-
-Important:
-
-`Runnable` itself is not the thread.
-
-It represents the work that the thread performs.
-
----
-
-# 🔹 Why Prefer Runnable?
-
-Using `Runnable` has several advantages.
-
-## 1. Separation of task and execution
-
-The task is represented separately from the thread.
-
-    Runnable
-        ↓
-    task
-
-    Thread
-        ↓
-    execution
-
-This makes the design cleaner.
-
----
-
-## 2. Avoids extending Thread
-
-Java supports single class inheritance.
-
-If we write:
-
-    class MyTask extends Thread
-
-then `MyTask` cannot extend another class.
-
-With:
-
-    class MyTask implements Runnable
-
-the class can still extend another class.
-
-Example:
-
-    class MyTask extends SomeParent implements Runnable {
-
-        @Override
-        public void run() {
-            System.out.println("Running");
-        }
-    }
-
-This is one major reason `Runnable` is useful.
-
----
-
-## 3. Same task can be used by multiple Threads
-
-A single `Runnable` can be passed to multiple threads.
-
-Example:
-
-    Runnable task = () -> {
-        System.out.println("Running");
-    };
-
-    Thread thread1 = new Thread(task);
-    Thread thread2 = new Thread(task);
-
-    thread1.start();
-    thread2.start();
-
-Both threads can execute the same task logic.
-
----
-
-# 🔹 Runnable with Multiple Threads
-
-Example:
-
-    Runnable task = () -> {
+```java
+class MyTask implements Runnable {
+
+    @Override
+    public void run() {
 
         System.out.println(
             Thread.currentThread().getName()
             + " is running"
         );
-    };
+    }
+}
 
-    Thread thread1 = new Thread(task, "Worker-1");
-    Thread thread2 = new Thread(task, "Worker-2");
+class Main {
 
-    thread1.start();
-    thread2.start();
+    public static void main(String[] args) {
+
+        MyTask task = new MyTask();
+
+        Thread t1 = new Thread(task, "Thread-1");
+        Thread t2 = new Thread(task, "Thread-2");
+        Thread t3 = new Thread(task, "Thread-3");
+
+        t1.start();
+        t2.start();
+        t3.start();
+    }
+}
+```
 
 Possible output:
 
-    Worker-1 is running
-    Worker-2 is running
+```text
+Thread-1 is running
+Thread-3 is running
+Thread-2 is running
+```
 
-The order can vary.
-
----
-
-# 🔹 Runnable Does Not Have `start()`
-
-This is a common interview point.
-
-`Runnable` provides:
-
-    run()
-
-It does not provide:
-
-    start()
-
-`start()` belongs to:
-
-    Thread
-
-Therefore:
-
-    Runnable task = () -> {
-        System.out.println("Hello");
-    };
-
-This is invalid:
-
-    task.start();
-
-Correct:
-
-    Thread thread = new Thread(task);
-    thread.start();
+The exact order is not guaranteed.
 
 ---
 
-# 🔹 Runnable Does Not Control Thread Lifecycle
-
-`Runnable` defines the task.
-
-Thread lifecycle operations are handled by `Thread`.
-
-For example:
-
-    start()
-    sleep()
-    join()
-    interrupt()
-    getState()
-    isAlive()
-
-These are associated with `Thread`.
-
----
-
-# 🔹 Runnable and Return Value
-
-`Runnable.run()` has return type:
-
-    void
-
-Therefore, a `Runnable` task does not directly return a result.
-
-Example:
-
-    Runnable task = () -> {
-
-        int result = 10 + 20;
-
-        System.out.println(result);
-    };
-
-There is no return value from:
-
-    run()
-
-If a task needs to return a result, Java provides:
-
-    Callable
-
-This will be covered separately.
-
----
-
-# 🔹 Runnable and Checked Exceptions
-
-The `run()` method of `Runnable` does not declare checked exceptions.
+# 🔹 One Runnable, Multiple Threads
 
 Conceptually:
 
-    void run();
+```text
+                 Runnable Task
+                 /     |     \
+                /      |      \
+               ↓       ↓       ↓
+           Thread-1 Thread-2 Thread-3
+```
 
-Therefore, you cannot directly write:
-
-    Runnable task = () -> {
-        throw new IOException();
-    };
-
-without handling the checked exception.
-
-You need to handle it appropriately inside the task.
+This is useful because the task logic can be reused by multiple threads.
 
 ---
 
-# 🔹 Runnable Example — Complete Program
+# 🔹 Runnable and Shared Data
 
-    class Main {
-
-        public static void main(String[] args) {
-
-            Runnable task = () -> {
-
-                System.out.println(
-                    "Running on: "
-                    + Thread.currentThread().getName()
-                );
-            };
-
-            Thread thread = new Thread(task, "Worker-1");
-
-            thread.start();
-        }
-    }
-
-Possible output:
-
-    Running on: Worker-1
-
----
-
-# 🔹 Runnable Using a Class
-
-We can implement `Runnable` in our own class.
-
-    class MyTask implements Runnable {
-
-        @Override
-        public void run() {
-            System.out.println("Task is running");
-        }
-    }
-
-Then:
-
-    class Main {
-
-        public static void main(String[] args) {
-
-            MyTask task = new MyTask();
-
-            Thread thread = new Thread(task);
-
-            thread.start();
-        }
-    }
-
----
-
-# 🔹 Runnable + Inheritance
-
-One major advantage of `Runnable` is that our class can still extend another class.
+If multiple threads use the same `Runnable` object, they can access the same instance fields.
 
 Example:
 
-    class Employee {
-        
-        void work() {
-            System.out.println("Employee work");
-        }
+```java
+class CounterTask implements Runnable {
+
+    int count = 0;
+
+    @Override
+    public void run() {
+
+        count++;
+
+        System.out.println(
+            Thread.currentThread().getName()
+            + " : "
+            + count
+        );
     }
+}
+```
 
-    class EmployeeTask extends Employee implements Runnable {
+Multiple threads can use the same task:
 
-        @Override
-        public void run() {
-            System.out.println("Running task");
-        }
+```java
+class Main {
+
+    public static void main(String[] args) {
+
+        CounterTask task = new CounterTask();
+
+        Thread t1 = new Thread(task);
+        Thread t2 = new Thread(task);
+        Thread t3 = new Thread(task);
+
+        t1.start();
+        t2.start();
+        t3.start();
     }
+}
+```
 
-This would not be possible if `EmployeeTask` had to extend `Thread`, because Java does not support multiple class inheritance.
+Here:
+
+```text
+Same Runnable object
+        ↓
+      count
+        ↑
+   shared state
+        ↑
+        |
+   multiple threads
+```
+
+This introduces concurrency concerns such as:
+
+- Race conditions
+- Data inconsistency
+- Synchronization
+
+These concepts will be covered later.
 
 ---
 
-# 🔹 Thread vs Runnable — Interview Comparison
+# 🔹 Runnable as a Functional Interface
 
-| Feature | Thread | Runnable |
-|---|---|---|
-| Type | Class | Interface |
-| Represents | Thread/execution mechanism | Task |
-| Main method | `run()` | `run()` |
-| Starts execution | `start()` | No `start()` |
-| Can extend another class? | No, if already extending Thread | Yes |
-| Reusable task | Less flexible | More flexible |
-| Separation of concerns | Lower | Better |
-| Common modern usage | Used to execute tasks | Used to define tasks |
+`Runnable` is a functional interface because it has exactly one abstract method:
+
+```java
+void run();
+```
+
+Therefore, this is valid:
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Hello");
+};
+```
+
+It is equivalent in concept to:
+
+```java
+Runnable task = new Runnable() {
+
+    @Override
+    public void run() {
+
+        System.out.println("Hello");
+    }
+};
+```
+
+The lambda version is simply more concise.
+
+---
+
+# 🔹 Anonymous Class with Runnable
+
+Before lambdas became available in Java 8, anonymous classes were commonly used.
+
+Example:
+
+```java
+class Main {
+
+    public static void main(String[] args) {
+
+        Runnable task = new Runnable() {
+
+            @Override
+            public void run() {
+
+                System.out.println("Task running");
+            }
+        };
+
+        Thread thread = new Thread(task);
+
+        thread.start();
+    }
+}
+```
+
+Modern Java often uses a lambda instead:
+
+```java
+class Main {
+
+    public static void main(String[] args) {
+
+        Runnable task = () -> {
+
+            System.out.println("Task running");
+        };
+
+        new Thread(task).start();
+    }
+}
+```
+
+---
+
+# 🔹 run() Method
+
+The `Runnable` interface defines:
+
+```java
+void run();
+```
+
+It represents the task that should be executed.
+
+Example:
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Executing task");
+};
+```
+
+However, calling `run()` directly does not create a new thread.
+
+Example:
+
+```java
+Runnable task = () -> {
+
+    System.out.println(
+        Thread.currentThread().getName()
+    );
+};
+
+task.run();
+```
+
+The task executes in the current thread.
+
+If called from `main()`, the output will typically be:
+
+```text
+main
+```
+
+---
+
+# 🔹 start() is Still Called on Thread
+
+Notice:
+
+```java
+task.start();
+```
+
+is invalid because `Runnable` does not have a `start()` method.
+
+This is wrong:
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Task");
+};
+
+task.start();
+```
+
+`Runnable` only defines the task.
+
+Instead:
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Task");
+};
+
+Thread thread = new Thread(task);
+
+thread.start();
+```
+
+Remember:
+
+```text
+Runnable
+   ↓
+Task
+
+Thread
+   ↓
+Starts and executes task
+```
+
+---
+
+# 🔹 Thread Constructor with Runnable
+
+The `Thread` class provides constructors that accept a `Runnable`.
+
+The commonly used form is:
+
+```java
+Thread(Runnable target)
+```
+
+Example:
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Running task");
+};
+
+Thread thread = new Thread(task);
+
+thread.start();
+```
+
+You can also provide a thread name:
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Running");
+};
+
+Thread thread = new Thread(task, "Worker");
+
+thread.start();
+```
+
+Inside the task:
+
+```java
+Runnable task = () -> {
+
+    System.out.println(
+        Thread.currentThread().getName()
+    );
+};
+
+Thread thread = new Thread(task, "Worker");
+
+thread.start();
+```
+
+Possible output:
+
+```text
+Worker
+```
+
+---
+
+# 🔹 Runnable Internal Working
+
+Consider:
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Task");
+};
+
+Thread thread = new Thread(task);
+
+thread.start();
+```
+
+Conceptually:
+
+```text
+1. Create Runnable
+       ↓
+2. Runnable stores task logic
+       ↓
+3. Create Thread and give it Runnable
+       ↓
+4. Call start()
+       ↓
+5. JVM starts a new thread
+       ↓
+6. Thread executes Runnable's run()
+       ↓
+7. Task completes
+```
+
+The important relationship is:
+
+```text
+Runnable
+   |
+   | contains
+   ↓
+Task
+
+Thread
+   |
+   | executes
+   ↓
+Runnable
+```
+
+---
+
+# 🔹 Runnable Does Not Create a Thread
+
+This is a very important interview concept.
+
+Creating:
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Task");
+};
+```
+
+does not create a new thread.
+
+Creating:
+
+```java
+Thread thread = new Thread(task);
+```
+
+creates a `Thread` object.
+
+Calling:
+
+```java
+thread.start();
+```
+
+starts the new thread.
+
+Therefore:
+
+```text
+Runnable
+= task definition
+
+Thread
+= thread object
+
+start()
+= begins new thread execution
+```
+
+---
+
+# 🔹 Runnable vs Callable
+
+`Runnable` and `Callable` both represent tasks, but they differ in their ability to return a result and throw checked exceptions.
+
+### Runnable
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Task");
+};
+```
+
+`Runnable.run()`:
+
+```java
+void run()
+```
+
+It does not return a value.
+
+---
+
+### Callable
+
+```java
+Callable<Integer> task = () -> {
+
+    return 100;
+};
+```
+
+`Callable.call()`:
+
+```java
+V call() throws Exception
+```
+
+It can return a result and declare checked exceptions.
+
+`Callable` is covered later in the Executor/Callable topic.
+
+---
+
+# 🔹 Advantages of Runnable
+
+### 1. Separates task from thread
+
+```text
+Task
+ ↓
+Runnable
+
+Execution mechanism
+ ↓
+Thread
+```
+
+---
+
+### 2. Supports inheritance from another class
+
+Example:
+
+```java
+class MyTask extends SomeClass implements Runnable {
+
+    @Override
+    public void run() {
+
+        System.out.println("Task");
+    }
+}
+```
+
+---
+
+### 3. Works naturally with lambdas
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Task");
+};
+```
+
+---
+
+### 4. Task can be reused
+
+The same task can be supplied to different threads.
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Task");
+};
+
+Thread t1 = new Thread(task);
+Thread t2 = new Thread(task);
+
+t1.start();
+t2.start();
+```
+
+---
+
+### 5. Fits Executor Framework
+
+`Runnable` is commonly submitted to executor services.
+
+Example:
+
+```java
+ExecutorService executor = Executors.newSingleThreadExecutor();
+
+executor.submit(() -> {
+
+    System.out.println("Task running");
+});
+
+executor.shutdown();
+```
+
+The Executor Framework will be covered in detail later.
+
+---
+
+# 🔹 Disadvantages / Limitations
+
+### 1. Cannot return a result directly
+
+`run()` returns:
+
+```java
+void
+```
+
+If you need a result, `Callable` is generally used with an executor.
+
+---
+
+### 2. Cannot directly declare checked exceptions
+
+The `run()` method does not declare checked exceptions.
+
+You cannot write:
+
+```java
+@Override
+public void run() throws Exception {
+
+}
+```
+
+and treat it as overriding the `Runnable.run()` signature.
+
+Checked exceptions must be handled inside the implementation.
+
+Example:
+
+```java
+Runnable task = () -> {
+
+    try {
+
+        Thread.sleep(1000);
+
+    } catch (InterruptedException e) {
+
+        Thread.currentThread().interrupt();
+    }
+};
+```
 
 ---
 
 # 🔹 Common Mistakes
 
-## ❌ Mistake 1 — Calling `start()` on Runnable
+## ❌ Mistake 1 — Thinking Runnable is a Thread
 
-Wrong:
+Wrong concept:
 
-    Runnable task = () -> {
-        System.out.println("Hello");
-    };
-
-    task.start();
-
-`Runnable` has no `start()` method.
+```text
+Runnable = Thread
+```
 
 Correct:
 
-    Thread thread = new Thread(task);
-
-    thread.start();
+```text
+Runnable = Task
+Thread = Executes Task
+```
 
 ---
 
-## ❌ Mistake 2 — Thinking Runnable itself is a thread
+## ❌ Mistake 2 — Calling start() on Runnable
 
 Wrong:
 
-    Runnable = Thread
+```java
+Runnable task = () -> {
+
+    System.out.println("Task");
+};
+
+task.start();
+```
+
+`Runnable` does not have `start()`.
 
 Correct:
 
-    Runnable = task
+```java
+Runnable task = () -> {
 
-    Thread = execution mechanism
+    System.out.println("Task");
+};
+
+Thread thread = new Thread(task);
+
+thread.start();
+```
 
 ---
 
-## ❌ Mistake 3 — Calling `run()` expecting a new thread
+## ❌ Mistake 3 — Calling run() expecting a new thread
 
 Wrong assumption:
 
-    task.run();
+```java
+task.run();
+```
 
-means:
+Calling `run()` directly is a normal method call.
 
-    create new thread
+Correct:
 
-It does not.
-
-It is simply a method call.
+```java
+new Thread(task).start();
+```
 
 ---
 
-## ❌ Mistake 4 — Forgetting `start()`
+## ❌ Mistake 4 — Assuming execution order
 
-Example:
+With multiple threads:
 
-    Runnable task = () -> {
-        System.out.println("Running");
-    };
+```java
+Thread t1 = new Thread(task);
+Thread t2 = new Thread(task);
 
-    Thread thread = new Thread(task);
+t1.start();
+t2.start();
+```
 
-If we never call:
-
-    thread.start();
-
-the task will not execute.
+You cannot assume `t1` will always finish before `t2`.
 
 ---
 
 # 🔹 Interview Traps
 
-### Trap 1: Is Runnable a class?
+### Q1. Is Runnable a class or interface?
 
-No.
-
-It is an interface.
+`Runnable` is an interface.
 
 ---
 
-### Trap 2: Is Runnable a functional interface?
+### Q2. Is Runnable a thread?
+
+No.
+
+It represents a task that can be executed by a thread.
+
+---
+
+### Q3. Does creating a Runnable start a thread?
+
+No.
+
+Example:
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Task");
+};
+```
+
+No new thread has started.
+
+---
+
+### Q4. How do you execute a Runnable in a new thread?
+
+Pass it to a `Thread` and call `start()`.
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Task");
+};
+
+Thread t = new Thread(task);
+
+t.start();
+```
+
+---
+
+### Q5. Can Runnable be used with lambda expressions?
 
 Yes.
 
-It has one abstract method:
-
-    run()
+Because `Runnable` is a functional interface.
 
 ---
 
-### Trap 3: Does Runnable have `start()`?
-
-No.
-
-`start()` belongs to `Thread`.
-
----
-
-### Trap 4: Does `run()` create a new thread?
-
-No.
-
-Calling `run()` directly is a normal method call.
-
----
-
-### Trap 5: Can a class implement Runnable and extend another class?
+### Q6. Can a class extend another class and implement Runnable?
 
 Yes.
 
 Example:
 
-    class MyTask extends Parent implements Runnable {
+```java
+class MyTask extends SomeClass implements Runnable {
 
-        @Override
-        public void run() {
-            System.out.println("Running");
-        }
+    @Override
+    public void run() {
+
+        System.out.println("Task");
     }
+}
+```
 
 ---
 
-### Trap 6: Can the same Runnable be passed to multiple Threads?
+### Q7. What does Runnable.run() return?
 
-Yes.
+Nothing.
 
-Example:
+Its return type is:
 
-    Runnable task = () -> {
-        System.out.println("Working");
-    };
-
-    Thread t1 = new Thread(task);
-    Thread t2 = new Thread(task);
+```java
+void
+```
 
 ---
 
-### Trap 7: Does Runnable return a value?
+### Q8. Can Runnable return a result?
 
-No.
+Not directly through `run()`.
 
-Its `run()` method returns:
+For a task that returns a result, `Callable` is designed for that use case.
 
-    void
+---
 
-For tasks that produce a result, `Callable` is used.
+### Q9. What happens when run() is called directly?
+
+It executes like a normal method in the current thread.
+
+It does not create a new thread.
+
+---
+
+### Q10. Why is Runnable often preferred over extending Thread?
+
+Because it separates the task from the thread and allows the class to extend another class.
 
 ---
 
 # 🔹 DSA / Problem-Solving Relevance
 
-`Runnable` is not itself a DSA pattern.
+`Runnable` is not itself a DSA pattern, but it becomes useful when DSA problems involve concurrency.
 
-However, it becomes useful when implementing concurrent algorithms and systems.
+Relevant areas include:
 
-Examples:
+- Concurrent processing
+- Parallel search
+- Producer-consumer problems
+- Shared counters
+- Concurrent queues
+- Multithreaded algorithms
+- Thread-safe data structures
 
-- Producer-Consumer
-- Parallel processing
-- Concurrent data processing
-- Thread-safe operations
-- Task execution
-- Concurrent searching
-- Parallel computation
+Example conceptual problem:
 
-A useful mental model is:
+```text
+Large array
+     ↓
+Split into parts
+     ↓
+Runnable Task 1 → Part 1
+Runnable Task 2 → Part 2
+Runnable Task 3 → Part 3
+     ↓
+Process concurrently
+     ↓
+Combine results
+```
 
-    Problem
-       ↓
-    Split into tasks
-       ↓
-    Runnable
-       ↓
-    Threads execute tasks
-       ↓
-    Combine/process results
+However, concurrency adds overhead and synchronization requirements, so using multiple threads does not automatically improve performance.
 
 ---
 
 # 🔹 30-Second Interview Answer
 
-> `Runnable` is a functional interface in Java that represents a task that can be executed by a thread. It contains a single abstract method called `run()`. Unlike `Thread`, `Runnable` does not represent the actual execution mechanism and does not have a `start()` method. We normally create a `Runnable`, pass it to a `Thread`, and call `start()` on the thread. Using `Runnable` also allows a class to extend another class because Java supports only single class inheritance.
+> `Runnable` is a functional interface in Java that represents a task to be executed by a thread. It contains a single abstract method called `run()`. A `Runnable` itself is not a thread. We normally pass it to a `Thread` object and call `start()` to execute the task in a new thread. Using `Runnable` separates the task from the thread and also allows a class to extend another class, since Java supports single class inheritance.
 
 ---
 
 # 🔹 Cheat Sheet
 
-    Runnable
-        ↓
-    Interface
+## Implement Runnable
 
-    Main method:
-        run()
+```java
+class MyTask implements Runnable {
 
-    Represents:
-        Task
+    @Override
+    public void run() {
 
-    Does NOT provide:
-        start()
-
-    Thread:
-        executes Runnable
-
-    Basic pattern:
-
-    Runnable task = () -> {
-        // task
-    };
-
-    Thread thread = new Thread(task);
-
-    thread.start();
+        System.out.println("Task running");
+    }
+}
+```
 
 ---
 
-# 🔥 Most Important Difference
+## Create Runnable
 
-    Runnable
-        ↓
-    WHAT should be done?
-
-    Thread
-        ↓
-    WHO executes it?
+```java
+Runnable task = new MyTask();
+```
 
 ---
 
-# 🔥 Execution Flow
+## Create Thread
 
-    Runnable task
-          ↓
-    new Thread(task)
-          ↓
-    thread.start()
-          ↓
-    New thread becomes eligible
-          ↓
-    run()
-          ↓
-    Task executes
-          ↓
-    Thread terminates
+```java
+Thread thread = new Thread(task);
+```
+
+---
+
+## Start Thread
+
+```java
+thread.start();
+```
+
+---
+
+## Lambda
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Task running");
+};
+```
+
+---
+
+## Lambda + Thread
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Task running");
+};
+
+new Thread(task).start();
+```
+
+---
+
+## Named Thread
+
+```java
+Runnable task = () -> {
+
+    System.out.println(
+        Thread.currentThread().getName()
+    );
+};
+
+Thread thread = new Thread(task, "Worker");
+
+thread.start();
+```
+
+---
+
+# 🧠 Memory Tricks
+
+### Runnable
+
+> **Runnable = Work**
+
+### Thread
+
+> **Thread = Worker that executes the work**
+
+### `run()`
+
+> **run() = What should be done**
+
+### `start()`
+
+> **start() = Start a new thread**
+
+### Runnable + Thread
+
+```text
+Runnable
+   ↓
+WHAT to do
+
+Thread
+   ↓
+WHO executes it
+```
+
+---
+
+# 🔥 Runnable vs Thread — Quick Revision
+
+```text
+                 Thread              Runnable
+                   |                    |
+                Class               Interface
+                   |                    |
+             Represents             Represents
+               thread                  task
+                   |                    |
+             start()                  run()
+                   |                    |
+          Starts execution       Defines execution
+```
 
 ---
 
@@ -1112,119 +1458,166 @@ A useful mental model is:
 
 ## 1. What is Runnable?
 
-`Runnable` is an interface used to represent a task that can be executed by a thread.
+`Runnable` is an interface that represents a task that can be executed by a thread.
 
 ---
 
-## 2. Which method does Runnable contain?
-
-The main abstract method is:
-
-    void run()
-
----
-
-## 3. Is Runnable a functional interface?
-
-Yes.
-
-It has one abstract method, `run()`.
-
----
-
-## 4. Does Runnable create a thread?
+## 2. Is Runnable a Thread?
 
 No.
 
-`Runnable` represents the task.
-
-A `Thread` is used to execute that task.
+`Runnable` represents a task, while `Thread` represents the thread that executes the task.
 
 ---
 
-## 5. Does Runnable have `start()`?
+## 3. What is the main method of Runnable?
+
+```java
+void run();
+```
+
+---
+
+## 4. How do you execute Runnable?
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Task");
+};
+
+Thread thread = new Thread(task);
+
+thread.start();
+```
+
+---
+
+## 5. Does Runnable create a thread?
 
 No.
 
-`start()` belongs to `Thread`.
+A `Thread` is needed to execute the `Runnable` in a separate thread.
 
 ---
 
-## 6. What happens when `run()` is called directly?
+## 6. What happens if run() is called directly?
 
-The method executes normally on the current thread.
-
-No new thread is created.
+It executes as a normal method in the current thread.
 
 ---
 
 ## 7. Why use Runnable instead of extending Thread?
 
-Because implementing `Runnable` allows the class to extend another class.
+Because:
 
-It also separates the task from the execution mechanism.
+1. Java supports single inheritance.
+2. The task and thread are separated.
+3. The same task can be supplied to different threads.
+4. It works naturally with lambda expressions and executor APIs.
 
 ---
 
-## 8. Can the same Runnable be passed to multiple threads?
+## 8. Is Runnable a functional interface?
 
 Yes.
 
-Example:
+It has one abstract method:
 
-    Runnable task = () -> {
-        System.out.println("Working");
-    };
-
-    Thread t1 = new Thread(task);
-    Thread t2 = new Thread(task);
+```java
+void run();
+```
 
 ---
 
-## 9. Can Runnable return a result?
-
-No.
+## 9. Can Runnable return a value?
 
 `Runnable.run()` returns `void`.
 
-For result-producing tasks, `Callable` is used.
+For tasks that produce a result, `Callable` is designed for that purpose.
 
 ---
 
-## 10. What is the difference between Runnable and Thread?
+## 10. What is the relationship between Thread and Runnable?
 
-`Runnable` represents the task, while `Thread` represents the execution mechanism that can execute that task.
+A `Runnable` represents the task.
+
+A `Thread` provides the execution mechanism.
+
+Example:
+
+```java
+Runnable task = () -> {
+
+    System.out.println("Hello");
+};
+
+Thread thread = new Thread(task);
+
+thread.start();
+```
+
+Conceptually:
+
+```text
+Runnable
+   ↓
+Task
+
+Thread
+   ↓
+Executes Task
+```
 
 ---
 
 # 🎯 Final Summary
 
-Remember these three lines:
+The core idea of `Runnable` is:
 
-    Runnable = TASK
+```text
+Runnable
+   ↓
+Defines a task
+   ↓
+run()
+   ↓
+Thread receives Runnable
+   ↓
+start()
+   ↓
+New thread executes run()
+```
 
-    Thread = EXECUTION
+### ⭐ Remember
 
-    start() = START NEW THREAD
+```text
+Runnable ≠ Thread
 
-The standard pattern is:
+Runnable
+→ task
 
-    Runnable task = () -> {
-        System.out.println("Working");
-    };
+Thread
+→ executes task
 
-    Thread thread = new Thread(task);
+run()
+→ task logic
 
-    thread.start();
+start()
+→ starts new thread
+```
 
-And the most important interview distinction:
+### ⭐ Most Important Code
 
-    task.run()
-        ↓
-    normal method call
+```java
+Runnable task = () -> {
 
-    thread.start()
-        ↓
-    starts a new thread
-        ↓
-    eventually executes run()
+    System.out.println("Task is running");
+};
+
+Thread thread = new Thread(task);
+
+thread.start();
+```
+
+> **Core idea: `Runnable` separates the work from the thread that performs the work.**

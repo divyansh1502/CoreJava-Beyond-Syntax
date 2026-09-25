@@ -1,6 +1,6 @@
 # 06 — sleep() and join()
 
-> **`sleep()` pauses the currently executing thread for a specified time, while `join()` makes one thread wait for another thread to finish.**
+> **`sleep()` pauses the current thread for a specified time, while `join()` makes one thread wait for another thread to finish.**
 
 ---
 
@@ -8,61 +8,62 @@
 
 1. [Introduction](#-introduction)
 2. [sleep()](#-sleep)
-3. [Why sleep() is Used](#-why-sleep-is-used)
+3. [Why sleep()?](#-why-sleep)
 4. [sleep() Syntax](#-sleep-syntax)
 5. [sleep() Example](#-sleep-example)
-6. [sleep() and Thread State](#-sleep-and-thread-state)
-7. [sleep() and InterruptedException](#-sleep-and-interruptedexception)
-8. [sleep() Does Not Create a New Thread](#-sleep-does-not-create-a-new-thread)
-9. [sleep() and Lock](#-sleep-and-lock)
+6. [sleep() and Current Thread](#-sleep-and-current-thread)
+7. [sleep() Does Not Create a Thread](#-sleep-does-not-create-a-thread)
+8. [sleep() and InterruptedException](#-sleep-and-interruptedexception)
+9. [sleep() and Locks](#-sleep-and-locks)
 10. [join()](#-join)
-11. [Why join() is Used](#-why-join-is-used)
-12. [join() Syntax](#-join-syntax)
-13. [join() Example](#-join-example)
-14. [join() Execution Flow](#-join-execution-flow)
-15. [join() with Multiple Threads](#-join-with-multiple-threads)
-16. [join(long millis)](#-joinlong-millis)
-17. [join(long millis, int nanos)](#-joinlong-millis-int-nanos)
-18. [sleep() vs join()](#-sleep-vs-join)
-19. [Internal Working](#-internal-working)
-20. [Common Mistakes](#-common-mistakes)
-21. [Interview Traps](#-interview-traps)
-22. [DSA / Problem-Solving Relevance](#-dsa--problem-solving-relevance)
-23. [30-Second Interview Answer](#-30-second-interview-answer)
-24. [Cheat Sheet](#-cheat-sheet)
-25. [Top 10 Interview Questions](#-top-10-interview-questions)
+11. [Why join()?](#-why-join)
+12. [join() Example](#-join-example)
+13. [join() Internal Flow](#-join-internal-flow)
+14. [join() with Multiple Threads](#-join-with-multiple-threads)
+15. [join() vs sleep()](#-join-vs-sleep)
+16. [Timed join()](#-timed-join)
+17. [Common Mistakes](#-common-mistakes)
+18. [Interview Traps](#-interview-traps)
+19. [DSA / Problem-Solving Relevance](#-dsa--problem-solving-relevance)
+20. [30-Second Interview Answer](#-30-second-interview-answer)
+21. [Cheat Sheet](#-cheat-sheet)
+22. [Top 10 Interview Questions](#-top-10-interview-questions)
 
 ---
 
 # 🔹 Introduction
 
-Java provides several methods for coordinating thread execution.
+Two important methods used for basic thread coordination are:
 
-Two very important methods are:
-
-    Thread.sleep()
+```java
+Thread.sleep()
+```
 
 and:
 
-    Thread.join()
+```java
+Thread.join()
+```
 
-They solve different problems.
+Although both can cause a thread to wait, they solve different problems.
 
-### sleep()
+### `sleep()`
 
-Tells the **currently executing thread** to pause for a specified amount of time.
+Pauses the **currently executing thread** for a specified amount of time.
 
-### join()
+### `join()`
 
-Makes the **current thread wait for another thread** to finish.
+Makes the **current thread wait for another thread to terminate**.
 
 Memory trick:
 
-    sleep()
-    → WAIT FOR TIME
+```text
+sleep()
+→ Wait for TIME
 
-    join()
-    → WAIT FOR THREAD
+join()
+→ Wait for THREAD
+```
 
 ---
 
@@ -70,121 +71,290 @@ Memory trick:
 
 `sleep()` is a static method of the `Thread` class.
 
-It temporarily pauses the currently executing thread.
+It pauses the currently executing thread for a specified amount of time.
 
 Example:
 
-    Thread.sleep(1000);
+```java
+Thread.sleep(2000);
+```
 
-This requests approximately:
+This requests the current thread to sleep for approximately:
 
-    1000 milliseconds
-    =
-    1 second
+```text
+2000 milliseconds
+```
+
+which is:
+
+```text
+2 seconds
+```
 
 ---
 
-# 🔹 Why sleep() is Used
+# 🔹 Why sleep()?
 
-`sleep()` can be useful when we want to:
+`sleep()` can be useful when a thread needs to pause temporarily.
 
-- Delay execution
-- Simulate slow operations
-- Create time intervals
-- Demonstrate thread scheduling
-- Implement retry delays
-- Temporarily pause a worker thread
+Common examples:
+
+- Delaying execution
+- Simulating a time-consuming operation
+- Polling at intervals
+- Retry mechanisms
+- Controlling periodic tasks
+- Demonstrating thread scheduling
 
 Example:
 
-    System.out.println("Start");
+```java
+class Main {
 
-    Thread.sleep(2000);
+    public static void main(String[] args)
+            throws InterruptedException {
 
-    System.out.println("End");
+        System.out.println("Start");
 
-Output occurs approximately two seconds apart.
+        Thread.sleep(2000);
+
+        System.out.println("End");
+    }
+}
+```
+
+Output:
+
+```text
+Start
+```
+
+After approximately 2 seconds:
+
+```text
+End
+```
 
 ---
 
 # 🔹 sleep() Syntax
 
-Common form:
+Common forms include:
 
-    Thread.sleep(long millis);
+```java
+Thread.sleep(1000);
+```
 
-Example:
+and:
 
-    Thread.sleep(1000);
+```java
+Thread.sleep(1000, 500000);
+```
 
-There is also a version accepting nanoseconds:
+The first argument represents milliseconds.
 
-    Thread.sleep(long millis, int nanos);
+The second form additionally specifies nanoseconds.
 
-Example:
+The commonly used form is:
 
-    Thread.sleep(1000, 500000);
-
-The method can throw:
-
-    InterruptedException
-
-Therefore, it must be handled or declared.
+```java
+Thread.sleep(milliseconds);
+```
 
 ---
 
 # 🔹 sleep() Example
 
-    class Main {
+```java
+class Main {
 
-        public static void main(String[] args) {
+    public static void main(String[] args)
+            throws InterruptedException {
 
-            System.out.println("Start");
+        for(int i = 1; i <= 5; i++) {
 
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                System.out.println("Thread interrupted");
-            }
+            System.out.println(i);
 
-            System.out.println("End");
+            Thread.sleep(1000);
         }
     }
+}
+```
 
-The current thread pauses before printing:
+Possible output:
 
-    End
+```text
+1
+2
+3
+4
+5
+```
+
+There is approximately a one-second pause between each iteration.
+
+---
+
+# 🔹 sleep() and Current Thread
+
+One of the most important points:
+
+> `sleep()` always affects the **currently executing thread**.
+
+Example:
+
+```java
+class Main {
+
+    public static void main(String[] args)
+            throws InterruptedException {
+
+        Thread t = new Thread(() -> {
+
+            try {
+
+                Thread.sleep(2000);
+
+            } catch(InterruptedException e) {
+
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        t.start();
+    }
+}
+```
+
+Here:
+
+```java
+Thread.sleep(2000);
+```
+
+is executed by `t`.
+
+Therefore:
+
+```text
+Thread t
+   ↓
+sleep()
+   ↓
+Thread t pauses
+```
+
+It does not mean:
+
+```text
+Sleep some arbitrary Thread object
+```
+
+---
+
+# 🔹 sleep() is Static
+
+The method is static.
+
+Therefore:
+
+```java
+Thread.sleep(1000);
+```
+
+is the recommended and clear form.
+
+You may technically write:
+
+```java
+Thread t = new Thread();
+
+t.sleep(1000);
+```
+
+but this is misleading because `sleep()` still affects the **currently executing thread**, not `t`.
+
+Prefer:
+
+```java
+Thread.sleep(1000);
+```
+
+---
+
+# 🔹 sleep() Does Not Create a Thread
+
+Calling:
+
+```java
+Thread.sleep(1000);
+```
+
+does not create a new thread.
+
+It simply pauses the current thread.
+
+Conceptually:
+
+```text
+Current Thread
+      |
+      ↓
+   sleep()
+      |
+      ↓
+   TIMED_WAITING
+      |
+      ↓
+Time expires
+      |
+      ↓
+Runnable again
+```
 
 ---
 
 # 🔹 sleep() and Thread State
 
-While a thread is sleeping, its state is:
+While a thread is sleeping, its state is generally:
 
-    TIMED_WAITING
+```text
+TIMED_WAITING
+```
 
 Example:
 
-    Thread thread = new Thread(() -> {
+```java
+class MyThread extends Thread {
+
+    @Override
+    public void run() {
 
         try {
+
             Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            System.out.println("Interrupted");
+
+        } catch(InterruptedException e) {
+
+            Thread.currentThread().interrupt();
         }
-    });
+    }
+}
+```
 
-    thread.start();
+While sleeping:
 
-While it is sleeping:
-
-    thread.getState()
-
-can report:
-
-    TIMED_WAITING
-
-After the sleep ends, the thread can continue execution.
+```text
+RUNNABLE
+   ↓
+sleep()
+   ↓
+TIMED_WAITING
+   ↓
+time expires
+   ↓
+RUNNABLE
+```
 
 ---
 
@@ -192,104 +362,126 @@ After the sleep ends, the thread can continue execution.
 
 `sleep()` can throw:
 
-    InterruptedException
+```java
+InterruptedException
+```
 
-Example:
+Therefore, we must handle or declare it.
 
-    try {
-        Thread.sleep(5000);
-    } catch (InterruptedException e) {
-        System.out.println("Interrupted");
+### Using throws
+
+```java
+class Main {
+
+    public static void main(String[] args)
+            throws InterruptedException {
+
+        Thread.sleep(1000);
+
+        System.out.println("Done");
     }
+}
+```
 
-If another thread interrupts the sleeping thread, the sleep can end early and an `InterruptedException` can be thrown.
+### Using try-catch
 
-Example:
+```java
+class Main {
 
-    Thread worker = new Thread(() -> {
+    public static void main(String[] args) {
 
         try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            System.out.println("Worker interrupted");
+
+            Thread.sleep(1000);
+
+        } catch(InterruptedException e) {
+
+            Thread.currentThread().interrupt();
         }
-    });
 
-    worker.start();
-
-    worker.interrupt();
-
-Possible output:
-
-    Worker interrupted
-
----
-
-# 🔹 sleep() Does Not Create a New Thread
-
-This is important.
-
-Writing:
-
-    Thread.sleep(1000);
-
-does not create a new thread.
-
-It pauses the thread that is currently executing the statement.
-
-For example, if the main thread executes:
-
-    Thread.sleep(1000);
-
-then the main thread sleeps.
-
-Memory rule:
-
-    sleep()
-        ↓
-    current thread pauses
-
----
-
-# 🔹 sleep() is Static
-
-`sleep()` is a static method.
-
-Therefore, it belongs to the `Thread` class.
-
-The preferred form is:
-
-    Thread.sleep(1000);
-
-Even though Java syntax may allow calling a static method through a reference, that does not change which thread actually sleeps.
-
-The currently executing thread is the one affected.
-
----
-
-# 🔹 sleep() and Lock
-
-A very important interview point:
-
-> `sleep()` does not release an intrinsic monitor lock held by the thread.
-
-For example, conceptually:
-
-    synchronized (lock) {
-
-        Thread.sleep(5000);
-
+        System.out.println("Done");
     }
+}
+```
 
-During the sleep, the thread remains associated with the acquired monitor.
+---
 
-Another thread cannot simply acquire that same intrinsic monitor because the sleeping thread is sleeping.
+# 🔹 Why Restore Interrupt Status?
 
-This is different from mechanisms such as:
+Suppose we catch:
 
-    wait()
+```java
+InterruptedException
+```
 
-which releases the object's monitor while waiting.
+A common good practice is:
+
+```java
+Thread.currentThread().interrupt();
+```
+
+This restores the interrupted status so higher-level code can observe that interruption occurred.
+
+Example:
+
+```java
+try {
+
+    Thread.sleep(1000);
+
+} catch(InterruptedException e) {
+
+    Thread.currentThread().interrupt();
+}
+```
+
+This is especially important in real-world concurrent code.
+
+---
+
+# 🔹 sleep() and Locks
+
+A very important interview concept:
+
+> `sleep()` does **not** release an intrinsic monitor lock.
+
+Example:
+
+```java
+class Main {
+
+    static final Object lock = new Object();
+
+    public static void main(String[] args) {
+
+        synchronized(lock) {
+
+            try {
+
+                Thread.sleep(2000);
+
+            } catch(InterruptedException e) {
+
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+}
+```
+
+While sleeping:
+
+```text
+Thread owns lock
+      ↓
+sleep()
+      ↓
+Thread pauses
+      ↓
+Lock is still owned
+```
+
+Another thread cannot acquire that same intrinsic lock merely because the first thread is sleeping.
 
 ---
 
@@ -297,237 +489,393 @@ which releases the object's monitor while waiting.
 
 `join()` is an instance method of `Thread`.
 
-It makes the current thread wait until another thread terminates, subject to the form of `join()` used.
+It causes the current thread to wait until the target thread terminates.
 
 Example:
 
-    worker.join();
+```java
+class MyThread extends Thread {
 
-If the main thread executes:
+    @Override
+    public void run() {
 
-    worker.join();
-
-then the main thread waits for `worker` to finish.
-
----
-
-# 🔹 Why join() is Used
-
-`join()` is useful when one thread depends on another thread completing its work.
-
-Common situations:
-
-- Waiting for a worker thread
-- Waiting for calculations to finish
-- Coordinating multiple tasks
-- Ensuring work is completed before continuing
-- Controlling execution order
-
-Memory trick:
-
-    sleep()
-    → wait for TIME
-
-    join()
-    → wait for THREAD
-
----
-
-# 🔹 join() Syntax
-
-Basic form:
-
-    thread.join();
-
-This waits for the specified thread to terminate.
-
-Because `join()` can throw `InterruptedException`, it normally needs handling.
-
-Example:
-
-    try {
-        worker.join();
-    } catch (InterruptedException e) {
-        System.out.println("Main interrupted");
+        System.out.println("Worker is running");
     }
+}
+
+class Main {
+
+    public static void main(String[] args)
+            throws InterruptedException {
+
+        MyThread t = new MyThread();
+
+        t.start();
+
+        t.join();
+
+        System.out.println("Main continues");
+    }
+}
+```
+
+The important line is:
+
+```java
+t.join();
+```
+
+This means:
+
+> The current thread should wait for `t` to finish.
+
+---
+
+# 🔹 Why join()?
+
+Suppose the main thread starts a worker thread:
+
+```text
+Main
+  |
+  +---- Worker
+```
+
+Without `join()`, both may continue independently.
+
+With:
+
+```java
+worker.join();
+```
+
+the main thread waits for the worker.
+
+Flow:
+
+```text
+Main Thread
+     |
+     ↓
+worker.start()
+     |
+     +----------> Worker executes
+     |
+     ↓
+worker.join()
+     |
+     | waits
+     |
+     ↓
+Worker finishes
+     |
+     ↓
+Main continues
+```
 
 ---
 
 # 🔹 join() Example
 
-    class Main {
+```java
+class Worker extends Thread {
 
-        public static void main(String[] args) {
+    @Override
+    public void run() {
 
-            Thread worker = new Thread(() -> {
+        for(int i = 1; i <= 5; i++) {
 
-                System.out.println("Worker started");
-
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    System.out.println("Worker interrupted");
-                }
-
-                System.out.println("Worker finished");
-            });
-
-            worker.start();
+            System.out.println("Worker: " + i);
 
             try {
-                worker.join();
-            } catch (InterruptedException e) {
-                System.out.println("Main interrupted");
-            }
 
-            System.out.println("Main continues");
+                Thread.sleep(500);
+
+            } catch(InterruptedException e) {
+
+                Thread.currentThread().interrupt();
+            }
         }
     }
+}
 
-The important relationship is:
+class Main {
 
-    Main
-      |
-      | start worker
-      ↓
-    Worker
-      |
-      | performs work
-      ↓
-    Worker finishes
-      |
-      ↓
-    Main continues
+    public static void main(String[] args)
+            throws InterruptedException {
+
+        Worker worker = new Worker();
+
+        worker.start();
+
+        worker.join();
+
+        System.out.println("Main thread finished");
+    }
+}
+```
+
+The main thread waits until the worker finishes.
 
 ---
 
-# 🔹 join() Execution Flow
+# 🔹 join() Internal Flow
 
 Suppose:
 
-    Thread worker = new Thread(...);
+```java
+worker.start();
 
-    worker.start();
+worker.join();
 
-    worker.join();
+System.out.println("Done");
+```
 
-The sequence is approximately:
+Conceptually:
 
-    Main Thread
-        |
-        | start()
-        ↓
-    Worker Thread
-        |
-        | work
-        ↓
-    Worker terminates
-        |
-        ↓
-    Main continues
+```text
+1. Worker thread starts
+          ↓
+2. Main reaches worker.join()
+          ↓
+3. Main waits
+          ↓
+4. Worker executes
+          ↓
+5. Worker terminates
+          ↓
+6. Main continues
+          ↓
+7. "Done"
+```
 
-Without `join()`:
+---
 
-    Main
-      |
-      | start Worker
-      ↓
-    Worker
-      |
-      |
-    Main may continue independently
+# 🔹 join() Does Not Mean "Start"
 
-With `join()`:
+This:
 
-    Main
-      |
-      | start Worker
-      ↓
-    Main waits
-      |
-      ↓
-    Worker finishes
-      |
-      ↓
-    Main continues
+```java
+worker.join();
+```
+
+does not start the worker.
+
+You must first start it:
+
+```java
+worker.start();
+
+worker.join();
+```
+
+If the thread has not been started, the behavior is not equivalent to "start then wait."
+
+Memory:
+
+```text
+start()
+→ Start thread
+
+join()
+→ Wait for thread
+```
 
 ---
 
 # 🔹 join() with Multiple Threads
 
-Suppose we have two worker threads:
+Suppose we have:
 
-    Thread t1 = new Thread(() -> {
-        System.out.println("Task 1");
-    });
+```java
+Thread t1 = new Thread(() -> {
 
-    Thread t2 = new Thread(() -> {
-        System.out.println("Task 2");
-    });
+    System.out.println("Task 1");
+
+});
+
+Thread t2 = new Thread(() -> {
+
+    System.out.println("Task 2");
+
+});
+```
 
 Start both:
 
-    t1.start();
-    t2.start();
+```java
+t1.start();
+t2.start();
+```
 
-Wait for both:
+Then wait for both:
 
-    try {
+```java
+t1.join();
+t2.join();
+```
+
+Complete example:
+
+```java
+class Main {
+
+    public static void main(String[] args)
+            throws InterruptedException {
+
+        Thread t1 = new Thread(() -> {
+
+            System.out.println("Task 1");
+
+        });
+
+        Thread t2 = new Thread(() -> {
+
+            System.out.println("Task 2");
+
+        });
+
+        t1.start();
+        t2.start();
+
         t1.join();
         t2.join();
-    } catch (InterruptedException e) {
-        System.out.println("Main interrupted");
+
+        System.out.println("Both tasks finished");
     }
+}
+```
 
-Then:
-
-    System.out.println("All tasks finished");
-
-The main thread continues only after both joins have completed, assuming both workers terminate normally.
+The main thread waits until both threads terminate.
 
 ---
 
-# 🔹 join(long millis)
+# 🔹 Important Point About Multiple join()
 
-There is a timed version:
+The order of:
 
-    thread.join(long millis);
+```java
+t1.join();
+t2.join();
+```
 
-It waits for the specified thread for at most approximately the specified duration, unless that thread terminates earlier or the waiting thread is interrupted.
+controls when the current thread waits.
+
+It does **not** necessarily mean:
+
+```text
+t1 executes completely
+       ↓
+t2 starts
+```
+
+because both were already started:
+
+```java
+t1.start();
+t2.start();
+```
+
+They may execute concurrently.
+
+The `join()` calls simply ensure that the current thread does not continue until the corresponding threads have terminated.
+
+---
+
+# 🔹 join() with Time Limit
+
+There is also a timed version:
+
+```java
+join(long millis)
+```
 
 Example:
 
-    try {
+```java
+thread.join(2000);
+```
+
+This means the current thread waits for the target thread for up to approximately 2000 milliseconds.
+
+It may return earlier if the target thread finishes earlier.
+
+Important:
+
+> Timed `join()` does not guarantee that the target thread has finished after the timeout expires.
+
+---
+
+# 🔹 Timed join() Example
+
+```java
+class Main {
+
+    public static void main(String[] args)
+            throws InterruptedException {
+
+        Thread worker = new Thread(() -> {
+
+            try {
+
+                Thread.sleep(5000);
+
+            } catch(InterruptedException e) {
+
+                Thread.currentThread().interrupt();
+            }
+
+        });
+
+        worker.start();
+
         worker.join(2000);
-    } catch (InterruptedException e) {
-        System.out.println("Interrupted");
+
+        System.out.println("Main continues");
     }
+}
+```
 
-This means:
+The main thread waits for at most approximately 2 seconds.
 
-    Wait up to approximately 2 seconds.
-
-It does not necessarily mean the worker will finish in exactly two seconds.
+The worker may still be running after that.
 
 ---
 
-# 🔹 join(long millis, int nanos)
+# 🔹 join() and InterruptedException
 
-There is also:
+Like `sleep()`, `join()` can throw:
 
-    thread.join(long millis, int nanos);
+```java
+InterruptedException
+```
 
 Example:
 
-    try {
-        worker.join(2000, 500000);
-    } catch (InterruptedException e) {
-        System.out.println("Interrupted");
+```java
+class Main {
+
+    public static void main(String[] args) {
+
+        Thread worker = new Thread(() -> {
+
+            System.out.println("Worker");
+
+        });
+
+        worker.start();
+
+        try {
+
+            worker.join();
+
+        } catch(InterruptedException e) {
+
+            Thread.currentThread().interrupt();
+        }
     }
-
-This allows a more precise timeout specification.
-
-The actual scheduling and timing are still controlled by the JVM and operating system.
+}
+```
 
 ---
 
@@ -535,349 +883,416 @@ The actual scheduling and timing are still controlled by the JVM and operating s
 
 This is one of the most important comparisons.
 
-| Feature | `sleep()` | `join()` |
-|---|---|---|
-| Purpose | Pause current thread | Wait for another thread |
-| Method type | Static | Instance |
-| Called on | `Thread.sleep()` | `thread.join()` |
-| Wait condition | Time | Thread termination |
-| Current thread affected | Yes | Yes, it waits |
-| Throws `InterruptedException` | Yes | Yes |
-| Typical state | `TIMED_WAITING` | Waiting thread can be `WAITING` or `TIMED_WAITING` |
-| Main use | Delay | Thread coordination |
+| `sleep()` | `join()` |
+|---|---|
+| Static method | Instance method |
+| Called as `Thread.sleep()` | Called on a thread object |
+| Pauses current thread | Current thread waits for target thread |
+| Time-based waiting | Thread-completion-based waiting |
+| Does not wait for another thread to finish | Specifically waits for another thread |
+| Can use milliseconds/nanoseconds | Can use timeout |
+| Does not release intrinsic monitor | `join()` itself is based on waiting for termination |
 
-Memory trick:
+Memory:
 
-    sleep()
-    → "Wait 2 seconds."
+```text
+sleep()
+→ "Wait for some time."
 
-    join()
-    → "Wait until this thread finishes."
-
----
-
-# 🔹 sleep() vs join() Example
-
-### sleep()
-
-    Thread.sleep(3000);
-
-Meaning:
-
-    Current thread pauses for approximately 3 seconds.
+join()
+→ "Wait for that thread."
+```
 
 ---
 
-### join()
+# 🔹 Example Comparing Both
 
-    worker.join();
+```java
+class Main {
 
-Meaning:
+    public static void main(String[] args)
+            throws InterruptedException {
 
-    Current thread waits for worker to terminate.
+        Thread worker = new Thread(() -> {
 
----
+            try {
 
-# 🔹 Internal Working
+                Thread.sleep(2000);
 
-## sleep()
+                System.out.println("Worker finished");
 
-Conceptually:
+            } catch(InterruptedException e) {
 
-    Current Thread
-          ↓
-       sleep()
-          ↓
-    TIMED_WAITING
-          ↓
-    timeout expires
-          ↓
-    becomes eligible to continue
+                Thread.currentThread().interrupt();
+            }
+        });
 
----
+        worker.start();
 
-## join()
+        worker.join();
 
-Conceptually:
+        System.out.println("Main finished");
+    }
+}
+```
 
-    Main Thread
-          ↓
-      worker.join()
-          ↓
-    Main waits
-          ↓
-    Worker executes
-          ↓
-    Worker terminates
-          ↓
-    Main continues
+Here:
 
----
+```text
+worker.sleep()
+→ Worker pauses for 2 seconds
 
-# 🔹 Important Difference: Time vs Thread
+worker.join()
+→ Main waits for Worker
 
-This is the easiest way to remember both methods.
-
-### `sleep()`
-
-The condition is:
-
-    TIME
-
-Example:
-
-    Thread.sleep(5000);
-
-Meaning:
-
-    "Wait for approximately 5 seconds."
+Main continues
+→ after Worker terminates
+```
 
 ---
 
-### `join()`
+# 🔹 sleep() vs join() — Mental Model
 
-The condition is:
+Think about two people:
 
-    THREAD TERMINATION
+```text
+sleep()
+→ "I will wait for 5 seconds."
 
-Example:
+join()
+→ "I will wait until you finish."
+```
 
-    worker.join();
-
-Meaning:
-
-    "Wait until worker finishes."
+This is the easiest way to remember the difference.
 
 ---
 
 # 🔹 Common Mistakes
 
-## ❌ Mistake 1 — Thinking sleep() pauses every thread
+## ❌ Mistake 1 — Thinking sleep() pauses another thread
 
 Wrong:
 
-    Thread.sleep(1000);
+```java
+Thread t = new Thread();
 
-does not pause all threads.
+Thread.sleep(1000);
+```
 
-It pauses only the thread currently executing that statement.
+This does not mean:
 
----
+```text
+Pause t
+```
 
-## ❌ Mistake 2 — Thinking join() pauses the target thread
+It means:
 
-Suppose:
-
-    worker.join();
-
-The `worker` thread is not the one being paused by `join()`.
-
-The thread that calls `join()` waits.
-
-Example:
-
-    Main Thread
-        |
-        | worker.join()
-        ↓
-      WAITS
-
-The worker continues executing.
+```text
+Pause the currently executing thread
+```
 
 ---
 
-## ❌ Mistake 3 — Thinking sleep() releases locks
+## ❌ Mistake 2 — Calling join() before start()
 
-It does not release an intrinsic monitor lock held by the sleeping thread.
+Do not think:
 
----
+```java
+t.join();
+```
 
-## ❌ Mistake 4 — Thinking join() starts a thread
+means:
+
+```text
+Start t
+```
 
 It does not.
 
-You still need:
-
-    worker.start();
-
-before waiting for it.
-
----
-
-## ❌ Mistake 5 — Forgetting InterruptedException
-
-Both:
-
-    sleep()
-
-and:
-
-    join()
-
-can throw:
-
-    InterruptedException
-
----
-
-## ❌ Mistake 6 — Calling join() before start()
-
-Consider:
-
-    Thread worker = new Thread(...);
-
-    worker.join();
-
-There is no useful completed worker execution to wait for because the thread has not been started.
-
 Usually the intended sequence is:
 
-    worker.start();
-    worker.join();
+```java
+t.start();
+
+t.join();
+```
+
+---
+
+## ❌ Mistake 3 — Thinking join() pauses the target thread
+
+Wrong idea:
+
+```text
+t.join()
+→ t pauses
+```
+
+Correct:
+
+```text
+current thread
+      ↓
+waits for t
+```
+
+The target thread continues executing.
+
+---
+
+## ❌ Mistake 4 — Thinking sleep() releases locks
+
+It does not release intrinsic monitor locks.
+
+---
+
+## ❌ Mistake 5 — Assuming timed join() guarantees completion
+
+Example:
+
+```java
+t.join(1000);
+```
+
+After this returns, `t` may still be running.
 
 ---
 
 # 🔹 Interview Traps
 
-### Trap 1: Is sleep() static?
+### Q1. Is sleep() static?
 
 Yes.
 
-    Thread.sleep()
+It is a static method of `Thread`.
+
+Use:
+
+```java
+Thread.sleep(1000);
+```
 
 ---
 
-### Trap 2: Is join() static?
-
-No.
-
-It is an instance method.
-
-    worker.join()
-
----
-
-### Trap 3: Which thread sleeps?
+### Q2. Which thread does sleep() affect?
 
 The currently executing thread.
 
 ---
 
-### Trap 4: Which thread waits during join()?
-
-The thread that calls `join()`.
-
----
-
-### Trap 5: Does sleep() release a monitor lock?
+### Q3. Does sleep() release a lock?
 
 No.
 
 ---
 
-### Trap 6: Does join() release a monitor lock?
+### Q4. What does join() do?
 
-`join()` itself is implemented using synchronization/waiting mechanics internally, but the important application-level rule is that the waiting thread does not simply "release all locks it happens to hold" as a general consequence of calling `join()`. Do not treat `join()` as a general lock-release mechanism.
-
----
-
-### Trap 7: What exception can both methods throw?
-
-    InterruptedException
+It makes the current thread wait until the target thread terminates, unless a timeout is used.
 
 ---
 
-### Trap 8: What state does sleep() normally produce?
+### Q5. Is join() static?
 
-    TIMED_WAITING
+No.
+
+It is an instance method.
+
+Example:
+
+```java
+worker.join();
+```
+
+---
+
+### Q6. Does join() start a thread?
+
+No.
+
+Use:
+
+```java
+worker.start();
+```
+
+to start it.
+
+---
+
+### Q7. Does join() pause the target thread?
+
+No.
+
+The current thread waits; the target thread continues execution.
+
+---
+
+### Q8. Can join() have a timeout?
+
+Yes.
+
+Example:
+
+```java
+worker.join(2000);
+```
+
+---
+
+### Q9. What exception can sleep() and join() throw?
+
+Both can throw:
+
+```java
+InterruptedException
+```
+
+---
+
+### Q10. What is the simplest difference between sleep() and join()?
+
+```text
+sleep()
+→ wait for time
+
+join()
+→ wait for thread completion
+```
 
 ---
 
 # 🔹 DSA / Problem-Solving Relevance
 
-These methods are not DSA patterns by themselves.
+`sleep()` and `join()` are not DSA patterns themselves, but `join()` is useful for understanding concurrent algorithms.
 
-However, they become useful in concurrency problems involving:
+Example:
 
-- Multiple workers
-- Task ordering
-- Parallel computation
-- Producer-consumer systems
-- Concurrent processing
-- Thread coordination
+```text
+Main Thread
+    |
+    +---- Worker 1
+    |
+    +---- Worker 2
+    |
+    +---- Worker 3
+```
 
-For example, if several threads perform independent calculations:
+All workers can process separate portions of a problem.
 
-    Thread 1 → calculation
-    Thread 2 → calculation
-    Thread 3 → calculation
+Then:
 
-The main thread can use:
+```text
+join Worker 1
+join Worker 2
+join Worker 3
+       ↓
+Combine results
+```
 
-    t1.join();
-    t2.join();
-    t3.join();
+Conceptually:
 
-before processing the combined results.
+```text
+Input
+  ↓
+Split
+  ↓
++----------+----------+----------+
+| Worker 1 | Worker 2 | Worker 3 |
++----------+----------+----------+
+      ↓          ↓          ↓
+    Result     Result     Result
+      \          |          /
+       \         |         /
+        +--------+--------+
+                 ↓
+          Combined Result
+```
+
+This idea appears in:
+
+- Parallel searching
+- Parallel processing
+- Concurrent algorithms
+- Divide-and-conquer implementations
+- Producer-consumer coordination
 
 ---
 
 # 🔹 30-Second Interview Answer
 
-> `sleep()` and `join()` are thread coordination methods. `sleep()` is a static method of `Thread` that pauses the currently executing thread for a specified amount of time and puts it into `TIMED_WAITING`. `join()` is an instance method that makes the current thread wait for another thread to terminate. Both can throw `InterruptedException`. The easiest distinction is that `sleep()` waits for time, while `join()` waits for another thread.
+> `sleep()` and `join()` are important thread coordination methods. `Thread.sleep()` pauses the currently executing thread for a specified amount of time, while `join()` makes the current thread wait for another thread to terminate. `sleep()` is static and time-based, whereas `join()` is an instance method and thread-completion-based. Both can throw `InterruptedException`, and `sleep()` does not release intrinsic monitor locks.
 
 ---
 
 # 🔹 Cheat Sheet
 
+## Sleep
+
+```java
+Thread.sleep(1000);
+```
+
+Meaning:
+
+```text
+Current thread
+      ↓
+Pause for ~1 second
+```
+
+---
+
+## Sleep with try-catch
+
+```java
+try {
+
     Thread.sleep(1000);
 
-    ↓
+} catch(InterruptedException e) {
 
-    Current thread
-    pauses
-    for approximately 1 second
-
----
-
-    worker.join();
-
-    ↓
-
-    Current thread
-    waits
-    for worker to terminate
+    Thread.currentThread().interrupt();
+}
+```
 
 ---
 
-## `sleep()`
+## Join
 
-    static
+```java
+thread.start();
 
-    Thread.sleep(time);
+thread.join();
+```
 
-    Wait for:
-        TIME
+Meaning:
 
-    Typical state:
-        TIMED_WAITING
+```text
+Start thread
+     ↓
+Current thread waits
+     ↓
+Target thread finishes
+     ↓
+Current thread continues
+```
 
 ---
 
-## `join()`
+## Timed Join
 
-    instance
+```java
+thread.join(2000);
+```
 
-    worker.join();
+Meaning:
 
-    Wait for:
-        THREAD TERMINATION
-
-    Possible waiting state:
-        WAITING
-
-    Timed join:
-        TIMED_WAITING
+```text
+Wait for target
+     ↓
+Maximum approximately 2 seconds
+```
 
 ---
 
@@ -885,53 +1300,68 @@ before processing the combined results.
 
 ### `sleep()`
 
-> **Sleep = Time**
+> **TIME**
 
-    Thread.sleep(2000);
-
-means:
-
-    "Pause me for approximately 2 seconds."
-
----
+```text
+sleep()
+→ "Wait for some time."
+```
 
 ### `join()`
 
-> **Join = Finish**
+> **THREAD**
 
-    worker.join();
+```text
+join()
+→ "Wait for that thread."
+```
 
-means:
+### `start()`
 
-    "I will continue after worker finishes."
+> **START**
+
+```text
+start()
+→ Start new thread
+```
+
+### Combined
+
+```text
+start()
+  ↓
+Thread begins
+
+sleep()
+  ↓
+Current thread pauses
+
+join()
+  ↓
+Current thread waits for another thread
+```
 
 ---
 
 # 🔥 Top 10 Interview Questions
 
-## 1. What does `Thread.sleep()` do?
+## 1. What is Thread.sleep()?
 
 It pauses the currently executing thread for a specified amount of time.
 
 ---
 
-## 2. Is `sleep()` static?
+## 2. Is sleep() static?
 
 Yes.
 
-    Thread.sleep()
+```java
+Thread.sleep(1000);
+```
 
 ---
 
-## 3. Does sleep() create a new thread?
-
-No.
-
-It pauses the currently executing thread.
-
----
-
-## 4. Does sleep() release a lock?
+## 3. Does sleep() release a lock?
 
 No.
 
@@ -939,74 +1369,125 @@ Sleeping does not release an intrinsic monitor lock held by the thread.
 
 ---
 
-## 5. What is the state of a sleeping thread?
+## 4. What is join()?
 
-Normally:
-
-    TIMED_WAITING
+`join()` makes the current thread wait for another thread to terminate.
 
 ---
 
-## 6. What does `join()` do?
-
-It makes the current thread wait for another thread to terminate.
-
----
-
-## 7. Is `join()` static?
+## 5. Is join() static?
 
 No.
 
 It is called on a particular thread object.
 
-    worker.join();
+```java
+worker.join();
+```
 
 ---
 
-## 8. Which thread waits when `worker.join()` is called?
+## 6. Does join() stop the target thread?
 
-The thread that calls `worker.join()` waits.
+No.
 
-The worker itself continues executing.
+The target thread continues running.
+
+The current thread waits for it.
+
+---
+
+## 7. Does join() start a thread?
+
+No.
+
+Usually:
+
+```java
+worker.start();
+worker.join();
+```
+
+---
+
+## 8. What happens with timed join()?
+
+```java
+worker.join(2000);
+```
+
+The current thread waits for at most approximately 2 seconds, unless the target finishes earlier.
 
 ---
 
 ## 9. What exception can sleep() and join() throw?
 
-    InterruptedException
+```java
+InterruptedException
+```
 
 ---
 
-## 10. What is the easiest difference between sleep() and join()?
+## 10. What is the difference between sleep() and join()?
 
-    sleep()
-    → waits for TIME
+```text
+sleep()
+→ Current thread waits for time.
 
-    join()
-    → waits for THREAD
+join()
+→ Current thread waits for another thread.
+```
 
 ---
 
 # 🎯 Final Summary
 
-The two methods have completely different purposes.
+```text
+                    Thread
+                       |
+            +----------+----------+
+            |                     |
+         sleep()               join()
+            |                     |
+      Time-based wait       Thread-based wait
+            |                     |
+      Current thread         Current thread
+          pauses                 waits
+```
 
-    Thread.sleep()
-            ↓
-    Pause CURRENT thread
-            ↓
-    For a specified TIME
+### ⭐ `sleep()`
 
----
+```java
+Thread.sleep(1000);
+```
 
-    worker.join()
-            ↓
-    CURRENT thread waits
-            ↓
-    Until WORKER terminates
+- Static
+- Pauses current thread
+- Time-based
+- Causes `TIMED_WAITING`
+- Can throw `InterruptedException`
+- Does not release intrinsic monitor locks
 
-The core rule to remember:
+### ⭐ `join()`
 
-> **`sleep()` = "Wait for some time."**
+```java
+thread.join();
+```
 
-> **`join()` = "Wait for that thread to finish."**
+- Instance method
+- Current thread waits for target thread
+- Thread-completion-based
+- Can throw `InterruptedException`
+- Timed version is available
+
+### ⭐ Core Mental Model
+
+```text
+sleep()
+→ "Wait for TIME."
+
+join()
+→ "Wait for THREAD."
+```
+
+> **Core idea: `sleep()` controls how long the current thread pauses, while `join()` coordinates threads by making one thread wait for another to finish.**
