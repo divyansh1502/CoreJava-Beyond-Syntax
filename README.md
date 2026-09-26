@@ -341,8 +341,10 @@ Deep JVM section.
 ├── 09-Reference-Types.md
 ├── 10-JVM-Execution-Engine.md
 ├── 11-JIT-Compiler.md
-├── 12-ClassLoader.md
-└── 13-JVM-Interview-Questions.md
+├── 12-Native-Method-Interface-JNI.md
+├── 13-PC-Register.md
+├── 14-ClassLoader.md
+└── 15-JVM-Interview-Questions.md
 ```
 
 ---
