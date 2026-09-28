@@ -1,4 +1,4 @@
-````md
+
 # 📁 Java File Class
 
 > **The `File` class represents a pathname for a file or directory and provides methods to inspect and manipulate filesystem entries such as creating, deleting, renaming, and checking files and directories.**
@@ -2038,4 +2038,4 @@ Path + Files
 ```
 
 ---
-````
+

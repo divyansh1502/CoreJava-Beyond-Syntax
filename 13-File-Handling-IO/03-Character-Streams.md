@@ -1,4 +1,4 @@
-````md
+
 # 🔤 Java Character Streams
 
 > **Character streams are Java I/O streams designed for reading and writing character-oriented text data using the `Reader` and `Writer` hierarchies.**
@@ -1862,4 +1862,4 @@ Bytes
 - Try-with-resources should generally be used to manage I/O resources.
 
 ---
-````
+

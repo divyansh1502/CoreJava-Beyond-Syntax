@@ -1,4 +1,4 @@
-````md
+
 # 📥 Java I/O — Introduction
 
 > **Java I/O (Input/Output) is the mechanism used to read data from a source and write data to a destination using streams and related APIs.**
@@ -1390,4 +1390,4 @@ Extra buffering / convenience
 - `java.io` contains the traditional Java I/O APIs.
 
 ---
-````
+

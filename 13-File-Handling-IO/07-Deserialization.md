@@ -1,4 +1,4 @@
-````md
+
 # 🔄 Java Deserialization
 
 > **Deserialization is the process of reconstructing an object from a serialized byte stream.**
@@ -2013,4 +2013,4 @@ Never blindly deserialize
 ```
 
 ---
-````
+

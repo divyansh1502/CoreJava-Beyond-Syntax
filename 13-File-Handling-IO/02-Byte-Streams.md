@@ -1,4 +1,4 @@
-````md
+
 # 🔢 Java Byte Streams
 
 > **Byte streams are Java I/O streams that read and write data as individual bytes using `InputStream` and `OutputStream` hierarchies.**
@@ -1858,4 +1858,4 @@ Read chunk → Process/Write chunk → Read next chunk
 ```
 
 ---
-````
+

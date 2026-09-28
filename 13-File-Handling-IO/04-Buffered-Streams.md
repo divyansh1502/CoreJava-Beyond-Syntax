@@ -1,4 +1,4 @@
-````md
+
 # 🚀 Java Buffered Streams
 
 > **Buffered streams improve I/O efficiency by temporarily storing data in an in-memory buffer, reducing the number of direct read/write operations performed on the underlying stream.**
@@ -2004,4 +2004,4 @@ Buffer = temporary memory between the application
 ```
 
 ---
-````
+

@@ -1,4 +1,4 @@
-````md
+
 # 📦 Java Serialization
 
 > **Serialization is the process of converting an object's state into a byte stream so that it can be stored or transmitted and later reconstructed through deserialization.**
@@ -1833,5 +1833,5 @@ Storage / Network
 ```
 
 ---
-````
+
 

@@ -1,4 +1,4 @@
-````md
+
 # 🎯 Java I/O Interview Questions
 
 > **A focused collection of Java I/O interview questions covering streams, readers/writers, buffering, files, serialization, deserialization, and important internal concepts.**
@@ -1926,4 +1926,4 @@ ObjectOutputStream             ObjectInputStream
 - Never blindly deserialize untrusted data.
 
 ---
-````
+
